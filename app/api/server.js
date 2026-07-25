@@ -33,13 +33,26 @@ app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/api/health', (_req, res) => {
-  res.json({
+app.get('/api/health', async (_req, res) => {
+  const payload = {
     ok: true,
     service: 'sklospecial-api',
     phase: 1,
     time: new Date().toISOString(),
-  });
+    db: 'skipped',
+  };
+
+  if (process.env.DB_USER && process.env.DB_PASSWORD && process.env.DB_NAME) {
+    try {
+      const { ping } = require('./services/database');
+      payload.db = (await ping()) ? 'ok' : 'fail';
+    } catch (err) {
+      payload.db = 'error';
+      payload.db_error = err.message;
+    }
+  }
+
+  res.status(payload.db === 'error' ? 503 : 200).json(payload);
 });
 
 app.use('/api', apiRateLimit);
