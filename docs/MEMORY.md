@@ -42,7 +42,13 @@ Floating „Sklo asistent“ · jen skleněné dveře · stream · 20 req/IP/h �
 
 Tykat · konkrétní · bez „luxusní/exkluzivní/prémiový“ · CTA „pošli rozměry a fotky“
 
+## Live (Coolify)
+
+- WP: `https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io`
+- API: `https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io` (`db: ok`)
+- Konfigurátor: `/public/konfigurator.html` na API
+- Chat widget: načtený na WP (snippet)
+
 ## DOPORUČENÝ START
 
-**Nejdřív Node.js API** (konfigurátor + chat + leads), WP theme/stránky paralelně potom.  
-Nginx/Compose od nuly **ne** — infrastruktura už je Coolify.
+Hotovo přes Coolify. Doplň `OPENAI_API_KEY` + SMTP env u API app.
