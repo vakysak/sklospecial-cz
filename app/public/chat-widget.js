@@ -3,18 +3,21 @@
   const CONFIG_URL = window.SKLO_CONFIGURATOR_URL || `${API}/public/konfigurator.html`;
 
   const css = `
-  .sklo-chat-btn{position:fixed;right:1rem;bottom:1rem;z-index:9999;border:0;border-radius:999px;background:#0f4c5c;color:#fff;padding:.9rem 1.1rem;font:600 14px/1 system-ui,sans-serif;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.18)}
-  .sklo-chat-panel{position:fixed;right:1rem;bottom:4.5rem;width:min(350px,calc(100vw - 2rem));height:500px;max-height:calc(100vh - 6rem);background:#fffcf7;border:1px solid #d8d2c8;z-index:9999;display:flex;flex-direction:column;box-shadow:0 16px 40px rgba(0,0,0,.2)}
-  .sklo-chat-panel header{padding:.75rem 1rem;border-bottom:1px solid #d8d2c8;display:flex;justify-content:space-between;align-items:center;gap:.5rem}
-  .sklo-chat-panel header strong{font:600 14px system-ui}
-  .sklo-chat-panel header button{border:0;background:transparent;cursor:pointer;font-size:12px;color:#0f4c5c}
-  .sklo-chat-msgs{flex:1;overflow:auto;padding:1rem;display:flex;flex-direction:column;gap:.6rem;background:linear-gradient(#f7f4ee,#fffcf7)}
-  .sklo-chat-msg{max-width:90%;padding:.65rem .75rem;font:14px/1.4 system-ui;border:1px solid #d8d2c8;background:#fff}
-  .sklo-chat-msg.user{align-self:flex-end;background:#0f4c5c;color:#fff;border-color:#0f4c5c}
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&display=swap');
+  .sklo-chat-btn{position:fixed;right:1.1rem;bottom:1.1rem;z-index:9999;border:0;border-radius:999px;background:#1a5c6b;color:#fff;padding:.95rem 1.2rem;font:600 14px/1 Outfit,sans-serif;cursor:pointer;box-shadow:0 14px 34px rgba(26,92,107,.28);transition:transform .15s ease}
+  .sklo-chat-btn:hover{transform:translateY(-1px)}
+  .sklo-chat-panel{position:fixed;right:1.1rem;bottom:4.7rem;width:min(360px,calc(100vw - 2rem));height:min(520px,calc(100vh - 6rem));background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border:1px solid rgba(18,24,28,.1);border-radius:18px;z-index:9999;display:flex;flex-direction:column;box-shadow:0 22px 50px rgba(18,40,55,.16);overflow:hidden;font-family:Outfit,sans-serif}
+  .sklo-chat-panel header{padding:.85rem 1rem;border-bottom:1px solid rgba(18,24,28,.08);display:flex;justify-content:space-between;align-items:center;gap:.5rem;background:linear-gradient(180deg,#f7fbfc,#fff)}
+  .sklo-chat-panel header strong{font:600 14px Outfit,sans-serif;color:#12181c}
+  .sklo-chat-panel header button{border:0;background:transparent;cursor:pointer;font:500 12px Outfit,sans-serif;color:#1a5c6b;padding:.2rem .35rem}
+  .sklo-chat-msgs{flex:1;overflow:auto;padding:1rem;display:flex;flex-direction:column;gap:.55rem;background:linear-gradient(180deg,#f3f7f9,#fbfcfd)}
+  .sklo-chat-msg{max-width:88%;padding:.7rem .8rem;font:14px/1.45 Outfit,sans-serif;border-radius:14px;border:1px solid rgba(18,24,28,.08);background:#fff;color:#12181c}
+  .sklo-chat-msg.user{align-self:flex-end;background:#1a5c6b;color:#fff;border-color:#1a5c6b}
   .sklo-chat-msg.bot{align-self:flex-start}
-  .sklo-chat-form{display:flex;gap:.4rem;padding:.75rem;border-top:1px solid #d8d2c8}
-  .sklo-chat-form input{flex:1;border:1px solid #d8d2c8;padding:.6rem;font:14px system-ui}
-  .sklo-chat-form button{border:0;background:#0f4c5c;color:#fff;padding:.6rem .8rem;cursor:pointer;font:600 13px system-ui}
+  .sklo-chat-form{display:flex;gap:.45rem;padding:.8rem;border-top:1px solid rgba(18,24,28,.08);background:#fff}
+  .sklo-chat-form input{flex:1;border:1px solid rgba(18,24,28,.12);border-radius:999px;padding:.7rem .9rem;font:14px Outfit,sans-serif;outline:none}
+  .sklo-chat-form input:focus{border-color:#1a5c6b;box-shadow:0 0 0 3px rgba(26,92,107,.12)}
+  .sklo-chat-form button{border:0;background:#1a5c6b;color:#fff;border-radius:999px;padding:.7rem 1rem;cursor:pointer;font:600 13px Outfit,sans-serif}
   `;
 
   const style = document.createElement('style');

@@ -3,112 +3,148 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Konfigurátor skleněných dveří — Sklospeciál</title>
+  <title>Konfigurátor — Sklospeciál</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
   <link rel="stylesheet" href="./konfigurator.css" />
 </head>
 <body>
-  <main class="wrap" x-data="konfigurator()" x-cloak>
-    <header class="head">
+  <div class="atmosphere" aria-hidden="true"></div>
+
+  <main class="shell" x-data="konfigurator()" x-cloak>
+    <header class="hero">
       <p class="brand">Sklospeciál</p>
-      <h1>Konfigurátor skleněných dveří</h1>
-      <p class="lead">Pošli rozměry a fotky — připravíme nabídku.</p>
-      <div class="progress" role="status">Krok <strong x-text="krok"></strong> / 7</div>
-      <div class="bar"><span :style="`width:${(krok/7)*100}%`"></span></div>
+      <h1>Navrhni si <em>skleněné dveře</em></h1>
+      <p class="lead">Sedm krátkých kroků. Pošli rozměry a fotky — připravíme nabídku.</p>
+
+      <ol class="steps" aria-label="Postup">
+        <template x-for="i in 7" :key="i">
+          <li :class="{ done: i < krok, current: i === krok }" :aria-current="i === krok ? 'step' : null">
+            <span x-text="i"></span>
+          </li>
+        </template>
+      </ol>
     </header>
 
-    <section class="card" x-show="krok===1">
-      <h2>Typ dveří</h2>
-      <div class="grid">
+    <section class="panel" x-show="krok===1" x-transition.opacity.duration.200ms>
+      <h2>Jaký typ dveří chceš?</h2>
+      <div class="choices">
         <template x-for="o in options.typ" :key="o.v">
-          <button type="button" class="choice" :class="config.typ_dveri===o.v && 'on'" @click="config.typ_dveri=o.v" x-text="o.l"></button>
+          <button type="button" class="choice" :class="config.typ_dveri===o.v && 'on'" @click="config.typ_dveri=o.v">
+            <span class="choice-title" x-text="o.l"></span>
+            <span class="choice-desc" x-text="o.d"></span>
+          </button>
         </template>
       </div>
     </section>
 
-    <section class="card" x-show="krok===2">
-      <h2>Použití</h2>
-      <div class="grid">
+    <section class="panel" x-show="krok===2" x-transition.opacity.duration.200ms>
+      <h2>Kde budou stát?</h2>
+      <div class="choices">
         <template x-for="o in options.pouziti" :key="o.v">
-          <button type="button" class="choice" :class="config.pouziti===o.v && 'on'" @click="config.pouziti=o.v" x-text="o.l"></button>
+          <button type="button" class="choice" :class="config.pouziti===o.v && 'on'" @click="config.pouziti=o.v">
+            <span class="choice-title" x-text="o.l"></span>
+            <span class="choice-desc" x-text="o.d"></span>
+          </button>
         </template>
       </div>
     </section>
 
-    <section class="card" x-show="krok===3">
-      <h2>Rozměry (mm)</h2>
-      <p class="hint">Měř na 3 místech. Pracujeme s nejmenší hodnotou.</p>
-      <fieldset>
-        <legend>Šířka otvoru</legend>
-        <div class="row3">
-          <label>Vlevo <input type="number" min="300" max="3500" x-model.number="config.rozmery.sirka[0]" /></label>
-          <label>Uprostřed <input type="number" min="300" max="3500" x-model.number="config.rozmery.sirka[1]" /></label>
-          <label>Vpravo <input type="number" min="300" max="3500" x-model.number="config.rozmery.sirka[2]" /></label>
+    <section class="panel" x-show="krok===3" x-transition.opacity.duration.200ms>
+      <h2>Rozměry otvoru</h2>
+      <p class="hint">Měř na 3 místech. Do nabídky bereme nejmenší hodnotu.</p>
+
+      <div class="measure">
+        <h3>Šířka <span>mm</span></h3>
+        <div class="triple">
+          <label><span>Vlevo</span><input type="number" min="300" max="3500" inputmode="numeric" x-model.number="config.rozmery.sirka[0]" /></label>
+          <label><span>Uprostřed</span><input type="number" min="300" max="3500" inputmode="numeric" x-model.number="config.rozmery.sirka[1]" /></label>
+          <label><span>Vpravo</span><input type="number" min="300" max="3500" inputmode="numeric" x-model.number="config.rozmery.sirka[2]" /></label>
         </div>
-      </fieldset>
-      <fieldset>
-        <legend>Výška otvoru</legend>
-        <div class="row3">
-          <label>Vlevo <input type="number" min="300" max="3500" x-model.number="config.rozmery.vyska[0]" /></label>
-          <label>Uprostřed <input type="number" min="300" max="3500" x-model.number="config.rozmery.vyska[1]" /></label>
-          <label>Vpravo <input type="number" min="300" max="3500" x-model.number="config.rozmery.vyska[2]" /></label>
+      </div>
+
+      <div class="measure">
+        <h3>Výška <span>mm</span></h3>
+        <div class="triple">
+          <label><span>Vlevo</span><input type="number" min="300" max="3500" inputmode="numeric" x-model.number="config.rozmery.vyska[0]" /></label>
+          <label><span>Uprostřed</span><input type="number" min="300" max="3500" inputmode="numeric" x-model.number="config.rozmery.vyska[1]" /></label>
+          <label><span>Vpravo</span><input type="number" min="300" max="3500" inputmode="numeric" x-model.number="config.rozmery.vyska[2]" /></label>
         </div>
-      </fieldset>
-      <label>Hloubka stěny (mm)
-        <input type="number" min="20" max="800" x-model.number="config.rozmery.hloubka" />
+      </div>
+
+      <label class="single">
+        <span>Hloubka stěny <em>mm</em></span>
+        <input type="number" min="20" max="800" inputmode="numeric" x-model.number="config.rozmery.hloubka" />
       </label>
     </section>
 
-    <section class="card" x-show="krok===4">
-      <h2>Typ skla</h2>
-      <div class="grid">
+    <section class="panel" x-show="krok===4" x-transition.opacity.duration.200ms>
+      <h2>Jaké sklo?</h2>
+      <div class="choices">
         <template x-for="o in options.sklo" :key="o.v">
-          <button type="button" class="choice" :class="config.typ_skla===o.v && 'on'" @click="config.typ_skla=o.v" x-text="o.l"></button>
+          <button type="button" class="choice" :class="config.typ_skla===o.v && 'on'" @click="config.typ_skla=o.v">
+            <span class="choice-title" x-text="o.l"></span>
+            <span class="choice-desc" x-text="o.d"></span>
+          </button>
         </template>
       </div>
     </section>
 
-    <section class="card" x-show="krok===5">
+    <section class="panel" x-show="krok===5" x-transition.opacity.duration.200ms>
       <h2>Kování</h2>
-      <div class="grid">
+      <div class="choices">
         <template x-for="o in options.kovani" :key="o.v">
-          <button type="button" class="choice" :class="config.kovani===o.v && 'on'" @click="config.kovani=o.v" x-text="o.l"></button>
+          <button type="button" class="choice" :class="config.kovani===o.v && 'on'" @click="config.kovani=o.v">
+            <span class="choice-title" x-text="o.l"></span>
+            <span class="choice-desc" x-text="o.d"></span>
+          </button>
         </template>
       </div>
     </section>
 
-    <section class="card" x-show="krok===6">
+    <section class="panel" x-show="krok===6" x-transition.opacity.duration.200ms>
       <h2>Montáž</h2>
-      <div class="grid">
+      <div class="choices choices-2">
         <template x-for="o in options.montaz" :key="o.v">
-          <button type="button" class="choice" :class="config.montaz===o.v && 'on'" @click="config.montaz=o.v" x-text="o.l"></button>
+          <button type="button" class="choice" :class="config.montaz===o.v && 'on'" @click="config.montaz=o.v">
+            <span class="choice-title" x-text="o.l"></span>
+            <span class="choice-desc" x-text="o.d"></span>
+          </button>
         </template>
       </div>
     </section>
 
-    <section class="card" x-show="krok===7">
+    <section class="panel" x-show="krok===7" x-transition.opacity.duration.200ms>
       <h2>Fotky a kontakt</h2>
-      <p class="hint">2–8 fotek, max 5 MB, JPG/PNG/WebP.</p>
-      <input type="file" accept="image/jpeg,image/png,image/webp" multiple @change="onFiles($event)" />
-      <p x-show="config.fotky.length" x-text="`Vybráno: ${config.fotky.length} souborů`"></p>
-      <div class="form">
-        <label>Jméno <input x-model="config.kontakt.jmeno" /></label>
-        <label>Telefon <input x-model="config.kontakt.telefon" placeholder="+420…" /></label>
-        <label>E-mail <input type="email" x-model="config.kontakt.email" /></label>
-        <label>Město / PSČ <input x-model="config.kontakt.mesto" /></label>
-        <label>Poznámka <textarea x-model="config.kontakt.poznamka" rows="3"></textarea></label>
+      <p class="hint">2–8 fotek otvoru, max 5&nbsp;MB. JPG, PNG nebo WebP.</p>
+
+      <label class="drop" :class="config.fotky.length && 'has'">
+        <input type="file" accept="image/jpeg,image/png,image/webp" multiple @change="onFiles($event)" />
+        <span class="drop-title" x-text="config.fotky.length ? `${config.fotky.length} fotek připraveno` : 'Přetáhni fotky sem'"></span>
+        <span class="drop-sub">nebo klikni a vyber ze zařízení</span>
+      </label>
+
+      <div class="form-grid">
+        <label><span>Jméno</span><input x-model="config.kontakt.jmeno" autocomplete="name" /></label>
+        <label><span>Telefon</span><input x-model="config.kontakt.telefon" placeholder="+420…" autocomplete="tel" /></label>
+        <label><span>E-mail</span><input type="email" x-model="config.kontakt.email" autocomplete="email" /></label>
+        <label><span>Město / PSČ</span><input x-model="config.kontakt.mesto" autocomplete="address-level2" /></label>
+        <label class="full"><span>Poznámka <em>volitelné</em></span><textarea x-model="config.kontakt.poznamka" rows="3"></textarea></label>
       </div>
     </section>
 
-    <p class="error" x-show="error" x-text="error"></p>
-    <p class="ok" x-show="done" x-text="done"></p>
+    <p class="flash error" x-show="error" x-text="error" x-transition></p>
+    <p class="flash ok" x-show="done" x-text="done" x-transition></p>
 
-    <footer class="actions">
-      <button type="button" class="ghost" @click="back()" :disabled="krok===1 || sending">Zpět</button>
-      <button type="button" class="primary" x-show="krok<7" @click="next()">Pokračovat</button>
-      <button type="button" class="primary" x-show="krok===7" @click="submit()" :disabled="sending" x-text="sending ? 'Odesílám…' : 'Odeslat poptávku'"></button>
+    <footer class="nav">
+      <button type="button" class="btn ghost" @click="back()" :disabled="krok===1 || sending">Zpět</button>
+      <button type="button" class="btn primary" x-show="krok<7" @click="next()">Pokračovat</button>
+      <button type="button" class="btn primary" x-show="krok===7" @click="submit()" :disabled="sending" x-text="sending ? 'Odesílám…' : 'Odeslat poptávku'"></button>
     </footer>
   </main>
+
   <script src="./konfigurator.js"></script>
 </body>
 </html>

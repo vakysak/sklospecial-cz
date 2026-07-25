@@ -17,31 +17,31 @@ function konfigurator() {
     },
     options: {
       typ: [
-        { v: 'otocne', l: 'Otočné' },
-        { v: 'posuvne_stena', l: 'Posuvné na stěnu' },
-        { v: 'posuvne_pouzdro', l: 'Posuvné do pouzdra' },
-        { v: 'dvoukridle', l: 'Dvoukřídlé' },
+        { v: 'otocne', l: 'Otočné', d: 'Klasické otevírání do místnosti' },
+        { v: 'posuvne_stena', l: 'Posuvné na stěnu', d: 'Křídlo pojede podél stěny' },
+        { v: 'posuvne_pouzdro', l: 'Posuvné do pouzdra', d: 'Dveře zmizí ve stěně' },
+        { v: 'dvoukridle', l: 'Dvoukřídlé', d: 'Širší otvor, dvě křídla' },
       ],
       pouziti: [
-        { v: 'byt_dum', l: 'Byt / dům' },
-        { v: 'koupelna', l: 'Koupelna' },
-        { v: 'kancelar', l: 'Kancelář / komerční' },
+        { v: 'byt_dum', l: 'Byt / dům', d: 'Interiér bydlení' },
+        { v: 'koupelna', l: 'Koupelna', d: 'Vlhký provoz, vhodné sklo' },
+        { v: 'kancelar', l: 'Kancelář / komerční', d: 'Kancelář, studio, provozovna' },
       ],
       sklo: [
-        { v: 'cire', l: 'Čiré' },
-        { v: 'matne', l: 'Matné' },
-        { v: 'dekor', l: 'Dekorativní' },
-        { v: 'nevim', l: 'Nevím, poraďte mi' },
+        { v: 'cire', l: 'Čiré', d: 'Maximum světla, otevřený prostor' },
+        { v: 'matne', l: 'Matné', d: 'Soukromí bez tmy' },
+        { v: 'dekor', l: 'Dekorativní', d: 'Vzor nebo struktura skla' },
+        { v: 'nevim', l: 'Nevím, poraďte mi', d: 'Doporučíme podle místa' },
       ],
       kovani: [
-        { v: 'cerne', l: 'Černé matné' },
-        { v: 'nerez', l: 'Nerez' },
-        { v: 'zlate', l: 'Zlaté' },
-        { v: 'nevim', l: 'Nevím, poraďte mi' },
+        { v: 'cerne', l: 'Černé matné', d: 'Výrazný kontrast' },
+        { v: 'nerez', l: 'Nerez', d: 'Nadčasový kovový vzhled' },
+        { v: 'zlate', l: 'Zlaté', d: 'Teplý detail' },
+        { v: 'nevim', l: 'Nevím, poraďte mi', d: 'Ladíme ke sklu a interiéru' },
       ],
       montaz: [
-        { v: 's_montazi', l: 'S montáží' },
-        { v: 'bez_montaze', l: 'Bez montáže' },
+        { v: 's_montazi', l: 'S montáží', d: 'Přijedeme a dveře osadíme' },
+        { v: 'bez_montaze', l: 'Bez montáže', d: 'Montáž zvládneš sám' },
       ],
     },
     onFiles(e) {
@@ -73,10 +73,12 @@ function konfigurator() {
       this.error = this.validate();
       if (this.error) return;
       this.krok = Math.min(7, this.krok + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     },
     back() {
       this.error = '';
       this.krok = Math.max(1, this.krok - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     },
     async submit() {
       this.error = this.validate();
