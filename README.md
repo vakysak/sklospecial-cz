@@ -37,9 +37,23 @@ FluentSMTP · Cloudflare Turnstile · Limit Login Attempts · Code Snippets
 
 WordPress (obsah) + **Node/Express API** (konfigurátor, chat, leady) na Coolify Traefik — ne samostatný Nginx compose od nuly.
 
+## API (lokálně)
+
+```bash
+cd app
+cp ../.env.example ../.env   # doplň hodnoty
+npm run dev                  # http://127.0.0.1:3001/api/health
+```
+
+Kód: `app/api/` · Docker: `app/Dockerfile`
+
 ## Doporučený start
 
-**Node.js API** (endpointy + DB + upload + mail), pak konfigurátor a chat, WP stránky paralelně.
+1. ~~Skeleton API~~ ✅  
+2. DB + `sklo_leads`  
+3. Upload → mailer → konfigurátor → chat  
+4. Coolify služba `/api/`  
+5. WP theme / stránky
 
 ## Bezpečnost
 

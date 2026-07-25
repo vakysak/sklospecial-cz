@@ -4,3 +4,7 @@
 !.env.example
 *.pem
 secrets/
+node_modules/
+uploads/poptavky/**
+!uploads/poptavky/.gitkeep
+*.log

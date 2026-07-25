@@ -8,8 +8,10 @@
 
 ## Fáze 1 — výroba
 
+- [x] Krok 1: Skeleton Node.js API (lokálně běží `/api/health`)
+- [ ] Krok 2: DB + tabulka `sklo_leads`
 - [ ] Node.js API služba na Coolify (`/api/`)
-- [ ] Tabulka `sklo_leads`
+- [ ] Tabulka `sklo_leads` (na serveru)
 - [ ] Upload + mailer
 - [ ] Konfigurátor FE + napojení
 - [ ] Chat widget FE + napojení
