@@ -14,4 +14,6 @@ ENV UPLOAD_DIR=/app/uploads
 
 EXPOSE 3001
 
-CMD ["node", "api/server.js"]
+HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD wget -qO- http://127.0.0.1:3001/api/health || exit 1
+
+CMD ["sh", "-c", "node api/scripts/migrate.js && node api/server.js"]
