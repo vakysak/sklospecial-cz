@@ -1,18 +1,21 @@
-# Lokální poznámky (ne commitovat secretů)
+# Checklist
 
-## Čeká na tebe
+## Blokuje provoz (doplnit údaje)
 
-### Turnstile
-- [ ] Site Key
-- [ ] Secret Key
-- Dashboard: https://dash.cloudflare.com → Turnstile
+- [ ] Cloudflare Turnstile — Site Key + Secret Key
+- [ ] SMTP — host, port, user, heslo, From (pro FluentSMTP i Node mailer)
+- [ ] OpenAI API key (jen do Coolify env / `.env`, ne do gitu)
 
-### SMTP
-- [ ] Host
-- [ ] Port (587/465)
-- [ ] Encryption (tls/ssl)
-- [ ] Username
-- [ ] Password
-- [ ] From name + From email
+## Fáze 1 — výroba
 
-Po doplnění: napiš do chatu Sklospeciál a agent to nastaví přes WP API.
+- [ ] Node.js API služba na Coolify (`/api/`)
+- [ ] Tabulka `sklo_leads`
+- [ ] Upload + mailer
+- [ ] Konfigurátor FE + napojení
+- [ ] Chat widget FE + napojení
+- [ ] WP theme / CPT / ACF
+- [ ] Stránky: skleněné dveře (+ podstránky), návod, realizace, kontakt
+- [ ] PDF návod
+- [ ] E2E test: konfigurátor → e-mail
+- [ ] Bezpečnostní checklist
+- [ ] DNS sklospecial.cz + indexace

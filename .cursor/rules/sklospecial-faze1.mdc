@@ -1,0 +1,34 @@
+---
+description: Sklospeciál.cz Fáze 1 — výrobní kontext a omezení
+alwaysApply: true
+---
+
+# Sklospeciál — Fáze 1
+
+Pracuj jen v tomto workspace. Plné zadání: `docs/FAZE-1-ZADANI.md`, snapshot: `docs/MEMORY.md`.
+
+## Cíl
+
+Prodejní sekce **skleněné dveře**: konfigurátor (rozměry + fotky) + OpenAI chat „Sklo asistent“. Prodej na dálku.
+
+## Infrastruktura (neměnit bez důvodu)
+
+- WP už běží na **Coolify** (`46.225.122.108`), Traefik + SSL.
+- **Nestav** od nuly Nginx/WordPress docker-compose, pokud to uživatel výslovně nechce.
+- Nové API = **Node/Express služba** v Coolify, cesta `/api/`.
+- Mail: FluentSMTP na WP; API může sdílet stejné SMTP údaje.
+- Secrets nikdy do gitu.
+
+## Brand
+
+- Česky, tykání, konkrétní, technický.
+- CTA: „pošli rozměry a fotky“.
+- Nepoužívej: luxusní, exkluzivní, prémiový.
+
+## Priorita výroby
+
+1. Node API skeleton + leads + upload + mailer  
+2. Konfigurátor FE  
+3. Chat widget  
+4. WP theme / CPT / ACF / stránky  
+5. Ostrá doména + bezpečnostní checklist

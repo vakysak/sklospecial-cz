@@ -1,49 +1,46 @@
 # Sklospeciál.cz
 
-Samostatný workspace pro web **Sklospeciál** (WordPress na Coolify).  
-Oddělený od projektu stolařství / SEO landingu.
+Workspace pro **sklospecial.cz** — Fáze 1: skleněné dveře (konfigurátor + AI asistent).
 
-## Stav (2026-07-25)
+## Dokumentace (zadávací kontext)
 
-| Položka | Hodnota |
-|--------|---------|
-| Staging URL | https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io |
-| Coolify UI | http://46.225.122.108:8000/ |
-| WP admin | `/wp-admin` (uživatel `vakysak`) |
-| Admin e-mail | `hampl@vakysak.cz` |
-| HTTPS | zapnuto (sslip.io) |
-| Indexace | vypnutá (`blog_public=0`) do ostré domény |
+- **[docs/FAZE-1-ZADANI.md](docs/FAZE-1-ZADANI.md)** — kompletní výrobní zadání  
+- **[docs/MEMORY.md](docs/MEMORY.md)** — krátký snapshot  
+- **[TODO.md](TODO.md)** — checklist  
 
-### Coolify (IDs)
+## Stav infrastruktury
 
-| Resource | UUID / název |
-|----------|----------------|
-| Project | `sklospecial-cz` · `f11nd5n7lf5j9mhukibhxvsq` |
-| Service | `sklospecial-wordpress` · `jzxqv0aq7w5lf4f12nkwgj00` |
-| App (WP) | `y8auik6s2jgoy1nrdz3yfqlm` |
-| Server | `localhost` · `tnfqwxaxq7mvpkhhq5hngak7` |
+| | |
+|--|--|
+| Staging | https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io |
+| Coolify | http://46.225.122.108:8000/ |
+| Server | `46.225.122.108` (cx43) |
+| WP admin | uživatel `vakysak` · e-mail `hampl@vakysak.cz` |
+| HTTPS | ano (sslip.io) |
+| Indexace | vypnutá do ostré domény |
 
-### Pluginy (aktivní)
+### Coolify IDs
 
-- **Simple CAPTCHA – Cloudflare Turnstile** — login, registrace, reset hesla, komentáře (čeká na Site/Secret key)
-- **FluentSMTP** — odesílání mailů (čeká na SMTP údaje)
-- **Limit Login Attempts Reloaded** — ochrana přihlášení
-- **Code Snippets** — bootstrap + options REST pro setup
+| Resource | ID |
+|----------|-----|
+| Project `sklospecial-cz` | `f11nd5n7lf5j9mhukibhxvsq` |
+| Service `sklospecial-wordpress` | `jzxqv0aq7w5lf4f12nkwgj00` |
+| App wordpress | `y8auik6s2jgoy1nrdz3yfqlm` |
 
-## Co zbývá
+### WP pluginy (už aktivní)
 
-1. **Cloudflare Turnstile** — Site Key + Secret Key → nastavit v WP
-2. **SMTP** — host, port, user, heslo, From → FluentSMTP + test mail
-3. Doména **sklospecial.cz** — DNS → `46.225.122.108`, FQDN v Coolify, zapnout indexaci
-4. Obsah webu, téma, šablony
+FluentSMTP · Cloudflare Turnstile · Limit Login Attempts · Code Snippets  
 
-## Cursor / MCP
+*(Turnstile klíče + SMTP údaje ještě chybí.)*
 
-- Coolify MCP: `~/.cursor/mcp.json` → server `coolify`
-- WP REST: Basic auth `vakysak` + heslo aplikace (neukládat do gitu)
-- Stolařství WP MCP zůstává v druhém projektu (`SEO obrázky`)
+## Stack Fáze 1
+
+WordPress (obsah) + **Node/Express API** (konfigurátor, chat, leady) na Coolify Traefik — ne samostatný Nginx compose od nuly.
+
+## Doporučený start
+
+**Node.js API** (endpointy + DB + upload + mail), pak konfigurátor a chat, WP stránky paralelně.
 
 ## Bezpečnost
 
-Do tohoto repa **nedávej** hesla, API tokeny ani app password.  
-Citlivé věci jen do Cursor MCP / Keychain / Coolify env.
+Do gitu nedávej hesla, API tokeny ani app password.
