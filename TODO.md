@@ -1,23 +1,23 @@
 # Checklist
 
-## Blokuje provoz (doplnit údaje)
+## Blokuje ostrý provoz (doplnit)
 
-- [ ] Cloudflare Turnstile — Site Key + Secret Key
-- [ ] SMTP — host, port, user, heslo, From (pro FluentSMTP i Node mailer)
-- [ ] OpenAI API key (jen do Coolify env / `.env`, ne do gitu)
-- [ ] DB přístup pro API (Coolify MariaDB na sdílené síti)
+- [ ] Cloudflare Turnstile — Site + Secret key
+- [ ] SMTP — host/port/user/heslo (FluentSMTP + Node `SMTP_*`)
+- [ ] OpenAI API key → Coolify env `OPENAI_API_KEY` u `sklospecial-api`
 
-## Fáze 1 — výroba
+## Hotovo
 
-- [x] Krok 1: Skeleton Node.js API
-- [x] Krok 2: DB vrstva + migrate `sklo_leads`
-- [x] Krok 3: Upload + validace fotek
-- [x] Krok 4: Mailer (šablony + SMTP služba)
-- [x] Krok 5: Endpoint konfigurátor `/api/konfigurator/odeslat`
-- [ ] Krok 6: Coolify služba `/api/` + migrate na serveru
-- [ ] Chat OpenAI (plná integrace)
-- [ ] Konfigurátor FE
-- [ ] WP theme / CPT / ACF / stránky
+- [x] Node API na Coolify (`running:healthy`, DB `sklo_leads`)
+- [x] Upload + konfigurátor endpoint
+- [x] Mailer šablony (čeká SMTP)
+- [x] Chat API (čeká OpenAI klíč)
+- [x] Konfigurátor FE + chat widget
+- [x] WP stránky Fáze 1
+
+## Ještě
+
+- [ ] Homepage obsah / menu
+- [ ] CPT Realizace + ACF (až bude ACF Pro)
 - [ ] PDF návod
-- [ ] E2E test
 - [ ] DNS sklospecial.cz + indexace
