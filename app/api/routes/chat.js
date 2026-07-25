@@ -1,27 +1,32 @@
 'use strict';
 
 const express = require('express');
+const { chat, resetSession } = require('../services/openai');
+
 const router = express.Router();
 
-/**
- * POST /api/chat
- * Krok 1: stub. Plná OpenAI integrace v pozdějším kroku.
- */
-router.post('/', async (req, res) => {
-  const { messages, session_id: sessionId } = req.body || {};
+router.post('/', async (req, res, next) => {
+  try {
+    const { messages, session_id: sessionId, reset } = req.body || {};
 
-  if (!sessionId || typeof sessionId !== 'string') {
-    return res.status(400).json({ success: false, error: 'Chybí session_id' });
-  }
-  if (!Array.isArray(messages) || messages.length === 0) {
-    return res.status(400).json({ success: false, error: 'Chybí messages' });
-  }
+    if (!sessionId || typeof sessionId !== 'string') {
+      return res.status(400).json({ success: false, error: 'Chybí session_id' });
+    }
 
-  res.status(501).json({
-    success: false,
-    error: 'Chat ještě není zapojený — přijde v kroku OpenAI.',
-    session_id: sessionId,
-  });
+    if (reset) {
+      resetSession(sessionId);
+      return res.json({ success: true, reset: true, session_id: sessionId });
+    }
+
+    if (!Array.isArray(messages) || messages.length === 0) {
+      return res.status(400).json({ success: false, error: 'Chybí messages' });
+    }
+
+    const result = await chat(messages, sessionId);
+    res.json({ success: true, ...result });
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

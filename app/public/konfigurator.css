@@ -1,0 +1,66 @@
+:root {
+  --bg: #f3f1ec;
+  --ink: #1a1a1a;
+  --muted: #5c5a55;
+  --accent: #0f4c5c;
+  --line: #d8d2c8;
+  --card: #fffcf7;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #dde8ea 0%, transparent 55%),
+    linear-gradient(180deg, #efebe3, var(--bg));
+  color: var(--ink);
+}
+[x-cloak] { display: none !important; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+.brand { letter-spacing: .08em; text-transform: uppercase; font-size: .75rem; color: var(--accent); margin: 0 0 .5rem; }
+.head h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 0 0 .4rem; line-height: 1.15; }
+.lead { color: var(--muted); margin: 0 0 1.25rem; }
+.progress { font-size: .9rem; color: var(--muted); }
+.bar { height: 4px; background: var(--line); border-radius: 999px; margin: .5rem 0 1.5rem; overflow: hidden; }
+.bar span { display: block; height: 100%; background: var(--accent); }
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+.card h2 { margin: 0 0 1rem; font-size: 1.15rem; }
+.grid { display: grid; gap: .6rem; }
+@media (min-width: 560px) { .grid { grid-template-columns: 1fr 1fr; } }
+.choice {
+  text-align: left;
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: .9rem 1rem;
+  cursor: pointer;
+  font: inherit;
+}
+.choice.on { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.row3 { display: grid; gap: .6rem; }
+@media (min-width: 560px) { .row3 { grid-template-columns: 1fr 1fr 1fr; } }
+label { display: grid; gap: .35rem; font-size: .9rem; margin-bottom: .75rem; }
+input, textarea {
+  font: inherit;
+  padding: .65rem .7rem;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+fieldset { border: 1px solid var(--line); margin: 0 0 1rem; padding: .75rem; }
+.hint { color: var(--muted); font-size: .9rem; }
+.actions { display: flex; gap: .75rem; justify-content: space-between; margin-top: 1rem; }
+button.primary, button.ghost {
+  font: inherit;
+  padding: .8rem 1.1rem;
+  cursor: pointer;
+  border: 1px solid var(--accent);
+}
+button.primary { background: var(--accent); color: #fff; }
+button.ghost { background: transparent; color: var(--accent); }
+button:disabled { opacity: .5; cursor: not-allowed; }
+.error { color: #8b1e1e; }
+.ok { color: #1e5c3a; }
