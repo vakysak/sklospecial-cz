@@ -1,17 +1,32 @@
 'use strict';
 
 const express = require('express');
+const multer = require('multer');
+const { maxFileBytes, maxFiles, saveLeadPhotos } = require('../services/storage');
+
 const router = express.Router();
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: maxFileBytes(),
+    files: maxFiles(),
+  },
+});
 
 /**
  * POST /api/upload
- * Krok 1: stub. Multer + validace v kroku Upload.
+ * Dočasný endpoint: uloží fotky pod leadId (nebo "draft").
+ * Hlavní tok jde přes /api/konfigurator/odeslat.
  */
-router.post('/', async (_req, res) => {
-  res.status(501).json({
-    success: false,
-    error: 'Upload ještě není zapojený.',
-  });
+router.post('/', upload.array('fotky', maxFiles()), async (req, res, next) => {
+  try {
+    const leadId = String(req.body.lead_id || 'draft');
+    const paths = await saveLeadPhotos(req.files || [], leadId);
+    res.json({ success: true, fotky: paths });
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

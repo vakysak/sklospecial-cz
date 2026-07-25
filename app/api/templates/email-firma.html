@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <title>Nová poptávka — sklospecial.cz</title>
+</head>
+<body style="font-family: system-ui, sans-serif; color: #111; line-height: 1.5;">
+  <h1 style="font-size: 20px;">Nová poptávka z konfigurátoru</h1>
+  <p><strong>ID:</strong> {{id}}</p>
+  <p><strong>Jméno:</strong> {{jmeno}}<br />
+     <strong>Telefon:</strong> {{telefon}}<br />
+     <strong>E-mail:</strong> {{email}}<br />
+     <strong>Město:</strong> {{mesto}}</p>
+  <h2 style="font-size: 16px;">Konfigurace</h2>
+  <ul>
+    <li>Typ dveří: {{typ_dveri}}</li>
+    <li>Použití: {{pouziti}}</li>
+    <li>Šířka (min–max): {{sirka_min}}–{{sirka_max}} mm</li>
+    <li>Výška (min–max): {{vyska_min}}–{{vyska_max}} mm</li>
+    <li>Hloubka: {{hloubka}} mm</li>
+    <li>Sklo: {{typ_skla}}</li>
+    <li>Kování: {{kovani}}</li>
+    <li>Montáž: {{montaz}}</li>
+  </ul>
+  <p><strong>Poznámka:</strong><br />{{poznamka}}</p>
+  <p>Fotky jsou v příloze ({{fotky_count}}).</p>
+</body>
+</html>
