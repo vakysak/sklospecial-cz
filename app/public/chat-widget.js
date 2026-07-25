@@ -45,7 +45,7 @@
     <header>
       <strong>Sklo asistent</strong>
       <span>
-        <button type="button" data-act="config">Konfigurátor</button>
+        <button type="button" data-act="config">Sestavit dveře</button>
         <button type="button" data-act="reset">Reset</button>
         <button type="button" data-act="close">Zavřít</button>
       </span>
@@ -124,7 +124,7 @@
       state.messages.push({
         role: 'assistant',
         content: err.message.includes('OPENAI') || err.message.includes('nastavený')
-          ? 'Chat ještě nemá API klíč. Mezitím můžeš jít do konfigurátoru a poslat rozměry s fotkami.'
+          ? 'Chat ještě nemá API klíč. Mezitím si sestav dveře a pošli rozměry s fotkami.'
           : `Nepodařilo se odpovědět: ${err.message}`,
       });
     } finally {

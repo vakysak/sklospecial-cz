@@ -28,7 +28,7 @@ Pokud zákazník chce podat poptávku, řekni mu, co potřebuje:
 - informace o typu otevírání
 - lokalita
 
-Na konci konverzace vždy nabídni odkaz na konfigurátor (/sklenene-dvere/#konfigurator) nebo kontakt.`;
+Na konci konverzace vždy nabídni sestavení dveří (/sklenene-dvere/#sestavit) nebo kontakt.`;
 
 const sessions = new Map();
 const MAX_MESSAGES = Number(process.env.CHAT_MAX_MESSAGES || 20);
@@ -102,7 +102,7 @@ async function chat(userMessages, sessionId) {
     replyText = completion.choices?.[0]?.message?.content || '';
   }
 
-  if (!replyText) replyText = 'Teď se mi nepodařilo odpovědět. Zkus to znovu, nebo jdi do konfigurátoru.';
+  if (!replyText) replyText = 'Teď se mi nepodařilo odpovědět. Zkus to znovu, nebo si sestav dveře a pošli rozměry.';
 
   history.push({ role: 'assistant', content: replyText });
   return { reply: replyText, session_id: sessionId, message_count: history.length };
