@@ -8,3 +8,4 @@ node_modules/
 uploads/poptavky/**
 !uploads/poptavky/.gitkeep
 *.log
+.env.coolify.local

@@ -2,6 +2,8 @@ FROM node:22-alpine
 
 WORKDIR /app
 
+RUN apk add --no-cache wget
+
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
@@ -14,6 +16,10 @@ ENV UPLOAD_DIR=/app/uploads
 
 EXPOSE 3001
 
-HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD wget -qO- http://127.0.0.1:3001/api/health || exit 1
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
-CMD ["sh", "-c", "node api/scripts/migrate.js && node api/server.js"]
+HEALTHCHECK --interval=10s --timeout=5s --start-period=20s --retries=6 \
+  CMD wget -qO- http://127.0.0.1:3001/api/health || exit 1
+
+ENTRYPOINT ["/docker-entrypoint.sh"]

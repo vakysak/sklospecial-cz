@@ -52,7 +52,8 @@ app.get('/api/health', async (_req, res) => {
     }
   }
 
-  res.status(payload.db === 'error' ? 503 : 200).json(payload);
+  // Liveness always 200 so Coolify/Traefik healthchecks don't flap on DB blips
+  res.status(200).json(payload);
 });
 
 app.use('/api', apiRateLimit);
