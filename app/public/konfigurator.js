@@ -18,6 +18,16 @@ function konfigurator() {
       fotky: [],
       kontakt: { jmeno: '', telefon: '', email: '', mesto: '', poznamka: '' },
     },
+    prostor: {
+      file: null,
+      url: '',
+      // frame in % of preview-stage
+      x: 28,
+      y: 18,
+      w: 36,
+      h: 58,
+    },
+    drag: null,
     options: {
       pouziti: [
         { v: 'byt_dum', l: 'Byt / dům' },
@@ -31,6 +41,14 @@ function konfigurator() {
     },
 
     async init() {
+      this.$watch(
+        () => [
+          ...this.config.rozmery.sirka,
+          ...this.config.rozmery.vyska,
+        ],
+        () => this.syncFrameAspect()
+      );
+
       try {
         const res = await fetch(`${API}/api/katalog`);
         const data = await res.json();
@@ -40,7 +58,6 @@ function konfigurator() {
           vzory: data.vzory || [],
           kovani: data.kovani || [],
         };
-        // defaults for live preview
         if (!this.config.typ_dveri && this.katalog.typy[0]) this.config.typ_dveri = this.katalog.typy[0].slug;
         if (!this.config.typ_skla && this.katalog.vzory[0]) this.config.typ_skla = this.katalog.vzory[0].slug;
         if (!this.config.kovani && this.katalog.kovani[0]) this.config.kovani = this.katalog.kovani[0].slug;
@@ -61,6 +78,13 @@ function konfigurator() {
       return this.katalog.typy.find((t) => t.slug === this.config.typ_dveri) || null;
     },
 
+    measureMm() {
+      const s = this.config.rozmery.sirka.map(Number).filter((n) => Number.isFinite(n) && n >= 300);
+      const v = this.config.rozmery.vyska.map(Number).filter((n) => Number.isFinite(n) && n >= 300);
+      if (!s.length || !v.length) return null;
+      return { w: Math.min(...s), h: Math.min(...v) };
+    },
+
     isSliding() {
       return ['posuvne_stena', 'posuvne_pouzdro'].includes(this.config.typ_dveri);
     },
@@ -73,26 +97,30 @@ function konfigurator() {
       };
     },
     glassClass() {
-      const vzor = this.selectedVzor();
-      return vzor?.css_class || 'p-cire';
-    },
-    frameStyle() {
-      const k = this.selectedKovani();
-      const color = k?.color_hex || '#1a1a1a';
-      return { '--frame': color, borderColor: color, backgroundColor: color };
+      return this.selectedVzor()?.css_class || 'p-cire';
     },
     handleStyle() {
-      const k = this.selectedKovani();
-      return { background: k?.color_hex || '#1a1a1a' };
+      return { background: this.selectedKovani()?.color_hex || '#1a1a1a' };
     },
     openingStyle() {
-      const s = this.config.rozmery.sirka.filter((n) => Number(n) > 0);
-      const v = this.config.rozmery.vyska.filter((n) => Number(n) > 0);
-      if (!s.length || !v.length) return {};
-      const w = Math.min(...s);
-      const h = Math.min(...v);
-      const ratio = Math.max(0.45, Math.min(0.85, w / h));
+      const m = this.measureMm();
+      if (!m) return {};
+      const ratio = Math.max(0.4, Math.min(0.9, m.w / m.h));
       return { '--door-ratio': ratio };
+    },
+    photoFrameStyle() {
+      const f = this.prostor;
+      return {
+        left: `${f.x}%`,
+        top: `${f.y}%`,
+        width: `${f.w}%`,
+        height: `${f.h}%`,
+      };
+    },
+    frameLabel() {
+      const m = this.measureMm();
+      if (!m) return 'Doplň rozměry — upraví se poměr otvoru';
+      return `${m.w} × ${m.h} mm`;
     },
     previewTitle() {
       const typ = this.selectedTyp()?.nazev || 'Skleněné dveře';
@@ -100,8 +128,122 @@ function konfigurator() {
       return [typ, vzor].filter(Boolean).join(' · ');
     },
     previewSub() {
+      if (this.prostor.url) {
+        return 'Fotka prostoru: posuň rámeček na otvor, dveře se skládají dovnitř';
+      }
       const k = this.selectedKovani()?.nazev;
-      return k ? `Lišta / kování: ${k}` : 'Vyber vzor a lištu — náhled se mění hned';
+      return k ? `Lišta / kování: ${k}` : 'Vlož fotku prostoru, nebo skládej na výchozím náhledu';
+    },
+
+    /** Udrž poměr stran rámečku = zaměřená šířka/výška (nejmenší hodnoty). */
+    syncFrameAspect() {
+      const m = this.measureMm();
+      if (!m || !this.prostor.url) return;
+      const aspect = m.w / m.h; // width/height
+      const f = this.prostor;
+      // keep center, adjust height from width
+      const cx = f.x + f.w / 2;
+      const cy = f.y + f.h / 2;
+      let w = f.w;
+      let h = w / aspect;
+      if (h > 78) {
+        h = 78;
+        w = h * aspect;
+      }
+      if (w > 78) {
+        w = 78;
+        h = w / aspect;
+      }
+      if (w < 12) {
+        w = 12;
+        h = w / aspect;
+      }
+      f.w = w;
+      f.h = h;
+      f.x = Math.min(88, Math.max(2, cx - w / 2));
+      f.y = Math.min(88, Math.max(2, cy - h / 2));
+    },
+
+    onProstor(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      if (this.prostor.url) URL.revokeObjectURL(this.prostor.url);
+      this.prostor.file = file;
+      this.prostor.url = URL.createObjectURL(file);
+      this.prostor.x = 28;
+      this.prostor.y = 16;
+      this.prostor.w = 38;
+      this.prostor.h = 60;
+      this.syncFrameAspect();
+    },
+    clearProstor() {
+      if (this.prostor.url) URL.revokeObjectURL(this.prostor.url);
+      this.prostor.file = null;
+      this.prostor.url = '';
+    },
+
+    onStagePointerDown(e) {
+      if (!this.prostor.url) return;
+      const handle = e.target?.dataset?.drag;
+      if (!handle) return;
+      const stage = e.currentTarget.getBoundingClientRect();
+      this.drag = {
+        mode: handle,
+        startX: e.clientX,
+        startY: e.clientY,
+        orig: { ...this.prostor },
+        stageW: stage.width,
+        stageH: stage.height,
+      };
+      e.currentTarget.setPointerCapture?.(e.pointerId);
+      e.preventDefault();
+    },
+    onStagePointerMove(e) {
+      if (!this.drag) return;
+      const d = this.drag;
+      const dx = ((e.clientX - d.startX) / d.stageW) * 100;
+      const dy = ((e.clientY - d.startY) / d.stageH) * 100;
+      const o = d.orig;
+      const m = this.measureMm();
+      const aspect = m ? m.w / m.h : o.w / o.h;
+
+      let { x, y, w, h } = o;
+
+      if (d.mode === 'move') {
+        x = o.x + dx;
+        y = o.y + dy;
+      } else {
+        // corner resize — keep aspect from measurements
+        if (d.mode.includes('r')) w = o.w + dx;
+        if (d.mode.includes('l')) {
+          w = o.w - dx;
+          x = o.x + dx;
+        }
+        if (d.mode.includes('b')) h = o.h + dy;
+        if (d.mode.includes('t')) {
+          h = o.h - dy;
+          y = o.y + dy;
+        }
+        // enforce aspect from width
+        h = w / aspect;
+        if (d.mode.includes('t')) y = o.y + o.h - h;
+        if (d.mode.includes('l')) x = o.x + o.w - w;
+      }
+
+      w = Math.max(10, Math.min(85, w));
+      h = w / aspect;
+      h = Math.max(12, Math.min(85, h));
+      w = h * aspect;
+      x = Math.max(1, Math.min(99 - w, x));
+      y = Math.max(1, Math.min(99 - h, y));
+
+      this.prostor.x = x;
+      this.prostor.y = y;
+      this.prostor.w = w;
+      this.prostor.h = h;
+    },
+    onStagePointerUp() {
+      this.drag = null;
     },
 
     onFiles(e) {
@@ -134,6 +276,7 @@ function konfigurator() {
       this.error = this.validate();
       if (this.error) return;
       this.krok = Math.min(7, this.krok + 1);
+      if (this.krok === 4 || this.krok === 3) this.syncFrameAspect();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
     back() {
@@ -162,6 +305,7 @@ function konfigurator() {
         fd.append('email', c.kontakt.email);
         fd.append('mesto', c.kontakt.mesto);
         fd.append('poznamka', c.kontakt.poznamka || '');
+        if (this.prostor.file) fd.append('fotky', this.prostor.file, `prostor-${this.prostor.file.name}`);
         c.fotky.forEach((f) => fd.append('fotky', f));
 
         const res = await fetch(`${API}/api/konfigurator/odeslat`, { method: 'POST', body: fd });
@@ -176,7 +320,3 @@ function konfigurator() {
     },
   };
 }
-
-document.addEventListener('alpine:init', () => {
-  // auto-init when Alpine mounts x-data
-});

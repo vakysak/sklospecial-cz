@@ -17,7 +17,7 @@
     <header class="hero">
       <p class="brand">Sklospeciál</p>
       <h1>Navrhni si <em>skleněné dveře</em></h1>
-      <p class="lead">Vyber typ, vzor skla a lištu — jako u konfigurátoru kol. Pak pošli rozměry a fotky otvoru.</p>
+      <p class="lead">Vlož fotku prostoru, nastav otvor podle zaměření a skládej vzor se lištou — jako u konfigurátoru kol.</p>
       <ol class="steps" aria-label="Postup">
         <template x-for="i in 7" :key="i">
           <li :class="{ done: i < krok, current: i === krok }"><span x-text="i"></span></li>
@@ -28,11 +28,19 @@
     <div class="studio">
       <!-- LIVE PREVIEW — always visible -->
       <aside class="preview" aria-label="Náhled dveří">
-        <div class="preview-stage">
-          <div class="room">
+        <div
+          class="preview-stage"
+          :class="{ 'has-photo': !!prostor.url }"
+          :style="prostor.url ? `background-image:url('${prostor.url}')` : ''"
+          @pointerdown="onStagePointerDown($event)"
+          @pointermove="onStagePointerMove($event)"
+          @pointerup="onStagePointerUp($event)"
+          @pointercancel="onStagePointerUp($event)"
+        >
+          <!-- Bez fotky: stylizovaná místnost -->
+          <div class="room" x-show="!prostor.url">
             <div class="wall"></div>
             <div class="opening" :style="openingStyle()">
-              <!-- Door leaf / leaves -->
               <div class="door-set" :class="doorClass()">
                 <template x-if="config.typ_dveri !== 'dvoukridle'">
                   <div class="leaf" :class="glassClass()" :style="{ '--frame': (selectedKovani()?.color_hex || '#1a1a1a') }">
@@ -67,10 +75,66 @@
             </div>
             <div class="floor"></div>
           </div>
+
+          <!-- S fotkou: otvor na fotce (poměr stran = zaměření) -->
+          <div
+            class="photo-frame"
+            x-show="prostor.url"
+            :style="photoFrameStyle()"
+            data-drag="move"
+          >
+            <div class="door-set" :class="doorClass()">
+              <template x-if="config.typ_dveri !== 'dvoukridle'">
+                <div class="leaf" :class="glassClass()" :style="{ '--frame': (selectedKovani()?.color_hex || '#1a1a1a') }">
+                  <div class="glass-face"></div>
+                  <div class="pattern" :class="glassClass()"></div>
+                  <div class="handle" :style="handleStyle()"></div>
+                  <div class="rail top"></div>
+                  <div class="rail bottom"></div>
+                </div>
+              </template>
+              <template x-if="config.typ_dveri === 'dvoukridle'">
+                <div class="leaf left" :class="glassClass()" :style="{ '--frame': (selectedKovani()?.color_hex || '#1a1a1a') }">
+                  <div class="glass-face"></div>
+                  <div class="pattern" :class="glassClass()"></div>
+                  <div class="handle rightish" :style="handleStyle()"></div>
+                  <div class="rail top"></div>
+                  <div class="rail bottom"></div>
+                </div>
+              </template>
+              <template x-if="config.typ_dveri === 'dvoukridle'">
+                <div class="leaf right" :class="glassClass()" :style="{ '--frame': (selectedKovani()?.color_hex || '#1a1a1a') }">
+                  <div class="glass-face"></div>
+                  <div class="pattern" :class="glassClass()"></div>
+                  <div class="handle leftish" :style="handleStyle()"></div>
+                  <div class="rail top"></div>
+                  <div class="rail bottom"></div>
+                </div>
+              </template>
+              <div class="track" x-show="isSliding()" :style="{ background: (selectedKovani()?.color_hex || '#1a1a1a') }"></div>
+            </div>
+            <span class="frame-handle tl" data-drag="tl"></span>
+            <span class="frame-handle tr" data-drag="tr"></span>
+            <span class="frame-handle bl" data-drag="bl"></span>
+            <span class="frame-handle br" data-drag="br"></span>
+            <span class="frame-label" x-text="frameLabel()"></span>
+          </div>
         </div>
+
         <div class="preview-meta">
           <p class="preview-title" x-text="previewTitle()"></p>
           <p class="preview-sub" x-text="previewSub()"></p>
+          <div class="photo-tools">
+            <label class="btn-file">
+              <input type="file" accept="image/jpeg,image/png,image/webp" @change="onProstor($event)" />
+              <span x-text="prostor.url ? 'Vyměnit fotku prostoru' : 'Vložit fotku prostoru'"></span>
+            </label>
+            <button type="button" class="linkish" x-show="prostor.url" @click="clearProstor()">Odstranit fotku</button>
+          </div>
+          <p class="photo-hint" x-show="prostor.url">
+            Posuň rámeček na otvor. Rohy = změna velikosti.
+            Poměr stran bere zaměřenou šířku × výšku (nejmenší hodnoty).
+          </p>
         </div>
       </aside>
 

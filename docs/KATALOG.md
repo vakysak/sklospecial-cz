@@ -40,4 +40,16 @@ INSERT INTO sklo_katalog_vzory (slug, nazev, popis, image_url, css_class, sort_o
 VALUES ('satinato', 'Satinato', 'Jemně matné', 'https://…/satinato.jpg', 'p-matne', 6, 1);
 ```
 
-Seed při `npm run db:migrate` se spustí jen když je tabulka prázdná — existující řádky nepřepíše.
+## Fotka prostoru + otvor podle zaměření
+
+Ano — klient může:
+
+1. **Vložit fotku prostoru** do náhledu  
+2. **Posunout rámeček** na otvor ve fotce  
+3. **Škálovat rohy** — poměr stran rámečku se bere z **nejmenší zaměřené šířky × výšky**  
+
+Fotka na telefonu má jiný úhel než „pravý“ otvor — proto se **nečeká**, že fotka = přesné mm.  
+Zaměření řídí **poměr** (a nabídku), rámeček na fotce jen **umístění vizualizace**.
+
+Tohle není plné AR s perspektivou (zkreslení stěn). Pro Fázi 1 stačí osový rámeček + poměr z mm. Perspektivní 4-bodový warp lze doplnit později.
+

@@ -105,11 +105,108 @@ body {
 }
 .preview-stage {
   padding: 1.25rem 1.25rem 0.5rem;
-  background:
-    linear-gradient(180deg, #d9e4ea 0%, #c5d4dc 100%);
-  min-height: 340px;
+  background: linear-gradient(180deg, #d9e4ea 0%, #c5d4dc 100%);
+  min-height: 360px;
   display: grid;
   place-items: end center;
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+.preview-stage.has-photo {
+  padding: 0;
+  place-items: stretch;
+  background-size: cover;
+  background-position: center;
+  min-height: 420px;
+}
+
+.photo-frame {
+  position: absolute;
+  z-index: 2;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 0 0 1px rgba(26, 92, 107, 0.55),
+    0 12px 28px rgba(0, 0, 0, 0.28);
+  background: rgba(0, 0, 0, 0.12);
+  cursor: move;
+  display: flex;
+  padding: 5px;
+}
+.photo-frame .door-set {
+  flex: 1;
+  padding: 0;
+  min-height: 0;
+}
+.frame-handle {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: #fff;
+  border: 2px solid var(--accent);
+  z-index: 3;
+}
+.frame-handle.tl { left: -7px; top: -7px; cursor: nwse-resize; }
+.frame-handle.tr { right: -7px; top: -7px; cursor: nesw-resize; }
+.frame-handle.bl { left: -7px; bottom: -7px; cursor: nesw-resize; }
+.frame-handle.br { right: -7px; bottom: -7px; cursor: nwse-resize; }
+.frame-label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(18, 24, 28, 0.72);
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.photo-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+.btn-file {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-file input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.linkish {
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+.photo-hint {
+  margin: 0.55rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
 }
 .room {
   width: min(100%, 320px);
