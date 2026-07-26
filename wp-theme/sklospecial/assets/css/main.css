@@ -242,7 +242,7 @@ a:hover { color: #134854; }
   display: grid;
   align-items: center;
   overflow: hidden;
-  padding: 3rem 0 4rem;
+  padding: 2.5rem 0 3.5rem;
 }
 
 .sklo-hero__visual {
@@ -255,16 +255,16 @@ a:hover { color: #134854; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 55% at 70% 40%, rgba(255, 255, 255, 0.55), transparent 70%),
-    linear-gradient(180deg, transparent 40%, rgba(238, 243, 246, 0.92) 100%);
+    radial-gradient(ellipse 70% 55% at 72% 42%, rgba(255, 255, 255, 0.5), transparent 70%),
+    linear-gradient(90deg, rgba(238, 243, 246, 0.92) 0%, rgba(238, 243, 246, 0.35) 48%, transparent 68%);
 }
 
 .sklo-door-stage {
   position: absolute;
-  right: max(4%, calc(50% - 26rem));
-  top: 12%;
-  bottom: 12%;
-  width: min(40vw, 360px);
+  right: max(5%, calc(50% - 22rem));
+  top: 14%;
+  bottom: 14%;
+  width: min(36vw, 340px);
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -289,7 +289,6 @@ a:hover { color: #134854; }
   background:
     linear-gradient(125deg, rgba(255, 255, 255, 0.45) 0%, transparent 42%),
     linear-gradient(180deg, rgba(200, 225, 235, 0.55), rgba(150, 185, 200, 0.35));
-  backdrop-filter: blur(2px);
   position: relative;
   overflow: hidden;
 }
@@ -319,29 +318,32 @@ a:hover { color: #134854; }
 
 .sklo-hero__content {
   position: relative;
-  z-index: 1;
-  max-width: 36rem;
-  margin-left: max(1rem, calc((100% - min(1120px, 100% - 2rem)) / 2 + 0px));
-  width: min(36rem, calc(100% - 2rem));
+  z-index: 2;
+  width: var(--wrap);
+  margin-inline: auto;
+  max-width: none;
+  padding-right: min(42%, 22rem);
   animation: sklo-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
 }
 
 .sklo-hero__brand {
-  margin: 0 0 0.75rem;
-  font-size: clamp(1.6rem, 4vw, 2.35rem);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  color: var(--accent);
-  line-height: 1.1;
+  margin: 0 0 0.85rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  line-height: 1.05;
 }
 
 .sklo-hero__title {
   margin: 0 0 1rem;
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(2rem, 5.5vw, 3.35rem);
-  line-height: 1.05;
+  font-size: clamp(1.75rem, 4vw, 2.65rem);
+  line-height: 1.08;
   letter-spacing: -0.02em;
+  color: var(--ink);
+  max-width: 18ch;
 }
 
 .sklo-hero__title em {
