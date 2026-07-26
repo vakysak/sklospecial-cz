@@ -13,6 +13,8 @@
 
 ## STACK
 
+- WP theme: `wp-theme/sklospecial` (glass UI, front-page)
+
 - WordPress (CMS, obsah, realizace)
 - Node.js / Express (API, konfigurátor, chat) — **nová služba**
 - MariaDB (WP + `sklo_leads`)

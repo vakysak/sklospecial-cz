@@ -17,7 +17,8 @@
 
 ## Ještě
 
-- [ ] Homepage obsah / menu
+- [x] WP theme sklospecial + homepage layout
+- [ ] Homepage obsah / menu (základ hotov)
 - [ ] CPT Realizace + ACF (až bude ACF Pro)
 - [ ] PDF návod
 - [ ] DNS sklospecial.cz + indexace
