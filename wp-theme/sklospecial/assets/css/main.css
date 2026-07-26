@@ -240,9 +240,9 @@ a:hover { color: #134854; }
   position: relative;
   min-height: calc(100svh - var(--header-h));
   display: grid;
-  align-items: end;
+  align-items: center;
   overflow: hidden;
-  padding: 0 0 3.5rem;
+  padding: 3rem 0 4rem;
 }
 
 .sklo-hero__visual {
@@ -261,10 +261,10 @@ a:hover { color: #134854; }
 
 .sklo-door-stage {
   position: absolute;
-  right: max(4%, calc(50% - 28rem));
-  top: 8%;
-  bottom: 18%;
-  width: min(42vw, 380px);
+  right: max(4%, calc(50% - 26rem));
+  top: 12%;
+  bottom: 12%;
+  width: min(40vw, 360px);
   display: flex;
   align-items: stretch;
   justify-content: center;
