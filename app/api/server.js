@@ -13,6 +13,7 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 const chatRouter = require('./routes/chat');
 const konfiguratorRouter = require('./routes/konfigurator');
 const uploadRouter = require('./routes/upload');
+const katalogRouter = require('./routes/katalog');
 const { apiRateLimit } = require('./middleware/rateLimit');
 
 const PORT = Number(process.env.PORT || 3001);
@@ -62,6 +63,7 @@ app.get('/api/health', async (_req, res) => {
   res.status(200).json(payload);
 });
 
+app.use('/api/katalog', katalogRouter);
 app.use('/api', apiRateLimit);
 app.use('/api/chat', chatRouter);
 app.use('/api/konfigurator', konfiguratorRouter);

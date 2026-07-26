@@ -44,13 +44,13 @@ async function insertLead(lead) {
     INSERT INTO sklo_leads (
       typ_dveri, pouziti,
       sirka_min, sirka_max, vyska_min, vyska_max, hloubka,
-      typ_skla, kovani, montaz,
+      typ_skla, kovani, vzor_id, kovani_id, montaz,
       jmeno, telefon, email, mesto, poznamka,
       fotky, stav
     ) VALUES (
       :typ_dveri, :pouziti,
       :sirka_min, :sirka_max, :vyska_min, :vyska_max, :hloubka,
-      :typ_skla, :kovani, :montaz,
+      :typ_skla, :kovani, :vzor_id, :kovani_id, :montaz,
       :jmeno, :telefon, :email, :mesto, :poznamka,
       :fotky, :stav
     )
@@ -66,6 +66,8 @@ async function insertLead(lead) {
     hloubka: lead.hloubka,
     typ_skla: lead.typ_skla,
     kovani: lead.kovani,
+    vzor_id: lead.vzor_id || null,
+    kovani_id: lead.kovani_id || null,
     montaz: lead.montaz,
     jmeno: lead.jmeno,
     telefon: lead.telefon,

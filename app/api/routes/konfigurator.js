@@ -7,6 +7,7 @@ const { isEmail, isPhoneCzSk, isDimMm } = require('../middleware/validate');
 const { insertLead, updateLeadPhotos } = require('../services/database');
 const { saveLeadPhotos, maxFileBytes, maxFiles, uploadRoot } = require('../services/storage');
 const { sendLeadToFirm, sendConfirmationToClient } = require('../services/mailer');
+const { findBySlug } = require('../services/katalog');
 
 const router = express.Router();
 
@@ -18,10 +19,7 @@ const upload = multer({
   },
 });
 
-const ALLOWED_TYP = new Set(['otocne', 'posuvne_stena', 'posuvne_pouzdro', 'dvoukridle']);
 const ALLOWED_POUZITI = new Set(['byt_dum', 'koupelna', 'kancelar']);
-const ALLOWED_SKLO = new Set(['cire', 'matne', 'dekor', 'nevim']);
-const ALLOWED_KOVANI = new Set(['cerne', 'nerez', 'zlate', 'nevim']);
 const ALLOWED_MONTAZ = new Set(['s_montazi', 'bez_montaze']);
 
 function numList(raw) {
@@ -37,13 +35,17 @@ function numList(raw) {
   return [];
 }
 
-function validatePayload(body) {
+async function validatePayload(body) {
   const errors = [];
 
-  if (!ALLOWED_TYP.has(body.typ_dveri)) errors.push('Neplatný typ dveří');
+  const typ = await findBySlug('sklo_katalog_typy', body.typ_dveri);
+  const vzor = await findBySlug('sklo_katalog_vzory', body.typ_skla || body.vzor);
+  const kovani = await findBySlug('sklo_katalog_kovani', body.kovani);
+
+  if (!typ) errors.push('Neplatný typ dveří');
   if (!ALLOWED_POUZITI.has(body.pouziti)) errors.push('Neplatné použití');
-  if (!ALLOWED_SKLO.has(body.typ_skla)) errors.push('Neplatný typ skla');
-  if (!ALLOWED_KOVANI.has(body.kovani)) errors.push('Neplatné kování');
+  if (!vzor) errors.push('Neplatný vzor skla');
+  if (!kovani) errors.push('Neplatné kování / lišta');
   if (!ALLOWED_MONTAZ.has(body.montaz)) errors.push('Neplatná montáž');
 
   const sirka = numList(body.sirka || body['sirka[]']);
@@ -72,15 +74,17 @@ function validatePayload(body) {
   }
 
   return {
-    typ_dveri: body.typ_dveri,
+    typ_dveri: typ.slug,
     pouziti: body.pouziti,
     sirka_min: Math.min(...sirka),
     sirka_max: Math.max(...sirka),
     vyska_min: Math.min(...vyska),
     vyska_max: Math.max(...vyska),
     hloubka,
-    typ_skla: body.typ_skla,
-    kovani: body.kovani,
+    typ_skla: vzor.slug,
+    kovani: kovani.slug,
+    vzor_id: vzor.id,
+    kovani_id: kovani.id,
     montaz: body.montaz,
     jmeno: String(body.jmeno).trim(),
     telefon: String(body.telefon).trim(),
@@ -94,7 +98,7 @@ function validatePayload(body) {
 
 router.post('/odeslat', upload.array('fotky', maxFiles()), async (req, res, next) => {
   try {
-    const lead = validatePayload(req.body || {});
+    const lead = await validatePayload(req.body || {});
     const id = await insertLead(lead);
     lead.id = id;
 
@@ -107,7 +111,6 @@ router.post('/odeslat', upload.array('fotky', maxFiles()), async (req, res, next
       path: path.join(uploadRoot(), rel),
     }));
 
-    // Mail je best-effort — lead už je uložený
     const mailErrors = [];
     try {
       await sendLeadToFirm(lead, attachments);
