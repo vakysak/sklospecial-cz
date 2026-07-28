@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.2.2');
+define('SKLO_THEME_VER', '1.2.3');
 
 function sklo_api_base(): string
 {
