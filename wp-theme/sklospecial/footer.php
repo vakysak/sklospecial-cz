@@ -22,6 +22,20 @@
       <a class="sklo-link" href="<?php echo esc_url(home_url('/kontakt/')); ?>">Nebo napiš</a>
     </div>
   </div>
+  <div class="sklo-wrap sklo-footer__meta">
+    <div>
+      <h3>Kontakt</h3>
+      <p><a href="<?php echo esc_url(home_url('/kontakt/')); ?>">Napsat poptávku</a></p>
+    </div>
+    <div>
+      <h3>Studio</h3>
+      <p><a href="<?php echo esc_url(sklo_konfigurator_url()); ?>">Navrhni si dveře</a></p>
+    </div>
+    <div>
+      <h3>Zaměření</h3>
+      <p><a href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">Návod na zaměření</a></p>
+    </div>
+  </div>
   <div class="sklo-wrap sklo-footer__copy">
     <p>&copy; <?php echo esc_html(gmdate('Y')); ?> Sklospeciál</p>
   </div>

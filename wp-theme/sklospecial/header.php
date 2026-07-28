@@ -10,6 +10,16 @@
 
 <div class="sklo-atmosphere" aria-hidden="true"></div>
 
+<div class="sklo-topbar">
+  <div class="sklo-wrap sklo-topbar__inner">
+    <p class="sklo-topbar__msg">Skleněné dveře na míru — pošli rozměry a fotky</p>
+    <div class="sklo-topbar__links">
+      <a href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">Návod na zaměření</a>
+      <a href="<?php echo esc_url(home_url('/kontakt/')); ?>">Kontakt</a>
+    </div>
+  </div>
+</div>
+
 <header class="sklo-header">
   <div class="sklo-wrap sklo-header__inner">
     <a class="sklo-brand" href="<?php echo esc_url(home_url('/')); ?>">
