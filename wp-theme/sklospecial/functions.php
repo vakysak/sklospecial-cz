@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.2.3');
+define('SKLO_THEME_VER', '1.2.5');
 
 function sklo_api_base(): string
 {
@@ -28,15 +28,21 @@ add_filter('document_title_parts', function (array $parts): array {
     if (is_front_page()) {
         $parts['title'] = 'Sklospeciál — Skleněné dveře na míru bez showroomu';
         unset($parts['tagline'], $parts['site']);
+    } elseif (is_page('realizace')) {
+        $parts['title'] = 'Realizace — skleněné dveře v interiérech';
+        unset($parts['tagline']);
     }
     return $parts;
 });
 
 add_action('wp_head', function (): void {
-    if (!is_front_page()) {
+    if (is_front_page()) {
+        $desc = 'Zaměř otvor, pošli fotky a navrhni si dveře online. Otočné, posuvné i celoskleněné. Nabídku připravíme podle tvých rozměrů.';
+    } elseif (is_page('realizace')) {
+        $desc = 'Galerie hotových skleněných dveří — otočné, posuvné i celoskleněné v bytech a kancelářích. Podívej se na realizace a navrhni si vlastní.';
+    } else {
         return;
     }
-    $desc = 'Zaměř otvor, pošli fotky a navrhni si dveře online. Otočné, posuvné i celoskleněné. Nabídku připravíme podle tvých rozměrů.';
     echo '<meta name="description" content="' . esc_attr($desc) . '" />' . "\n";
 }, 1);
 

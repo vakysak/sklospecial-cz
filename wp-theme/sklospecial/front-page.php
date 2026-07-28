@@ -44,7 +44,7 @@ $cfg = sklo_konfigurator_url();
   <div class="sklo-wrap sklo-about__grid">
     <div class="sklo-about__copy">
       <p class="sklo-eyebrow">Jak to funguje</p>
-      <h2>Od otvoru k nabídce — bez zbytečných kol</h2>
+      <h2>Od otvoru k nabídce — bez průtahů</h2>
       <p>Nejezdíme hned na zaměření. Ty změříš otvor, pošleš fotky a ve studiu si složíš dveře. My z toho připravíme konkrétní nabídku — a když něco chybí, ozveme se.</p>
       <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Otevřít studio</a>
     </div>
