@@ -94,17 +94,17 @@ $cfg = sklo_konfigurator_url();
     </header>
     <div class="sklo-type-grid">
       <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/otocne/')); ?>">
-        <span class="sklo-type__visual sklo-type__visual--swing" aria-hidden="true"></span>
+        <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/prosklene-dvere-na-miru.webp" alt="Prosklené otočné dveře na míru" width="626" height="352" loading="lazy" decoding="async">
         <h3>Otočné</h3>
         <p>Klasické otevírání do místnosti nebo na chodbu. Vhodné tam, kde je prostor pro křídlo.</p>
       </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/posuvne/')); ?>">
-        <span class="sklo-type__visual sklo-type__visual--slide" aria-hidden="true"></span>
+        <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/posuvne-sklenene-dvere-matne-sklo.webp" alt="Posuvné skleněné dveře s matným sklem" width="507" height="626" loading="lazy" decoding="async">
         <h3>Posuvné</h3>
         <p>Po stěně nebo do pouzdra. Ideální tam, kde každý centimetr hraje roli.</p>
       </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/celosklenene/')); ?>">
-        <span class="sklo-type__visual sklo-type__visual--full" aria-hidden="true"></span>
+        <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/sklenene-dvere-do-obyvaciho-pokoje-3.webp" alt="Celoskleněné dveře do obývacího pokoje" width="626" height="417" loading="lazy" decoding="async">
         <h3>Celoskleněné</h3>
         <p>Maximální průchod světla, minimální rám. Opticky propojí místnosti.</p>
       </a>
