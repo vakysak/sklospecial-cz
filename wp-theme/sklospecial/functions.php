@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.2.6');
+define('SKLO_THEME_VER', '1.3.0');
 
 function sklo_api_base(): string
 {
@@ -66,7 +66,7 @@ add_action('after_setup_theme', function (): void {
 add_action('wp_enqueue_scripts', function (): void {
     wp_enqueue_style(
         'sklo-fonts',
-        'https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap',
+        'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400&display=swap',
         [],
         null
     );
