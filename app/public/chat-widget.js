@@ -6,10 +6,12 @@
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&display=swap');
   .sklo-chat-btn{position:fixed;right:1.1rem;bottom:1.1rem;z-index:9999;border:0;border-radius:999px;background:#1a5c6b;color:#fff;padding:.95rem 1.2rem;font:600 14px/1 Outfit,sans-serif;cursor:pointer;box-shadow:0 14px 34px rgba(26,92,107,.28);transition:transform .15s ease}
   .sklo-chat-btn:hover{transform:translateY(-1px)}
-  .sklo-chat-panel{position:fixed;right:1.1rem;bottom:4.7rem;width:min(360px,calc(100vw - 2rem));height:min(520px,calc(100vh - 6rem));background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border:1px solid rgba(18,24,28,.1);border-radius:18px;z-index:9999;display:flex;flex-direction:column;box-shadow:0 22px 50px rgba(18,40,55,.16);overflow:hidden;font-family:Outfit,sans-serif}
+  .sklo-chat-panel{position:fixed;right:1.1rem;bottom:4.7rem;width:min(360px,calc(100vw - 2rem));height:min(520px,calc(100vh - 6rem));background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border:1px solid rgba(18,24,28,.1);border-radius:18px;z-index:9999;display:none;flex-direction:column;box-shadow:0 22px 50px rgba(18,40,55,.16);overflow:hidden;font-family:Outfit,sans-serif}
+  .sklo-chat-panel.is-open{display:flex}
   .sklo-chat-panel header{padding:.85rem 1rem;border-bottom:1px solid rgba(18,24,28,.08);display:flex;justify-content:space-between;align-items:center;gap:.5rem;background:linear-gradient(180deg,#f7fbfc,#fff)}
   .sklo-chat-panel header strong{font:600 14px Outfit,sans-serif;color:#12181c}
   .sklo-chat-panel header button{border:0;background:transparent;cursor:pointer;font:500 12px Outfit,sans-serif;color:#1a5c6b;padding:.2rem .35rem}
+  .sklo-chat-panel header button[data-act="close"]{color:#5b6a75;font-weight:600}
   .sklo-chat-msgs{flex:1;overflow:auto;padding:1rem;display:flex;flex-direction:column;gap:.55rem;background:linear-gradient(180deg,#f3f7f9,#fbfcfd)}
   .sklo-chat-msg{max-width:88%;padding:.7rem .8rem;font:14px/1.45 Outfit,sans-serif;border-radius:14px;border:1px solid rgba(18,24,28,.08);background:#fff;color:#12181c}
   .sklo-chat-msg.user{align-self:flex-end;background:#1a5c6b;color:#fff;border-color:#1a5c6b}
@@ -40,14 +42,14 @@
 
   const panel = document.createElement('div');
   panel.className = 'sklo-chat-panel';
-  panel.hidden = true;
+  panel.setAttribute('aria-hidden', 'true');
   panel.innerHTML = `
     <header>
       <strong>Sklo asistent</strong>
       <span>
         <button type="button" data-act="config">Sestavit dveře</button>
         <button type="button" data-act="reset">Reset</button>
-        <button type="button" data-act="close">Zavřít</button>
+        <button type="button" data-act="close" aria-label="Zavřít chat">Zavřít</button>
       </span>
     </header>
     <div class="sklo-chat-msgs" data-msgs></div>
@@ -56,6 +58,13 @@
       <button type="submit">Odeslat</button>
     </form>
   `;
+
+  function setOpen(open) {
+    state.open = open;
+    panel.classList.toggle('is-open', open);
+    panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
 
   function render() {
     const box = panel.querySelector('[data-msgs]');
@@ -72,18 +81,29 @@
       .replaceAll('>', '&gt;');
   }
 
-  btn.addEventListener('click', () => {
-    state.open = !state.open;
-    panel.hidden = !state.open;
+  btn.setAttribute('aria-expanded', 'false');
+  btn.setAttribute('aria-controls', 'sklo-chat-panel');
+  panel.id = 'sklo-chat-panel';
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setOpen(!state.open);
   });
 
   panel.addEventListener('click', async (e) => {
-    const act = e.target.getAttribute('data-act');
+    const actEl = e.target.closest('[data-act]');
+    if (!actEl) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const act = actEl.getAttribute('data-act');
     if (act === 'close') {
-      state.open = false;
-      panel.hidden = true;
+      setOpen(false);
+      return;
     }
-    if (act === 'config') window.open(CONFIG_URL, '_blank');
+    if (act === 'config') {
+      window.open(CONFIG_URL, '_blank');
+      return;
+    }
     if (act === 'reset') {
       await fetch(`${API}/api/chat`, {
         method: 'POST',
@@ -96,6 +116,10 @@
       ];
       render();
     }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && state.open) setOpen(false);
   });
 
   panel.querySelector('form').addEventListener('submit', async (e) => {
@@ -135,5 +159,6 @@
 
   document.body.appendChild(btn);
   document.body.appendChild(panel);
+  setOpen(false);
   render();
 })();

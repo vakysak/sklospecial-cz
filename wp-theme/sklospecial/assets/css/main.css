@@ -159,6 +159,10 @@ a:hover { color: var(--accent-dark); }
   gap: 0.15rem 1.1rem;
 }
 
+.nav-list > li {
+  position: relative;
+}
+
 .nav-list a,
 .footer-list a {
   text-decoration: none;
@@ -169,8 +173,44 @@ a:hover { color: var(--accent-dark); }
 
 .nav-list a:hover,
 .footer-list a:hover,
-.nav-list a[aria-current="page"] {
+.nav-list a[aria-current="page"],
+.nav-list .current-menu-item > a,
+.nav-list .current-menu-ancestor > a {
   color: var(--accent);
+}
+
+.nav-list .sub-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0.45rem;
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  min-width: 12rem;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  display: none;
+  flex-direction: column;
+  gap: 0.1rem;
+  z-index: 60;
+}
+
+.nav-list > li:hover > .sub-menu,
+.nav-list > li:focus-within > .sub-menu {
+  display: flex;
+}
+
+.nav-list .sub-menu a {
+  display: block;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.nav-list .sub-menu a:hover {
+  background: var(--accent-soft);
 }
 
 .sklo-nav-toggle {
