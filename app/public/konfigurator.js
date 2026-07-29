@@ -1,5 +1,7 @@
 function konfigurator() {
   const API = window.SKLO_API_BASE || '';
+  const MEDIA_BASE =
+    'https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07';
 
   return {
     krok: 1,
@@ -21,12 +23,24 @@ function konfigurator() {
     prostor: {
       file: null,
       url: '',
+      sampleId: null,
       // frame in % of preview-stage
       x: 28,
       y: 18,
       w: 36,
       h: 58,
     },
+    /** Ukázkové interiéry z galerie Realizace (WP media). */
+    samples: [
+      { id: 'interier-1', file: 'sklenene-dvere-v-interieru.webp', label: 'Interiér s výhledem' },
+      { id: 'interier-2', file: 'sklenene-dvere-v-interieru-2.webp', label: 'Světlý byt' },
+      { id: 'interier-3', file: 'moderni-interier-sklenene-dvere.webp', label: 'Moderní interiér' },
+      { id: 'obyvak', file: 'sklenene-dvere-do-obyvaciho-pokoje-3.webp', label: 'Obývací pokoj' },
+      { id: 'otevirani', file: 'zeny-za-sklenenymi-dvermi-v-interieru.webp', label: 'Otevřený průchod' },
+      { id: 'drevo', file: 'interier-modernich-sklenenych-dveri.webp', label: 'Dřevěná podlaha' },
+      { id: 'bydleni', file: 'moderni-bydleni-sklenene-dvere.webp', label: 'Moderní bydlení' },
+      { id: 'posuvne', file: 'posuvne-sklenene-dvere-matne-sklo.webp', label: 'Posuvné matné' },
+    ].map((s) => ({ ...s, url: `${MEDIA_BASE}/${s.file}` })),
     drag: null,
     options: {
       pouziti: [
@@ -129,10 +143,12 @@ function konfigurator() {
     },
     previewSub() {
       if (this.prostor.url) {
-        return 'Fotka prostoru: posuň rámeček na otvor, dveře se skládají dovnitř';
+        return this.prostor.sampleId
+          ? 'Ukázková místnost: posuň rámeček na otvor, dveře se skládají dovnitř'
+          : 'Fotka prostoru: posuň rámeček na otvor, dveře se skládají dovnitř';
       }
       const k = this.selectedKovani()?.nazev;
-      return k ? `Lišta / kování: ${k}` : 'Vlož fotku prostoru, nebo skládej na výchozím náhledu';
+      return k ? `Lišta / kování: ${k}` : 'Zkus ukázkovou fotku, nebo vlož vlastní';
     },
 
     /** Udrž poměr stran rámečku = zaměřená šířka/výška (nejmenší hodnoty). */
@@ -164,22 +180,38 @@ function konfigurator() {
       f.y = Math.min(88, Math.max(2, cy - h / 2));
     },
 
-    onProstor(e) {
-      const file = e.target.files?.[0];
-      if (!file) return;
-      if (this.prostor.url) URL.revokeObjectURL(this.prostor.url);
+    revokeProstorUrl() {
+      const u = this.prostor.url;
+      if (u && u.startsWith('blob:')) URL.revokeObjectURL(u);
+    },
+
+    applyProstorUrl(url, { sampleId = null, file = null } = {}) {
+      this.revokeProstorUrl();
       this.prostor.file = file;
-      this.prostor.url = URL.createObjectURL(file);
+      this.prostor.url = url;
+      this.prostor.sampleId = sampleId;
       this.prostor.x = 28;
       this.prostor.y = 16;
       this.prostor.w = 38;
       this.prostor.h = 60;
       this.syncFrameAspect();
     },
+
+    loadSample(sample) {
+      if (!sample?.url) return;
+      this.applyProstorUrl(sample.url, { sampleId: sample.id });
+    },
+
+    onProstor(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      this.applyProstorUrl(URL.createObjectURL(file), { file });
+    },
     clearProstor() {
-      if (this.prostor.url) URL.revokeObjectURL(this.prostor.url);
+      this.revokeProstorUrl();
       this.prostor.file = null;
       this.prostor.url = '';
+      this.prostor.sampleId = null;
     },
 
     onStagePointerDown(e) {

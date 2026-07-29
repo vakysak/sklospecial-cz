@@ -124,6 +124,26 @@
         <div class="preview-meta">
           <p class="preview-title" x-text="previewTitle()"></p>
           <p class="preview-sub" x-text="previewSub()"></p>
+          <div class="sample-rooms" x-show="!prostor.url || prostor.sampleId">
+            <p class="sample-label">Ukázkové místnosti</p>
+            <p class="sample-lead">Zkus ukázkovou fotku — posuň rámeček na otvor, nebo nahraj vlastní.</p>
+            <div class="sample-grid" role="list">
+              <template x-for="s in samples" :key="s.id">
+                <button
+                  type="button"
+                  class="sample-thumb"
+                  role="listitem"
+                  :class="{ on: prostor.sampleId === s.id }"
+                  :aria-pressed="prostor.sampleId === s.id"
+                  :aria-label="'Zkus ukázkovou fotku: ' + s.label"
+                  @click="loadSample(s)"
+                >
+                  <img :src="s.url" :alt="s.label" loading="lazy" decoding="async" width="120" height="80" />
+                  <span x-text="s.label"></span>
+                </button>
+              </template>
+            </div>
+          </div>
           <div class="photo-tools">
             <label class="btn-file">
               <input type="file" accept="image/jpeg,image/png,image/webp" @change="onProstor($event)" />
