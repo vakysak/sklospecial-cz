@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Katalog
- * Description: Kategorie katalogu skleněných dveří (sekce + ceny z katalog-data.php).
+ * Description: Kategorie katalogu (sekce + produkty z katalog-data / CSV).
  */
 
 declare(strict_types=1);
@@ -13,7 +13,6 @@ $slug = get_post_field('post_name', get_queried_object_id()) ?: '';
 $cat  = sklo_katalog_for_slug($slug);
 
 if ($cat === null) {
-    // Fallback: plain page content
     while (have_posts()) {
         the_post();
         echo '<article class="sklo-page"><div class="sklo-wrap sklo-page__inner">';
@@ -28,9 +27,13 @@ if ($cat === null) {
 
 $uploads = (string) ($cat['uploads'] ?? content_url('uploads/2026/07'));
 $note    = sklo_cena_note();
+$is_hub  = !empty($cat['hub']) && !empty($cat['children']);
+$children = is_array($cat['children'] ?? null) ? $cat['children'] : [];
+$parent   = (string) ($cat['parent'] ?? '');
+$price_from = $cat['price_from'] ?? null;
 ?>
 
-<article class="sklo-katalog">
+<article class="sklo-katalog<?php echo $is_hub ? ' sklo-katalog--hub' : ''; ?>">
   <header class="sklo-katalog__hero">
     <div class="sklo-wrap">
       <?php if (!empty($cat['eyebrow'])) : ?>
@@ -40,13 +43,56 @@ $note    = sklo_cena_note();
       <?php if (!empty($cat['lead'])) : ?>
         <p class="sklo-katalog__lead"><?php echo esc_html((string) $cat['lead']); ?></p>
       <?php endif; ?>
-      <?php if (!empty($cat['parent'])) : ?>
+      <?php if ($price_from) : ?>
+        <p class="sklo-katalog__from"><?php echo esc_html((string) $price_from); ?></p>
+      <?php endif; ?>
+      <?php if ($parent !== '') : ?>
         <p class="sklo-katalog__back">
-          <a class="sklo-link" href="<?php echo esc_url(home_url('/sklenene-dvere/')); ?>">← Zpět na katalog</a>
+          <a class="sklo-link" href="<?php echo esc_url(sklo_katalog_parent_url($cat)); ?>">← Zpět na katalog</a>
         </p>
       <?php endif; ?>
     </div>
   </header>
+
+  <?php if ($is_hub) : ?>
+    <section class="sklo-section sklo-katalog-hub">
+      <div class="sklo-wrap">
+        <header class="sklo-section__head sklo-section__head--center">
+          <p class="sklo-eyebrow">Kategorie</p>
+          <h2>Vyber typ</h2>
+          <p>Orientační ceny najdeš u konkrétních kategorií — finální nabídka vždy podle rozměrů.</p>
+        </header>
+        <div class="sklo-katalog-hub__grid">
+          <?php foreach ($children as $child) :
+              $cslug  = (string) ($child['slug'] ?? '');
+              $ctitle = (string) ($child['title'] ?? '');
+              $ctext  = (string) ($child['text'] ?? '');
+              $cprice = $child['price'] ?? null;
+              $cimg   = !empty($child['image']) ? trailingslashit($uploads) . $child['image'] : '';
+              $curl   = $parent !== '' || $slug === 'sklenene-dvere'
+                  ? home_url('/' . $slug . '/' . $cslug . '/')
+                  : home_url('/' . $cslug . '/');
+              if ($slug === 'sklenene-dvere') {
+                  $curl = home_url('/sklenene-dvere/' . $cslug . '/');
+              }
+              ?>
+            <a class="sklo-katalog-card" href="<?php echo esc_url($curl); ?>">
+              <?php if ($cimg) : ?>
+                <img class="sklo-katalog-card__image" src="<?php echo esc_url($cimg); ?>" alt="" width="626" height="417" loading="lazy" decoding="async">
+              <?php endif; ?>
+              <div class="sklo-katalog-card__body">
+                <h3><?php echo esc_html($ctitle); ?></h3>
+                <p><?php echo esc_html($ctext); ?></p>
+                <?php if ($cprice) : ?>
+                  <span class="sklo-katalog-card__price"><?php echo esc_html((string) $cprice); ?></span>
+                <?php endif; ?>
+              </div>
+            </a>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </section>
+  <?php endif; ?>
 
   <?php if (!empty($cat['sections']) && is_array($cat['sections'])) : ?>
     <nav class="sklo-katalog__toc" aria-label="Sekce">
@@ -67,14 +113,22 @@ $note    = sklo_cena_note();
 
     <?php foreach ($cat['sections'] as $sec) :
         $sid = (string) ($sec['id'] ?? '');
-        $img = !empty($sec['image']) ? trailingslashit($uploads) . $sec['image'] : '';
+        $sec_img = '';
+        if (!empty($sec['image'])) {
+            $raw = (string) $sec['image'];
+            $sec_img = str_starts_with($raw, 'http') ? $raw : trailingslashit($uploads) . $raw;
+        }
+        $sec_price = $sec['price'] ?? null;
         ?>
       <section class="sklo-katalog-sec" id="<?php echo esc_attr($sid); ?>">
-        <div class="sklo-wrap sklo-katalog-sec__grid<?php echo $img ? '' : ' sklo-katalog-sec__grid--solo'; ?>">
+        <div class="sklo-wrap sklo-katalog-sec__grid<?php echo $sec_img ? '' : ' sklo-katalog-sec__grid--solo'; ?>">
           <div class="sklo-katalog-sec__copy">
             <h2><?php echo esc_html((string) ($sec['title'] ?? '')); ?></h2>
             <?php if (!empty($sec['lead'])) : ?>
               <p><?php echo esc_html((string) $sec['lead']); ?></p>
+            <?php endif; ?>
+            <?php if ($sec_price) : ?>
+              <p class="sklo-katalog-sec__price"><?php echo esc_html((string) $sec_price); ?></p>
             <?php endif; ?>
 
             <?php if (!empty($sec['choosable']) && is_array($sec['choosable'])) : ?>
@@ -128,10 +182,10 @@ $note    = sklo_cena_note();
             <?php endif; ?>
           </div>
 
-          <?php if ($img) : ?>
+          <?php if ($sec_img) : ?>
             <figure class="sklo-katalog-sec__media">
               <img
-                src="<?php echo esc_url($img); ?>"
+                src="<?php echo esc_url($sec_img); ?>"
                 alt="<?php echo esc_attr((string) ($sec['title'] ?? '')); ?>"
                 loading="lazy"
                 decoding="async"
@@ -145,18 +199,37 @@ $note    = sklo_cena_note();
     <?php endforeach; ?>
   <?php endif; ?>
 
+  <?php
+  if (!empty($cat['show_products'])) {
+      sklo_render_produkty_grid($slug, null, 12);
+  }
+  ?>
+
   <section class="sklo-section sklo-cta-band">
     <div class="sklo-wrap sklo-cta-band__inner sklo-cta-band__inner--wide">
       <div>
         <h2>Chceš konkrétní nabídku?</h2>
-        <p>Zaměř otvor, pošli fotky a ve studiu si složíš dveře. My z toho připravíme cenu podle rozměrů a provedení.</p>
+        <p>Pošli rozměry a fotky — připravíme cenu podle provedení. U dveří můžeš rovnou začít ve studiu.</p>
       </div>
       <div class="sklo-cta-band__actions">
-        <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Navrhni si dveře</a>
+        <?php if ($parent === 'sklenene-dvere' || $slug === 'sklenene-dvere' || in_array($slug, ['posuvne', 'otocne', 'otevirane', 'celosklenene'], true)) : ?>
+          <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Navrhni si dveře</a>
+        <?php else : ?>
+          <a class="sklo-btn" href="<?php echo esc_url(home_url('/kontakt/')); ?>">Napsat poptávku</a>
+        <?php endif; ?>
         <a class="sklo-link" href="<?php echo esc_url(home_url('/kontakt/')); ?>">Nebo napiš</a>
       </div>
     </div>
   </section>
 </article>
+
+<div class="sklo-lightbox" data-lightbox hidden>
+  <button type="button" class="sklo-lightbox__close" data-lightbox-close aria-label="Zavřít">×</button>
+  <button type="button" class="sklo-lightbox__nav sklo-lightbox__nav--prev" data-lightbox-prev aria-label="Předchozí">‹</button>
+  <figure class="sklo-lightbox__figure">
+    <img src="" alt="" data-lightbox-img>
+  </figure>
+  <button type="button" class="sklo-lightbox__nav sklo-lightbox__nav--next" data-lightbox-next aria-label="Další">›</button>
+</div>
 
 <?php get_footer(); ?>

@@ -88,25 +88,35 @@ $cfg = sklo_konfigurator_url();
 <section class="sklo-section sklo-types">
   <div class="sklo-wrap">
     <header class="sklo-section__head sklo-section__head--center">
-      <p class="sklo-eyebrow">Typy dveří</p>
-      <h2>Vyber typ, detaily doladíš ve studiu</h2>
-      <p>Hlavní směry katalogu — další kategorie najdeš u <a href="<?php echo esc_url(home_url('/sklenene-dvere/')); ?>">skleněných dveří</a>.</p>
+      <p class="sklo-eyebrow">Nabídka</p>
+      <h2>Sklo do domu — od dveří po stříšky</h2>
+      <p>Hlavní směry nabídky. U dveří doladíš detaily ve <a href="<?php echo esc_url($cfg); ?>">studiu</a>.</p>
     </header>
-    <div class="sklo-type-grid">
-      <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/posuvne/')); ?>">
-        <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/posuvne-sklenene-dvere-matne-sklo.webp" alt="Posuvné skleněné dveře s matným sklem" width="507" height="626" loading="lazy" decoding="async">
-        <h3>Posuvné</h3>
-        <p>Design-Lux, Ultra Slim, Loft i do pouzdra. Orientačně od 7&nbsp;600&nbsp;Kč.</p>
-      </a>
-      <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/otocne/')); ?>">
-        <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/prosklene-dvere-na-miru.webp" alt="Prosklené otočné dveře na míru" width="626" height="352" loading="lazy" decoding="async">
-        <h3>Otočné</h3>
-        <p>Klasické otevírání do místnosti nebo na chodbu. Orientačně od 8&nbsp;900&nbsp;Kč.</p>
-      </a>
+    <div class="sklo-type-grid sklo-type-grid--5">
       <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/')); ?>">
-        <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/sklenene-dvere-do-obyvaciho-pokoje-3.webp" alt="Celoskleněné dveře do obývacího pokoje" width="626" height="417" loading="lazy" decoding="async">
-        <h3>Celý katalog</h3>
-        <p>Otevírané, zárubně, příčky, vzory skla, Linie Luxe i skladem.</p>
+        <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/posuvne-sklenene-dvere-matne-sklo.webp" alt="Skleněné dveře" width="507" height="626" loading="lazy" decoding="async">
+        <h3>Dveře</h3>
+        <p>Posuvné, otočné, otevírané i vzory skla.</p>
+      </a>
+      <a class="sklo-type" href="<?php echo esc_url(home_url('/sprchove-kouty/')); ?>">
+        <img class="sklo-type__image" src="https://qubaglass.pl/environment/cache/images/productGfx_10851_700_700/kabina_szklana_kabiny_szklane_prysznicowe.jpg" alt="Skleněné sprchové kouty" width="400" height="400" loading="lazy" decoding="async">
+        <h3>Sprchy</h3>
+        <p>Walk-in stěny a kouty na míru.</p>
+      </a>
+      <a class="sklo-type" href="<?php echo esc_url(home_url('/zabradli/')); ?>">
+        <img class="sklo-type__image" src="https://qubaglass.pl/environment/cache/images/productGfx_1149_700_700/e9efeb56b15e45023393897de32d9d6c.jpg" alt="Skleněné zábradlí" width="400" height="400" loading="lazy" decoding="async">
+        <h3>Zábradlí</h3>
+        <p>DIY, s montáží i profily.</p>
+      </a>
+      <a class="sklo-type" href="<?php echo esc_url(home_url('/strisky/')); ?>">
+        <img class="sklo-type__image" src="https://qubaglass.pl/environment/cache/images/productGfx_13144_700_700/daszek_szklany_bialy_qubaglass_bezpieczny.jpg" alt="Skleněné stříšky" width="400" height="400" loading="lazy" decoding="async">
+        <h3>Stříšky</h3>
+        <p>Na konzolách, táhlech i skladem.</p>
+      </a>
+      <a class="sklo-type" href="<?php echo esc_url(home_url('/francouzske-balkony/')); ?>">
+        <img class="sklo-type__image" src="https://qubaglass.pl/environment/cache/images/productGfx_12556_700_700/balkon-szklany-balkony-szklane-montowane-na-listwie-Biale.jpg" alt="Francouzské balkony" width="400" height="400" loading="lazy" decoding="async">
+        <h3>Balkony</h3>
+        <p>Francouzské balkony ze skla.</p>
       </a>
     </div>
   </div>

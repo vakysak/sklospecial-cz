@@ -78,3 +78,17 @@
     if (e.key === 'ArrowRight') show(index + 1);
   });
 })();
+
+(() => {
+  document.querySelectorAll('[data-sklo-produkty]').forEach((root) => {
+    const btn = root.querySelector('[data-sklo-produkty-more]');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      root.querySelectorAll('.sklo-produkty__item[hidden]').forEach((el) => {
+        el.hidden = false;
+        el.classList.remove('is-collapsed');
+      });
+      btn.remove();
+    });
+  });
+})();

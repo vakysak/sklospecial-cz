@@ -9,9 +9,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.4.0');
+define('SKLO_THEME_VER', '1.5.0');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
+require_once get_template_directory() . '/inc/katalog-produkty.php';
 
 function sklo_api_base(): string
 {
@@ -102,13 +103,16 @@ function sklo_nav_fallback(): void
                 ['/sklenene-dvere/posuvne/', 'Posuvné'],
                 ['/sklenene-dvere/otocne/', 'Otočné'],
                 ['/sklenene-dvere/otevirane/', 'Otevírané'],
-                ['/sklenene-dvere/pricky-a-zabudovani/', 'Příčky'],
                 ['/sklenene-dvere/vzory-skla/', 'Vzory'],
                 ['/sklenene-dvere/skladem/', 'Skladem'],
             ],
         ],
+        ['/sprchove-kouty/', 'Sprchové kouty'],
+        ['/zabradli/', 'Zábradlí'],
+        ['/strisky/', 'Stříšky'],
+        ['/francouzske-balkony/', 'Balkony'],
         ['/realizace/', 'Realizace'],
-        ['/navod-na-zamereni/', 'Návod na zaměření'],
+        ['/navod-na-zamereni/', 'Návod'],
         ['/kontakt/', 'Kontakt'],
     ];
     echo '<ul class="nav-list">';
