@@ -47,7 +47,9 @@ Useful flags:
 |------|-------------|
 | `scripts/output/qubaglass_katalog.csv` | UTF-8 BOM CSV for spreadsheet review |
 | `scripts/output/qubaglass_katalog.json` | Same data, easier for scripts |
-| `scripts/output/shoptet_import.csv` | Shoptet product import (UTF-8 BOM, `;`) |
+| `scripts/output/shoptet_import.csv` | Shoptet product import (UTF-8 BOM, `;`) — `image` = absolute https URLs |
+| `scripts/output/images/` | Local image backup by code (`QG-0001.jpg`) — gitignored |
+| `scripts/output/images_map.csv` | Mapping code → remote URL → local path |
 
 CSV columns: `Název`, `Kategorie`, `Cena (CZK)`, `Cena původní (PLN)`, `URL obrázku`, `URL produktu (zdroj)`, `Popis krátký`.
 
@@ -74,9 +76,23 @@ Notes:
 - `percentVat` = `21`; `defaultCategory` = `Skleněné dveře|{Kategorie}`; supplier/manufacturer = `Quba Glass`.
 - Category label **Linie Luxe** (not „Prémiová linie Luxe“).
 
+### Product images (Shoptet + local backup)
+
+1. **`shoptet_import.csv` already contains absolute `https://` URLs** in the `image` column (qubaglass.pl CDN). Shoptet should fetch those images during product import — keep remote URLs for import; local file paths are **not** valid for Shoptet CSV import.
+2. **Local copies** (backup / later re-hosting on your own CDN) live in `scripts/output/images/` as `{code}.jpg` / `.png` (e.g. `QG-0001.jpg`). Download with:
+
+```bash
+scripts/.venv/bin/python scripts/download_images.py
+```
+
+   Mapping: `scripts/output/images_map.csv` (`code`, `remote_url`, `local_path`, `status`). The folder is gitignored — do not commit binary images.
+3. **Legal:** use supplier photos in a public shop only with a clear supplier agreement / usage rights. Until then, treat downloads as internal backup only.
+
+The scraper’s `--download-images` flag also saves files under `scripts/output/images/`, but names them from the remote filename. Prefer `download_images.py` when you need stable names by product code.
+
 ## Legal / usage note
 
-Use this export for internal catalog preparation as a prospective buyer/reseller. Respect qubaglass.pl terms and copyright; do not republish their product photography or copy wholesale without agreement.
+Use this export for internal catalog preparation as a prospective buyer/reseller. Respect qubaglass.pl terms and copyright; do not republish their product photography or copy wholesale without agreement. Public shop use of supplier images requires supplier agreement.
 
 ## Tone
 
