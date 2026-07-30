@@ -35,7 +35,7 @@ $cfg = sklo_konfigurator_url();
     </div>
     <div>
       <strong>Nabídka na míru — podle tvých rozměrů</strong>
-      <span>Nepracujeme s katalogovými cenami. Každá nabídka vychází z konkrétního otvoru a zvoleného provedení.</span>
+      <span>Orientační ceny od v katalogu. Finální nabídka vždy podle konkrétního otvoru a provedení.</span>
     </div>
   </div>
 </section>
@@ -90,23 +90,23 @@ $cfg = sklo_konfigurator_url();
     <header class="sklo-section__head sklo-section__head--center">
       <p class="sklo-eyebrow">Typy dveří</p>
       <h2>Vyber typ, detaily doladíš ve studiu</h2>
-      <p>Každý typ má jiné nároky na prostor a jiný vizuální výsledek.</p>
+      <p>Hlavní směry katalogu — další kategorie najdeš u <a href="<?php echo esc_url(home_url('/sklenene-dvere/')); ?>">skleněných dveří</a>.</p>
     </header>
     <div class="sklo-type-grid">
-      <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/otocne/')); ?>">
-        <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/prosklene-dvere-na-miru.webp" alt="Prosklené otočné dveře na míru" width="626" height="352" loading="lazy" decoding="async">
-        <h3>Otočné</h3>
-        <p>Klasické otevírání do místnosti nebo na chodbu. Vhodné tam, kde je prostor pro křídlo.</p>
-      </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/posuvne/')); ?>">
         <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/posuvne-sklenene-dvere-matne-sklo.webp" alt="Posuvné skleněné dveře s matným sklem" width="507" height="626" loading="lazy" decoding="async">
         <h3>Posuvné</h3>
-        <p>Po stěně nebo do pouzdra. Ideální tam, kde každý centimetr hraje roli.</p>
+        <p>Design-Lux, Ultra Slim, Loft i do pouzdra. Orientačně od 7&nbsp;600&nbsp;Kč.</p>
       </a>
-      <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/celosklenene/')); ?>">
+      <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/otocne/')); ?>">
+        <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/prosklene-dvere-na-miru.webp" alt="Prosklené otočné dveře na míru" width="626" height="352" loading="lazy" decoding="async">
+        <h3>Otočné</h3>
+        <p>Klasické otevírání do místnosti nebo na chodbu. Orientačně od 8&nbsp;900&nbsp;Kč.</p>
+      </a>
+      <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/')); ?>">
         <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/sklenene-dvere-do-obyvaciho-pokoje-3.webp" alt="Celoskleněné dveře do obývacího pokoje" width="626" height="417" loading="lazy" decoding="async">
-        <h3>Celoskleněné</h3>
-        <p>Maximální průchod světla, minimální rám. Opticky propojí místnosti.</p>
+        <h3>Celý katalog</h3>
+        <p>Otevírané, zárubně, příčky, vzory skla, Linie Luxe i skladem.</p>
       </a>
     </div>
   </div>

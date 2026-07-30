@@ -9,7 +9,9 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.3.0');
+define('SKLO_THEME_VER', '1.4.0');
+
+require_once get_template_directory() . '/inc/katalog-data.php';
 
 function sklo_api_base(): string
 {
@@ -93,23 +95,79 @@ add_action('wp_enqueue_scripts', function (): void {
 function sklo_nav_fallback(): void
 {
     $items = [
-        ['/sklenene-dvere/', 'Skleněné dveře'],
+        [
+            '/sklenene-dvere/',
+            'Skleněné dveře',
+            [
+                ['/sklenene-dvere/posuvne/', 'Posuvné'],
+                ['/sklenene-dvere/otocne/', 'Otočné'],
+                ['/sklenene-dvere/otevirane/', 'Otevírané'],
+                ['/sklenene-dvere/pricky-a-zabudovani/', 'Příčky'],
+                ['/sklenene-dvere/vzory-skla/', 'Vzory'],
+                ['/sklenene-dvere/skladem/', 'Skladem'],
+            ],
+        ],
         ['/realizace/', 'Realizace'],
         ['/navod-na-zamereni/', 'Návod na zaměření'],
         ['/kontakt/', 'Kontakt'],
     ];
     echo '<ul class="nav-list">';
-    foreach ($items as [$path, $label]) {
-        $url = home_url($path);
+    foreach ($items as $item) {
+        $path  = $item[0];
+        $label = $item[1];
+        $kids  = $item[2] ?? [];
+        $url   = home_url($path);
+        echo '<li' . ($kids ? ' class="menu-item-has-children"' : '') . '>';
         printf(
-            '<li><a href="%s"%s>%s</a></li>',
+            '<a href="%s"%s>%s</a>',
             esc_url($url),
             sklo_is_current($path) ? ' aria-current="page"' : '',
             esc_html($label)
         );
+        if ($kids) {
+            echo '<ul class="sub-menu">';
+            foreach ($kids as [$cpath, $clabel]) {
+                printf(
+                    '<li><a href="%s"%s>%s</a></li>',
+                    esc_url(home_url($cpath)),
+                    sklo_is_current($cpath) ? ' aria-current="page"' : '',
+                    esc_html($clabel)
+                );
+            }
+            echo '</ul>';
+        }
+        echo '</li>';
     }
     echo '</ul>';
 }
+
+/**
+ * Rank Math / document title for katalog pages.
+ */
+add_filter('document_title_parts', function (array $parts): array {
+    if (!is_page()) {
+        return $parts;
+    }
+    $slug = get_post_field('post_name', get_queried_object_id()) ?: '';
+    $cat  = sklo_katalog_for_slug($slug);
+    if ($cat && !empty($cat['seo_title'])) {
+        $parts['title'] = (string) $cat['seo_title'];
+        unset($parts['tagline'], $parts['site']);
+    }
+    return $parts;
+}, 20);
+
+add_action('wp_head', function (): void {
+    if (!is_page()) {
+        return;
+    }
+    $slug = get_post_field('post_name', get_queried_object_id()) ?: '';
+    $cat  = sklo_katalog_for_slug($slug);
+    if (!$cat || empty($cat['seo_desc'])) {
+        return;
+    }
+    echo '<meta name="description" content="' . esc_attr((string) $cat['seo_desc']) . '" />' . "\n";
+}, 1);
 
 function sklo_is_current(string $path): bool
 {
