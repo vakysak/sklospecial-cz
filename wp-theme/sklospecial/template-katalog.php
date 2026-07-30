@@ -140,8 +140,9 @@ $has_section_nav = count($sections) > 1;
                   alt=""
                   width="400"
                   height="160"
-                  loading="lazy"
+                  loading="eager"
                   decoding="async"
+                  fetchpriority="high"
                 >
               <?php else : ?>
                 <span class="sklo-cat-card__image sklo-cat-card__image--empty" aria-hidden="true"></span>
