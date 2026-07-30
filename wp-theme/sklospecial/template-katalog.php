@@ -272,17 +272,15 @@ $has_section_nav = count($sections) > 1;
     $sec_price = $sec['price'] ?? null;
     $has_rich = !empty($sec['choosable']) || !empty($sec['bestsellers']) || !empty($sec['prices']) || !empty($sec['patterns']);
     ?>
-    <?php if ($has_rich || !empty($sec['lead'])) : ?>
+    <?php if ($has_rich) : ?>
       <section class="sklo-katalog-sec sklo-katalog-sec--compact" id="<?php echo esc_attr($sid); ?>">
         <div class="sklo-wrap sklo-katalog-sec__grid sklo-katalog-sec__grid--solo">
           <div class="sklo-katalog-sec__copy">
-            <?php if ($has_rich) : ?>
-              <h2><?php echo esc_html((string) ($sec['title'] ?? '')); ?></h2>
-            <?php endif; ?>
-            <?php if (!empty($sec['lead']) && $has_rich) : ?>
+            <h2><?php echo esc_html((string) ($sec['title'] ?? '')); ?></h2>
+            <?php if (!empty($sec['lead'])) : ?>
               <p><?php echo esc_html((string) $sec['lead']); ?></p>
             <?php endif; ?>
-            <?php if ($sec_price && $has_rich) : ?>
+            <?php if ($sec_price) : ?>
               <p class="sklo-katalog-sec__price"><?php echo esc_html((string) $sec_price); ?></p>
             <?php endif; ?>
             <?php if (!empty($sec['choosable']) && is_array($sec['choosable'])) : ?>
