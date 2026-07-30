@@ -121,88 +121,88 @@ function sklo_katalog(): array
                     'slug'  => 'posuvne',
                     'title' => 'Posuvné',
                     'text'  => 'Po stěně nebo do pouzdra. Ideální tam, kde každý centimetr hraje roli.',
-                    // SklS-0101 — loftové LOFT-ART čiré
-                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_6254_700_700/IMG_9735-bezbarwne-ALLEGRO.jpg',
+                    // SklS-0004 — Design-Lux matné na kolejnici
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15214_700_700/drzwi-szklane-design-lux-matowe.jpg',
                     'price' => $od('posuvne', 10100),
                 ],
                 [
                     'slug'  => 'otocne',
                     'title' => 'Kyvné',
-                    'text'  => 'Otevírání oběma směry (wahadłowe) — pivot / samozavírač, ne obyčejné křídlo na pantech.',
-                    // SklS-0211 — kyvné wahadłowe čiré
-                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_7256_700_700/drzwi_wahadlowe_szklane_qubaglass.jpg',
+                    'text'  => 'Otevírání oběma směry — pivot nebo samozavírač, ne obyčejné křídlo na pantech.',
+                    // SklS-0194 — kyvné se samozavíračem, čiré
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_7863_700_700/prawe_drzwi_Szklane_na_samozamykaczu_czarne_okucia.jpg',
                     'price' => $od('otocne', 9800),
                 ],
                 [
                     'slug'  => 'otevirane',
                     'title' => 'Otevírané',
                     'text'  => 'Křídlo na pantech — jasný pohyb, známé ovládání, široký výběr skel.',
-                    // SklS-0241 — otevírané na pantech se zámkem
-                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15467_700_700/drzwi-szklane-otwierane-na-zawiasach-z--zamkiem-bezbawrne.png',
+                    // SklS-0240 — otevírané na pantech, matné, viditelné panty
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_6825_700_700/drzwi_system_bez_oscieznic_trawione.jpg',
                     'price' => $od('otevirane', 9700),
                 ],
                 [
                     'slug'  => 'dvere-se-zarubni',
                     'title' => 'Dveře se zárubní',
                     'text'  => 'Pevná, nastavitelná nebo hliníková zárubeň — podle stavby a požadovaného vzhledu.',
-                    // SklS-0260 — pevná zárubeň čiré
-                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_6335_700_700/DRZWI_FUTRYNA_BEZBARWNE.jpg',
+                    // SklS-0303 — hliníková zárubeň čiré, černý rám
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_14818_700_700/drzwi-szklane-z-futryna-alumniowa-bezbarwne.png',
                     'price' => $od('dvere-se-zarubni', 10900),
                 ],
                 [
                     'slug'  => 'linie-luxe',
                     'title' => 'Linie Luxe',
                     'text'  => 'Nejvyšší třída v nabídce — jemnější detaily, větší prostor pro individuální návrh.',
-                    // SklS-0314 — LUXE trubkové ledové sklo
-                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_1046_700_700/5627ef74720cc2eadb442f3c2f25c3de.jpg',
+                    // SklS-0315 — LUXE trubkové zrcadlo fénické
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_1042_700_700/8c28833bdd64db7811fd48124e9d4f6e.jpg',
                     'price' => $od('linie-luxe'),
                 ],
                 [
                     'slug'  => 'rock-glass',
                     'title' => 'Rock Glass',
                     'text'  => 'Sklo s výraznou strukturou — světlo hraje, pohled zůstává soukromý.',
-                    // SklS-0316 — ROCK GLASS čiré
-                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15099_700_700/drzwi-szklane-rock-glass-bezbarwne.jpg',
+                    // SklS-0317 — ROCK GLASS laminované černé
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15103_700_700/czarne-drzwi-szklane-rock-glass-laminowane.jpg',
                     'price' => $od('rock-glass', 11500),
                 ],
                 [
                     'slug'  => 'pricky-a-zabudovani',
                     'title' => 'Příčky a zabudování',
                     'text'  => 'Skleněné příčky, pevné výplně a zabudování do stěny nebo pouzdra.',
-                    // SklS-0325 — zabudování kyvné + 2× pevná příčka
-                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15418_700_700/zabudowa-szklana-ze-sciankami-stalymi-qubaglass.png',
+                    // SklS-0326 — zabudování kyvné s pevnými příčkami
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15420_700_700/zabudowa-szklana-drzwi-szklane-scianki-stale-qubaglass-na-wymiar.png',
                     'price' => $od('pricky-a-zabudovani'),
                 ],
                 [
                     'slug'  => 'vzory-skla',
                     'title' => 'Vzory skla',
                     'text'  => 'Čiré, matné, barevné i dekorativní vzory — přehledný výběr pro studio.',
-                    // SklS-0002 — Design-Lux vzor proužky (jasný náhled vzoru na křídle)
-                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15213_700_700/drzwi-szklane-design-lux-paski-pionowe.jpg',
+                    // SklS-0335 — Design-Lux vzor proužky 1.2
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15277_700_700/drzwi-szklane-design-lux-paski-zwezajace-sie-qubaglass.jpg',
                     'price' => $od('vzory-skla', 2100),
                 ],
                 [
                     'slug'  => 'laminovane',
                     'title' => 'Laminované',
                     'text'  => 'Vrstvené sklo pro vyšší bezpečnost a klidnější akustiku.',
-                    // SklS-0008 — Design-Lux laminované černé
-                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15179_700_700/drzwi-szklane-czaene-deisn.jpg',
+                    // SklS-0202 — laminované černé (lesk)
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_8195_700_700/drzwi_wahadlowe_szklane_qubaglass-PolyskCzarne-Czarnezawiasy-%E2%80%94-kopia.jpg',
                     'price' => $od('laminovane', 11700),
                 ],
                 [
                     'slug'  => 'skladem',
                     'title' => 'Skladem',
                     'text'  => 'Vybrané provedení s rychlou expedicí — když nechceš čekat na výrobu na míru.',
-                    // SklS-0333 — Design-Lux matné skladem
-                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15182_700_700/drzwi-szklane-przesuwne-matowe-design-lux.jpg',
+                    // SklS-0338 — Design-Lux bílý systém matné skladem
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15279_700_700/matowe-drzwi-design-z-bialym-systemem-qg.jpg',
                     'price' => $od('skladem', 7600),
                 ],
                 [
                     'slug'  => 'celosklenene',
                     'title' => 'Celoskleněné',
                     'text'  => 'Maximální průchod světla, minimální rám. Opticky propojí místnosti.',
-                    // SklS-0228 — celoskleněné otevírané se zámkem (bez zárubně)
-                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_9689_700_700/drzwi_szklane_z_zamkiem_qubaglass.jpg',
+                    // SklS-0229 — celoskleněné čiré, kotvené nahoře a dole
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_10055_700_700/drzwi_szklane_z_zamkiem_mocowane_gora_dol_bezbarwne.jpg',
                     'price' => null,
                 ],
             ],
@@ -224,35 +224,35 @@ function sklo_katalog(): array
                     'title' => 'Design-Lux',
                     'lead'  => 'Nejoblíbenější posuvný systém v nabídce. Čistá linie, spolehlivý posuv po stěně.',
                     'price' => $sec_od('posuvne', 'design-lux'),
-                    'image' => 'posuvne-sklenene-dvere-matne-sklo.webp',
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15182_700_700/drzwi-szklane-przesuwne-matowe-design-lux.jpg',  // SklS-0333
                 ],
                 [
                     'id'    => 'ultra-slim',
                     'title' => 'Ultra Slim',
                     'lead'  => 'Tenký profil, který ustoupí sklu — lehčí vzhled, méně kovu v pohledu.',
                     'price' => $sec_od('posuvne', 'ultra-slim'),
-                    'image' => 'sklenene-dvere-s-matnym-sklem.webp',
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15440_700_700/drzwi-dorma-ultra-slim-nascienne.jpg',  // SklS-0085
                 ],
                 [
                     'id'    => 'loft',
                     'title' => 'Loft',
                     'lead'  => 'Výraznější průmyslový charakter — černé prvky, pevnější linie.',
                     'price' => $sec_od('posuvne', 'loft'),
-                    'image' => 'sklenene-dvere-moderny-interier.webp',
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_6254_700_700/IMG_9735-bezbarwne-ALLEGRO.jpg',  // SklS-0101
                 ],
                 [
                     'id'    => 'trubkovy-system',
                     'title' => 'Trubkový systém',
                     'lead'  => 'Posuv s trubkovým madlem a robustnějším hardwarem.',
                     'price' => $sec_od('posuvne', 'trubkovy-system'),
-                    'image' => 'sklenene-dvere-s-modernim-madlem.webp',
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_15336_700_700/drzwi-szklane-rurowe-bezbarwne.jpg',  // SklS-0144
                 ],
                 [
                     'id'    => 'do-pouzdra',
                     'title' => 'Do pouzdra',
                     'lead'  => 'Křídlo zajíždí do stavebního pouzdra — když jsou dveře otevřené, zůstane čistý průchod.',
                     'price' => $sec_od('posuvne', 'do-pouzdra'),
-                    'image' => 'interier-sklene-dvere-masivni-drevo.webp',
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_4581_700_700/kaseta_estima_trawione_.jpg',
                 ],
             ],
             'uploads' => $uploads,
@@ -261,9 +261,9 @@ function sklo_katalog(): array
         'otocne' => [
             'title'      => 'Kyvné dveře (otočné)',
             'eyebrow'    => 'Katalog · Kyvné',
-            'lead'       => 'Kyvné (wahadłowe) skleněné dveře — otevírání oběma směry na pivotu nebo samozavírači. Nejsou to obyčejná skleněná křídla na pantech; ty najdeš v kategorii Otevírané.',
+            'lead'       => 'Kyvné skleněné dveře — otevírání oběma směry na pivotu nebo samozavírači. Nejsou to obyčejná skleněná křídla na pantech; ty najdeš v kategorii Otevírané.',
             'seo_title'  => 'Kyvné skleněné dveře (otočné) | Sklospeciál',
-            'seo_desc'   => 'Kyvné skleněné dveře wahadłowe — otevírání oběma směry. Orientační cena od, finální nabídka podle rozměrů.',
+            'seo_desc'   => 'Kyvné skleněné dveře — otevírání oběma směry. Orientační cena od, finální nabídka podle rozměrů.',
             'parent'     => 'sklenene-dvere',
             'price_from' => $od('otocne', 9800),
             'show_products' => true,
@@ -273,7 +273,7 @@ function sklo_katalog(): array
                     'title' => 'Kyvné dveře',
                     'lead'  => 'Systém s pohybem oběma směry (často samozavírač). Vhodné do průchodů, kde potřebuješ volný průchod z obou stran.',
                     'price' => $od('otocne', 9800),
-                    'image' => 'prosklene-dvere-na-miru.webp',
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_7863_700_700/prawe_drzwi_Szklane_na_samozamykaczu_czarne_okucia.jpg',
                 ],
             ],
             'uploads' => $uploads,
@@ -282,7 +282,7 @@ function sklo_katalog(): array
         'otevirane' => [
             'title'      => 'Otevírané skleněné dveře',
             'eyebrow'    => 'Katalog · Otevírané',
-            'lead'       => 'Otevírané dveře na pantech (jedním směrem) — jasný pohyb, známé ovládání. Na rozdíl od kyvných (wahadłowe) se neotvírají oběma směry.',
+            'lead'       => 'Otevírané dveře na pantech (jedním směrem) — jasný pohyb, známé ovládání. Na rozdíl od kyvných se neotvírají oběma směry.',
             'seo_title'  => 'Otevírané skleněné dveře | Sklospeciál',
             'seo_desc'   => 'Otevírané skleněné dveře na míru. Vyber sklo, kování a rozměry.',
             'parent'     => 'sklenene-dvere',
@@ -294,7 +294,7 @@ function sklo_katalog(): array
                     'title' => 'Otevírané dveře',
                     'lead'  => 'Křídlo se otevírá do prostoru. Dobře sedí k zárubním i k celoskleněným řešením.',
                     'price' => $od('otevirane', 9700),
-                    'image' => 'sklenene-dvere-do-obyvaciho-pokoje.webp',
+                    'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_6825_700_700/drzwi_system_bez_oscieznic_trawione.jpg',
                 ],
             ],
             'uploads' => $uploads,
