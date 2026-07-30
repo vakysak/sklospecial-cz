@@ -4,17 +4,32 @@ Internal tool for reviewing the public [qubaglass.pl](https://qubaglass.pl) cata
 
 Sklospecial live WP is **not** Shoptet. For a Shoptet shop, regenerate the mapped import with `export_shoptet.py` (see below).
 
+## Coverage
+
+Full assortment scrape (~900–1010 unique products after URL dedupe):
+
+| Group | Categories |
+|-------|------------|
+| Skleněné dveře | 16 door / partition lines |
+| Vzory skla | Barevné vzory, Matné vzory |
+| Sprchové kouty | Skleněné sprchové kouty |
+| Balkony | Francouzské balkony |
+| Zábradlí | DIY, s montáží, Profily, Profily FIX |
+| Stříšky | skladem, systémové, s okapem, černé kování, na táhlech, na konzolách |
+| Ostatní | Zrcadla, Sklo |
+
+Products appearing in multiple categories are deduplicated by product URL (first category seen wins; leaf categories are listed intentionally).
+
 ## Pricing
 
 ```text
-price_czk = round(price_pln * 5.8 * 1.45)   # 45 % margin
+price_czk     = round(price_pln * 5.8 * 1.45)   # sell price, 45 % margin
+purchasePrice = round(price_pln * 5.8)          # cost in CZK (Shoptet)
 ```
 
-Example: `899 PLN → round(899 × 5.8 × 1.45) = 7560 CZK`.
+Example: `899 PLN → sell 7560 CZK`, purchase `5214 CZK`.
 
 Live WP curated door sections under `/sklenene-dvere/` use the same **45 %** orientation prices (see theme `inc/katalog-data.php`).
-
-Optional display note „od“ (from) is for WP templates only; scraper stores integer CZK without the prefix.
 
 ## Setup
 
@@ -41,58 +56,96 @@ Useful flags:
 | `--out-dir PATH` | Override output directory |
 | `-v` | Verbose logging |
 
+Full scrape takes several minutes (polite ~1 s delay between pages).
+
 ## Output
 
 | File | Description |
 |------|-------------|
 | `scripts/output/qubaglass_katalog.csv` | UTF-8 BOM CSV for spreadsheet review |
 | `scripts/output/qubaglass_katalog.json` | Same data, easier for scripts |
-| `scripts/output/shoptet_import.csv` | Shoptet product import (UTF-8 BOM, `;`) — `image` = absolute https URLs |
+| `scripts/output/shoptet_import.csv` | Shoptet product import (UTF-8 BOM, `;`) |
+| `scripts/output/shoptet_categories.txt` | Unique `defaultCategory` paths for manual category setup |
 | `scripts/output/images/` | Local image backup by code (`QG-0001.jpg`) — gitignored |
 | `scripts/output/images_map.csv` | Mapping code → remote URL → local path |
 
-CSV columns: `Název`, `Kategorie`, `Cena (CZK)`, `Cena původní (PLN)`, `URL obrázku`, `URL produktu (zdroj)`, `Popis krátký`.
+Katalog CSV columns: `Název`, `Kategorie`, `Cena (CZK)`, `Cena původní (PLN)`, `URL obrázku`, `URL produktu (zdroj)`, `Popis krátký`.
 
-**Images are URL-only by default.** Do not upload scraped supplier photos into live WordPress media or publish product pages with them until usage rights / partnership are clear. Use data for internal prep only.
+**Images are URL-only by default.** Do not upload scraped supplier photos into live WordPress media or publish product pages with them until usage rights / partnership are clear.
 
 ## Shoptet import
 
-After a scrape (or whenever the katalog CSV/JSON changes):
+### 1) Regenerate export
 
 ```bash
 python3 scripts/export_shoptet.py
 # optional: --in scripts/output/qubaglass_katalog.json
 ```
 
-This writes `scripts/output/shoptet_import.csv` (semicolon-delimited, UTF-8 with BOM). XLSX is written only if `openpyxl` is installed; CSV alone is enough for Shoptet.
+### 2) Create categories (if needed)
 
-**Import in admin:** Produkty → Import → upload `shoptet_import.csv`.
+Open `scripts/output/shoptet_categories.txt`. Shoptet often auto-creates categories from `defaultCategory`, but many shops prefer creating the tree first under **Kategorie**. Hierarchy uses ` > ` (not `|`):
 
-Notes:
+- `Skleněné dveře > {line}`
+- `Skleněné dveře > Vzory skla > {pattern}`
+- `Sprchové kouty > Skleněné sprchové kouty`
+- `Balkony > Francouzské balkony`
+- `Zábradlí > {line}`
+- `Stříšky > {line}`
+- `Zrcadla` / `Sklo`
 
-- Codes are stable by source row order: `QG-0001` … `QG-0345`.
-- `price` = CZK with 45 % margin; `purchasePrice` = `round(PLN × 5.8)` (cost before margin).
-- `includingVat` = `1` (B2C prices including VAT). Switch to `0` in the export script / CSV if your Shoptet catalog uses prices without VAT.
-- `percentVat` = `21`; `defaultCategory` = `Skleněné dveře|{Kategorie}`; supplier/manufacturer = `Quba Glass`.
-- Category label **Linie Luxe** (not „Prémiová linie Luxe“).
+Also create availability name **Na objednávku** if it does not exist yet.
+
+### 3) Import products
+
+**Produkty → Import** → upload `shoptet_import.csv`.
+
+### Column meanings (e-shop settings)
+
+| Column | Value / meaning |
+|--------|-----------------|
+| `code` | `QG-0001` … by row order |
+| `pairCode` | empty |
+| `name` | Czech product name |
+| `price` | sell CZK (`PLN × 5.8 × 1.45`) |
+| `purchasePrice` | cost CZK (`PLN × 5.8`) |
+| `currency` | `CZK` |
+| `includingVat` | `1` (B2C incl. VAT) |
+| `percentVat` | `21` |
+| `priceRatio` | `1` |
+| `shortDescription` / `description` | Czech stubs by category type |
+| `image` | absolute `https://` URL (Shoptet fetches on import) |
+| `defaultCategory` | hierarchy with ` > ` |
+| `categoryText` | parent breadcrumb when useful |
+| `supplier` / `manufacturer` | `Quba Glass` |
+| `productVisibility` | `visible` |
+| `unit` | `ks` |
+| `itemType` | `product` |
+| `stock` | empty (made-to-order; avoid false stock) |
+| `availability` | `Na objednávku` |
+| `negativeAmount` | `1` (orders allowed without stock) |
+| `atypicalShipping` | `1` (glass) |
+| `freeShipping` | `0` |
+| `seoTitle` | = name |
+| `metaDescription` | short desc truncated |
+| `externalId` | alphanumeric from source URL |
+| `weight` | empty (unknown) |
 
 ### Product images (Shoptet + local backup)
 
-1. **`shoptet_import.csv` already contains absolute `https://` URLs** in the `image` column (qubaglass.pl CDN). Shoptet should fetch those images during product import — keep remote URLs for import; local file paths are **not** valid for Shoptet CSV import.
-2. **Local copies** (backup / later re-hosting on your own CDN) live in `scripts/output/images/` as `{code}.jpg` / `.png` (e.g. `QG-0001.jpg`). Download with:
+1. **`shoptet_import.csv` already contains absolute `https://` URLs** in the `image` column. Keep remote URLs for import; local paths are **not** valid for Shoptet CSV import.
+2. **Local copies** (backup) via:
 
 ```bash
 scripts/.venv/bin/python scripts/download_images.py
 ```
 
-   Mapping: `scripts/output/images_map.csv` (`code`, `remote_url`, `local_path`, `status`). The folder is gitignored — do not commit binary images.
-3. **Legal:** use supplier photos in a public shop only with a clear supplier agreement / usage rights. Until then, treat downloads as internal backup only.
-
-The scraper’s `--download-images` flag also saves files under `scripts/output/images/`, but names them from the remote filename. Prefer `download_images.py` when you need stable names by product code.
+   Mapping: `scripts/output/images_map.csv`. Folder is gitignored — do not commit binaries.
+3. **Legal:** public use of supplier photos requires agreement.
 
 ## Legal / usage note
 
-Use this export for internal catalog preparation as a prospective buyer/reseller. Respect qubaglass.pl terms and copyright; do not republish their product photography or copy wholesale without agreement. Public shop use of supplier images requires supplier agreement.
+Use this export for internal catalog preparation as a prospective buyer/reseller. Respect qubaglass.pl terms and copyright; do not republish their product photography or copy wholesale without agreement.
 
 ## Tone
 

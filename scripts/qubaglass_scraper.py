@@ -34,8 +34,10 @@ DELAY_MIN = 0.8
 DELAY_MAX = 1.2
 REQUEST_TIMEOUT = 30
 
-# Category path → Czech label (16). Use „Linie Luxe“, not „Prémiová…“.
+# Category path → Czech label. Leaf categories preferred for railings/canopies.
+# Order matters for URL dedupe: first category seen wins.
 CATEGORIES: list[tuple[str, str]] = [
+    # --- Doors (16) ---
     ("/pl/c/Drzwi-przesuwne-DESIGN-LUX/50", "Posuvné dveře Design-Lux"),
     ("/pl/c/Drzwi-przesuwne-Ultra-Slim/51", "Posuvné dveře Ultra Slim"),
     ("/pl/c/Drzwi-przesuwne-LOFT-ART/57", "Posuvné dveře Loft"),
@@ -52,6 +54,28 @@ CATEGORIES: list[tuple[str, str]] = [
     ("/pl/c/Drzwi-szklane-od-reki/19", "Skladem – rychlá expedice"),
     ("/pl/c/Drzwi-przesuwne-na-wymiar/17", "Posuvné dveře na míru"),
     ("/pl/c/Drzwi-laminowane-kolorowe/20", "Laminované dveře"),
+    # --- Door patterns ---
+    ("/pl/c/Wzory-kolorowe/23", "Barevné vzory skla"),
+    ("/pl/c/Wzory-matowe/24", "Matné vzory skla"),
+    # --- Showers ---
+    ("/pl/c/Kabiny-szklane/22", "Skleněné sprchové kouty"),
+    # --- French balconies ---
+    ("/pl/c/Balkony-francuskie/40", "Francouzské balkony"),
+    # --- Railings (leaf) ---
+    ("/pl/c/Balustrady-do-samodzielnego-montazu/43", "Zábradlí DIY"),
+    ("/pl/c/Balustrady-z-montazem/58", "Zábradlí s montáží"),
+    ("/pl/c/Profile-do-balustrad/94", "Profily na zábradlí"),
+    ("/pl/c/Profile-do-balustrad-FIX-z-przechyleniem-szyby/93", "Profily FIX na zábradlí"),
+    # --- Canopies (leaf) ---
+    ("/pl/c/DASZKI-DOSTEPNE-OD-REKI/89", "Stříšky skladem"),
+    ("/pl/c/DASZKI-SYSTEMOWE/82", "Stříšky systémové"),
+    ("/pl/c/Daszki-z-rynna/84", "Stříšky s okapem"),
+    ("/pl/c/Daszki-z-czarnymi-okuciami/86", "Stříšky s černým kováním"),
+    ("/pl/c/Daszki-na-naciagachpretach/21", "Stříšky na táhlech"),
+    ("/pl/c/Daszki-na-wspornikach/54", "Stříšky na konzolách"),
+    # --- Other ---
+    ("/pl/c/Lustra/52", "Zrcadla"),
+    ("/pl/c/Szklo/61", "Sklo"),
 ]
 
 # Longer phrases first so multi-word replacements win.
@@ -64,6 +88,23 @@ WORD_MAP: dict[str, str] = {
     "system biały": "bílý systém",
     "na wymiar": "na míru",
     "od ręki": "skladem",
+    "do samodzielnego montażu": "pro DIY montáž",
+    "z montażem": "s montáží",
+    "z rynną": "s okapem",
+    "z czarnymi okuciami": "s černým kováním",
+    "na naciągach": "na táhlech",
+    "na prętach": "na táhlech",
+    "na wspornikach": "na konzolách",
+    "balkony francuskie": "francouzské balkony",
+    "balkon francuski": "francouzský balkon",
+    "kabina szklana": "skleněný sprchový kout",
+    "kabiny szklane": "skleněné sprchové kouty",
+    "daszek szklany": "skleněná stříška",
+    "daszki szklane": "skleněné stříšky",
+    "balustrada szklana": "skleněné zábradlí",
+    "balustrady szklane": "skleněná zábradlí",
+    "profile do balustrad": "profily na zábradlí",
+    "profil do balustrad": "profil na zábradlí",
     "bezbarwne": "čiré",
     "matowe": "matné",
     "trawione": "leptané",
@@ -71,17 +112,92 @@ WORD_MAP: dict[str, str] = {
     "brązowe": "hnědé",
     "białe": "bílé",
     "czarne": "černé",
+    "kolorowe": "barevné",
     "przesuwne": "posuvné",
     "przesuwane": "posuvné",
     "wahadłowe": "otočné",
     "otwierane": "otevírané",
     "szklane": "skleněné",
+    "szklany": "skleněný",
+    "szklana": "skleněná",
     "drzwi": "dveře",
     "wzór": "vzor",
+    "wzory": "vzory",
     "grafika": "grafika",
+    "kabina": "sprchový kout",
+    "kabiny": "sprchové kouty",
+    "daszek": "stříška",
+    "daszki": "stříšky",
+    "balustrada": "zábradlí",
+    "balustrady": "zábradlí",
+    "balkon": "balkon",
+    "balkony": "balkony",
+    "francuskie": "francouzské",
+    "francuski": "francouzský",
+    "lustro": "zrcadlo",
+    "lustra": "zrcadla",
+    "profil": "profil",
+    "profile": "profily",
+    "szkło": "sklo",
+    "rynna": "okap",
+    "okucia": "kování",
+    "okuciami": "kováním",
+    "wspornikach": "konzolách",
+    "wsporniki": "konzoly",
+    "naciągach": "táhlech",
+    "prętach": "táhlech",
+    "systemowe": "systémové",
+    "systemowy": "systémový",
+    "montaż": "montáž",
+    "montażem": "montáží",
+    "montażu": "montáži",
+    "samodzielnego": "samostatné",
+    "dostępne": "dostupné",
+    "przechyleniem": "nakloněním",
+    "szyby": "skla",
+    "szyba": "sklo",
     "BIAŁY": "bílý",
     "biały": "bílý",
 }
+
+# Category → short Czech description stub template key
+DOOR_CATEGORIES = {
+    "Posuvné dveře Design-Lux",
+    "Posuvné dveře Ultra Slim",
+    "Posuvné dveře Loft",
+    "Posuvné dveře – trubkový systém",
+    "Posuvné dveře do pouzdra",
+    "Otočné dveře",
+    "Otevírané dveře",
+    "Dveře s pevnou zárubní",
+    "Dveře s nastavitelnou zárubní",
+    "Dveře s hliníkovou zárubní",
+    "Linie Luxe",
+    "Rock Glass – industriální linie",
+    "Skleněné příčky a zabudování",
+    "Skladem – rychlá expedice",
+    "Posuvné dveře na míru",
+    "Laminované dveře",
+}
+PATTERN_CATEGORIES = {"Barevné vzory skla", "Matné vzory skla"}
+SHOWER_CATEGORIES = {"Skleněné sprchové kouty"}
+BALCONY_CATEGORIES = {"Francouzské balkony"}
+RAILING_CATEGORIES = {
+    "Zábradlí DIY",
+    "Zábradlí s montáží",
+    "Profily na zábradlí",
+    "Profily FIX na zábradlí",
+}
+CANOPY_CATEGORIES = {
+    "Stříšky skladem",
+    "Stříšky systémové",
+    "Stříšky s okapem",
+    "Stříšky s černým kováním",
+    "Stříšky na táhlech",
+    "Stříšky na konzolách",
+}
+MIRROR_CATEGORIES = {"Zrcadla"}
+GLASS_CATEGORIES = {"Sklo"}
 
 CSV_COLUMNS = [
     "Název",
@@ -164,9 +280,24 @@ def translate_name(name: str) -> str:
     return result[0].upper() + result[1:]
 
 
-def short_description(name_cs: str) -> str:
+def short_description(name_cs: str, category: str) -> str:
     # Avoid luxusní / exkluzivní / prémiový
-    base = name_cs if "dveře" in name_cs.lower() else f"Skleněné dveře {name_cs}"
+    if category in PATTERN_CATEGORIES:
+        return f"{name_cs}. Vzor skla pro skleněné dveře — výběr podle designu."
+    if category in SHOWER_CATEGORIES:
+        return f"{name_cs}. Skleněný sprchový kout — cena orientační dle rozměrů."
+    if category in BALCONY_CATEGORIES:
+        return f"{name_cs}. Francouzský balkon ze skla — na míru dle zaměření."
+    if category in RAILING_CATEGORIES:
+        return f"{name_cs}. Skleněné zábradlí / profily — na objednávku."
+    if category in CANOPY_CATEGORIES:
+        return f"{name_cs}. Skleněná stříška — atypická doprava, na objednávku."
+    if category in MIRROR_CATEGORIES:
+        return f"{name_cs}. Zrcadlo — na objednávku dle rozměrů."
+    if category in GLASS_CATEGORIES:
+        return f"{name_cs}. Sklo — na objednávku dle rozměrů a typu."
+    # Doors / partitions default
+    base = name_cs if "dveře" in name_cs.lower() or "příčk" in name_cs.lower() else f"Skleněné dveře {name_cs}"
     return f"{base}. Cena zahrnuje systém a kování."
 
 
@@ -268,7 +399,7 @@ def parse_product_tile(tile, category: str) -> dict[str, Any] | None:
         "price_czk": price_czk(price_pln),
         "url": product_url,
         "image": img_url,
-        "description": short_description(name_cs),
+        "description": short_description(name_cs, category),
     }
 
 
@@ -295,13 +426,15 @@ def get_products_from_page(soup: BeautifulSoup, category: str) -> list[dict[str,
 
 def scrape_category(
     session: requests.Session, cat_path: str, cat_name: str
-) -> list[dict[str, Any]]:
+) -> tuple[list[dict[str, Any]], bool]:
+    """Return (products, ok). ok=False when the first page request failed."""
     all_products: list[dict[str, Any]] = []
     first_url = category_page_url(cat_path, 1)
     log.info("  Page 1: %s", first_url)
     soup = fetch(session, first_url)
     if soup is None:
-        return all_products
+        log.error("  FAILED to fetch category: %s (%s)", cat_name, first_url)
+        return all_products, False
 
     max_page = detect_max_page(soup)
     page_products = get_products_from_page(soup, cat_name)
@@ -309,7 +442,7 @@ def scrape_category(
     log.info("  Page 1: %d products (max page ~%d)", len(page_products), max_page)
 
     if not page_products and max_page <= 1:
-        return all_products
+        return all_products, True
 
     for page in range(2, max_page + 1):
         polite_sleep()
@@ -330,7 +463,7 @@ def scrape_category(
             break
         all_products.extend(new_items)
 
-    return all_products
+    return all_products, True
 
 
 def download_images(session: requests.Session, products: list[dict[str, Any]], img_dir: Path) -> int:
@@ -449,11 +582,14 @@ def main() -> int:
     all_products: list[dict[str, Any]] = []
     seen_urls: set[str] = set()
     per_category: Counter[str] = Counter()
+    failed_categories: list[str] = []
     duplicates = 0
 
     for i, (cat_path, cat_name) in enumerate(cats, start=1):
         log.info("[%d/%d] Category: %s", i, len(cats), cat_name)
-        products = scrape_category(session, cat_path, cat_name)
+        products, ok = scrape_category(session, cat_path, cat_name)
+        if not ok:
+            failed_categories.append(cat_name)
         kept = 0
         for p in products:
             if p["url"] in seen_urls:
@@ -474,6 +610,8 @@ def main() -> int:
     for name, count in per_category.items():
         log.info("  %s: %d", name, count)
     log.info("Total unique: %d | skipped duplicates: %d", len(all_products), duplicates)
+    if failed_categories:
+        log.warning("Failed categories: %s", ", ".join(failed_categories))
 
     if args.download_images:
         img_dir = args.out_dir / "images"

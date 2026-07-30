@@ -1,0 +1,34 @@
+# Unique Shoptet defaultCategory paths from this export
+# Create these in admin (Kategorie) before import if your plan
+# does not auto-create categories from the CSV defaultCategory field.
+# Hierarchy separator in CSV is ' > ' (space-greater-than-space).
+
+Balkony > Francouzské balkony
+Skleněné dveře > Dveře s hliníkovou zárubní
+Skleněné dveře > Dveře s nastavitelnou zárubní
+Skleněné dveře > Dveře s pevnou zárubní
+Skleněné dveře > Linie Luxe
+Skleněné dveře > Otevírané dveře
+Skleněné dveře > Otočné dveře
+Skleněné dveře > Posuvné dveře Design-Lux
+Skleněné dveře > Posuvné dveře Loft
+Skleněné dveře > Posuvné dveře Ultra Slim
+Skleněné dveře > Posuvné dveře do pouzdra
+Skleněné dveře > Posuvné dveře – trubkový systém
+Skleněné dveře > Rock Glass – industriální linie
+Skleněné dveře > Skladem – rychlá expedice
+Skleněné dveře > Skleněné příčky a zabudování
+Skleněné dveře > Vzory skla > Barevné vzory skla
+Skleněné dveře > Vzory skla > Matné vzory skla
+Sprchové kouty > Skleněné sprchové kouty
+Stříšky > Stříšky na konzolách
+Stříšky > Stříšky na táhlech
+Stříšky > Stříšky s okapem
+Stříšky > Stříšky s černým kováním
+Stříšky > Stříšky skladem
+Stříšky > Stříšky systémové
+Zrcadla
+Zábradlí > Profily FIX na zábradlí
+Zábradlí > Profily na zábradlí
+Zábradlí > Zábradlí DIY
+Zábradlí > Zábradlí s montáží
