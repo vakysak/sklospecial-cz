@@ -116,6 +116,13 @@ def load_details() -> dict[str, dict[str, Any]]:
 
 def clean_public_text(text: str) -> str:
     text = text or ""
+    # Prefer scrape translator when available (options / leftovers)
+    try:
+        from scrape_product_details import translate_text  # noqa: WPS433
+
+        text = translate_text(text)
+    except Exception:  # noqa: BLE001
+        pass
     text = re.sub(r"(?i)\botočné\b", "kyvné", text)
     text = re.sub(r"(?i)\bwahadłowe\b", "kyvné", text)
     text = re.sub(r"(?i)\bwahadlowe\b", "kyvné", text)

@@ -134,11 +134,35 @@ function sklo_produkt_detail_url(string $code, ?string $base = null): string
  */
 function sklo_public_product_text(string $text): string
 {
-    $text = preg_replace('/\bwahadłowe\b/iu', 'kyvné', $text) ?? $text;
-    $text = preg_replace('/\bwahadlowe\b/iu', 'kyvné', $text) ?? $text;
-    $text = preg_replace('/\botočné\b/iu', 'kyvné', $text) ?? $text;
-    $text = preg_replace('/\bQuba\s*Glass\b/iu', '', $text) ?? $text;
-    $text = preg_replace('/\bQubaglass\b/iu', '', $text) ?? $text;
+    $replacements = [
+        '/\bwahadłowe\b/iu' => 'kyvné',
+        '/\bwahadlowe\b/iu' => 'kyvné',
+        '/\botočné\b/iu' => 'kyvné',
+        '/\bQuba\s*Glass\b/iu' => '',
+        '/\bQubaglass\b/iu' => '',
+        '/\bKierunek otwierania\b/iu' => 'Směr otevírání',
+        '/\bKotwa montazowa\b/iu' => 'Montážní kotva',
+        '/\bKotwa montażowa\b/iu' => 'Montážní kotva',
+        '/\bSzerokosc wneki\b/iu' => 'Šířka výklenku',
+        '/\bSzerokość wnęki\b/iu' => 'Šířka výklenku',
+        '/\bRodzaj zamka\b/iu' => 'Typ zámku',
+        '/\bRodzaj zawiasow\b/iu' => 'Typ závěsů',
+        '/\bRodzaj szkła\b/iu' => 'Typ skla',
+        '/\bRodzaj szkla\b/iu' => 'Typ skla',
+        '/\bbezbarwne\b/iu' => 'čiré',
+        '/\bmatowe\b/iu' => 'matné',
+        '/\bgrafitowe\b/iu' => 'grafitové',
+        '/\bsatyna\b/iu' => 'satin',
+        '/\bczarny\b/iu' => 'černý',
+        '/\bsamodomyk\b/iu' => 'samozavírač / tichý domyk',
+        '/\bmuszelka\b/iu' => 'mušle',
+        '/\bobustronnie\b/iu' => 'oboustranně',
+        '/\bwneki\b/iu' => 'výklenku',
+        '/\bwnęki\b/iu' => 'výklenku',
+    ];
+    foreach ($replacements as $pattern => $replacement) {
+        $text = preg_replace($pattern, $replacement, $text) ?? $text;
+    }
     return trim(preg_replace('/\s{2,}/u', ' ', $text) ?? $text);
 }
 
@@ -277,7 +301,11 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
             <?php endif; ?>
           </p>
           <?php if ($price > 0) : ?>
-            <p class="sklo-pdetail__price"><?php echo esc_html(sklo_format_cena_od($price)); ?></p>
+            <p class="sklo-pdetail__price" data-sklo-base-price="<?php echo esc_attr((string) $price); ?>">
+              <span data-sklo-orient-label>Orientační cena</span>
+              <strong data-sklo-orient-price><?php echo esc_html(sklo_format_cena($price)); ?></strong>
+            </p>
+            <p class="sklo-pdetail__price-base">Základ <?php echo esc_html(sklo_format_cena($price)); ?><?php echo $options !== [] ? ' · doplatky podle výběru níže' : ''; ?></p>
           <?php endif; ?>
           <?php if ($ship !== null && (int) $ship > 0) : ?>
             <p class="sklo-pdetail__ship">Expedice cca <?php echo esc_html((string) (int) $ship); ?> pracovních dní</p>
@@ -329,36 +357,41 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
       <?php endif; ?>
 
       <?php if ($options !== []) : ?>
-        <div class="sklo-pdetail__block sklo-pdetail__options">
+        <div class="sklo-pdetail__block sklo-pdetail__options" data-sklo-options>
           <h2>Možnosti a doplatky</h2>
-          <p class="sklo-pdetail__options-lead">Orientační doplatky v Kč — finální cena podle konkrétní konfigurace.</p>
+          <p class="sklo-pdetail__options-lead">Vyber varianty — orientační cena výše = základ + součet doplatků v Kč.</p>
           <div class="sklo-pdetail__option-groups">
-            <?php foreach ($options as $g) :
+            <?php foreach ($options as $gi => $g) :
                 $label = (string) ($g['label'] ?? '');
                 $choices = is_array($g['choices'] ?? null) ? $g['choices'] : [];
                 $type = (string) ($g['type'] ?? 'select');
+                $field_id = 'sklo-opt-' . (string) $gi;
                 ?>
-              <div class="sklo-pdetail__option">
+              <div class="sklo-pdetail__option" data-sklo-option-group>
                 <h3><?php echo esc_html($label !== '' ? $label : 'Možnost'); ?></h3>
                 <?php if ($type === 'text' && $choices === []) : ?>
                   <p class="sklo-pdetail__option-hint">Zadáš při poptávce (rozměry).</p>
                 <?php elseif ($choices !== []) : ?>
-                  <ul class="sklo-pdetail__choices">
-                    <?php foreach ($choices as $c) :
+                  <label class="sklo-pdetail__select-label" for="<?php echo esc_attr($field_id); ?>">Výběr</label>
+                  <select
+                    class="sklo-pdetail__select"
+                    id="<?php echo esc_attr($field_id); ?>"
+                    data-sklo-option-select
+                    aria-label="<?php echo esc_attr($label !== '' ? $label : 'Možnost'); ?>"
+                  >
+                    <?php foreach ($choices as $ci => $c) :
                         $cname = (string) ($c['name'] ?? '');
                         $sur = (int) ($c['surcharge_czk'] ?? 0);
                         $sur_label = sklo_format_doplatek($sur);
+                        $opt_label = $cname . ($sur_label !== '' ? ' (' . $sur_label . ')' : ' (v základu)');
                         ?>
-                      <li>
-                        <span class="sklo-pdetail__choice-name"><?php echo esc_html($cname); ?></span>
-                        <?php if ($sur_label !== '') : ?>
-                          <span class="sklo-pdetail__choice-sur"><?php echo esc_html($sur_label); ?></span>
-                        <?php else : ?>
-                          <span class="sklo-pdetail__choice-sur sklo-pdetail__choice-sur--base">v základu</span>
-                        <?php endif; ?>
-                      </li>
+                      <option
+                        value="<?php echo esc_attr((string) $ci); ?>"
+                        data-surcharge="<?php echo esc_attr((string) $sur); ?>"
+                        <?php echo $ci === 0 ? ' selected' : ''; ?>
+                      ><?php echo esc_html($opt_label); ?></option>
                     <?php endforeach; ?>
-                  </ul>
+                  </select>
                 <?php endif; ?>
               </div>
             <?php endforeach; ?>

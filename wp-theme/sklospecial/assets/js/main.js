@@ -215,18 +215,40 @@
   const mainImg = root.querySelector('[data-sklo-pdetail-main]');
   const mainBtn = root.querySelector('.sklo-pdetail__main[data-lightbox-open]');
   const thumbs = Array.from(root.querySelectorAll('[data-sklo-pdetail-thumb]'));
-  if (!mainImg || !thumbs.length) return;
-
-  thumbs.forEach((thumb) => {
-    thumb.addEventListener('click', (e) => {
-      // Swap main preview; lightbox still available via data-lightbox-open on thumb/main
-      const src = thumb.getAttribute('data-src') || '';
-      if (!src) return;
-      e.preventDefault();
-      e.stopPropagation();
-      mainImg.src = src;
-      if (mainBtn) mainBtn.setAttribute('data-src', src);
-      thumbs.forEach((t) => t.classList.toggle('is-active', t === thumb));
+  if (mainImg && thumbs.length) {
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener('click', (e) => {
+        const src = thumb.getAttribute('data-src') || '';
+        if (!src) return;
+        e.preventDefault();
+        e.stopPropagation();
+        mainImg.src = src;
+        if (mainBtn) mainBtn.setAttribute('data-src', src);
+        thumbs.forEach((t) => t.classList.toggle('is-active', t === thumb));
+      });
     });
-  });
+  }
+
+  const priceEl = root.querySelector('[data-sklo-orient-price]');
+  const baseNode = root.querySelector('[data-sklo-base-price]');
+  const selects = Array.from(root.querySelectorAll('[data-sklo-option-select]'));
+  if (!priceEl || !baseNode || !selects.length) return;
+
+  const base = parseInt(baseNode.getAttribute('data-sklo-base-price') || '0', 10) || 0;
+  const formatKc = (n) =>
+    new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 0 }).format(n).replace(/\s/g, '\u00a0') +
+    ' Kč';
+
+  const update = () => {
+    let sum = base;
+    selects.forEach((sel) => {
+      const opt = sel.options[sel.selectedIndex];
+      const sur = parseInt((opt && opt.getAttribute('data-surcharge')) || '0', 10) || 0;
+      sum += sur;
+    });
+    priceEl.textContent = formatKc(sum);
+  };
+
+  selects.forEach((sel) => sel.addEventListener('change', update));
+  update();
 })();

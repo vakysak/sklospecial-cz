@@ -55,53 +55,150 @@ log = logging.getLogger("quba-details")
 # Extra option/description phrases (merged into translate via translate_text)
 OPTION_WORD_MAP: dict[str, str] = {
     # option group labels
+    "kierunek otwierania": "směr otevírání",
+    "kotwa montazowa": "montážní kotva",
+    "kotwa montażowa": "montážní kotva",
+    "szerokosc wneki okenního": "šířka okenního výklenku",
+    "szerokość wnęki okenního": "šířka okenního výklenku",
+    "szerokosc wneki (cm)": "šířka výklenku (cm)",
+    "szerokość wnęki (cm)": "šířka výklenku (cm)",
+    "szerokosc wneki": "šířka výklenku",
+    "szerokość wnęki": "šířka výklenku",
+    "wysokosc wneki (cm)": "výška výklenku (cm)",
+    "wysokość wnęki (cm)": "výška výklenku (cm)",
+    "wysokosc wneki": "výška výklenku",
+    "wysokość wnęki": "výška výklenku",
+    "výška wneki (cm)": "výška výklenku (cm)",
+    "výška wneki": "výška výklenku",
+    "výška wnęki (cm)": "výška výklenku (cm)",
+    "výška wnęki": "výška výklenku",
+    "rodzaj zamka": "typ zámku",
+    "rodzaj zawiasow": "typ závěsů",
+    "rodzaj zawiasów": "typ závěsů",
+    "rodzaj wzoru": "typ vzoru",
+    "rodzaj folii": "typ fólie",
+    "rodzaj kolek w systemie": "typ koleček v systému",
     "rodzaj szkła": "typ skla",
     "rodzaj szkla": "typ skla",
+    "kolor futryny": "barva zárubně",
+    "kolor wspornikow": "barva konzol",
+    "kolor wsporników": "barva konzol",
+    "kolor folii": "barva fólie",
+    "kolor szkla": "barva skla",
+    "kolor szkła": "barva skla",
+    "kolor spigotow": "barva spigotů",
+    "kolor spigotów": "barva spigotů",
+    "opaski szerokosc": "šířka lišt",
+    "opaski szerokość": "šířka lišt",
+    "podciecie wentylacyjne": "ventilační podříznutí",
+    "podcięcie wentylacyjne": "ventilační podříznutí",
+    "zakres regulacji futryny": "rozsah regulace zárubně",
+    "uszczelka sylikonowa": "silikonové těsnění",
+    "uszczelka silikonowa": "silikonové těsnění",
+    "opcja skrecenia dveře": "možnost sešroubování dveří",
+    "opcja skręcenia drzwi": "možnost sešroubování dveří",
+    "opcja skrecenia drzwi": "možnost sešroubování dveří",
+    "system przesuwny wariant": "varianta posuvného systému",
+    "grubosc ocieplenia": "tloušťka zateplení",
+    "grubość ocieplenia": "tloušťka zateplení",
+    "rozety maskujace": "krycí rozety",
+    "rozety maskujące": "krycí rozety",
+    "grubosc skla": "tloušťka skla",
+    "grubość szkła": "tloušťka skla",
+    "wymiary szkla": "rozměry skla",
+    "wymiary szkła": "rozměry skla",
+    "funkcja symetric": "funkce Symmetric",
     "pochwyt do drzwi": "madlo",
     "uchwyt do drzwi": "madlo",
+    "uchwyty": "úchyty",
+    "uchwyt": "úchyt",
     "kolor mocowań": "barva kování",
     "kolor mocowan": "barva kování",
     "stronność": "strana",
     "stronnosc": "strana",
+    "strona matná (szorstka)": "strana matná (drsná)",
+    "strona matna (szorstka)": "strana matná (drsná)",
     "wymiary wnęki na szerokość": "šířka výklenku",
     "wymiary wneki na szerokosc": "šířka výklenku",
     "wymiary wnęki na wysokość": "výška výklenku",
     "wymiary wneki na wysokosc": "výška výklenku",
     "wymiar drzwi": "rozměr dveří",
     "wymiary drzwi": "rozměry dveří",
+    "wymiar": "rozměr",
+    "wymiary": "rozměry",
+    "powierzchnia": "povrch",
+    "zawiasy": "závěsy",
     "samodomyk": "samozavírač / tichý domyk",
     "cichy domyk": "tichý domyk",
+    "domykacz": "samozavírač",
     # choice values
     "czarny mat": "černý mat",
+    "czarny": "černý",
     "drzwi lewe": "levé dveře",
     "drzwi prawe": "pravé dveře",
+    "zawiasy po prawej stronie": "závěsy vpravo",
+    "zawiasy po lewej stronie": "závěsy vlevo",
+    "po prawej stronie": "vpravo",
+    "po lewej stronie": "vlevo",
+    "z lewej strony": "zleva",
+    "z prawej strony": "zprava",
+    "lewej strony": "levé strany",
+    "prawej strony": "pravé strany",
+    "obustronnie": "oboustranně",
+    "obustronny": "oboustranný",
+    "tak - obustronnie": "ano – oboustranně",
+    "tak / obustronnie": "ano / oboustranně",
+    "tak - obustronny": "ano – oboustranný",
+    "kotwa montazowa": "montážní kotva",
+    "kotwa montażowa": "montážní kotva",
+    "kotwa porotherm": "kotva Porotherm",
+    "kotwa kotwa": "kotva",
     "lewe": "levé",
     "prawe": "pravé",
-    "antaba": "madlo antaba",
+    # keep product loanwords idempotent on retranslate
+    "madlo antaba": "madlo antaba",
+    "pochwyt do drzwi typu antaba": "madlo typu antaba",
+    "antaba": "antaba",
     "muszelka": "mušle",
     "satyna": "satin",
     "tak - 1 szt": "ano – 1 ks",
     "tak - 2 szt": "ano – 2 ks",
+    "tak - 3 szt": "ano – 3 ks",
+    "tak - 4 szt": "ano – 4 ks",
     "tak - 1 szt.": "ano – 1 ks",
     "tak - 2 szt.": "ano – 2 ks",
+    "tak - 3 szt.": "ano – 3 ks",
+    "tak - 4 szt.": "ano – 4 ks",
+    "tak - 4 ks": "ano – 4 ks",
+    "tak - 3 ks": "ano – 3 ks",
+    "szt.": "ks",
+    "szt": "ks",
     "nie": "ne",
+    "tak": "ano",
     "bezbarwne": "čiré",
+    "bezbarwna": "čirá",
+    "bezbarwny": "čirý",
     "matowe": "matné",
+    "matowa": "matná",
     "grafitowe": "grafitové",
     "przezroczyste": "čiré",
+    "ciemny niebieski mat": "tmavě modrý mat",
+    "tyg.": "týd.",
+    "uchwyty bokiem, dolem silikon": "úchyty ze strany, zespodu silikon",
+    "uchwyty bokiem i dolem": "úchyty ze strany a zespodu",
+    "bokiem": "ze strany",
+    "dolem": "zespodu",
     # description phrases
     "zabudowa szklana składająca się drzwi wahadłowych oraz z dwóch ścianek stałych":
         "Skleněné zabudování složené z kyvných dveří a dvou pevných příček",
     "zabudowa szklana składająca się z drzwi wahadłowych oraz z dwóch ścianek stałych":
         "Skleněné zabudování složené z kyvných dveří a dvou pevných příček",
-    "grubość szkła": "tloušťka skla",
     "esg hartowane": "ESG kalené",
     "hartowane": "kalené",
     "do wyboru kolor szkła": "na výběr barva skla",
     "do wyboru również kolor okuć": "na výběr také barva kování",
     "w zestawie": "v sadě",
     "zestaw obejmuje": "sada obsahuje",
-    "pochwyt do drzwi typu antaba": "madlo typu antaba",
     "samozamykacz bez wkuwania": "samozavírač bez zasekání",
     "zawias górny": "horní závěs",
     "trzpień sufitowy": "stropní čep",
@@ -137,8 +234,14 @@ OPTION_WORD_MAP: dict[str, str] = {
     "nie przekraczający": "nepřesahující",
     "przyjmujemy, że drzwi będą mieć": "počítáme, že dveře budou mít",
     "ścianki stałe": "pevné příčky",
+    "scianki stale": "pevné příčky",
     "w zależności od podanego wymiaru wnęki": "podle uvedeného rozměru výklenku",
     "wysokość": "výška",
+    "wysokosc": "výška",
+    "szerokość": "šířka",
+    "szerokosc": "šířka",
+    "wnęki": "výklenku",
+    "wneki": "výklenku",
     "maksymalnie": "maximálně",
     "jeśli mają państwo inne wymiary": "pokud máte jiné rozměry",
     "prosimy o maila wtedy dokonamy wyceny": "napište e-mail — připravíme nabídku",
@@ -164,6 +267,14 @@ OPTION_WORD_MAP: dict[str, str] = {
     "qubaglass": "",
 }
 
+# Polish-only letters → ASCII (Czech diacritics kept elsewhere)
+_PL_DIACRITICS = str.maketrans({
+    "ą": "a", "ć": "c", "ę": "e", "ł": "l", "ń": "n",
+    "ó": "o", "ś": "s", "ź": "z", "ż": "z",
+    "Ą": "A", "Ć": "C", "Ę": "E", "Ł": "L", "Ń": "N",
+    "Ó": "O", "Ś": "S", "Ź": "Z", "Ż": "Z",
+})
+
 
 _SURCHARGE_RE = re.compile(
     r"\(\+\s*([\d\s\u00a0\u202f]+[,.]?\d*)\s*zł\)",
@@ -183,6 +294,23 @@ def polite_sleep() -> None:
     time.sleep(random.uniform(DELAY_MIN, DELAY_MAX))
 
 
+def fold_pl(text: str) -> str:
+    """Fold Polish diacritics for matching (Czech diacritics left intact)."""
+    return text.translate(_PL_DIACRITICS)
+
+
+def strip_pl_diacritics(text: str) -> str:
+    """Remove leftover Polish-only diacritics from output text."""
+    # Keep Czech letters; fold Polish-only: ąęłńśźżć (ó shared — leave if already Czech context)
+    table = str.maketrans({
+        "ą": "a", "ć": "c", "ę": "e", "ł": "l", "ń": "n",
+        "ś": "s", "ź": "z", "ż": "z",
+        "Ą": "A", "Ć": "C", "Ę": "E", "Ł": "L", "Ń": "N",
+        "Ś": "S", "Ź": "Z", "Ż": "Z",
+    })
+    return text.translate(table)
+
+
 def translate_text(text: str) -> str:
     """Translate option labels / description fragments to Czech."""
     if not text:
@@ -193,19 +321,64 @@ def translate_text(text: str) -> str:
     for pl, cs in items:
         if not pl:
             continue
-        pattern = re.compile(rf"(?<!\w){re.escape(pl)}(?!\w)", re.IGNORECASE)
-        result = pattern.sub(cs, result)
+        # Match with and without Polish diacritics
+        variants = {pl, fold_pl(pl)}
+        for variant in sorted(variants, key=len, reverse=True):
+            pattern = re.compile(rf"(?<!\w){re.escape(variant)}(?!\w)", re.IGNORECASE)
+            result = pattern.sub(cs, result)
     result = translate_name(result)
     # Cleanup leftover Polish manufacturer / empty bits
     result = re.sub(r"\bQuba\s*Glass\b", "", result, flags=re.I)
     result = re.sub(r"\bQubaglass\b", "", result, flags=re.I)
+    result = strip_pl_diacritics(result)
     result = re.sub(r"\s{2,}", " ", result).strip(" ,;/-:")
     result = re.sub(r"(?i)\botočné\b", "kyvné", result)
     result = re.sub(r"(?i)\bwahadłowe\b", "kyvné", result)
     result = re.sub(r"(?i)\bwahadlowe\b", "kyvné", result)
+    result = re.sub(r"(?i)\bmadlo madlo\b", "madlo", result)
     if result:
         result = result[0].upper() + result[1:] if result[0].islower() else result
     return result
+
+
+def retranslate_product(detail: dict[str, Any]) -> dict[str, Any]:
+    """Re-apply Czech translation on an already-scraped product (no HTTP)."""
+    out = dict(detail)
+    if out.get("description"):
+        out["description"] = translate_text(str(out["description"]))
+    out["includes"] = [
+        translate_text(str(x)) for x in (out.get("includes") or []) if str(x).strip()
+    ]
+    options: list[dict[str, Any]] = []
+    for g in out.get("options") or []:
+        if not isinstance(g, dict):
+            continue
+        choices = []
+        for c in g.get("choices") or []:
+            if not isinstance(c, dict):
+                continue
+            name = translate_text(str(c.get("name") or ""))
+            if not name:
+                continue
+            choices.append({**c, "name": name})
+        options.append(
+            {
+                **g,
+                "label": translate_text(str(g.get("label") or "")),
+                "choices": choices,
+            }
+        )
+    out["options"] = options
+    if out.get("availability"):
+        out["availability"] = translate_text(str(out["availability"]))
+    files = []
+    for f in out.get("files") or []:
+        if isinstance(f, dict) and f.get("title"):
+            files.append({**f, "title": translate_text(str(f["title"]))})
+        else:
+            files.append(f)
+    out["files"] = files
+    return out
 
 
 def parse_surcharge_pln(raw: str | None) -> float | None:
@@ -597,6 +770,11 @@ def main() -> None:
     parser.add_argument("--limit", type=int, default=0, help="Max new products to scrape")
     parser.add_argument("--only", type=str, default="", help="Comma-separated quba ids")
     parser.add_argument("--force", action="store_true", help="Re-scrape even if present")
+    parser.add_argument(
+        "--retranslate",
+        action="store_true",
+        help="Re-apply Czech option/description translation on existing product_details.json (no HTTP)",
+    )
     parser.add_argument("--save-every", type=int, default=25)
     args = parser.parse_args()
 
@@ -606,9 +784,28 @@ def main() -> None:
         datefmt="%H:%M:%S",
     )
 
+    if args.retranslate:
+        existing = load_existing(args.out)
+        store: dict[str, Any] = existing.setdefault("products", {})
+        only_ids = {x.strip() for x in args.only.split(",") if x.strip()} if args.only else set()
+        changed = 0
+        for url, prod in list(store.items()):
+            if not isinstance(prod, dict) or not prod.get("scraped_ok"):
+                continue
+            qid = str(prod.get("quba_id") or url.rstrip("/").split("/")[-1])
+            if only_ids and qid not in only_ids:
+                continue
+            updated = retranslate_product(prod)
+            if updated != prod:
+                changed += 1
+            store[url] = updated
+        save_out(args.out, existing)
+        log.info("Retranslated %d / %d products → %s", changed, len(store), args.out)
+        return
+
     products = load_katalog(args.katalog)
     existing = load_existing(args.out)
-    store: dict[str, Any] = existing.setdefault("products", {})
+    store = existing.setdefault("products", {})
 
     only_ids = {x.strip() for x in args.only.split(",") if x.strip()} if args.only else set()
 
