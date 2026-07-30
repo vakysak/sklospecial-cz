@@ -40,7 +40,8 @@ $children = is_array($cat['children'] ?? null) ? $cat['children'] : [];
             $title = (string) ($child['title'] ?? '');
             $text  = (string) ($child['text'] ?? '');
             $price = $child['price'] ?? null;
-            $img   = !empty($child['image']) ? trailingslashit($uploads) . $child['image'] : '';
+            $raw   = (string) ($child['image'] ?? '');
+            $img   = $raw === '' ? '' : (str_starts_with($raw, 'http') ? $raw : trailingslashit($uploads) . $raw);
             $url   = home_url('/sklenene-dvere/' . $slug . '/');
             ?>
           <a class="sklo-katalog-card" href="<?php echo esc_url($url); ?>">

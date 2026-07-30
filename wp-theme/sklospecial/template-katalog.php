@@ -83,7 +83,8 @@ $has_section_nav = count($sections) > 1;
               $ctitle = (string) ($child['title'] ?? '');
               $ctext  = (string) ($child['text'] ?? '');
               $cprice = $child['price'] ?? null;
-              $cimg   = !empty($child['image']) ? trailingslashit($uploads) . $child['image'] : '';
+              $craw   = (string) ($child['image'] ?? '');
+              $cimg   = $craw === '' ? '' : (str_starts_with($craw, 'http') ? $craw : trailingslashit($uploads) . $craw);
               $curl   = $parent !== '' || $slug === 'sklenene-dvere'
                   ? home_url('/' . $slug . '/' . $cslug . '/')
                   : home_url('/' . $cslug . '/');
