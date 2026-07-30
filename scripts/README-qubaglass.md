@@ -2,7 +2,7 @@
 
 Internal tool for reviewing the public [qubaglass.pl](https://qubaglass.pl) catalog (Shoper.pl) before a possible reseller partnership. Output is **CSV + JSON only** — nothing is pushed to live WordPress.
 
-Sklospecial live WP is **not** Shoptet. This CSV is for review / import prep; Shoptet-style mapping can be a later step if needed.
+Sklospecial live WP is **not** Shoptet. For a Shoptet shop, regenerate the mapped import with `export_shoptet.py` (see below).
 
 ## Pricing
 
@@ -47,10 +47,32 @@ Useful flags:
 |------|-------------|
 | `scripts/output/qubaglass_katalog.csv` | UTF-8 BOM CSV for spreadsheet review |
 | `scripts/output/qubaglass_katalog.json` | Same data, easier for scripts |
+| `scripts/output/shoptet_import.csv` | Shoptet product import (UTF-8 BOM, `;`) |
 
 CSV columns: `Název`, `Kategorie`, `Cena (CZK)`, `Cena původní (PLN)`, `URL obrázku`, `URL produktu (zdroj)`, `Popis krátký`.
 
 **Images are URL-only by default.** Do not upload scraped supplier photos into live WordPress media or publish product pages with them until usage rights / partnership are clear. Use data for internal prep only.
+
+## Shoptet import
+
+After a scrape (or whenever the katalog CSV/JSON changes):
+
+```bash
+python3 scripts/export_shoptet.py
+# optional: --in scripts/output/qubaglass_katalog.json
+```
+
+This writes `scripts/output/shoptet_import.csv` (semicolon-delimited, UTF-8 with BOM). XLSX is written only if `openpyxl` is installed; CSV alone is enough for Shoptet.
+
+**Import in admin:** Produkty → Import → upload `shoptet_import.csv`.
+
+Notes:
+
+- Codes are stable by source row order: `QG-0001` … `QG-0345`.
+- `price` = CZK with 45 % margin; `purchasePrice` = `round(PLN × 5.8)` (cost before margin).
+- `includingVat` = `1` (B2C prices including VAT). Switch to `0` in the export script / CSV if your Shoptet catalog uses prices without VAT.
+- `percentVat` = `21`; `defaultCategory` = `Skleněné dveře|{Kategorie}`; supplier/manufacturer = `Quba Glass`.
+- Category label **Linie Luxe** (not „Prémiová linie Luxe“).
 
 ## Legal / usage note
 
