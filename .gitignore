@@ -9,3 +9,5 @@ uploads/poptavky/**
 !uploads/poptavky/.gitkeep
 *.log
 .env.coolify.local
+scripts/.venv/
+scripts/output/images/
