@@ -46,9 +46,16 @@ foreach ($raw_sections as $sec) {
     $sections[] = $sec;
 }
 $has_section_nav = count($sections) > 1;
+
+$kod = isset($_GET['kod']) ? sanitize_text_field(wp_unslash((string) $_GET['kod'])) : '';
+$detail_product = $kod !== '' ? sklo_produkt_by_code($kod) : null;
+$back_url = (string) get_permalink();
 ?>
 
-<article class="sklo-katalog<?php echo $is_hub ? ' sklo-katalog--hub' : ''; ?><?php echo $has_section_nav ? ' sklo-katalog--filtered' : ''; ?>">
+<article class="sklo-katalog<?php echo $is_hub ? ' sklo-katalog--hub' : ''; ?><?php echo $has_section_nav ? ' sklo-katalog--filtered' : ''; ?><?php echo $detail_product ? ' sklo-katalog--detail' : ''; ?>">
+  <?php if ($detail_product !== null) : ?>
+    <?php sklo_render_produkt_detail($detail_product, $back_url); ?>
+  <?php else : ?>
   <header class="sklo-katalog__hero">
     <div class="sklo-wrap">
       <?php if (!empty($cat['eyebrow'])) : ?>
@@ -359,6 +366,7 @@ $has_section_nav = count($sections) > 1;
       </div>
     </div>
   </section>
+  <?php endif; ?>
 </article>
 
 <div class="sklo-lightbox" data-lightbox hidden>

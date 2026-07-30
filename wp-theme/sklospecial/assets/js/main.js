@@ -208,3 +208,25 @@
     apply(hash, { scroll: true });
   }
 })();
+
+(() => {
+  const root = document.querySelector('[data-sklo-pdetail]');
+  if (!root) return;
+  const mainImg = root.querySelector('[data-sklo-pdetail-main]');
+  const mainBtn = root.querySelector('.sklo-pdetail__main[data-lightbox-open]');
+  const thumbs = Array.from(root.querySelectorAll('[data-sklo-pdetail-thumb]'));
+  if (!mainImg || !thumbs.length) return;
+
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', (e) => {
+      // Swap main preview; lightbox still available via data-lightbox-open on thumb/main
+      const src = thumb.getAttribute('data-src') || '';
+      if (!src) return;
+      e.preventDefault();
+      e.stopPropagation();
+      mainImg.src = src;
+      if (mainBtn) mainBtn.setAttribute('data-src', src);
+      thumbs.forEach((t) => t.classList.toggle('is-active', t === thumb));
+    });
+  });
+})();

@@ -286,7 +286,84 @@ def load_rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(fh))
 
 
-def to_shoptet_row(index: int, raw: dict[str, str]) -> dict[str, str]:
+def load_product_details() -> dict[str, dict]:
+    """Load scraped PDP details keyed by quba id."""
+    path = Path("scripts/output/product_details.json")
+    if not path.is_file():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    products = data.get("products") or {}
+    by_id: dict[str, dict] = {}
+    values = products.values() if isinstance(products, dict) else products
+    for d in values:
+        if not isinstance(d, dict) or not d.get("scraped_ok"):
+            continue
+        qid = str(d.get("quba_id") or "").strip()
+        if qid:
+            by_id[qid] = d
+    return by_id
+
+
+def detail_description_html(detail: dict, fallback: str) -> str:
+    """Build Shoptet long description from scraped Czech detail."""
+    parts: list[str] = []
+    desc = clean_text(str(detail.get("description") or ""))
+    desc = re.sub(r"(?i)\botočné\b", "kyvné", desc)
+    if desc:
+        for para in re.split(r"\n+", desc):
+            para = para.strip()
+            if not para:
+                continue
+            parts.append(f"<p>{para}</p>")
+    includes = detail.get("includes") or []
+    if includes:
+        parts.append("<p><strong>V sadě:</strong></p><ul>")
+        for item in includes:
+            t = clean_text(str(item))
+            if t:
+                parts.append(f"<li>{t}</li>")
+        parts.append("</ul>")
+    options = detail.get("options") or []
+    option_lines: list[str] = []
+    for g in options:
+        if not isinstance(g, dict):
+            continue
+        label = clean_text(str(g.get("label") or ""))
+        choices = g.get("choices") or []
+        if not choices:
+            if label:
+                option_lines.append(f"{label}: zadáš při poptávce")
+            continue
+        bits = []
+        for c in choices:
+            if not isinstance(c, dict):
+                continue
+            name = clean_text(str(c.get("name") or ""))
+            sur = int(c.get("surcharge_czk") or 0)
+            if not name:
+                continue
+            bits.append(f"{name} (+ {sur} Kč)" if sur > 0 else name)
+        if label and bits:
+            option_lines.append(f"{label}: " + "; ".join(bits))
+    if option_lines:
+        parts.append("<p><strong>Možnosti a doplatky:</strong></p><ul>")
+        for line in option_lines:
+            parts.append(f"<li>{line}</li>")
+        parts.append("</ul>")
+    ship = detail.get("shipping_days")
+    if ship:
+        parts.append(f"<p>Expedice cca {int(ship)} pracovních dní.</p>")
+    parts.append(
+        "<p>Finální nabídka podle rozměrů a zvolených doplňků. Orientační ceny. Výrobce: Sklospeciál.</p>"
+    )
+    html = "\n".join(parts).strip()
+    return html or fallback
+
+
+def to_shoptet_row(index: int, raw: dict[str, str], details: dict[str, dict] | None = None) -> dict[str, str]:
     code = f"SklS-{index:04d}"
     category = clean_category(raw.get("Kategorie") or "")
     name = clean_product_name(raw.get("Název") or "", category)
@@ -307,12 +384,25 @@ def to_shoptet_row(index: int, raw: dict[str, str]) -> dict[str, str]:
     purchase = int(round(pln * PLN_TO_CZK))
 
     description = long_description(name, category)
+    part_number = quba_part_number(source_url)
+    if details and part_number and part_number in details:
+        d = details[part_number]
+        description = detail_description_html(d, description)
+        # Enrich short with first option labels if stubby
+        opts = d.get("options") or []
+        labels = [
+            clean_text(str(g.get("label") or ""))
+            for g in opts
+            if isinstance(g, dict) and g.get("label")
+        ]
+        if labels and len(short) < 80:
+            short = clean_text(f"{name}. Možnosti: " + ", ".join(labels[:4]) + ".")
+
     meta = short[:150].rstrip()
     if len(short) > 150:
         meta = meta[:147].rstrip() + "…"
 
     default_cat, category_text = shoptet_category_path(category)
-    part_number = quba_part_number(source_url)
 
     return {
         "code": code,
@@ -420,7 +510,8 @@ def main() -> None:
             raise SystemExit(f"Source not found: {args.input_path}")
 
     raw_rows = load_rows(source)
-    products = [to_shoptet_row(i, row) for i, row in enumerate(raw_rows, start=1)]
+    details = load_product_details()
+    products = [to_shoptet_row(i, row, details) for i, row in enumerate(raw_rows, start=1)]
 
     csv_path = args.out_dir / "shoptet_import.csv"
     cats_path = args.out_dir / "shoptet_categories.txt"
