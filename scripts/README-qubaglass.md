@@ -117,7 +117,9 @@ Also create availability name **Na objednávku** if it does not exist yet.
 | `image` | absolute `https://` URL (Shoptet fetches on import) |
 | `defaultCategory` | hierarchy with ` > ` |
 | `categoryText` | parent breadcrumb when useful |
-| `supplier` / `manufacturer` | `Quba Glass` |
+| `supplier` | `Quba Glass` (order / supplier mapping) |
+| `manufacturer` | `Sklospeciál` (public brand) |
+| `partNumber` | Quba numeric product id from source URL |
 | `productVisibility` | `visible` |
 | `unit` | `ks` |
 | `itemType` | `product` |

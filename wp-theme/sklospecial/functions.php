@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.5.2');
+define('SKLO_THEME_VER', '1.5.3');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
@@ -40,9 +40,9 @@ add_filter('document_title_parts', function (array $parts): array {
 
 add_action('wp_head', function (): void {
     if (is_front_page()) {
-        $desc = 'Zaměř otvor, pošli fotky a navrhni si dveře online. Otočné, posuvné i celoskleněné. Nabídku připravíme podle tvých rozměrů.';
+        $desc = 'Zaměř otvor, pošli fotky a navrhni si dveře online. Kyvné, posuvné i celoskleněné. Nabídku připravíme podle tvých rozměrů.';
     } elseif (is_page('realizace')) {
-        $desc = 'Galerie hotových skleněných dveří — otočné, posuvné i celoskleněné v bytech a kancelářích. Podívej se na realizace a navrhni si vlastní.';
+        $desc = 'Galerie hotových skleněných dveří — kyvné, posuvné i celoskleněné v bytech a kancelářích. Podívej se na realizace a navrhni si vlastní.';
     } else {
         return;
     }
@@ -101,7 +101,7 @@ function sklo_nav_fallback(): void
             'Skleněné dveře',
             [
                 ['/sklenene-dvere/posuvne/', 'Posuvné'],
-                ['/sklenene-dvere/otocne/', 'Otočné'],
+                ['/sklenene-dvere/otocne/', 'Kyvné'],
                 ['/sklenene-dvere/otevirane/', 'Otevírané'],
                 ['/sklenene-dvere/vzory-skla/', 'Vzory'],
                 ['/sklenene-dvere/skladem/', 'Skladem'],

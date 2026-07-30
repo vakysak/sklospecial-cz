@@ -24,7 +24,8 @@ CSV_TO_SLUG: dict[str, tuple[str, str]] = {
     "Skleněné dveře > Posuvné dveře Loft": ("posuvne", "loft"),
     "Skleněné dveře > Posuvné dveře – trubkový systém": ("posuvne", "trubkovy-system"),
     "Skleněné dveře > Posuvné dveře do pouzdra": ("posuvne", "do-pouzdra"),
-    "Skleněné dveře > Otočné dveře": ("otocne", "otocne"),
+    "Skleněné dveře > Kyvné dveře": ("otocne", "otocne"),
+    "Skleněné dveře > Otočné dveře": ("otocne", "otocne"),  # legacy export alias
     "Skleněné dveře > Otevírané dveře": ("otevirane", "otevirane"),
     "Skleněné dveře > Dveře s pevnou zárubní": ("dvere-se-zarubni", "pevna"),
     "Skleněné dveře > Dveře s nastavitelnou zárubní": ("dvere-se-zarubni", "nastavitelna"),

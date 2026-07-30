@@ -110,9 +110,9 @@ function sklo_katalog(): array
         'sklenene-dvere' => [
             'title'       => 'Skleněné dveře na míru',
             'eyebrow'     => 'Katalog',
-            'lead'        => 'Vyrábíme skleněné dveře přesně podle tvého otvoru. Posuvné, otočné, otevírané i celoskleněné — vyber kategorii a doladíš detaily ve studiu.',
+            'lead'        => 'Vyrábíme skleněné dveře přesně podle tvého otvoru. Posuvné, kyvné, otevírané i celoskleněné — vyber kategorii a doladíš detaily ve studiu.',
             'seo_title'   => 'Skleněné dveře na míru — katalog | Sklospeciál',
-            'seo_desc'    => 'Posuvné, otočné, otevírané i celoskleněné dveře. Orientační ceny od, finální nabídka podle rozměrů. Navrhni si dveře online.',
+            'seo_desc'    => 'Posuvné, kyvné, otevírané i celoskleněné dveře. Orientační ceny od, finální nabídka podle rozměrů. Navrhni si dveře online.',
             'hub'         => true,
             'price_from'  => $od('posuvne', 10100),
             'children'    => [
@@ -125,8 +125,8 @@ function sklo_katalog(): array
                 ],
                 [
                     'slug'  => 'otocne',
-                    'title' => 'Otočné',
-                    'text'  => 'Klasické otevírání do místnosti nebo na chodbu. Spolehlivý chod, čistý detail.',
+                    'title' => 'Kyvné',
+                    'text'  => 'Otevírání oběma směry (wahadłowe) — pivot / samozavírač, ne obyčejné křídlo na pantech.',
                     'image' => 'prosklene-dvere-na-miru.webp',
                     'price' => $od('otocne', 9800),
                 ],
@@ -247,19 +247,19 @@ function sklo_katalog(): array
         ],
 
         'otocne' => [
-            'title'      => 'Otočné skleněné dveře',
-            'eyebrow'    => 'Katalog · Otočné',
-            'lead'       => 'Klasické otevírání na pantech nebo otočném mechanismu. Křídlo se otevírá do místnosti nebo na chodbu.',
-            'seo_title'  => 'Otočné skleněné dveře | Sklospeciál',
-            'seo_desc'   => 'Otočné skleněné dveře na míru. Orientační cena od — finální nabídka podle rozměrů a provedení.',
+            'title'      => 'Kyvné dveře (otočné)',
+            'eyebrow'    => 'Katalog · Kyvné',
+            'lead'       => 'Kyvné (wahadłowe) skleněné dveře — otevírání oběma směry na pivotu nebo samozavírači. Nejsou to obyčejná skleněná křídla na pantech; ty najdeš v kategorii Otevírané.',
+            'seo_title'  => 'Kyvné skleněné dveře (otočné) | Sklospeciál',
+            'seo_desc'   => 'Kyvné skleněné dveře wahadłowe — otevírání oběma směry. Orientační cena od, finální nabídka podle rozměrů.',
             'parent'     => 'sklenene-dvere',
             'price_from' => $od('otocne', 9800),
             'show_products' => true,
             'sections'   => [
                 [
                     'id'    => 'otocne',
-                    'title' => 'Otočné dveře',
-                    'lead'  => 'Hodí se tam, kde máš prostor pro pohyb křídla. Můžeš volit čiré i matné sklo a různé madla.',
+                    'title' => 'Kyvné dveře',
+                    'lead'  => 'Systém s pohybem oběma směry (často samozavírač). Vhodné do průchodů, kde potřebuješ volný průchod z obou stran.',
                     'price' => $od('otocne', 9800),
                     'image' => 'prosklene-dvere-na-miru.webp',
                 ],
@@ -270,7 +270,7 @@ function sklo_katalog(): array
         'otevirane' => [
             'title'      => 'Otevírané skleněné dveře',
             'eyebrow'    => 'Katalog · Otevírané',
-            'lead'       => 'Otevírané dveře na pantech — jasný pohyb, známé ovládání. Fungují tam, kde nepotřebuješ šetřit místo posuvem.',
+            'lead'       => 'Otevírané dveře na pantech (jedním směrem) — jasný pohyb, známé ovládání. Na rozdíl od kyvných (wahadłowe) se neotvírají oběma směry.',
             'seo_title'  => 'Otevírané skleněné dveře | Sklospeciál',
             'seo_desc'   => 'Otevírané skleněné dveře na míru. Vyber sklo, kování a rozměry.',
             'parent'     => 'sklenene-dvere',
@@ -462,7 +462,7 @@ function sklo_katalog(): array
                 [
                     'id'    => 'celosklenene',
                     'title' => 'Celoskleněné řešení',
-                    'lead'  => 'Když má být sklo hlavní. Rám ustoupí, světlo jde skrz. Můžeš kombinovat s otočným i posuvným systémem.',
+                    'lead'  => 'Když má být sklo hlavní. Rám ustoupí, světlo jde skrz. Můžeš kombinovat s kyvným i posuvným systémem.',
                     'image' => 'sklenene-dvere-do-obyvaciho-pokoje-3.webp',
                 ],
             ],

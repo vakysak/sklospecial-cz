@@ -4,7 +4,7 @@
   <div class="sklo-wrap sklo-footer__inner">
     <div class="sklo-footer__brand">
       <p class="sklo-footer__name">Sklospeciál</p>
-      <p class="sklo-footer__tag">Vyrábíme skleněné dveře na míru. Otočné, posuvné i celoskleněné — v rozměrech, které standardní výroba nenabídne. Pracujeme na dálku: zaměříš sám, pošleš fotky a ve studiu si složíš dveře. My připravíme nabídku.</p>
+      <p class="sklo-footer__tag">Vyrábíme skleněné dveře na míru. Kyvné, posuvné i celoskleněné — v rozměrech, které standardní výroba nenabídne. Pracujeme na dálku: zaměříš sám, pošleš fotky a ve studiu si složíš dveře. My připravíme nabídku.</p>
     </div>
     <nav class="sklo-footer__nav" aria-label="Patička">
       <?php

@@ -23,6 +23,7 @@ from urllib.parse import urljoin, urlparse
 PLN_TO_CZK = 5.8
 BASE_URL = "https://qubaglass.pl"
 SUPPLIER = "Quba Glass"
+MANUFACTURER = "Sklospeciál"
 
 BANNED_WORDS = re.compile(
     r"\b(luxusní|exkluzivní|prémiový|prémiová|prémiové)\b",
@@ -67,6 +68,7 @@ COLUMNS = [
     "categoryText",
     "supplier",
     "manufacturer",
+    "partNumber",
     "productVisibility",
     "unit",
     "itemType",
@@ -103,7 +105,29 @@ def clean_category(category: str) -> str:
         "Linie Luxe",
         category,
     )
+    # Wahadłowe / swing doors — public CZ label is „Kyvné“, not „Otočné“.
+    if category in {"Otočné dveře", "Kyvné dveře"}:
+        return "Kyvné dveře"
     return category.strip() or "Ostatní"
+
+
+def clean_product_name(name: str, category: str) -> str:
+    """Normalize names; map obsolete „otočné“ → „kyvné“ (wahadłowe)."""
+    del category  # reserved for future category-specific fixes
+    name = clean_text(name)
+    # Historic scraper mapped wahadłowe → otočné; public term is kyvné.
+    name = re.sub(r"(?i)\botočné\b", "kyvné", name)
+    name = re.sub(r"(?i)\botočna\b", "kyvná", name)
+    return name
+
+
+def quba_part_number(source_url: str) -> str:
+    """Numeric Quba product id from URL path (.../1107) for order mapping."""
+    path = urlparse(source_url or "").path.rstrip("/")
+    if not path:
+        return ""
+    tail = path.split("/")[-1]
+    return tail if tail.isdigit() else ""
 
 
 def shoptet_category_path(category: str) -> tuple[str, str]:
@@ -164,6 +188,11 @@ def long_description(name: str, category: str) -> str:
             f"{name}. Sklo. "
             "Orientační cena — finální nabídka podle typu a rozměrů."
         )
+    if cat == "Kyvné dveře":
+        return (
+            f"{name}. Kyvné (wahadłowe) skleněné dveře — otevírání oběma směry. "
+            "Orientační cena — finální nabídka podle rozměrů a provedení."
+        )
     return (
         f"{name}. Kategorie: {cat}. "
         "Orientační cena — finální nabídka podle rozměrů a provedení."
@@ -189,6 +218,8 @@ def short_description_for(name: str, category: str, existing: str) -> str:
         return f"{name}. Zrcadlo — na objednávku dle rozměrů."
     if cat in GLASS_CATEGORIES:
         return f"{name}. Sklo — na objednávku dle rozměrů a typu."
+    if cat == "Kyvné dveře":
+        return f"{name}. Kyvné skleněné dveře — otevírání oběma směry."
     return f"{name}. Cena zahrnuje systém a kování."
 
 
@@ -257,9 +288,12 @@ def load_rows(path: Path) -> list[dict[str, str]]:
 
 def to_shoptet_row(index: int, raw: dict[str, str]) -> dict[str, str]:
     code = f"QG-{index:04d}"
-    name = clean_text(raw.get("Název") or "")
     category = clean_category(raw.get("Kategorie") or "")
-    short = short_description_for(name, category, raw.get("Popis krátký") or "")
+    name = clean_product_name(raw.get("Název") or "", category)
+    source_url = raw.get("URL produktu (zdroj)") or ""
+    short_raw = raw.get("Popis krátký") or ""
+    short_raw = re.sub(r"(?i)\botočné\b", "kyvné", short_raw)
+    short = short_description_for(name, category, short_raw)
 
     try:
         price = int(float(str(raw.get("Cena (CZK)") or "0").replace(",", ".").replace(" ", "")))
@@ -278,6 +312,7 @@ def to_shoptet_row(index: int, raw: dict[str, str]) -> dict[str, str]:
         meta = meta[:147].rstrip() + "…"
 
     default_cat, category_text = shoptet_category_path(category)
+    part_number = quba_part_number(source_url)
 
     return {
         "code": code,
@@ -295,7 +330,8 @@ def to_shoptet_row(index: int, raw: dict[str, str]) -> dict[str, str]:
         "defaultCategory": default_cat,
         "categoryText": category_text,
         "supplier": SUPPLIER,
-        "manufacturer": SUPPLIER,
+        "manufacturer": MANUFACTURER,
+        "partNumber": part_number,
         "productVisibility": "visible",
         "unit": "ks",
         "itemType": "product",
@@ -306,7 +342,7 @@ def to_shoptet_row(index: int, raw: dict[str, str]) -> dict[str, str]:
         "freeShipping": "0",
         "seoTitle": name,
         "metaDescription": meta,
-        "externalId": external_id_from_url(raw.get("URL produktu (zdroj)") or "", code),
+        "externalId": external_id_from_url(source_url, code),
         "weight": "",
     }
 

@@ -96,7 +96,7 @@ $cfg = sklo_konfigurator_url();
       <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/')); ?>">
         <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/posuvne-sklenene-dvere-matne-sklo.webp" alt="Skleněné dveře" width="507" height="626" loading="lazy" decoding="async">
         <h3>Dveře</h3>
-        <p>Posuvné, otočné, otevírané i vzory skla.</p>
+        <p>Posuvné, kyvné, otevírané i vzory skla.</p>
       </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/sprchove-kouty/')); ?>">
         <img class="sklo-type__image" src="https://qubaglass.pl/environment/cache/images/productGfx_10851_700_700/kabina_szklana_kabiny_szklane_prysznicowe.jpg" alt="Skleněné sprchové kouty" width="400" height="400" loading="lazy" decoding="async">
