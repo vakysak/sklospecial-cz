@@ -25,9 +25,9 @@ from urllib.parse import urljoin, urlparse
 import requests
 from bs4 import BeautifulSoup
 
-# --- pricing: PLN × 5.8 × 1.04 (4% margin) ---
+# --- pricing: PLN × 5.8 × 1.45 (45% margin) ---
 PLN_TO_CZK = 5.8
-MARGIN = 1.04
+MARGIN = 1.45
 
 BASE_URL = "https://qubaglass.pl"
 DELAY_MIN = 0.8
@@ -382,7 +382,7 @@ def save_outputs(products: list[dict[str, Any]], out_dir: Path) -> tuple[Path, P
 
     payload = {
         "pricing": {
-            "formula": "price_czk = round(price_pln * 5.8 * 1.04)",
+            "formula": "price_czk = round(price_pln * 5.8 * 1.45)",
             "pln_to_czk": PLN_TO_CZK,
             "margin": MARGIN,
         },

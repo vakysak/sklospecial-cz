@@ -7,10 +7,14 @@ Sklospecial live WP is **not** Shoptet. This CSV is for review / import prep; Sh
 ## Pricing
 
 ```text
-price_czk = round(price_pln * 5.8 * 1.04)   # 4 % margin
+price_czk = round(price_pln * 5.8 * 1.45)   # 45 % margin
 ```
 
-Live WP door sections may still show older **45 %** orientation prices until you decide which margin is definitive. This scraper uses **4 %** only.
+Example: `899 PLN → round(899 × 5.8 × 1.45) = 7560 CZK`.
+
+Live WP curated door sections under `/sklenene-dvere/` use the same **45 %** orientation prices (see theme `inc/katalog-data.php`).
+
+Optional display note „od“ (from) is for WP templates only; scraper stores integer CZK without the prefix.
 
 ## Setup
 
