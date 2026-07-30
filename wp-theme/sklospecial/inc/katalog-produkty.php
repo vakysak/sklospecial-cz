@@ -76,7 +76,7 @@ function sklo_render_produkty_grid(string $slug, ?string $section = null, int $i
       <header class="sklo-section__head sklo-section__head--center">
         <p class="sklo-eyebrow">Produkty</p>
         <h2><?php echo $section ? 'Vybrané produkty' : 'Nabídka v této kategorii'; ?></h2>
-        <p><?php echo esc_html($total); ?> položek · <?php echo esc_html($note); ?></p>
+        <p><span data-sklo-produkty-count><?php echo esc_html((string) $total); ?></span> položek · <?php echo esc_html($note); ?></p>
       </header>
       <div class="sklo-produkty__grid" data-gallery>
         <?php foreach ($products as $i => $p) :
@@ -86,7 +86,14 @@ function sklo_render_produkty_grid(string $slug, ?string $section = null, int $i
             $code  = (string) ($p['code'] ?? '');
             $hidden = $i >= $initial;
             ?>
-          <article class="sklo-produkty__item<?php echo $hidden ? ' is-collapsed' : ''; ?>"<?php echo $hidden ? ' hidden' : ''; ?>>
+          <?php
+            $psec = (string) ($p['section'] ?? '');
+          ?>
+          <article
+            class="sklo-produkty__item<?php echo $hidden ? ' is-collapsed' : ''; ?>"
+            data-category="<?php echo esc_attr($psec); ?>"
+            <?php echo $hidden ? 'hidden' : ''; ?>
+          >
             <?php if ($img !== '') : ?>
               <button
                 type="button"

@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.5.1');
+define('SKLO_THEME_VER', '1.5.2');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';

@@ -31,9 +31,24 @@ $is_hub  = !empty($cat['hub']) && !empty($cat['children']);
 $children = is_array($cat['children'] ?? null) ? $cat['children'] : [];
 $parent   = (string) ($cat['parent'] ?? '');
 $price_from = $cat['price_from'] ?? null;
+
+$raw_sections = is_array($cat['sections'] ?? null) ? $cat['sections'] : [];
+$sections     = [];
+foreach ($raw_sections as $sec) {
+    if (!is_array($sec)) {
+        continue;
+    }
+    $sid = (string) ($sec['id'] ?? '');
+    $st  = (string) ($sec['title'] ?? '');
+    if ($sid === '' || $st === '') {
+        continue;
+    }
+    $sections[] = $sec;
+}
+$has_section_nav = count($sections) > 1;
 ?>
 
-<article class="sklo-katalog<?php echo $is_hub ? ' sklo-katalog--hub' : ''; ?>">
+<article class="sklo-katalog<?php echo $is_hub ? ' sklo-katalog--hub' : ''; ?><?php echo $has_section_nav ? ' sklo-katalog--filtered' : ''; ?>">
   <header class="sklo-katalog__hero">
     <div class="sklo-wrap">
       <?php if (!empty($cat['eyebrow'])) : ?>
@@ -94,43 +109,182 @@ $price_from = $cat['price_from'] ?? null;
     </section>
   <?php endif; ?>
 
-  <?php if (!empty($cat['sections']) && is_array($cat['sections'])) : ?>
-    <nav class="sklo-katalog__toc" aria-label="Sekce">
+  <?php if ($has_section_nav) : ?>
+    <section class="sklo-cat-cards-wrap" aria-label="Podkategorie">
       <div class="sklo-wrap">
-        <ul>
-          <?php foreach ($cat['sections'] as $sec) :
+        <div class="sklo-cat-cards">
+          <?php foreach ($sections as $sec) :
               $sid = (string) ($sec['id'] ?? '');
               $st  = (string) ($sec['title'] ?? '');
-              if ($sid === '' || $st === '') {
-                  continue;
+              $sec_price = $sec['price'] ?? null;
+
+              $sec_img = '';
+              if (!empty($sec['image'])) {
+                  $raw = (string) $sec['image'];
+                  $sec_img = str_starts_with($raw, 'http') ? $raw : trailingslashit($uploads) . $raw;
+              }
+              if ($sec_img === '') {
+                  $sec_img = sklo_katalog_section_image($slug, $sid);
               }
               ?>
-            <li><a href="#<?php echo esc_attr($sid); ?>"><?php echo esc_html($st); ?></a></li>
+            <button
+              type="button"
+              class="sklo-cat-card"
+              data-cat-filter="<?php echo esc_attr($sid); ?>"
+              aria-pressed="false"
+            >
+              <?php if ($sec_img !== '') : ?>
+                <img
+                  class="sklo-cat-card__image"
+                  src="<?php echo esc_url($sec_img); ?>"
+                  alt=""
+                  width="400"
+                  height="160"
+                  loading="lazy"
+                  decoding="async"
+                >
+              <?php else : ?>
+                <span class="sklo-cat-card__image sklo-cat-card__image--empty" aria-hidden="true"></span>
+              <?php endif; ?>
+              <span class="sklo-cat-card__overlay">
+                <span class="sklo-cat-card__title"><?php echo esc_html($st); ?></span>
+                <?php if ($sec_price) : ?>
+                  <span class="sklo-cat-card__price"><?php echo esc_html((string) $sec_price); ?></span>
+                <?php endif; ?>
+              </span>
+            </button>
           <?php endforeach; ?>
-        </ul>
+        </div>
+      </div>
+    </section>
+
+    <nav class="sklo-cat-nav" data-cat-nav aria-label="Filtr podkategorií">
+      <div class="sklo-wrap">
+        <div class="sklo-cat-nav__track" role="tablist">
+          <button type="button" class="sklo-cat-nav__chip is-active" data-cat-filter="" aria-pressed="true">
+            Vše
+          </button>
+          <?php foreach ($sections as $sec) :
+              $sid = (string) ($sec['id'] ?? '');
+              $st  = (string) ($sec['title'] ?? '');
+              ?>
+            <button
+              type="button"
+              class="sklo-cat-nav__chip"
+              data-cat-filter="<?php echo esc_attr($sid); ?>"
+              aria-pressed="false"
+            >
+              <?php echo esc_html($st); ?>
+            </button>
+          <?php endforeach; ?>
+        </div>
       </div>
     </nav>
 
-    <?php foreach ($cat['sections'] as $sec) :
-        $sid = (string) ($sec['id'] ?? '');
-        $sec_img = '';
-        if (!empty($sec['image'])) {
-            $raw = (string) $sec['image'];
-            $sec_img = str_starts_with($raw, 'http') ? $raw : trailingslashit($uploads) . $raw;
+    <?php
+    // Compact detail panels only when a section has richer content.
+    $rich_sections = [];
+    foreach ($sections as $sec) {
+        if (
+            !empty($sec['choosable'])
+            || !empty($sec['bestsellers'])
+            || !empty($sec['prices'])
+            || !empty($sec['patterns'])
+        ) {
+            $rich_sections[] = $sec;
         }
-        $sec_price = $sec['price'] ?? null;
-        ?>
-      <section class="sklo-katalog-sec" id="<?php echo esc_attr($sid); ?>">
-        <div class="sklo-wrap sklo-katalog-sec__grid<?php echo $sec_img ? '' : ' sklo-katalog-sec__grid--solo'; ?>">
+    }
+    ?>
+    <?php if ($rich_sections !== []) : ?>
+      <?php foreach ($rich_sections as $sec) :
+          $sid = (string) ($sec['id'] ?? '');
+          $sec_price = $sec['price'] ?? null;
+          ?>
+        <section class="sklo-katalog-sec sklo-katalog-sec--compact" id="<?php echo esc_attr($sid); ?>" data-cat-panel="<?php echo esc_attr($sid); ?>" hidden>
+          <div class="sklo-wrap sklo-katalog-sec__grid sklo-katalog-sec__grid--solo">
+            <div class="sklo-katalog-sec__copy">
+              <h2><?php echo esc_html((string) ($sec['title'] ?? '')); ?></h2>
+              <?php if (!empty($sec['lead'])) : ?>
+                <p><?php echo esc_html((string) $sec['lead']); ?></p>
+              <?php endif; ?>
+              <?php if ($sec_price) : ?>
+                <p class="sklo-katalog-sec__price"><?php echo esc_html((string) $sec_price); ?></p>
+              <?php endif; ?>
+
+              <?php if (!empty($sec['choosable']) && is_array($sec['choosable'])) : ?>
+                <h3 class="sklo-katalog-sec__sub">Co si vybereš</h3>
+                <ul class="sklo-katalog-list">
+                  <?php foreach ($sec['choosable'] as $item) : ?>
+                    <li><?php echo esc_html((string) $item); ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php endif; ?>
+
+              <?php if (!empty($sec['bestsellers']) && is_array($sec['bestsellers'])) : ?>
+                <h3 class="sklo-katalog-sec__sub">Nejčastější volby</h3>
+                <ul class="sklo-katalog-list sklo-katalog-list--inline">
+                  <?php foreach ($sec['bestsellers'] as $item) : ?>
+                    <li><?php echo esc_html((string) $item); ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php endif; ?>
+
+              <?php if (!empty($sec['prices']) && is_array($sec['prices'])) : ?>
+                <div class="sklo-katalog-prices">
+                  <?php foreach ($sec['prices'] as $price) :
+                      $label = (string) ($price['label'] ?? '');
+                      if (!empty($price['custom'])) {
+                          $display = (string) $price['custom'];
+                      } elseif (isset($price['od']) && $price['od'] !== null) {
+                          $display = sklo_format_cena_od((int) $price['od']);
+                      } else {
+                          $display = 'cena na dotaz';
+                      }
+                      ?>
+                    <div class="sklo-katalog-price">
+                      <span class="sklo-katalog-price__label"><?php echo esc_html($label); ?></span>
+                      <span class="sklo-katalog-price__val"><?php echo esc_html($display); ?></span>
+                    </div>
+                  <?php endforeach; ?>
+                  <p class="sklo-katalog-prices__note"><?php echo esc_html($note); ?></p>
+                </div>
+              <?php endif; ?>
+
+              <?php if (!empty($sec['patterns']) && is_array($sec['patterns'])) : ?>
+                <dl class="sklo-katalog-patterns">
+                  <?php foreach ($sec['patterns'] as $pat) : ?>
+                    <div class="sklo-katalog-patterns__row">
+                      <dt><?php echo esc_html((string) ($pat['code'] ?? '')); ?></dt>
+                      <dd><?php echo esc_html((string) ($pat['cs'] ?? '')); ?></dd>
+                    </div>
+                  <?php endforeach; ?>
+                </dl>
+              <?php endif; ?>
+            </div>
+          </div>
+        </section>
+      <?php endforeach; ?>
+    <?php endif; ?>
+  <?php elseif (count($sections) === 1) : ?>
+    <?php
+    $sec = $sections[0];
+    $sid = (string) ($sec['id'] ?? '');
+    $sec_price = $sec['price'] ?? null;
+    $has_rich = !empty($sec['choosable']) || !empty($sec['bestsellers']) || !empty($sec['prices']) || !empty($sec['patterns']);
+    ?>
+    <?php if ($has_rich || !empty($sec['lead'])) : ?>
+      <section class="sklo-katalog-sec sklo-katalog-sec--compact" id="<?php echo esc_attr($sid); ?>">
+        <div class="sklo-wrap sklo-katalog-sec__grid sklo-katalog-sec__grid--solo">
           <div class="sklo-katalog-sec__copy">
-            <h2><?php echo esc_html((string) ($sec['title'] ?? '')); ?></h2>
-            <?php if (!empty($sec['lead'])) : ?>
+            <?php if ($has_rich) : ?>
+              <h2><?php echo esc_html((string) ($sec['title'] ?? '')); ?></h2>
+            <?php endif; ?>
+            <?php if (!empty($sec['lead']) && $has_rich) : ?>
               <p><?php echo esc_html((string) $sec['lead']); ?></p>
             <?php endif; ?>
-            <?php if ($sec_price) : ?>
+            <?php if ($sec_price && $has_rich) : ?>
               <p class="sklo-katalog-sec__price"><?php echo esc_html((string) $sec_price); ?></p>
             <?php endif; ?>
-
             <?php if (!empty($sec['choosable']) && is_array($sec['choosable'])) : ?>
               <h3 class="sklo-katalog-sec__sub">Co si vybereš</h3>
               <ul class="sklo-katalog-list">
@@ -139,7 +293,6 @@ $price_from = $cat['price_from'] ?? null;
                 <?php endforeach; ?>
               </ul>
             <?php endif; ?>
-
             <?php if (!empty($sec['bestsellers']) && is_array($sec['bestsellers'])) : ?>
               <h3 class="sklo-katalog-sec__sub">Nejčastější volby</h3>
               <ul class="sklo-katalog-list sklo-katalog-list--inline">
@@ -148,7 +301,6 @@ $price_from = $cat['price_from'] ?? null;
                 <?php endforeach; ?>
               </ul>
             <?php endif; ?>
-
             <?php if (!empty($sec['prices']) && is_array($sec['prices'])) : ?>
               <div class="sklo-katalog-prices">
                 <?php foreach ($sec['prices'] as $price) :
@@ -169,7 +321,6 @@ $price_from = $cat['price_from'] ?? null;
                 <p class="sklo-katalog-prices__note"><?php echo esc_html($note); ?></p>
               </div>
             <?php endif; ?>
-
             <?php if (!empty($sec['patterns']) && is_array($sec['patterns'])) : ?>
               <dl class="sklo-katalog-patterns">
                 <?php foreach ($sec['patterns'] as $pat) : ?>
@@ -181,22 +332,9 @@ $price_from = $cat['price_from'] ?? null;
               </dl>
             <?php endif; ?>
           </div>
-
-          <?php if ($sec_img) : ?>
-            <figure class="sklo-katalog-sec__media">
-              <img
-                src="<?php echo esc_url($sec_img); ?>"
-                alt="<?php echo esc_attr((string) ($sec['title'] ?? '')); ?>"
-                loading="lazy"
-                decoding="async"
-                width="626"
-                height="417"
-              >
-            </figure>
-          <?php endif; ?>
         </div>
       </section>
-    <?php endforeach; ?>
+    <?php endif; ?>
   <?php endif; ?>
 
   <?php

@@ -56,6 +56,25 @@ function sklo_katalog_sample_image(string $slug, string $fallback = ''): string
 }
 
 /**
+ * First product image for a category section (subcategory thumb).
+ */
+function sklo_katalog_section_image(string $slug, string $section, string $fallback = ''): string
+{
+    if ($section === '') {
+        return $fallback;
+    }
+    $bundle = function_exists('sklo_produkty_for_slug') ? sklo_produkty_for_slug($slug) : null;
+    if ($bundle && !empty($bundle['products'])) {
+        foreach ($bundle['products'] as $p) {
+            if ((string) ($p['section'] ?? '') === $section && !empty($p['image'])) {
+                return (string) $p['image'];
+            }
+        }
+    }
+    return $fallback;
+}
+
+/**
  * @return array<string, array<string, mixed>>
  */
 function sklo_katalog(): array

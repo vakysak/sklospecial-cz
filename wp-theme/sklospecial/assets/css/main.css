@@ -1159,7 +1159,7 @@ a:hover { color: var(--accent-hover); }
 
 /* —— Katalog —— */
 .sklo-katalog__hero {
-  padding: 4.5rem 0 2.5rem;
+  padding: 2.75rem 0 1.5rem;
   border-bottom: 1px solid var(--line);
   background:
     radial-gradient(700px 320px at 80% 0%, rgba(201, 169, 110, 0.1), transparent 55%),
@@ -1167,8 +1167,8 @@ a:hover { color: var(--accent-hover); }
 }
 
 .sklo-katalog__hero h1 {
-  margin: 0.35rem 0 0.85rem;
-  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  margin: 0.25rem 0 0.55rem;
+  font-size: clamp(2.1rem, 4.5vw, 3.2rem);
   letter-spacing: 0.04em;
 }
 
@@ -1176,7 +1176,7 @@ a:hover { color: var(--accent-hover); }
   max-width: 40rem;
   margin: 0;
   color: var(--muted);
-  font-size: 1.08rem;
+  font-size: 1.02rem;
 }
 
 .sklo-katalog__hero-actions {
@@ -1187,42 +1187,159 @@ a:hover { color: var(--accent-hover); }
 }
 
 .sklo-katalog__back {
-  margin: 1.25rem 0 0;
+  margin: 1rem 0 0;
 }
 
-.sklo-katalog__toc {
-  padding: 1.25rem 0;
-  border-bottom: 1px solid var(--line);
-  background: rgba(36, 36, 36, 0.45);
+/* Compact subcategory cards */
+.sklo-cat-cards-wrap {
+  padding: 1.35rem 0 0.35rem;
 }
 
-.sklo-katalog__toc ul {
-  list-style: none;
-  margin: 0;
+.sklo-cat-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.sklo-cat-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 140px;
   padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.sklo-cat-card:hover,
+.sklo-cat-card:focus-visible {
+  border-color: rgba(201, 169, 110, 0.55);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.sklo-cat-card.is-active {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.sklo-cat-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.88) brightness(0.72);
+  transition: transform 0.35s ease, filter 0.25s ease;
+}
+
+.sklo-cat-card__image--empty {
+  display: block;
+  background:
+    linear-gradient(135deg, rgba(201, 169, 110, 0.12), transparent 55%),
+    var(--bg-secondary);
+}
+
+.sklo-cat-card:hover .sklo-cat-card__image,
+.sklo-cat-card.is-active .sklo-cat-card__image {
+  transform: scale(1.04);
+  filter: saturate(0.95) brightness(0.8);
+}
+
+.sklo-cat-card__overlay {
+  position: absolute;
+  inset: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem 1.25rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.15rem;
+  padding: 0.85rem 0.9rem;
+  background: linear-gradient(180deg, transparent 28%, rgba(15, 15, 15, 0.88) 100%);
+  pointer-events: none;
 }
 
-.sklo-katalog__toc a {
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 0.92rem;
+.sklo-cat-card__title {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--ink);
 }
 
-.sklo-katalog__toc a:hover {
+.sklo-cat-card__price {
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
   color: var(--accent);
 }
 
-.sklo-katalog-sec {
-  padding: 4rem 0;
+/* Sticky chip filter bar — editorial underline, not pills */
+.sklo-cat-nav {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 20;
+  padding: 0;
   border-bottom: 1px solid var(--line);
+  background: rgba(26, 26, 26, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.sklo-cat-nav__track {
+  display: flex;
+  gap: 0.15rem 1.35rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding: 0.85rem 0;
+}
+
+.sklo-cat-nav__chip {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0.35rem 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: var(--font);
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.sklo-cat-nav__chip:hover,
+.sklo-cat-nav__chip:focus-visible {
+  color: var(--ink);
+  outline: none;
+}
+
+.sklo-cat-nav__chip.is-active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.sklo-katalog-sec {
+  padding: 1.75rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.sklo-katalog-sec--compact {
+  padding: 1.25rem 0 1.5rem;
+  background: rgba(36, 36, 36, 0.28);
 }
 
 .sklo-katalog-sec:nth-child(even) {
   background: rgba(36, 36, 36, 0.35);
 }
+
 
 .sklo-katalog-sec__grid {
   display: grid;
@@ -1412,11 +1529,19 @@ a:hover { color: var(--accent-hover); }
 
 .sklo-katalog__from,
 .sklo-katalog-sec__price {
-  margin: 0.85rem 0 0;
+  margin: 0.55rem 0 0;
   font-family: var(--display);
-  font-size: 1.45rem;
+  font-size: 1.35rem;
   color: var(--accent);
   letter-spacing: 0.03em;
+}
+
+.sklo-produkty__item.is-filtered-out {
+  display: none !important;
+}
+
+.sklo-katalog--filtered .sklo-produkty.sklo-section {
+  padding-top: 2.25rem;
 }
 
 .sklo-produkty__grid {
@@ -1502,6 +1627,12 @@ a:hover { color: var(--accent-hover); }
   }
 }
 
+@media (max-width: 1100px) {
+  .sklo-cat-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 900px) {
   .sklo-katalog-sec__grid,
   .sklo-katalog-hub__grid {
@@ -1519,6 +1650,38 @@ a:hover { color: var(--accent-hover); }
 
   .sklo-produkty__grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sklo-katalog__hero {
+    padding: 2rem 0 1.15rem;
+  }
+
+  .sklo-cat-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.55rem;
+  }
+
+  .sklo-cat-card {
+    height: 118px;
+  }
+
+  .sklo-cat-card__title {
+    font-size: 1.02rem;
+  }
+
+  .sklo-cat-nav__track {
+    gap: 0.1rem 1.1rem;
+    padding: 0.7rem 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .sklo-cat-card {
+    height: 108px;
+  }
+
+  .sklo-cat-card__overlay {
+    padding: 0.65rem 0.7rem;
   }
 }
 
