@@ -88,20 +88,17 @@ def download_one(
     code: str,
     url: str,
     img_dir: Path,
-) -> tuple[str, str]:
-    """Return (status, local_path). status: ok|skip|fail|empty."""
+) -> tuple[str, str, bool]:
+    """Return (status, local_path, was_cached). status: ok|fail|empty."""
     url = (url or "").strip()
     if not code or not url:
-        return "empty", ""
+        return "empty", "", False
 
     # Prefer existing file with any known extension (skip re-download).
     for ext in (".jpg", ".jpeg", ".png", ".webp", ".gif"):
         existing = img_dir / f"{code}{ext}"
         if existing.exists() and existing.stat().st_size > 0:
-            return "skip", str(existing)
-
-    prefer_ext = extension_from_url(url) or ".jpg"
-    dest = img_dir / f"{code}{prefer_ext}"
+            return "ok", str(existing), True
 
     polite_sleep()
     resp = session.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT)
@@ -109,12 +106,11 @@ def download_one(
 
     final_ext = extension_from_response(url, resp.headers.get("Content-Type"))
     dest = img_dir / f"{code}{final_ext}"
-    # If another extension already exists after we learned the real type, skip write.
     if dest.exists() and dest.stat().st_size > 0:
-        return "skip", str(dest)
+        return "ok", str(dest), True
 
     dest.write_bytes(resp.content)
-    return "ok", str(dest)
+    return "ok", str(dest), False
 
 
 def parse_args() -> argparse.Namespace:
@@ -143,26 +139,33 @@ def main() -> int:
 
     session = requests.Session()
     map_rows: list[dict[str, str]] = []
-    stats = {"ok": 0, "skip": 0, "fail": 0, "empty": 0}
+    stats = {"downloaded": 0, "skipped": 0, "fail": 0, "empty": 0}
 
     for i, row in enumerate(rows, start=1):
         code = (row.get("code") or "").strip()
         url = (row.get("image") or "").strip()
         local_path = ""
+        status = "fail"
+        was_cached = False
         try:
-            status, local_path = download_one(session, code, url, args.img_dir)
+            status, local_path, was_cached = download_one(session, code, url, args.img_dir)
         except requests.RequestException as exc:
             status = "fail"
             log.warning("[%d/%d] FAIL %s %s — %s", i, len(rows), code, url, exc)
         else:
-            if status == "ok":
-                log.info("[%d/%d] Downloaded %s → %s", i, len(rows), code, Path(local_path).name)
-            elif status == "skip":
+            if status == "ok" and was_cached:
+                stats["skipped"] += 1
                 log.debug("[%d/%d] Skip existing %s", i, len(rows), code)
+            elif status == "ok":
+                stats["downloaded"] += 1
+                log.info("[%d/%d] Downloaded %s → %s", i, len(rows), code, Path(local_path).name)
             elif status == "empty":
+                stats["empty"] += 1
                 log.warning("[%d/%d] Empty code/url for row", i, len(rows))
 
-        stats[status] = stats.get(status, 0) + 1
+        if status == "fail":
+            stats["fail"] += 1
+
         rel_path = ""
         if local_path:
             try:
@@ -189,8 +192,8 @@ def main() -> int:
 
     log.info(
         "Done: downloaded=%d skipped=%d failed=%d empty=%d → %s",
-        stats["ok"],
-        stats["skip"],
+        stats["downloaded"],
+        stats["skipped"],
         stats["fail"],
         stats["empty"],
         args.img_dir,
