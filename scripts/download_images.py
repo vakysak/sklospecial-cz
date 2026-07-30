@@ -3,14 +3,14 @@
 
 Reads scripts/output/shoptet_import.csv (code, image URL, defaultCategory),
 saves files as:
-  scripts/output/images/{category_slug_path}/QG-XXXX.ext
+  scripts/output/images/{category_slug_path}/SklS-XXXX.ext
 
 Category folders are a Czech→ASCII slug hierarchy mirroring defaultCategory
 segments split on " > ", e.g.:
   Skleněné dveře > Posuvné dveře Design-Lux
     → sklenene-dvere/posuvne-dvere-design-lux/
 
-Existing flat files (images/QG-XXXX.ext) are moved into the correct category
+Existing flat files (images/SklS-XXXX.ext) are moved into the correct category
 folder instead of re-downloaded.
 
 Writes scripts/output/images_map.csv with columns:
@@ -76,19 +76,19 @@ README_TEXT = """Quba Glass product images — local backup / re-host tree
 
 Layout
 ------
-  images/{category_slug}/.../QG-XXXX.ext
+  images/{category_slug}/.../SklS-XXXX.ext
 
 Category folders mirror the Shoptet `defaultCategory` path (segments split on
 " > "), slugified to ASCII (Czech diacritics stripped), e.g.:
 
   Skleněné dveře > Posuvné dveře Design-Lux
-    → sklenene-dvere/posuvne-dvere-design-lux/QG-0001.jpg
+    → sklenene-dvere/posuvne-dvere-design-lux/SklS-0001.jpg
 
   Zábradlí > Profily na zábradlí
-    → zabradli/profily-na-zabradli/QG-....jpg
+    → zabradli/profily-na-zabradli/SklS-....jpg
 
   Stříšky > Stříšky na táhlech
-    → strisky/strisky-na-tahlech/QG-....jpg
+    → strisky/strisky-na-tahlech/SklS-....jpg
 
 Shoptet import
 --------------

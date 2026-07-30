@@ -66,7 +66,7 @@ Full scrape takes several minutes (polite ~1 s delay between pages).
 | `scripts/output/qubaglass_katalog.json` | Same data, easier for scripts |
 | `scripts/output/shoptet_import.csv` | Shoptet product import (UTF-8 BOM, `;`) |
 | `scripts/output/shoptet_categories.txt` | Unique `defaultCategory` paths for manual category setup |
-| `scripts/output/images/` | Local image backup by code (`QG-0001.jpg`) — gitignored |
+| `scripts/output/images/` | Local image backup by code (`SklS-0001.jpg`) — gitignored |
 | `scripts/output/images_map.csv` | Mapping code → remote URL → local path |
 
 Katalog CSV columns: `Název`, `Kategorie`, `Cena (CZK)`, `Cena původní (PLN)`, `URL obrázku`, `URL produktu (zdroj)`, `Popis krátký`.
@@ -104,7 +104,7 @@ Also create availability name **Na objednávku** if it does not exist yet.
 
 | Column | Value / meaning |
 |--------|-----------------|
-| `code` | `QG-0001` … by row order |
+| `code` | `SklS-0001` … by row order |
 | `pairCode` | empty |
 | `name` | Czech product name |
 | `price` | sell CZK (`PLN × 5.8 × 1.45`) |

@@ -237,7 +237,7 @@ def absolutize_image(url: str) -> str:
 
 
 def external_id_from_url(source_url: str, fallback: str) -> str:
-    """A-Z0-9 only tracking id from product URL slug, else QG####."""
+    """A-Z0-9 only tracking id from product URL slug, else code without hyphen."""
     path = urlparse(source_url or "").path
     slug = path.rstrip("/").split("/")[-1] if path else ""
     # Drop trailing numeric id segment if present as separate path part.
@@ -287,7 +287,7 @@ def load_rows(path: Path) -> list[dict[str, str]]:
 
 
 def to_shoptet_row(index: int, raw: dict[str, str]) -> dict[str, str]:
-    code = f"QG-{index:04d}"
+    code = f"SklS-{index:04d}"
     category = clean_category(raw.get("Kategorie") or "")
     name = clean_product_name(raw.get("Název") or "", category)
     source_url = raw.get("URL produktu (zdroj)") or ""
