@@ -232,23 +232,84 @@
   const priceEl = root.querySelector('[data-sklo-orient-price]');
   const baseNode = root.querySelector('[data-sklo-base-price]');
   const selects = Array.from(root.querySelectorAll('[data-sklo-option-select]'));
-  if (!priceEl || !baseNode || !selects.length) return;
+  const orderBtn = root.querySelector('[data-sklo-order-selected]');
+  const errEl = root.querySelector('[data-sklo-options-err]');
+  const base =
+    parseInt(
+      (baseNode && baseNode.getAttribute('data-sklo-base-price')) ||
+        root.getAttribute('data-base-price') ||
+        '0',
+      10
+    ) || 0;
 
-  const base = parseInt(baseNode.getAttribute('data-sklo-base-price') || '0', 10) || 0;
   const formatKc = (n) =>
     new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 0 }).format(n).replace(/\s/g, '\u00a0') +
     ' Kč';
 
-  const update = () => {
+  const currentTotal = () => {
     let sum = base;
     selects.forEach((sel) => {
       const opt = sel.options[sel.selectedIndex];
       const sur = parseInt((opt && opt.getAttribute('data-surcharge')) || '0', 10) || 0;
       sum += sur;
     });
-    priceEl.textContent = formatKc(sum);
+    return sum;
   };
 
-  selects.forEach((sel) => sel.addEventListener('change', update));
-  update();
+  const update = () => {
+    if (priceEl) priceEl.textContent = formatKc(currentTotal());
+    if (errEl) errEl.hidden = true;
+    selects.forEach((sel) => sel.classList.remove('is-invalid'));
+  };
+
+  const selectionsValid = () => {
+    let ok = true;
+    selects.forEach((sel) => {
+      if (!sel.value) {
+        ok = false;
+        sel.classList.add('is-invalid');
+      }
+    });
+    return ok;
+  };
+
+  const buildKontaktUrl = () => {
+    const kontakt =
+      root.getAttribute('data-kontakt') ||
+      new URL('/kontakt/', window.location.origin).href;
+    const code = root.getAttribute('data-code') || '';
+    const name = root.getAttribute('data-name') || '';
+    const lines = [];
+    selects.forEach((sel) => {
+      const label = sel.getAttribute('data-opt-label') || '';
+      const opt = sel.options[sel.selectedIndex];
+      const text = (opt && opt.value) || '';
+      if (label && text) lines.push(label + ': ' + text);
+    });
+    const volby = lines.join(' | ').slice(0, 400);
+    const url = new URL(kontakt, window.location.origin);
+    url.searchParams.set('poptavka', '1');
+    if (code) url.searchParams.set('kod', code);
+    if (name) url.searchParams.set('nazev', name.slice(0, 120));
+    if (volby) url.searchParams.set('volby', volby);
+    url.searchParams.set('cena', String(currentTotal()));
+    return url.toString();
+  };
+
+  if (priceEl) {
+    selects.forEach((sel) => sel.addEventListener('change', update));
+    update();
+  }
+
+  if (orderBtn) {
+    orderBtn.addEventListener('click', () => {
+      if (selects.length && !selectionsValid()) {
+        if (errEl) errEl.hidden = false;
+        const firstBad = selects.find((s) => !s.value);
+        if (firstBad) firstBad.focus();
+        return;
+      }
+      window.location.href = buildKontaktUrl();
+    });
+  }
 })();

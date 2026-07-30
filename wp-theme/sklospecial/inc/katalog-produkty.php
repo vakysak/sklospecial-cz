@@ -140,6 +140,12 @@ function sklo_public_product_text(string $text): string
         '/\botočné\b/iu' => 'kyvné',
         '/\bQuba\s*Glass\b/iu' => '',
         '/\bQubaglass\b/iu' => '',
+        '/\bWybierz wariant produktu\b/iu' => 'Vyberte variantu produktu',
+        '/\bWymiar drzwi\b/iu' => 'Rozměr dveří',
+        '/\bWymiary drzwi\b/iu' => 'Rozměry dveří',
+        '/\bUchwyt do drzwi\b/iu' => 'Madlo / úchyt',
+        '/\buchwyt do drzwi\b/iu' => 'Madlo / úchyt',
+        '/\bUchwyt\b/iu' => 'Madlo',
         '/\bKierunek otwierania\b/iu' => 'Směr otevírání',
         '/\bKotwa montazowa\b/iu' => 'Montážní kotva',
         '/\bKotwa montażowa\b/iu' => 'Montážní kotva',
@@ -147,14 +153,17 @@ function sklo_public_product_text(string $text): string
         '/\bSzerokość wnęki\b/iu' => 'Šířka výklenku',
         '/\bRodzaj zamka\b/iu' => 'Typ zámku',
         '/\bRodzaj zawiasow\b/iu' => 'Typ závěsů',
+        '/\bRodzaj zawiasów\b/iu' => 'Typ závěsů',
         '/\bRodzaj szkła\b/iu' => 'Typ skla',
         '/\bRodzaj szkla\b/iu' => 'Typ skla',
+        '/\bKolor oku[cć]\b/iu' => 'Barva kování',
         '/\bbezbarwne\b/iu' => 'čiré',
         '/\bmatowe\b/iu' => 'matné',
         '/\bgrafitowe\b/iu' => 'grafitové',
         '/\bsatyna\b/iu' => 'satin',
         '/\bczarny\b/iu' => 'černý',
-        '/\bsamodomyk\b/iu' => 'samozavírač / tichý domyk',
+        '/\bsamodomyk(?:acz)?\b/iu' => 'Samozavírač / tichý dojezd',
+        '/\bsamozavírač\s*\/\s*tichý domyk\b/iu' => 'Samozavírač / tichý dojezd',
         '/\bmuszelka\b/iu' => 'mušle',
         '/\bobustronnie\b/iu' => 'oboustranně',
         '/\bwneki\b/iu' => 'výklenku',
@@ -236,14 +245,26 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
     }
 
     $kontakt = home_url('/kontakt/');
-    $note = rawurlencode('Poptávka: ' . $name . ' (' . $code . ')');
-    $cta = $kontakt . (str_contains($kontakt, '?') ? '&' : '?') . 'predmet=' . $note;
+    $cfg_url = function_exists('sklo_konfigurator_url') ? sklo_konfigurator_url() : home_url('/');
+    $options_json = wp_json_encode($options, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    if (!is_string($options_json)) {
+        $options_json = '[]';
+    }
 
     if ($back_url === '') {
         $back_url = (string) get_permalink();
     }
     ?>
-  <section class="sklo-section sklo-pdetail" id="produkt-detail" data-sklo-pdetail>
+  <section
+    class="sklo-section sklo-pdetail"
+    id="produkt-detail"
+    data-sklo-pdetail
+    data-code="<?php echo esc_attr($code); ?>"
+    data-name="<?php echo esc_attr($name); ?>"
+    data-base-price="<?php echo esc_attr((string) $price); ?>"
+    data-kontakt="<?php echo esc_url($kontakt); ?>"
+    data-options="<?php echo esc_attr($options_json); ?>"
+  >
     <div class="sklo-wrap">
       <p class="sklo-pdetail__back">
         <a class="sklo-link" href="<?php echo esc_url($back_url); ?>">← Zpět na nabídku</a>
@@ -302,10 +323,12 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
           </p>
           <?php if ($price > 0) : ?>
             <p class="sklo-pdetail__price" data-sklo-base-price="<?php echo esc_attr((string) $price); ?>">
-              <span data-sklo-orient-label>Orientační cena</span>
+              <span data-sklo-orient-label>Orientační cena:</span>
               <strong data-sklo-orient-price><?php echo esc_html(sklo_format_cena($price)); ?></strong>
             </p>
-            <p class="sklo-pdetail__price-base">Základ <?php echo esc_html(sklo_format_cena($price)); ?><?php echo $options !== [] ? ' · doplatky podle výběru níže' : ''; ?></p>
+            <?php if ($options !== []) : ?>
+              <p class="sklo-pdetail__price-base">Základ <?php echo esc_html(sklo_format_cena($price)); ?> · doplatky podle výběru níže</p>
+            <?php endif; ?>
           <?php endif; ?>
           <?php if ($ship !== null && (int) $ship > 0) : ?>
             <p class="sklo-pdetail__ship">Expedice cca <?php echo esc_html((string) (int) $ship); ?> pracovních dní</p>
@@ -314,12 +337,7 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
             <p class="sklo-pdetail__avail"><?php echo esc_html($avail); ?></p>
           <?php endif; ?>
 
-          <p class="sklo-pdetail__note">Finální nabídka podle rozměrů a zvolených doplňků. Orientační ceny.</p>
-
-          <div class="sklo-pdetail__cta">
-            <a class="sklo-btn" href="<?php echo esc_url($cta); ?>">Nezávazně poptat</a>
-            <a class="sklo-link" href="<?php echo esc_url(home_url('/kontakt/')); ?>">Nebo napiš</a>
-          </div>
+          <p class="sklo-pdetail__note">Finální nabídka podle rozměrů a dostupnosti.</p>
         </div>
       </div>
 
@@ -358,37 +376,50 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
 
       <?php if ($options !== []) : ?>
         <div class="sklo-pdetail__block sklo-pdetail__options" data-sklo-options>
-          <h2>Možnosti a doplatky</h2>
-          <p class="sklo-pdetail__options-lead">Vyber varianty — orientační cena výše = základ + součet doplatků v Kč.</p>
+          <h2>Varianta produktu</h2>
+          <p class="sklo-pdetail__options-lead">Vyberte variantu produktu — jednotlivé volby mohou změnit cenu.</p>
           <div class="sklo-pdetail__option-groups">
             <?php foreach ($options as $gi => $g) :
                 $label = (string) ($g['label'] ?? '');
                 $choices = is_array($g['choices'] ?? null) ? $g['choices'] : [];
                 $type = (string) ($g['type'] ?? 'select');
                 $field_id = 'sklo-opt-' . (string) $gi;
+                $free_default_idx = null;
+                foreach ($choices as $ci => $c) {
+                    if ((int) ($c['surcharge_czk'] ?? 0) === 0) {
+                        $free_default_idx = (int) $ci;
+                        break;
+                    }
+                }
                 ?>
               <div class="sklo-pdetail__option" data-sklo-option-group>
-                <h3><?php echo esc_html($label !== '' ? $label : 'Možnost'); ?></h3>
                 <?php if ($type === 'text' && $choices === []) : ?>
+                  <h3><?php echo esc_html($label !== '' ? $label : 'Možnost'); ?></h3>
                   <p class="sklo-pdetail__option-hint">Zadáš při poptávce (rozměry).</p>
                 <?php elseif ($choices !== []) : ?>
-                  <label class="sklo-pdetail__select-label" for="<?php echo esc_attr($field_id); ?>">Výběr</label>
+                  <label class="sklo-pdetail__select-label" for="<?php echo esc_attr($field_id); ?>">
+                    <?php echo esc_html($label !== '' ? $label : 'Možnost'); ?>
+                  </label>
                   <select
-                    class="sklo-pdetail__select"
+                    class="sklo-produkt-opt sklo-pdetail__select"
                     id="<?php echo esc_attr($field_id); ?>"
+                    name="opt_<?php echo esc_attr((string) $gi); ?>"
                     data-sklo-option-select
+                    data-opt-label="<?php echo esc_attr($label !== '' ? $label : 'Možnost'); ?>"
+                    required
                     aria-label="<?php echo esc_attr($label !== '' ? $label : 'Možnost'); ?>"
                   >
+                    <option value="" data-surcharge="0"<?php echo $free_default_idx === null ? ' selected' : ''; ?>>Vyberte…</option>
                     <?php foreach ($choices as $ci => $c) :
                         $cname = (string) ($c['name'] ?? '');
                         $sur = (int) ($c['surcharge_czk'] ?? 0);
-                        $sur_label = sklo_format_doplatek($sur);
-                        $opt_label = $cname . ($sur_label !== '' ? ' (' . $sur_label . ')' : ' (v základu)');
+                        $opt_label = $cname . ($sur > 0 ? ' (+ ' . number_format($sur, 0, ',', "\u{00a0}") . ' Kč)' : '');
+                        $selected = $free_default_idx !== null && (int) $ci === $free_default_idx;
                         ?>
                       <option
-                        value="<?php echo esc_attr((string) $ci); ?>"
+                        value="<?php echo esc_attr($cname); ?>"
                         data-surcharge="<?php echo esc_attr((string) $sur); ?>"
-                        <?php echo $ci === 0 ? ' selected' : ''; ?>
+                        <?php echo $selected ? ' selected' : ''; ?>
                       ><?php echo esc_html($opt_label); ?></option>
                     <?php endforeach; ?>
                   </select>
@@ -396,11 +427,14 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
               </div>
             <?php endforeach; ?>
           </div>
+          <p class="sklo-pdetail__options-err" data-sklo-options-err hidden>Vyber všechny povinné varianty.</p>
         </div>
       <?php endif; ?>
 
-      <div class="sklo-pdetail__cta sklo-pdetail__cta--bottom">
-        <a class="sklo-btn" href="<?php echo esc_url($cta); ?>">Nezávazně poptat</a>
+      <div class="sklo-pdetail__cta sklo-pdetail__cta--bottom sklo-pdetail__cta--triple">
+        <button type="button" class="sklo-btn" data-sklo-order-selected>Objednat vybrané</button>
+        <a class="sklo-btn sklo-btn--ghost" href="<?php echo esc_url($kontakt); ?>">Nenašel jsi co hledáš? Pošli nezávaznou poptávku</a>
+        <a class="sklo-link" href="<?php echo esc_url($cfg_url); ?>" target="_blank" rel="noopener">Konfigurátor</a>
       </div>
     </div>
   </section>
