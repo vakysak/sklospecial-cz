@@ -25,6 +25,9 @@
   <div class="sklo-wrap sklo-footer__meta">
     <div>
       <h3>Kontakt</h3>
+      <p>Prostřední Bludovice 193<br>739 37 Horní Bludovice</p>
+      <p><a href="tel:+420736134604">+420 736 134 604</a></p>
+      <p><a href="mailto:info@sklospecial.cz">info@sklospecial.cz</a></p>
       <p><a href="<?php echo esc_url(home_url('/poptavka/')); ?>">Napsat poptávku</a></p>
     </div>
     <div>
