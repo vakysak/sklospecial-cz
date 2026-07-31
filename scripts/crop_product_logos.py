@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Preferred entry point: crop Quba Glass bottom logo from local product photos.
 
-Live site loads remote qubaglass.pl images — CSS clips ~9% via
-`--sklo-quba-logo` on `.sklo-produkty__media` / `.sklo-pdetail__*` (see
-wp-theme/sklospecial/assets/css/main.css). This script is for local/
-Shoptet assets under scripts/output/images/ → images_cropped/.
+Smart-detects the white+blue logo band (fallback: bottom 13%). Writes flat
+JPEGs to scripts/output/images_cropped/SklS-XXXX.jpg. Use --also-dst to copy
+into app/public/katalog-img/ for the API static host.
 
 Delegates to crop_logos.py (same CLI).
 """

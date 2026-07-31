@@ -24,8 +24,23 @@ CSV_PATH = ROOT / "scripts/output/shoptet_import.csv"
 DETAILS_PATH = ROOT / "scripts/output/product_details.json"
 OUT_PATH = ROOT / "wp-theme/sklospecial/inc/katalog-produkty-data.php"
 JSON_OUT = ROOT / "wp-theme/sklospecial/assets/data/produkty.json"
+CROPPED_DIR = ROOT / "scripts/output/images_cropped"
+PUBLIC_IMG_DIR = ROOT / "app/public/katalog-img"
+CROPPED_BASE_URL = (
+    "https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img"
+)
 
 PHP_SOFT_LIMIT = 4_500_000  # bytes — prefer JSON for heavy payloads beyond this
+
+
+def cropped_image_url(code: str) -> str | None:
+    """Self-hosted cropped primary shot when available."""
+    if not code:
+        return None
+    name = f"{code}.jpg"
+    if (CROPPED_DIR / name).is_file() or (PUBLIC_IMG_DIR / name).is_file():
+        return f"{CROPPED_BASE_URL}/{name}"
+    return None
 
 # Exact CSV defaultCategory → (page_slug, section_id)
 CSV_TO_SLUG: dict[str, tuple[str, str]] = {
@@ -306,6 +321,10 @@ def main() -> None:
         code = (r.get("code") or "").strip()
         image = (r.get("image") or "").strip()
         part = (r.get("partNumber") or "").strip()
+        # Prefer self-hosted cropped primary when available
+        cropped = cropped_image_url(code)
+        if cropped:
+            image = cropped
         # source URL not in CSV — reconstruct from partNumber if possible
         source_url = ""
         if part.isdigit():
@@ -340,6 +359,13 @@ def main() -> None:
             detail,
             source_url,
         )
+        # Ensure gallery leads with cropped primary (keep accessory shots).
+        if cropped:
+            imgs = [u for u in (product.get("images") or []) if u and u != cropped]
+            # Drop qubaglass variants of the same primary productGfx when we have crop
+            product["images"] = [cropped] + imgs
+            product["image"] = cropped
+
         if product.get("has_detail"):
             details_matched += 1
 

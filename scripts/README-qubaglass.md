@@ -147,22 +147,24 @@ scripts/.venv/bin/python scripts/download_images.py
 
 ## Cropping supplier logo from product photos
 
-Quba product thumbs often include a thin white logo strip at the bottom.
+Quba product thumbs often include a white + blue QUBAGLASS logo strip at the bottom.
 
-**Live WP (remote URLs):** CSS crop is the fix — wrappers use `overflow: hidden`
-and scale the image from the top so ~9% of the bottom is clipped
-(`--sklo-quba-logo: 0.09` on `.sklo-produkty__media img` and product detail
-gallery). No rehosting required.
+**Live site:** primary shots are cropped locally and served from the API static host:
 
-**Local / Shoptet assets:**
+`https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-XXXX.jpg`
 
 ```bash
-scripts/.venv/bin/python scripts/crop_product_logos.py
-# or: scripts/crop_logos.py --bottom 0.09
-# writes scripts/output/images_cropped/ (mirrors category folders)
+# Detect white+blue logo band (fallback bottom 13%), JPEG q85 → flat files
+scripts/.venv/bin/python scripts/crop_product_logos.py \
+  --also-dst ../app/public/katalog-img
+
+# Point theme JSON/PHP image URLs at katalog-img
+scripts/.venv/bin/python scripts/remap_images_to_cropped.py
 ```
 
-Tune `--bottom` if a batch has a thicker strip; doors usually need only ~5–10%.
+Cropped binaries (`app/public/katalog-img/*.jpg`, ~47 MB) are gitignored — rsync/scp
+them onto the Coolify API container’s `/app/public/katalog-img/` after deploy.
+CSS `--sklo-quba-logo` remains as a harmless backup clip.
 
 ## Legal / usage note
 
