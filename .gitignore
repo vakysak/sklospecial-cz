@@ -11,5 +11,6 @@ uploads/poptavky/**
 .env.coolify.local
 scripts/.venv/
 scripts/output/images/
+scripts/output/images_cropped/
 scripts/output/product_details.json
 scripts/__pycache__/

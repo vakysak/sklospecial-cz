@@ -1576,7 +1576,9 @@ a:hover { color: var(--accent-hover); }
 
 .sklo-produkty__media {
   display: block;
+  position: relative;
   width: 100%;
+  aspect-ratio: 1;
   padding: 0;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -1592,16 +1594,25 @@ a:hover { color: var(--accent-hover); }
   letter-spacing: 0.04em;
 }
 
+/* Crop Quba Glass bottom logo banner (~14–16% white strip on 400/700 thumbs) */
 .sklo-produkty__media img {
+  --sklo-logo-scale: calc(1 / (1 - var(--sklo-quba-logo, 0.16)));
   display: block;
-  width: 100%;
-  aspect-ratio: 1;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(100% * var(--sklo-logo-scale));
+  height: calc(100% * var(--sklo-logo-scale));
+  max-width: none;
   object-fit: cover;
+  object-position: center top;
+  transform: translateX(-50%);
+  transform-origin: top center;
   transition: transform 0.35s ease;
 }
 
 .sklo-produkty__media:hover img {
-  transform: scale(1.04);
+  transform: translateX(-50%) scale(1.04);
 }
 
 .sklo-produkty__media--empty {
@@ -1728,7 +1739,9 @@ a:hover { color: var(--accent-hover); }
 
 .sklo-pdetail__main {
   display: block;
+  position: relative;
   width: 100%;
+  aspect-ratio: 1;
   padding: 0;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -1740,9 +1753,16 @@ a:hover { color: var(--accent-hover); }
 }
 
 .sklo-pdetail__main img {
-  width: 100%;
-  aspect-ratio: 1;
+  --sklo-logo-scale: calc(1 / (1 - var(--sklo-quba-logo, 0.16)));
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(100% * var(--sklo-logo-scale));
+  height: calc(100% * var(--sklo-logo-scale));
+  max-width: none;
   object-fit: cover;
+  object-position: center top;
+  transform: translateX(-50%);
 }
 
 .sklo-pdetail__main--empty {
@@ -1758,6 +1778,7 @@ a:hover { color: var(--accent-hover); }
 }
 
 .sklo-pdetail__thumb {
+  position: relative;
   width: 72px;
   height: 72px;
   padding: 0;
@@ -1777,9 +1798,16 @@ a:hover { color: var(--accent-hover); }
 }
 
 .sklo-pdetail__thumb img {
-  width: 100%;
-  height: 100%;
+  --sklo-logo-scale: calc(1 / (1 - var(--sklo-quba-logo, 0.16)));
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(100% * var(--sklo-logo-scale));
+  height: calc(100% * var(--sklo-logo-scale));
+  max-width: none;
   object-fit: cover;
+  object-position: center top;
+  transform: translateX(-50%);
 }
 
 .sklo-pdetail__title {
