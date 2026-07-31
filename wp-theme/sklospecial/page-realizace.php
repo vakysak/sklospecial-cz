@@ -104,7 +104,7 @@ $gallery = [
       </div>
       <div class="sklo-cta-band__actions">
         <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Navrhni si dveře</a>
-        <a class="sklo-link" href="<?php echo esc_url(home_url('/kontakt/')); ?>">Nebo napiš</a>
+        <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
       </div>
     </div>
   </section>

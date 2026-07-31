@@ -560,7 +560,7 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
 
       <div class="sklo-pdetail__cta sklo-pdetail__cta--bottom sklo-pdetail__cta--triple">
         <button type="button" class="sklo-btn" data-sklo-order-selected>Objednat vybrané</button>
-        <a class="sklo-btn sklo-btn--ghost" href="<?php echo esc_url($kontakt); ?>">Nenašel jsi co hledáš? Pošli nezávaznou poptávku</a>
+        <a class="sklo-btn sklo-btn--ghost" href="<?php echo esc_url($poptavka); ?>">Nenašel jsi co hledáš? Pošli nezávaznou poptávku</a>
         <a class="sklo-link" href="<?php echo esc_url($cfg_url); ?>" target="_blank" rel="noopener">Konfigurátor</a>
       </div>
     </div>

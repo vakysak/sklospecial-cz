@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.6.4');
+define('SKLO_THEME_VER', '1.6.5');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
@@ -264,20 +264,22 @@ add_action('rest_api_init', static function (): void {
                 'Doprava: ' . $doprava_label,
                 'Montáž: ' . $montaz_label,
                 '',
-                'Produkt: ' . $name . ' (' . $code . ')',
+                'Produkt: ' . ($name !== '' ? $name : 'Obecná poptávka') . ($code !== '' ? ' (' . $code . ')' : ''),
                 'Počet: ' . $qty,
-                'Základ: ' . number_format($base, 0, ',', "\u{00a0}") . ' Kč',
-                'Doplatky: ' . number_format($surcharges, 0, ',', "\u{00a0}") . ' Kč',
-                'Cena / ks: ' . number_format($unit, 0, ',', "\u{00a0}") . ' Kč',
-                'Orientační celkem: ' . number_format($total, 0, ',', "\u{00a0}") . ' Kč',
-                '',
-                'Volby:',
             ];
-            if ($sel_lines === []) {
-                $body_lines[] = '—';
-            } else {
-                foreach ($sel_lines as $ln) {
-                    $body_lines[] = '- ' . $ln;
+            if ($code !== '' || $unit > 0 || $sel_lines !== []) {
+                $body_lines[] = 'Základ: ' . number_format($base, 0, ',', "\u{00a0}") . ' Kč';
+                $body_lines[] = 'Doplatky: ' . number_format($surcharges, 0, ',', "\u{00a0}") . ' Kč';
+                $body_lines[] = 'Cena / ks: ' . number_format($unit, 0, ',', "\u{00a0}") . ' Kč';
+                $body_lines[] = 'Orientační celkem: ' . number_format($total, 0, ',', "\u{00a0}") . ' Kč';
+                $body_lines[] = '';
+                $body_lines[] = 'Volby:';
+                if ($sel_lines === []) {
+                    $body_lines[] = '—';
+                } else {
+                    foreach ($sel_lines as $ln) {
+                        $body_lines[] = '- ' . $ln;
+                    }
                 }
             }
             $body_lines[] = '';
@@ -285,7 +287,7 @@ add_action('rest_api_init', static function (): void {
             $body_lines[] = $poznamka !== '' ? $poznamka : '—';
 
             $to = (string) get_option('admin_email');
-            $subject = sprintf('Poptávka %s — %s', $code !== '' ? $code : 'katalog', $jmeno);
+            $subject = sprintf('Poptávka %s — %s', $code !== '' ? $code : 'obecná', $jmeno);
             $headers = [
                 'Content-Type: text/plain; charset=UTF-8',
                 'Reply-To: ' . $jmeno . ' <' . $email . '>',

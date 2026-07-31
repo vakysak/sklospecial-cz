@@ -357,19 +357,29 @@
   if (!root) return;
 
   const STORAGE_KEY = 'sklo_order_draft';
-  const emptyEl = root.querySelector('[data-poptavka-empty]');
-  const contentEl = root.querySelector('[data-poptavka-content]');
   const summaryEl = root.querySelector('[data-poptavka-summary]');
   const form = root.querySelector('[data-poptavka-form]');
   const orderJsonInput = root.querySelector('[data-poptavka-order-json]');
   const errEl = root.querySelector('[data-poptavka-err]');
   const okEl = root.querySelector('[data-poptavka-ok]');
   const submitBtn = root.querySelector('[data-poptavka-submit]');
+  const emptyHint = root.querySelector('[data-poptavka-empty-hint]');
+  const codeField = root.querySelector('[data-poptavka-code-field]');
+  const codeInput = form && form.querySelector('input[name="kod_produktu"]');
+  const steps = Array.from(root.querySelectorAll('.sklo-poptavka__steps li'));
   const restUrl = root.getAttribute('data-rest') || '';
 
   const formatKc = (n) =>
     new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 0 }).format(n).replace(/\s/g, '\u00a0') +
     ' Kč';
+
+  const escapeHtml = (s) =>
+    String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  const escapeAttr = (s) => escapeHtml(s).replace(/'/g, '&#39;');
 
   const loadDraft = () => {
     try {
@@ -384,32 +394,56 @@
   };
 
   let draft = loadDraft();
-  if (!draft) {
-    if (emptyEl) emptyEl.hidden = false;
-    if (contentEl) contentEl.hidden = true;
-    return;
+  const hasProduct = Boolean(draft && draft.code);
+
+  if (hasProduct) {
+    draft.qty = Math.max(1, parseInt(String(draft.qty || 1), 10) || 1);
+    if (emptyHint) emptyHint.hidden = true;
+    if (codeField) codeField.hidden = true;
+  } else {
+    draft = {
+      v: 1,
+      code: '',
+      name: 'Obecná poptávka',
+      image: '',
+      basePrice: 0,
+      surcharges: 0,
+      unitTotal: 0,
+      qty: 1,
+      selections: [],
+      general: true,
+      createdAt: new Date().toISOString(),
+    };
+    if (emptyHint) emptyHint.hidden = false;
+    if (codeField) codeField.hidden = false;
+    const params = new URLSearchParams(window.location.search);
+    const kod = (params.get('kod') || '').trim();
+    if (kod && codeInput) codeInput.value = kod;
   }
 
-  if (emptyEl) emptyEl.hidden = true;
-  if (contentEl) contentEl.hidden = false;
-
-  const qty = Math.max(1, parseInt(String(draft.qty || 1), 10) || 1);
-  draft.qty = qty;
-
-  const escapeHtml = (s) =>
-    String(s)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  const escapeAttr = (s) => escapeHtml(s).replace(/'/g, '&#39;');
+  const setActiveStep = (n) => {
+    steps.forEach((li, i) => {
+      li.classList.toggle('is-active', i + 1 === n);
+      li.classList.toggle('is-done', i + 1 < n);
+    });
+  };
 
   const syncOrderJson = () => {
     if (orderJsonInput) orderJsonInput.value = JSON.stringify(draft);
   };
 
-  const renderSummary = () => {
+  const renderGeneralSummary = () => {
     if (!summaryEl) return;
+    summaryEl.innerHTML =
+      '<div class="sklo-poptavka__card">' +
+      '<h2>Obecná poptávka</h2>' +
+      '<p class="sklo-poptavka__note">Bez konkrétního produktu z katalogu. Doplň detaily v poznámce — ozveme se s nabídkou.</p>' +
+      '</div>';
+    syncOrderJson();
+  };
+
+  const renderProductSummary = () => {
+    if (!summaryEl || !draft) return;
     const unit = parseInt(String(draft.unitTotal || draft.basePrice || 0), 10) || 0;
     const total = unit * (parseInt(String(draft.qty || 1), 10) || 1);
     const sels = Array.isArray(draft.selections) ? draft.selections : [];
@@ -495,9 +529,45 @@
     syncOrderJson();
   };
 
-  renderSummary();
+  if (hasProduct) {
+    renderProductSummary();
+  } else {
+    renderGeneralSummary();
+  }
+  setActiveStep(1);
 
   if (!form) return;
+
+  const sectionEls = Array.from(form.querySelectorAll('[data-poptavka-section]'));
+  const bumpStepFromFocus = (target) => {
+    const sec = target && target.closest ? target.closest('[data-poptavka-section]') : null;
+    if (!sec) return;
+    const n = parseInt(sec.getAttribute('data-poptavka-section') || '1', 10) || 1;
+    setActiveStep(n);
+  };
+  form.addEventListener('focusin', (e) => bumpStepFromFocus(e.target));
+  form.addEventListener(
+    'scroll',
+    () => {
+      /* no-op; steps update on focus */
+    },
+    { passive: true }
+  );
+
+  if ('IntersectionObserver' in window && sectionEls.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((en) => en.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        const n = parseInt(visible.target.getAttribute('data-poptavka-section') || '1', 10) || 1;
+        setActiveStep(n);
+      },
+      { root: null, threshold: [0.35, 0.55], rootMargin: '-15% 0px -40% 0px' }
+    );
+    sectionEls.forEach((el) => io.observe(el));
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -506,8 +576,16 @@
       errEl.textContent = '';
     }
     if (okEl) okEl.hidden = true;
+    setActiveStep(4);
 
     const fd = new FormData(form);
+    if (!hasProduct) {
+      const kod = String(fd.get('kod_produktu') || '').trim();
+      draft.code = kod;
+      draft.name = kod ? 'Obecná poptávka (' + kod + ')' : 'Obecná poptávka';
+    }
+    syncOrderJson();
+
     const payload = {
       jmeno: String(fd.get('jmeno') || '').trim(),
       email: String(fd.get('email') || '').trim(),
@@ -524,6 +602,9 @@
         errEl.textContent = 'Vyplň jméno, e-mail a telefon.';
         errEl.hidden = false;
       }
+      setActiveStep(2);
+      const firstBad = form.querySelector('[name="jmeno"], [name="email"], [name="telefon"]');
+      if (firstBad) firstBad.focus();
       return;
     }
 
@@ -551,8 +632,9 @@
       });
       if (submitBtn) submitBtn.textContent = 'Odesláno';
     } catch (err) {
-      // mailto fallback
-      const subject = encodeURIComponent('Poptávka ' + (draft.code || '') + ' — ' + payload.jmeno);
+      const subject = encodeURIComponent(
+        'Poptávka ' + (draft.code || 'obecná') + ' — ' + payload.jmeno
+      );
       const body = encodeURIComponent(
         [
           'Jméno: ' + payload.jmeno,
@@ -562,14 +644,20 @@
           'Doprava: ' + payload.doprava,
           'Montáž: ' + payload.montaz,
           '',
-          'Produkt: ' + (draft.name || '') + ' (' + (draft.code || '') + ')',
-          'Počet: ' + draft.qty,
-          'Orientační cena: ' + formatKc((draft.unitTotal || 0) * (draft.qty || 1)),
+          'Produkt: ' + (draft.name || '') + (draft.code ? ' (' + draft.code + ')' : ''),
+          'Počet: ' + (draft.qty || 1),
+          draft.unitTotal
+            ? 'Orientační cena: ' + formatKc((draft.unitTotal || 0) * (draft.qty || 1))
+            : '',
           'Volby:',
-          ...(draft.selections || []).map((s) => '- ' + s.label + ': ' + s.value),
+          ...((draft.selections || []).length
+            ? (draft.selections || []).map((s) => '- ' + s.label + ': ' + s.value)
+            : ['—']),
           '',
           'Poznámka: ' + payload.poznamka,
-        ].join('\n')
+        ]
+          .filter(Boolean)
+          .join('\n')
       );
       if (errEl) {
         errEl.innerHTML =

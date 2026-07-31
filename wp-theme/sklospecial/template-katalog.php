@@ -360,9 +360,9 @@ $back_url = (string) get_permalink();
         <?php if ($parent === 'sklenene-dvere' || $slug === 'sklenene-dvere' || in_array($slug, ['posuvne', 'otocne', 'otevirane', 'celosklenene'], true)) : ?>
           <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Navrhni si dveře</a>
         <?php else : ?>
-          <a class="sklo-btn" href="<?php echo esc_url(home_url('/kontakt/')); ?>">Napsat poptávku</a>
+          <a class="sklo-btn" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Napsat poptávku</a>
         <?php endif; ?>
-        <a class="sklo-link" href="<?php echo esc_url(home_url('/kontakt/')); ?>">Nebo napiš</a>
+        <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
       </div>
     </div>
   </section>

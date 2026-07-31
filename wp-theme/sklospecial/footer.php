@@ -19,13 +19,13 @@
     </nav>
     <div class="sklo-footer__cta">
       <a class="sklo-btn" href="<?php echo esc_url(sklo_konfigurator_url()); ?>">Navrhni si dveře</a>
-      <a class="sklo-link" href="<?php echo esc_url(home_url('/kontakt/')); ?>">Nebo napiš</a>
+      <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
     </div>
   </div>
   <div class="sklo-wrap sklo-footer__meta">
     <div>
       <h3>Kontakt</h3>
-      <p><a href="<?php echo esc_url(home_url('/kontakt/')); ?>">Napsat poptávku</a></p>
+      <p><a href="<?php echo esc_url(home_url('/poptavka/')); ?>">Napsat poptávku</a></p>
     </div>
     <div>
       <h3>Studio</h3>
