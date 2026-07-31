@@ -5,12 +5,12 @@ Reads images under scripts/output/images/ (or paths from images_map.csv)
 and writes cropped copies to scripts/output/images_cropped/, mirroring
 the category folder structure.
 
-Default crop removes the bottom 16% (measured ~14–16% white logo strip on
+Default crop removes the bottom 9% (measured ~5–12% thin logo strip (median ~11%) on
 typical 400×400 / 700×700 Design-Lux / trubkový shots). Override with --bottom.
 
 Usage:
   scripts/.venv/bin/python scripts/crop_logos.py
-  scripts/.venv/bin/python scripts/crop_logos.py --bottom 0.15
+  scripts/.venv/bin/python scripts/crop_logos.py --bottom 0.09
   scripts/.venv/bin/python scripts/crop_logos.py --dry-run
   scripts/.venv/bin/python scripts/crop_logos.py --only SklS-0001 SklS-0110
 """
@@ -110,8 +110,8 @@ def main() -> int:
     ap.add_argument(
         "--bottom",
         type=float,
-        default=0.16,
-        help="Fraction of height to crop from bottom (default: 0.16)",
+        default=0.09,
+        help="Fraction of height to crop from bottom (default: 0.09)",
     )
     ap.add_argument(
         "--only",

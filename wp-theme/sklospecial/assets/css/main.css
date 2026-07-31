@@ -1594,9 +1594,9 @@ a:hover { color: var(--accent-hover); }
   letter-spacing: 0.04em;
 }
 
-/* Crop Quba Glass bottom logo banner (~14–16% white strip on 400/700 thumbs) */
+/* Crop Quba Glass bottom logo banner (~9% thin strip; live fix for remote qubaglass.pl URLs) */
 .sklo-produkty__media img {
-  --sklo-logo-scale: calc(1 / (1 - var(--sklo-quba-logo, 0.16)));
+  --sklo-logo-scale: calc(1 / (1 - var(--sklo-quba-logo, 0.09)));
   display: block;
   position: absolute;
   top: 0;
@@ -1753,7 +1753,7 @@ a:hover { color: var(--accent-hover); }
 }
 
 .sklo-pdetail__main img {
-  --sklo-logo-scale: calc(1 / (1 - var(--sklo-quba-logo, 0.16)));
+  --sklo-logo-scale: calc(1 / (1 - var(--sklo-quba-logo, 0.09)));
   position: absolute;
   top: 0;
   left: 50%;
@@ -1798,7 +1798,7 @@ a:hover { color: var(--accent-hover); }
 }
 
 .sklo-pdetail__thumb img {
-  --sklo-logo-scale: calc(1 / (1 - var(--sklo-quba-logo, 0.16)));
+  --sklo-logo-scale: calc(1 / (1 - var(--sklo-quba-logo, 0.09)));
   position: absolute;
   top: 0;
   left: 50%;
@@ -2323,6 +2323,22 @@ a:hover { color: var(--accent-hover); }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+}
+
+.sklo-poptavka__extras .sklo-field--check {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-top: 0.15rem;
+}
+
+.sklo-field--check input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: 0.2rem;
+  accent-color: var(--accent, #8a6a3a);
 }
 
 .sklo-field {

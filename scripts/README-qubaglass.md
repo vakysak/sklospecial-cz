@@ -145,6 +145,25 @@ scripts/.venv/bin/python scripts/download_images.py
    Mapping: `scripts/output/images_map.csv`. Folder is gitignored — do not commit binaries.
 3. **Legal:** public use of supplier photos requires agreement.
 
+## Cropping supplier logo from product photos
+
+Quba product thumbs often include a thin white logo strip at the bottom.
+
+**Live WP (remote URLs):** CSS crop is the fix — wrappers use `overflow: hidden`
+and scale the image from the top so ~9% of the bottom is clipped
+(`--sklo-quba-logo: 0.09` on `.sklo-produkty__media img` and product detail
+gallery). No rehosting required.
+
+**Local / Shoptet assets:**
+
+```bash
+scripts/.venv/bin/python scripts/crop_product_logos.py
+# or: scripts/crop_logos.py --bottom 0.09
+# writes scripts/output/images_cropped/ (mirrors category folders)
+```
+
+Tune `--bottom` if a batch has a thicker strip; doors usually need only ~5–10%.
+
 ## Legal / usage note
 
 Use this export for internal catalog preparation as a prospective buyer/reseller. Respect qubaglass.pl terms and copyright; do not republish their product photography or copy wholesale without agreement.

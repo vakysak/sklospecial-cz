@@ -78,8 +78,10 @@ $katalog = home_url('/sklenene-dvere/');
             <label class="sklo-field">
               <span class="sklo-field__label">Doprava</span>
               <select class="sklo-field__input" name="doprava">
-                <option value="ne">Ne</option>
-                <option value="ano">Ano, chci návrh dopravy</option>
+                <option value="ne">Zatím nerozhodnuto</option>
+                <option value="vlastni">Vlastní doprava (klient)</option>
+                <option value="nase_auto">Naše doprava firemním autem</option>
+                <option value="prepravni">Přepravní služba</option>
               </select>
             </label>
             <label class="sklo-field">
@@ -89,6 +91,10 @@ $katalog = home_url('/sklenene-dvere/');
                 <option value="ano">Ano, chci montáž</option>
                 <option value="konzultace">Jen konzultaci</option>
               </select>
+            </label>
+            <label class="sklo-field sklo-field--check">
+              <input type="checkbox" name="zamereni" value="ano">
+              <span class="sklo-field__label">Chci volitelné zaměření na místě (u složitějších projektů)</span>
             </label>
           </div>
         </section>

@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.6.10');
+define('SKLO_THEME_VER', '1.6.11');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
@@ -193,6 +193,15 @@ add_action('rest_api_init', static function (): void {
             $adresa = trim((string) $req->get_param('adresa'));
             $doprava = sanitize_key((string) $req->get_param('doprava'));
             $montaz = sanitize_key((string) $req->get_param('montaz'));
+            $zamereni_raw = $req->get_param('zamereni');
+            $zamereni = false;
+            if (is_bool($zamereni_raw)) {
+                $zamereni = $zamereni_raw;
+            } elseif (is_string($zamereni_raw)) {
+                $zamereni = in_array(strtolower($zamereni_raw), ['1', 'ano', 'true', 'on', 'yes'], true);
+            } elseif (is_numeric($zamereni_raw)) {
+                $zamereni = ((int) $zamereni_raw) === 1;
+            }
             $poznamka = trim((string) $req->get_param('poznamka'));
             $order = $req->get_param('order');
             if (!is_array($order)) {
@@ -209,7 +218,7 @@ add_action('rest_api_init', static function (): void {
                 return new WP_Error('bad_telefon', 'Neplatný telefon', ['status' => 400]);
             }
 
-            $allowed_doprava = ['ne', 'ano'];
+            $allowed_doprava = ['ne', 'ano', 'vlastni', 'nase_auto', 'prepravni'];
             $allowed_montaz = ['ne', 'ano', 'konzultace'];
             if (!in_array($doprava, $allowed_doprava, true)) {
                 $doprava = 'ne';
@@ -246,13 +255,21 @@ add_action('rest_api_init', static function (): void {
                 }
             }
 
-            $doprava_label = $doprava === 'ano' ? 'Ano, chci návrh dopravy' : 'Ne';
+            $doprava_map = [
+                'ne' => 'Zatím nerozhodnuto',
+                'ano' => 'Ano, chci návrh dopravy',
+                'vlastni' => 'Vlastní doprava (klient)',
+                'nase_auto' => 'Naše doprava firemním autem',
+                'prepravni' => 'Přepravní služba',
+            ];
+            $doprava_label = $doprava_map[$doprava] ?? 'Zatím nerozhodnuto';
             $montaz_map = [
                 'ne' => 'Ne',
                 'ano' => 'Ano, chci montáž',
                 'konzultace' => 'Jen konzultaci',
             ];
             $montaz_label = $montaz_map[$montaz] ?? 'Ne';
+            $zamereni_label = $zamereni ? 'Ano — volitelné zaměření' : 'Ne';
 
             $body_lines = [
                 'Nová poptávka z katalogu (sklospecial.cz)',
@@ -263,6 +280,7 @@ add_action('rest_api_init', static function (): void {
                 'Adresa / PSČ město: ' . ($adresa !== '' ? $adresa : '—'),
                 'Doprava: ' . $doprava_label,
                 'Montáž: ' . $montaz_label,
+                'Zaměření: ' . $zamereni_label,
                 '',
                 'Produkt: ' . ($name !== '' ? $name : 'Obecná poptávka') . ($code !== '' ? ' (' . $code . ')' : ''),
                 'Počet: ' . $qty,

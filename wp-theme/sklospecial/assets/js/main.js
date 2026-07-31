@@ -593,6 +593,9 @@
       adresa: String(fd.get('adresa') || '').trim(),
       doprava: String(fd.get('doprava') || 'ne'),
       montaz: String(fd.get('montaz') || 'ne'),
+      zamereni: form.querySelector('[name="zamereni"]')
+        ? !!form.querySelector('[name="zamereni"]').checked
+        : false,
       poznamka: String(fd.get('poznamka') || '').trim(),
       order: draft,
     };
@@ -643,6 +646,7 @@
           'Adresa: ' + payload.adresa,
           'Doprava: ' + payload.doprava,
           'Montáž: ' + payload.montaz,
+          'Zaměření: ' + (payload.zamereni ? 'ano' : 'ne'),
           '',
           'Produkt: ' + (draft.name || '') + (draft.code ? ' (' + draft.code + ')' : ''),
           'Počet: ' + (draft.qty || 1),

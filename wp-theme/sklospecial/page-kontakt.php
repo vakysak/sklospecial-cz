@@ -32,29 +32,29 @@ $poptavka = home_url('/poptavka/');
         <li>
           <span class="sklo-kontakt__step-num">2</span>
           <div>
-            <strong>Montáž</strong>
-            <p>Pokud budete chtít montáž, domluvíme termín podle kalendáře.</p>
+            <strong>Volitelné zaměření</strong>
+            <p>Pokud si nejste jistí, nebo jde o složitější projekt, přijedeme a zaměříme prostor.</p>
           </div>
         </li>
         <li>
           <span class="sklo-kontakt__step-num">3</span>
           <div>
             <strong>Výroba</strong>
-            <p>Vystavíme fakturu; po úhradě jdou dveře do výroby (5–10 dní).</p>
+            <p>Vystavíme fakturu; po úhradě jde zakázka do výroby (5–10 dní).</p>
           </div>
         </li>
         <li>
           <span class="sklo-kontakt__step-num">4</span>
           <div>
             <strong>Expedice</strong>
-            <p>Vlastní doprava nebo přepravní služba.</p>
+            <p>Vlastní doprava klientem, naše doprava firemním autem, nebo přepravní služba.</p>
           </div>
         </li>
         <li>
           <span class="sklo-kontakt__step-num">5</span>
           <div>
-            <strong>Montáž na místě</strong>
-            <p>Montáž se hradí na místě po podepsání předávacího protokolu.</p>
+            <strong>Montáž</strong>
+            <p>Domluvíme termín podle kalendáře našich techniků. Montáž se hradí na místě po podepsání předávacího protokolu.</p>
           </div>
         </li>
       </ol>

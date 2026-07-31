@@ -44,8 +44,8 @@ $cfg = sklo_konfigurator_url();
   <div class="sklo-wrap sklo-about__grid">
     <div class="sklo-about__copy">
       <p class="sklo-eyebrow">O nás</p>
-      <h2>Rodinná firma — tři generace a 30&nbsp;let na trhu</h2>
-      <p>Jsme Sklospeciál. Stavíme na stabilitě a jistotě: od zaměření po montáž víš, s kým jednáš. Skleněné dveře na míru vyřídíš na dálku — zaměříš sám, pošleš fotky a ve studiu si složíš dveře.</p>
+      <h2>Už 30&nbsp;let nás najdete na jedné adrese. Pokračuje třetí generace.</h2>
+      <p>Rodinná firma Sklospeciál. Stavíme na stabilitě a jistotě — od zaměření po montáž víš, s kým jednáš. Skleněné dveře na míru vyřídíš na dálku: zaměříš sám, pošleš fotky a ve studiu si složíš dveře.</p>
       <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Otevřít studio</a>
     </div>
     <div class="sklo-about__panel" aria-hidden="true">
