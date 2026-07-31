@@ -151,6 +151,9 @@ function sklo_public_product_text(string $text): string
         // Longest phrases first
 
         // Aggressive PL→CS (product copy leftovers)
+        // Matte-side N/A choice (Polish + hybrid leftovers)
+        '/\bBrak\s*-?\s*gdy\s+(?:dveře\s+)?(?:čiré|bezbarwne|bezbarvé)\s+(?:nebo|lub)\s+laminat\b/iu' => 'chybí, pokud jsou dveře bezbarvé nebo laminátové',
+        '/\bBrak\s*-?\s*gdy\s+drzwi\s+bezbarwne\s+lub\s+laminat\b/iu' => 'chybí, pokud jsou dveře bezbarvé nebo laminátové',
         '/\bVSG folie drží\b/iu' => 'VSG fólie drží',
         '/\bfolie drží\b/iu' => 'fólie drží',
         '/\. prosím seznam\b/iu' => '. Prosím seznam',
