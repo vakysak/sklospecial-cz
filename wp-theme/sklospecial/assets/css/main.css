@@ -2276,3 +2276,9 @@ a:hover { color: var(--accent-hover); }
 .sklo-chat-panel[hidden]{display:none!important}
 .sklo-chat-panel:not(.is-open){display:none!important}
 .sklo-chat-panel.is-open{display:flex!important}
+
+
+.sklo-produkty__item.is-collapsed {
+  content-visibility: hidden;
+  contain-intrinsic-size: 400px 480px;
+}

@@ -302,8 +302,7 @@ def main() -> None:
         if price > 0 and price < 50:
             continue
 
-        name = (r.get("name") or "").strip()
-        name = re.sub(r"(?i)\botočné\b", "kyvné", name)
+        name = clean_public_text((r.get("name") or "").strip())
         code = (r.get("code") or "").strip()
         image = (r.get("image") or "").strip()
         part = (r.get("partNumber") or "").strip()

@@ -120,6 +120,19 @@ function sklo_format_doplatek(int $kc): string
 }
 
 /**
+ * Prefer smaller Quba cache thumbs for grid cards (_700_700 → _400_400).
+ */
+function sklo_quba_thumb(string $url, string $size = '400_400'): string
+{
+    if ($url === '' || !str_contains($url, 'qubaglass.pl')) {
+        return $url;
+    }
+    $out = preg_replace('/_(\d{3,4})_(\d{3,4})\b/', '_' . $size, $url, 1);
+    return is_string($out) && $out !== '' ? $out : $url;
+}
+
+
+/**
  * Detail URL on current category page.
  */
 function sklo_produkt_detail_url(string $code, ?string $base = null): string
@@ -135,6 +148,41 @@ function sklo_produkt_detail_url(string $code, ?string $base = null): string
 function sklo_public_product_text(string $text): string
 {
     $replacements = [
+        // Longest phrases first
+        '/\bW lewo\s*\(\s*patrzac od str(?:ony|\.)\s*systemu\s*\)/iu' => 'Doleva (při pohledu od strany systému)',
+        '/\bW prawo\s*\(\s*patrzac od str(?:ony|\.)\s*systém?\s*\)/iu' => 'Doprava (při pohledu od strany systému)',
+        '/\bOd przodu\s*\(\s*patrzac od str(?:ony|\.)\s*systemu\s*\)/iu' => 'Zepředu (při pohledu od strany systému)',
+        '/\bOd tylu\s*\(\s*patrzac od str(?:ony|\.)\s*systemu\s*\)/iu' => 'Zezadu (při pohledu od strany systému)',
+        '/\bGrafika od przodu,\s*od tylu\b/iu' => 'Grafika zepředu, zezadu',
+        '/\bGrafika od tylu,\s*od przodu\b/iu' => 'Grafika zezadu, zepředu',
+        '/\bZrcadlo od przodu,\s*od tylu\b/iu' => 'Zrcadlo zepředu, zezadu',
+        '/\bZrcadlo od tylu,\s*od przodu\b/iu' => 'Zrcadlo zezadu, zepředu',
+        '/\bSzorstka od strony systemu\b/iu' => 'Drsná od strany systému',
+        '/\bG[lł]adka od strony systemu\b/iu' => 'Hladká od strany systému',
+        '/\bMat od przodu\b/iu' => 'Mat zepředu',
+        '/\bMat od tylu\b/iu' => 'Mat zezadu',
+        '/\bOd przodu\b/iu' => 'Zepředu',
+        '/\bOd tylu\b/iu' => 'Zezadu',
+        '/\bW lewo\b/iu' => 'Doleva',
+        '/\bW prawo\b/iu' => 'Doprava',
+        '/\bOpcja dodatkowa\.?/iu' => 'Doplňková možnost',
+        '/\bSpowolnione zamykanie oraz otwieranie drzwi?\b/iu' => 'Zpomalené zavírání i otevírání dveří',
+        '/\bdo ustalonej\b/iu' => 'do stanovené',
+        '/\bPozycji spoczynkowej\.?/iu' => 'klidové polohy',
+        '/\bjuz od\b/iu' => 'již od',
+        '/\bdo dveře juz\b/iu' => 'u dveří již',
+        '/\bwozki,\s*hamulce,\s*prowadnik dolny\b/iu' => 'vozíky, dorazy, spodní vodítko',
+        '/\bhamulce do wozkow\b/iu' => 'dorazy / brzdy na vozíky',
+        '/\búchyty do prowadnicy\b/iu' => 'úchyty na vodicí lištu',
+        '/\bprowadnik dolny\b/iu' => 'spodní vodítko',
+        '/\bBlaszka zaczepowa kolor satin\b/iu' => 'Protiplech barva satin',
+        '/\bBlaszka zaczepowa\b/iu' => 'Protiplech',
+        '/\bz zawiasami hydraulicznymi z regulacja zamykania\b/iu' => 's hydraulickými závěsy s regulací zavírání',
+        '/\bzawiasami hydraulicznymi\b/iu' => 'hydraulickými závěsy',
+        '/\bregulacja zamykania\b/iu' => 'regulace zavírání',
+        '/\bZarowno systém jak i úchyt sa w satinovém provedení\b/iu' => 'Jak systém, tak úchyt jsou v satinovém provedení',
+        '/\bpozwalaja zsunac dveře do konca\b/iu' => 'umožňují zasunout dveře až na doraz',
+        '/\bpozwalaja zsunac\b/iu' => 'umožňují zasunout',
         '/\bwahadłowe\b/iu' => 'kyvné',
         '/\bwahadlowe\b/iu' => 'kyvné',
         '/\bprzesuwne\b/iu' => 'posuvné',
@@ -192,18 +240,42 @@ function sklo_public_product_text(string $text): string
         '/\bstronnosc\b/iu' => 'strana',
         '/\blewe\b/iu' => 'levé',
         '/\bprawe\b/iu' => 'pravé',
+        '/\bdrzwi\b/iu' => 'dveře',
+        '/\bszklane\b/iu' => 'skleněné',
+        '/\bdaszek\b/iu' => 'stříška',
+        '/\bzadaszenie\b/iu' => 'stříška',
+        '/\bbalustrada\b/iu' => 'zábradlí',
+        // Strip leftover Polish-only diacritics (keep Czech)
+        '/[ąęłńśźżćĄĘŁŃŚŹŻĆ]/u' => '',
     ];
+    // Map stripped diacritics properly via transliteration-ish replacements instead of delete
+    // (handled below after loop with dedicated map)
+
     foreach ($replacements as $pattern => $replacement) {
+        if ($pattern === '/[ąęłńśźżćĄĘŁŃŚŹŻĆ]/u') {
+            continue;
+        }
         $text = preg_replace($pattern, $replacement, $text) ?? $text;
     }
+
+    $plFold = [
+        'ą' => 'a', 'ć' => 'c', 'ę' => 'e', 'ł' => 'l', 'ń' => 'n',
+        'ś' => 's', 'ź' => 'z', 'ż' => 'z',
+        'Ą' => 'A', 'Ć' => 'C', 'Ę' => 'E', 'Ł' => 'L', 'Ń' => 'N',
+        'Ś' => 'S', 'Ź' => 'Z', 'Ż' => 'Z',
+    ];
+    $text = strtr($text, $plFold);
+
+    if (preg_match('/^nie\.?$/iu', trim($text))) {
+        return 'Ne';
+    }
+    if (preg_match('/^tak\.?$/iu', trim($text))) {
+        return 'Ano';
+    }
+
     return trim(preg_replace('/\s{2,}/u', ' ', $text) ?? $text);
 }
 
-/**
- * Render full product detail card.
- *
- * @param array<string, mixed> $p
- */
 function sklo_render_produkt_detail(array $p, string $back_url = ''): void
 {
     $name  = sklo_public_product_text((string) ($p['name'] ?? ''));
@@ -499,7 +571,7 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
 /**
  * Render product grid for a category slug (optional section filter).
  */
-function sklo_render_produkty_grid(string $slug, ?string $section = null, int $initial = 12): void
+function sklo_render_produkty_grid(string $slug, ?string $section = null, int $initial = 24): void
 {
     $bundle = sklo_produkty_for_slug($slug);
     if ($bundle === null || empty($bundle['products'])) {
@@ -547,9 +619,15 @@ function sklo_render_produkty_grid(string $slug, ?string $section = null, int $i
             <?php if ($detail !== '') : ?>
               <a class="sklo-produkty__link" href="<?php echo esc_url($detail); ?>">
             <?php endif; ?>
-            <?php if ($img !== '') : ?>
+            <?php if ($img !== '') :
+                $thumb = sklo_quba_thumb($img, '400_400');
+                ?>
               <span class="sklo-produkty__media">
-                <img src="<?php echo esc_url($img); ?>" alt="" loading="lazy" decoding="async" width="400" height="400">
+                <?php if ($hidden) : ?>
+                  <img src="" data-src="<?php echo esc_url($thumb); ?>" alt="" loading="lazy" decoding="async" width="400" height="400">
+                <?php else : ?>
+                  <img src="<?php echo esc_url($thumb); ?>" alt="" loading="lazy" decoding="async" width="400" height="400">
+                <?php endif; ?>
               </span>
             <?php else : ?>
               <div class="sklo-produkty__media sklo-produkty__media--empty" aria-hidden="true"></div>

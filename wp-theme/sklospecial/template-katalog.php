@@ -346,7 +346,7 @@ $back_url = (string) get_permalink();
 
   <?php
   if (!empty($cat['show_products'])) {
-      sklo_render_produkty_grid($slug, null, 12);
+      sklo_render_produkty_grid($slug, null, 24);
   }
   ?>
 

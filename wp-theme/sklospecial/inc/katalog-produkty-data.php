@@ -1,7 +1,7 @@
 <?php
 /**
  * Auto-generated product catalog from shoptet_import.csv + product_details.json.
- * Generated: 2026-07-31 03:04:38 UTC
+ * Generated: 2026-07-31 11:49:06 UTC
  * Products: 1020 (incl. laminovane overlap)
  * Details matched: 1004
  * Embed mode: lean+json
@@ -271,7 +271,7 @@ return [
             ['code' => 'SklS-0207', 'name' => 'Skleněné kyvné dveře otevírané na míru grafika KOL/133', 'price' => 12363, 'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_7687_700_700/grafika_KOL_133.jpg', 'section' => 'otocne', 'partNumber' => '1341', 'has_detail' => true],
             ['code' => 'SklS-0208', 'name' => 'Skleněné kyvné dveře otevírané na míru grafika KOL/134', 'price' => 12363, 'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_7695_700_700/grafika_KOL_134.jpg', 'section' => 'otocne', 'partNumber' => '1342', 'has_detail' => true],
             ['code' => 'SklS-0209', 'name' => 'Skleněné kyvné dveře otevírané na míru grafika KOL/140', 'price' => 12363, 'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_7703_700_700/grafika_KOL_140.jpg', 'section' => 'otocne', 'partNumber' => '1343', 'has_detail' => true],
-            ['code' => 'SklS-0225', 'name' => 'Skleněné kyvné dveře z zawiasami hydraulicznymi z regulacja zamykania čiré', 'price' => 12447, 'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_13744_700_700/drzwi-z-zawiasem-hydraulicznym-samozamykacz.jpg', 'section' => 'otocne', 'partNumber' => '1825', 'has_detail' => true],
+            ['code' => 'SklS-0225', 'name' => 'Skleněné kyvné dveře s hydraulickými závěsy s regulací zavírání čiré', 'price' => 12447, 'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_13744_700_700/drzwi-z-zawiasem-hydraulicznym-samozamykacz.jpg', 'section' => 'otocne', 'partNumber' => '1825', 'has_detail' => true],
             ['code' => 'SklS-0202', 'name' => 'Skleněné kyvné dveře otevírané laminované černé', 'price' => 13456, 'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_8195_700_700/drzwi_wahadlowe_szklane_qubaglass-PolyskCzarne-Czarnezawiasy-%E2%80%94-kopia.jpg', 'section' => 'otocne', 'partNumber' => '1370', 'has_detail' => true],
             ['code' => 'SklS-0204', 'name' => 'Skleněné kyvné dveře otevírané loft potisk příčky rámeček černá', 'price' => 14297, 'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_7269_700_700/drzwi_szklane_wahadlowe_nadruk_szprosy_czarne.jpg', 'section' => 'otocne', 'partNumber' => '1299', 'has_detail' => true],
             ['code' => 'SklS-0210', 'name' => 'Skleněné kyvné dveře otevírané na míru grafitové čiré', 'price' => 14297, 'image' => 'https://qubaglass.pl/environment/cache/images/productGfx_7736_700_700/drzwi_grafitowe_bezbarwne_prawe.jpg', 'section' => 'otocne', 'partNumber' => '1347', 'has_detail' => true],

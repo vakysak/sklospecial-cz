@@ -93,11 +93,20 @@
   document.querySelectorAll('[data-sklo-produkty]').forEach((root) => {
     const btn = root.querySelector('[data-sklo-produkty-more]');
     if (!btn) return;
+    const hydrate = (el) => {
+      el.querySelectorAll('img[data-src]').forEach((img) => {
+        const src = img.getAttribute('data-src');
+        if (!src) return;
+        img.setAttribute('src', src);
+        img.removeAttribute('data-src');
+      });
+    };
     btn.addEventListener('click', () => {
       root.querySelectorAll('.sklo-produkty__item.is-collapsed').forEach((el) => {
         if (el.classList.contains('is-filtered-out')) return;
         el.hidden = false;
         el.classList.remove('is-collapsed');
+        hydrate(el);
       });
       btn.hidden = true;
     });
@@ -118,7 +127,7 @@
   const moreBtn = gridRoot ? gridRoot.querySelector('[data-sklo-produkty-more]') : null;
   const panels = Array.from(page.querySelectorAll('[data-cat-panel]'));
   const initial = gridRoot
-    ? Number.parseInt(gridRoot.getAttribute('data-initial') || '12', 10) || 12
+    ? Number.parseInt(gridRoot.getAttribute('data-initial') || '24', 10) || 24
     : 12;
 
   let active = '';
@@ -157,6 +166,12 @@
       if (reveal) {
         el.hidden = false;
         el.classList.remove('is-collapsed');
+        el.querySelectorAll('img[data-src]').forEach((img) => {
+          const src = img.getAttribute('data-src');
+          if (!src) return;
+          img.setAttribute('src', src);
+          img.removeAttribute('data-src');
+        });
         shown += 1;
       } else {
         el.hidden = true;
