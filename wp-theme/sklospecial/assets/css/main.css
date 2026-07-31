@@ -2039,6 +2039,239 @@ a:hover { color: var(--accent-hover); }
   }
 }
 
+/* Doprava + montáž card */
+.sklo-shipcard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 2rem;
+}
+
+.sklo-shipcard__col h3 {
+  margin: 0 0 0.4rem;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.sklo-shipcard__col p {
+  margin: 0;
+  color: var(--sklo-muted, #5a5a5a);
+  line-height: 1.55;
+  font-size: 0.98rem;
+}
+
+@media (max-width: 700px) {
+  .sklo-shipcard {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Poptávka page */
+.sklo-poptavka__intro {
+  max-width: 36rem;
+  color: var(--sklo-muted, #5a5a5a);
+}
+
+.sklo-poptavka__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 2.5rem;
+  align-items: start;
+  margin-top: 1.75rem;
+}
+
+.sklo-poptavka__card {
+  color: #1a1a1a;
+  border: 1px solid rgba(26, 26, 26, 0.12);
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.97), rgba(245, 243, 238, 0.98)),
+    repeating-linear-gradient(
+      -12deg,
+      transparent,
+      transparent 10px,
+      rgba(26, 26, 26, 0.015) 10px,
+      rgba(26, 26, 26, 0.015) 11px
+    );
+  padding: 1.35rem 1.4rem 1.5rem;
+}
+
+.sklo-poptavka__card h2 {
+  margin: 0 0 1rem;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.6rem;
+}
+
+.sklo-poptavka__product {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sklo-poptavka__thumb {
+  width: 88px;
+  height: 88px;
+  object-fit: cover;
+  background: #eceae4;
+  flex-shrink: 0;
+}
+
+.sklo-poptavka__thumb--empty {
+  display: block;
+}
+
+.sklo-poptavka__name {
+  margin: 0 0 0.25rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.sklo-poptavka__code {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--sklo-muted, #5a5a5a);
+  letter-spacing: 0.02em;
+}
+
+.sklo-poptavka__sels {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  border-top: 1px solid rgba(26, 26, 26, 0.1);
+}
+
+.sklo-poptavka__sels li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.6rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+  font-size: 0.95rem;
+}
+
+.sklo-poptavka__sel-label {
+  color: var(--sklo-muted, #5a5a5a);
+  min-width: 7rem;
+}
+
+.sklo-poptavka__sel-val {
+  font-weight: 500;
+}
+
+.sklo-poptavka__sur {
+  color: var(--sklo-muted, #5a5a5a);
+  font-size: 0.9em;
+}
+
+.sklo-poptavka__prices {
+  margin: 0 0 1rem;
+}
+
+.sklo-poptavka__prices > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.sklo-poptavka__prices dt {
+  margin: 0;
+  color: var(--sklo-muted, #5a5a5a);
+}
+
+.sklo-poptavka__prices dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+.sklo-poptavka__total {
+  margin-top: 0.35rem;
+  padding-top: 0.55rem !important;
+  border-top: 1px solid rgba(26, 26, 26, 0.14);
+  font-size: 1.05rem !important;
+}
+
+.sklo-poptavka__note {
+  margin: 0.75rem 0 0;
+  font-size: 0.88rem;
+  color: var(--sklo-muted, #5a5a5a);
+}
+
+.sklo-poptavka__form h2 {
+  margin: 0 0 1rem;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.6rem;
+}
+
+.sklo-poptavka__extras {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.sklo-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.95rem;
+}
+
+.sklo-field__label {
+  font-size: 0.92rem;
+}
+
+.sklo-field__label abbr {
+  text-decoration: none;
+  color: #8a3b2a;
+}
+
+.sklo-field__input {
+  appearance: none;
+  border: 1px solid rgba(26, 26, 26, 0.22);
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  padding: 0.7rem 0.85rem;
+  border-radius: 0;
+}
+
+.sklo-field__input:focus {
+  outline: 2px solid rgba(26, 26, 26, 0.35);
+  outline-offset: 1px;
+}
+
+.sklo-field__input--area {
+  resize: vertical;
+  min-height: 6rem;
+}
+
+.sklo-poptavka__form-err {
+  color: #8a3b2a;
+  margin: 0 0 0.75rem;
+}
+
+.sklo-poptavka__form-ok {
+  color: #2f5d3a;
+  margin: 0 0 0.75rem;
+}
+
+.sklo-poptavka__empty[hidden],
+.sklo-poptavka__layout[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .sklo-poptavka__layout {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .sklo-poptavka__extras {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* sklo-chat-fix — do not restyle #sklo-chat / widget chrome here */
 .sklo-chat-panel[hidden]{display:none!important}
 .sklo-chat-panel:not(.is-open){display:none!important}

@@ -137,10 +137,13 @@ function sklo_public_product_text(string $text): string
     $replacements = [
         '/\bwahadłowe\b/iu' => 'kyvné',
         '/\bwahadlowe\b/iu' => 'kyvné',
+        '/\bprzesuwne\b/iu' => 'posuvné',
+        '/\bprzesuwny\b/iu' => 'posuvný',
         '/\botočné\b/iu' => 'kyvné',
         '/\bQuba\s*Glass\b/iu' => '',
         '/\bQubaglass\b/iu' => '',
         '/\bWybierz wariant produktu\b/iu' => 'Vyberte variantu produktu',
+        '/\bWybierz\b/iu' => 'Vyberte',
         '/\bWymiar drzwi\b/iu' => 'Rozměr dveří',
         '/\bWymiary drzwi\b/iu' => 'Rozměry dveří',
         '/\bUchwyt do drzwi\b/iu' => 'Madlo / úchyt',
@@ -149,25 +152,46 @@ function sklo_public_product_text(string $text): string
         '/\bKierunek otwierania\b/iu' => 'Směr otevírání',
         '/\bKotwa montazowa\b/iu' => 'Montážní kotva',
         '/\bKotwa montażowa\b/iu' => 'Montážní kotva',
+        '/\bkotwa\s+montážní\s+kotva\b/iu' => 'montážní kotva',
         '/\bSzerokosc wneki\b/iu' => 'Šířka výklenku',
         '/\bSzerokość wnęki\b/iu' => 'Šířka výklenku',
+        '/\bWysokosc wneki\b/iu' => 'Výška výklenku',
+        '/\bWysokość wnęki\b/iu' => 'Výška výklenku',
         '/\bRodzaj zamka\b/iu' => 'Typ zámku',
         '/\bRodzaj zawiasow\b/iu' => 'Typ závěsů',
         '/\bRodzaj zawiasów\b/iu' => 'Typ závěsů',
         '/\bRodzaj szkła\b/iu' => 'Typ skla',
         '/\bRodzaj szkla\b/iu' => 'Typ skla',
         '/\bKolor oku[cć]\b/iu' => 'Barva kování',
+        '/\bKolor mocowa[nń]\b/iu' => 'Barva kování',
         '/\bbezbarwne\b/iu' => 'čiré',
         '/\bmatowe\b/iu' => 'matné',
         '/\bgrafitowe\b/iu' => 'grafitové',
         '/\bsatyna\b/iu' => 'satin',
+        '/\bczarny mat\b/iu' => 'černý mat',
         '/\bczarny\b/iu' => 'černý',
         '/\bsamodomyk(?:acz)?\b/iu' => 'Samozavírač / tichý dojezd',
         '/\bsamozavírač\s*\/\s*tichý domyk\b/iu' => 'Samozavírač / tichý dojezd',
+        '/\btichý domyk\b/iu' => 'tichý dojezd',
         '/\bmuszelka\b/iu' => 'mušle',
+        '/\bmadlo antaba\b/iu' => 'madlo táhlo',
+        '/\bantaba\b/iu' => 'táhlo',
+        '/\boscieznica\b/iu' => 'zárubeň',
+        '/\bościeżnica\b/iu' => 'zárubeň',
+        '/\bfutryna\b/iu' => 'zárubeň',
+        '/\bklamka\b/iu' => 'klika',
+        '/\bmocowa[nń]\b/iu' => 'úchytů',
+        '/\boku[cć]\b/iu' => 'kování',
+        '/\bzawiasy\b/iu' => 'závěsy',
+        '/\bzawias\b/iu' => 'závěs',
         '/\bobustronnie\b/iu' => 'oboustranně',
         '/\bwneki\b/iu' => 'výklenku',
         '/\bwnęki\b/iu' => 'výklenku',
+        '/\bSystém przesuwny wariant\b/iu' => 'Varianta posuvného systému',
+        '/\bstronność\b/iu' => 'strana',
+        '/\bstronnosc\b/iu' => 'strana',
+        '/\blewe\b/iu' => 'levé',
+        '/\bprawe\b/iu' => 'pravé',
     ];
     foreach ($replacements as $pattern => $replacement) {
         $text = preg_replace($pattern, $replacement, $text) ?? $text;
@@ -245,7 +269,10 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
     }
 
     $kontakt = home_url('/kontakt/');
+    $poptavka = home_url('/poptavka/');
     $cfg_url = function_exists('sklo_konfigurator_url') ? sklo_konfigurator_url() : home_url('/');
+    $thumb = $images[0] ?? '';
+    $ship_from = isset($p['shipping_from_czk']) ? (int) $p['shipping_from_czk'] : 0;
     $options_json = wp_json_encode($options, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     if (!is_string($options_json)) {
         $options_json = '[]';
@@ -262,7 +289,9 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
     data-code="<?php echo esc_attr($code); ?>"
     data-name="<?php echo esc_attr($name); ?>"
     data-base-price="<?php echo esc_attr((string) $price); ?>"
+    data-image="<?php echo esc_url($thumb); ?>"
     data-kontakt="<?php echo esc_url($kontakt); ?>"
+    data-poptavka="<?php echo esc_url($poptavka); ?>"
     data-options="<?php echo esc_attr($options_json); ?>"
   >
     <div class="sklo-wrap">
@@ -430,6 +459,32 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
           <p class="sklo-pdetail__options-err" data-sklo-options-err hidden>Vyber všechny povinné varianty.</p>
         </div>
       <?php endif; ?>
+
+      <div class="sklo-pdetail__block sklo-pdetail__shipcard">
+        <h2>Doprava a montáž</h2>
+        <div class="sklo-shipcard">
+          <div class="sklo-shipcard__col">
+            <h3>Doprava</h3>
+            <p>
+              Doprava po ČR — individuálně dle rozměrů a vzdálenosti.
+              U skla počítej s atypickou přepravou.
+              <?php if ($ship_from > 0) : ?>
+                Orientačně od <strong><?php echo esc_html(sklo_format_cena($ship_from)); ?></strong>.
+              <?php endif; ?>
+              <?php if ($ship !== null && (int) $ship > 0) : ?>
+                Expedice cca <?php echo esc_html((string) (int) $ship); ?> pracovních dní.
+              <?php endif; ?>
+            </p>
+          </div>
+          <div class="sklo-shipcard__col">
+            <h3>Montáž</h3>
+            <p>
+              Montáž na klíč — domluvíme individuálně podle lokality a typu výrobku.
+              Můžeš objednat výrobek samostatně nebo s montáží.
+            </p>
+          </div>
+        </div>
+      </div>
 
       <div class="sklo-pdetail__cta sklo-pdetail__cta--bottom sklo-pdetail__cta--triple">
         <button type="button" class="sklo-btn" data-sklo-order-selected>Objednat vybrané</button>

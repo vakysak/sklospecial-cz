@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.6.2');
+define('SKLO_THEME_VER', '1.6.3');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
@@ -178,3 +178,146 @@ function sklo_is_current(string $path): bool
     $req = trailingslashit(wp_parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '/');
     return $req === trailingslashit($path);
 }
+
+/**
+ * REST: product inquiry from /poptavka/ (FluentSMTP via wp_mail).
+ */
+add_action('rest_api_init', static function (): void {
+    register_rest_route('sklo/v1', '/poptavka', [
+        'methods' => 'POST',
+        'permission_callback' => '__return_true',
+        'callback' => static function (WP_REST_Request $req) {
+            $jmeno = trim((string) $req->get_param('jmeno'));
+            $email = sanitize_email((string) $req->get_param('email'));
+            $telefon = trim((string) $req->get_param('telefon'));
+            $adresa = trim((string) $req->get_param('adresa'));
+            $doprava = sanitize_key((string) $req->get_param('doprava'));
+            $montaz = sanitize_key((string) $req->get_param('montaz'));
+            $poznamka = trim((string) $req->get_param('poznamka'));
+            $order = $req->get_param('order');
+            if (!is_array($order)) {
+                $order = [];
+            }
+
+            if (mb_strlen($jmeno) < 2) {
+                return new WP_Error('bad_jmeno', 'Chybí jméno', ['status' => 400]);
+            }
+            if (!is_email($email)) {
+                return new WP_Error('bad_email', 'Neplatný e-mail', ['status' => 400]);
+            }
+            if (mb_strlen($telefon) < 5) {
+                return new WP_Error('bad_telefon', 'Neplatný telefon', ['status' => 400]);
+            }
+
+            $allowed_doprava = ['ne', 'ano'];
+            $allowed_montaz = ['ne', 'ano', 'konzultace'];
+            if (!in_array($doprava, $allowed_doprava, true)) {
+                $doprava = 'ne';
+            }
+            if (!in_array($montaz, $allowed_montaz, true)) {
+                $montaz = 'ne';
+            }
+
+            $code = sanitize_text_field((string) ($order['code'] ?? ''));
+            $name = sanitize_text_field((string) ($order['name'] ?? ''));
+            $qty = max(1, min(99, (int) ($order['qty'] ?? 1)));
+            $unit = (int) ($order['unitTotal'] ?? $order['basePrice'] ?? 0);
+            $base = (int) ($order['basePrice'] ?? 0);
+            $surcharges = (int) ($order['surcharges'] ?? 0);
+            $total = $unit * $qty;
+
+            $sel_lines = [];
+            if (!empty($order['selections']) && is_array($order['selections'])) {
+                foreach ($order['selections'] as $s) {
+                    if (!is_array($s)) {
+                        continue;
+                    }
+                    $lab = sanitize_text_field((string) ($s['label'] ?? ''));
+                    $val = sanitize_text_field((string) ($s['value'] ?? ''));
+                    $sur = (int) ($s['surcharge'] ?? 0);
+                    if ($lab === '' || $val === '') {
+                        continue;
+                    }
+                    $line = $lab . ': ' . $val;
+                    if ($sur > 0) {
+                        $line .= ' (+ ' . number_format($sur, 0, ',', "\u{00a0}") . ' Kč)';
+                    }
+                    $sel_lines[] = $line;
+                }
+            }
+
+            $doprava_label = $doprava === 'ano' ? 'Ano, chci návrh dopravy' : 'Ne';
+            $montaz_map = [
+                'ne' => 'Ne',
+                'ano' => 'Ano, chci montáž',
+                'konzultace' => 'Jen konzultaci',
+            ];
+            $montaz_label = $montaz_map[$montaz] ?? 'Ne';
+
+            $body_lines = [
+                'Nová poptávka z katalogu (sklospecial.cz)',
+                '',
+                'Jméno: ' . $jmeno,
+                'E-mail: ' . $email,
+                'Telefon: ' . $telefon,
+                'Adresa / PSČ město: ' . ($adresa !== '' ? $adresa : '—'),
+                'Doprava: ' . $doprava_label,
+                'Montáž: ' . $montaz_label,
+                '',
+                'Produkt: ' . $name . ' (' . $code . ')',
+                'Počet: ' . $qty,
+                'Základ: ' . number_format($base, 0, ',', "\u{00a0}") . ' Kč',
+                'Doplatky: ' . number_format($surcharges, 0, ',', "\u{00a0}") . ' Kč',
+                'Cena / ks: ' . number_format($unit, 0, ',', "\u{00a0}") . ' Kč',
+                'Orientační celkem: ' . number_format($total, 0, ',', "\u{00a0}") . ' Kč',
+                '',
+                'Volby:',
+            ];
+            if ($sel_lines === []) {
+                $body_lines[] = '—';
+            } else {
+                foreach ($sel_lines as $ln) {
+                    $body_lines[] = '- ' . $ln;
+                }
+            }
+            $body_lines[] = '';
+            $body_lines[] = 'Poznámka:';
+            $body_lines[] = $poznamka !== '' ? $poznamka : '—';
+
+            $to = (string) get_option('admin_email');
+            $subject = sprintf('Poptávka %s — %s', $code !== '' ? $code : 'katalog', $jmeno);
+            $headers = [
+                'Content-Type: text/plain; charset=UTF-8',
+                'Reply-To: ' . $jmeno . ' <' . $email . '>',
+            ];
+            $sent = wp_mail($to, $subject, implode("\n", $body_lines), $headers);
+
+            // Confirmation to client (best-effort)
+            if ($sent && is_email($email)) {
+                $confirm = [
+                    'Dobrý den, ' . $jmeno . ',',
+                    '',
+                    'děkujeme za poptávku' . ($code !== '' ? ' na ' . $code : '') . '.',
+                    'Ozveme se s konkrétní nabídkou.',
+                    '',
+                    'Sklospeciál',
+                    'https://sklospecial.cz',
+                ];
+                wp_mail(
+                    $email,
+                    'Potvrzení poptávky — Sklospeciál',
+                    implode("\n", $confirm),
+                    ['Content-Type: text/plain; charset=UTF-8']
+                );
+            }
+
+            if (!$sent) {
+                return new WP_Error('mail_fail', 'E-mail se nepodařilo odeslat', ['status' => 500]);
+            }
+
+            return [
+                'success' => true,
+            ];
+        },
+    ]);
+});

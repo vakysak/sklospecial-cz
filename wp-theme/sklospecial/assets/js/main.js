@@ -273,27 +273,50 @@
     return ok;
   };
 
-  const buildKontaktUrl = () => {
-    const kontakt =
-      root.getAttribute('data-kontakt') ||
-      new URL('/kontakt/', window.location.origin).href;
+  const buildOrderDraft = () => {
     const code = root.getAttribute('data-code') || '';
     const name = root.getAttribute('data-name') || '';
-    const lines = [];
+    const image = root.getAttribute('data-image') || '';
+    const selections = [];
+    let surcharges = 0;
     selects.forEach((sel) => {
       const label = sel.getAttribute('data-opt-label') || '';
       const opt = sel.options[sel.selectedIndex];
       const text = (opt && opt.value) || '';
-      if (label && text) lines.push(label + ': ' + text);
+      const sur = parseInt((opt && opt.getAttribute('data-surcharge')) || '0', 10) || 0;
+      if (label && text) {
+        selections.push({ label, value: text, surcharge: sur });
+        surcharges += sur;
+      }
     });
-    const volby = lines.join(' | ').slice(0, 400);
-    const url = new URL(kontakt, window.location.origin);
-    url.searchParams.set('poptavka', '1');
-    if (code) url.searchParams.set('kod', code);
-    if (name) url.searchParams.set('nazev', name.slice(0, 120));
-    if (volby) url.searchParams.set('volby', volby);
-    url.searchParams.set('cena', String(currentTotal()));
-    return url.toString();
+    const unitTotal = currentTotal();
+    return {
+      v: 1,
+      code,
+      name,
+      image,
+      basePrice: base,
+      surcharges,
+      unitTotal,
+      qty: 1,
+      selections,
+      createdAt: new Date().toISOString(),
+    };
+  };
+
+  const saveAndGoPoptavka = () => {
+    const draft = buildOrderDraft();
+    try {
+      sessionStorage.setItem('sklo_order_draft', JSON.stringify(draft));
+    } catch (e) {
+      /* ignore quota */
+    }
+    const poptavka =
+      root.getAttribute('data-poptavka') ||
+      new URL('/poptavka/', window.location.origin).href;
+    const url = new URL(poptavka, window.location.origin);
+    if (draft.code) url.searchParams.set('kod', draft.code);
+    window.location.href = url.toString();
   };
 
   if (priceEl) {
@@ -309,7 +332,243 @@
         if (firstBad) firstBad.focus();
         return;
       }
-      window.location.href = buildKontaktUrl();
+      saveAndGoPoptavka();
     });
   }
+})();
+
+(() => {
+  const root = document.querySelector('[data-sklo-poptavka]');
+  if (!root) return;
+
+  const STORAGE_KEY = 'sklo_order_draft';
+  const emptyEl = root.querySelector('[data-poptavka-empty]');
+  const contentEl = root.querySelector('[data-poptavka-content]');
+  const summaryEl = root.querySelector('[data-poptavka-summary]');
+  const form = root.querySelector('[data-poptavka-form]');
+  const orderJsonInput = root.querySelector('[data-poptavka-order-json]');
+  const errEl = root.querySelector('[data-poptavka-err]');
+  const okEl = root.querySelector('[data-poptavka-ok]');
+  const submitBtn = root.querySelector('[data-poptavka-submit]');
+  const restUrl = root.getAttribute('data-rest') || '';
+
+  const formatKc = (n) =>
+    new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 0 }).format(n).replace(/\s/g, '\u00a0') +
+    ' Kč';
+
+  const loadDraft = () => {
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      if (!data || typeof data !== 'object' || !data.code) return null;
+      return data;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  let draft = loadDraft();
+  if (!draft) {
+    if (emptyEl) emptyEl.hidden = false;
+    if (contentEl) contentEl.hidden = true;
+    return;
+  }
+
+  if (emptyEl) emptyEl.hidden = true;
+  if (contentEl) contentEl.hidden = false;
+
+  const qty = Math.max(1, parseInt(String(draft.qty || 1), 10) || 1);
+  draft.qty = qty;
+
+  const escapeHtml = (s) =>
+    String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  const escapeAttr = (s) => escapeHtml(s).replace(/'/g, '&#39;');
+
+  const syncOrderJson = () => {
+    if (orderJsonInput) orderJsonInput.value = JSON.stringify(draft);
+  };
+
+  const renderSummary = () => {
+    if (!summaryEl) return;
+    const unit = parseInt(String(draft.unitTotal || draft.basePrice || 0), 10) || 0;
+    const total = unit * (parseInt(String(draft.qty || 1), 10) || 1);
+    const sels = Array.isArray(draft.selections) ? draft.selections : [];
+    const lines = sels
+      .map((s) => {
+        const sur =
+          s.surcharge > 0
+            ? ' <span class="sklo-poptavka__sur">(+ ' + formatKc(s.surcharge) + ')</span>'
+            : '';
+        return (
+          '<li><span class="sklo-poptavka__sel-label">' +
+          escapeHtml(s.label) +
+          '</span> <span class="sklo-poptavka__sel-val">' +
+          escapeHtml(s.value) +
+          '</span>' +
+          sur +
+          '</li>'
+        );
+      })
+      .join('');
+
+    const img = draft.image
+      ? '<img class="sklo-poptavka__thumb" src="' +
+        escapeAttr(draft.image) +
+        '" alt="" width="96" height="96" loading="lazy">'
+      : '<div class="sklo-poptavka__thumb sklo-poptavka__thumb--empty" aria-hidden="true"></div>';
+
+    summaryEl.innerHTML =
+      '<div class="sklo-poptavka__card">' +
+      '<h2>Shrnutí</h2>' +
+      '<div class="sklo-poptavka__product">' +
+      img +
+      '<div class="sklo-poptavka__product-text">' +
+      '<p class="sklo-poptavka__name">' +
+      escapeHtml(draft.name || '') +
+      '</p>' +
+      '<p class="sklo-poptavka__code">' +
+      escapeHtml(draft.code || '') +
+      '</p>' +
+      '</div></div>' +
+      (lines
+        ? '<ul class="sklo-poptavka__sels">' + lines + '</ul>'
+        : '<p class="sklo-poptavka__no-opts">Bez variant</p>') +
+      '<dl class="sklo-poptavka__prices">' +
+      '<div><dt>Základ</dt><dd>' +
+      formatKc(parseInt(String(draft.basePrice || 0), 10) || 0) +
+      '</dd></div>' +
+      (draft.surcharges > 0
+        ? '<div><dt>Doplatky</dt><dd>+ ' + formatKc(draft.surcharges) + '</dd></div>'
+        : '') +
+      '<div><dt>Cena / ks</dt><dd>' +
+      formatKc(unit) +
+      '</dd></div>' +
+      '<div class="sklo-poptavka__total"><dt>Orientační celkem</dt><dd data-poptavka-total>' +
+      formatKc(total) +
+      '</dd></div>' +
+      '</dl>' +
+      '<label class="sklo-field sklo-poptavka__qty">' +
+      '<span class="sklo-field__label">Počet kusů</span>' +
+      '<input class="sklo-field__input" type="number" min="1" max="99" value="' +
+      String(draft.qty) +
+      '" data-poptavka-qty>' +
+      '</label>' +
+      '<p class="sklo-poptavka__note">Finální nabídka podle rozměrů, dopravy a dostupnosti.</p>' +
+      '</div>';
+
+    const qtyInput = summaryEl.querySelector('[data-poptavka-qty]');
+    if (qtyInput) {
+      qtyInput.addEventListener('change', () => {
+        let q = parseInt(qtyInput.value, 10) || 1;
+        if (q < 1) q = 1;
+        if (q > 99) q = 99;
+        draft.qty = q;
+        qtyInput.value = String(q);
+        try {
+          sessionStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
+        } catch (e) {}
+        const totalEl = summaryEl.querySelector('[data-poptavka-total]');
+        if (totalEl) totalEl.textContent = formatKc(unit * q);
+        syncOrderJson();
+      });
+    }
+    syncOrderJson();
+  };
+
+  renderSummary();
+
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (errEl) {
+      errEl.hidden = true;
+      errEl.textContent = '';
+    }
+    if (okEl) okEl.hidden = true;
+
+    const fd = new FormData(form);
+    const payload = {
+      jmeno: String(fd.get('jmeno') || '').trim(),
+      email: String(fd.get('email') || '').trim(),
+      telefon: String(fd.get('telefon') || '').trim(),
+      adresa: String(fd.get('adresa') || '').trim(),
+      doprava: String(fd.get('doprava') || 'ne'),
+      montaz: String(fd.get('montaz') || 'ne'),
+      poznamka: String(fd.get('poznamka') || '').trim(),
+      order: draft,
+    };
+
+    if (payload.jmeno.length < 2 || !payload.email || payload.telefon.length < 5) {
+      if (errEl) {
+        errEl.textContent = 'Vyplň jméno, e-mail a telefon.';
+        errEl.hidden = false;
+      }
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Odesílám…';
+    }
+
+    try {
+      const res = await fetch(restUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) {
+        throw new Error((data && data.message) || 'Odeslání se nepovedlo.');
+      }
+      try {
+        sessionStorage.removeItem(STORAGE_KEY);
+      } catch (err) {}
+      if (okEl) okEl.hidden = false;
+      form.querySelectorAll('input, textarea, select, button').forEach((el) => {
+        if (el !== submitBtn) el.disabled = true;
+      });
+      if (submitBtn) submitBtn.textContent = 'Odesláno';
+    } catch (err) {
+      // mailto fallback
+      const subject = encodeURIComponent('Poptávka ' + (draft.code || '') + ' — ' + payload.jmeno);
+      const body = encodeURIComponent(
+        [
+          'Jméno: ' + payload.jmeno,
+          'E-mail: ' + payload.email,
+          'Telefon: ' + payload.telefon,
+          'Adresa: ' + payload.adresa,
+          'Doprava: ' + payload.doprava,
+          'Montáž: ' + payload.montaz,
+          '',
+          'Produkt: ' + (draft.name || '') + ' (' + (draft.code || '') + ')',
+          'Počet: ' + draft.qty,
+          'Orientační cena: ' + formatKc((draft.unitTotal || 0) * (draft.qty || 1)),
+          'Volby:',
+          ...(draft.selections || []).map((s) => '- ' + s.label + ': ' + s.value),
+          '',
+          'Poznámka: ' + payload.poznamka,
+        ].join('\n')
+      );
+      if (errEl) {
+        errEl.innerHTML =
+          'Nepodařilo se odeslat přes server. <a href="mailto:info@sklospecial.cz?subject=' +
+          subject +
+          '&body=' +
+          body +
+          '">Otevři e-mailový klient</a> a pošli poptávku ručně.';
+        errEl.hidden = false;
+      }
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Odeslat poptávku';
+      }
+    }
+  });
 })();
