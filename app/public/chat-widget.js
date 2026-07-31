@@ -7,9 +7,11 @@
 
   const css = `
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&display=swap');
-  .sklo-chat-btn{position:fixed;right:1.1rem;bottom:1.1rem;z-index:9999;border:0;border-radius:999px;background:#1a5c6b;color:#fff;padding:.95rem 1.2rem;font:600 14px/1 Outfit,sans-serif;cursor:pointer;box-shadow:0 14px 34px rgba(26,92,107,.28);transition:transform .15s ease}
+  .sklo-chat-btn{position:fixed;right:1.1rem;bottom:1.1rem;z-index:9999;border:0;border-radius:999px;background:#1a5c6b;color:#fff;padding:.7rem 1.15rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.12rem;font:600 13px/1.15 Outfit,sans-serif;cursor:pointer;box-shadow:0 14px 34px rgba(26,92,107,.28);transition:transform .15s ease;text-align:center}
   .sklo-chat-btn:hover{transform:translateY(-1px)}
-  .sklo-chat-choice{position:fixed;right:1.1rem;bottom:4.7rem;width:min(280px,calc(100vw - 2rem));z-index:9999;display:none;flex-direction:column;gap:.45rem;padding:.7rem;border-radius:16px;background:#152028;border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 40px rgba(10,20,28,.35);font-family:Outfit,sans-serif}
+  .sklo-chat-btn__line{display:block}
+  .sklo-chat-btn__line--wa{font-weight:500;font-size:11px;line-height:1.1;opacity:.88;letter-spacing:.02em}
+  .sklo-chat-choice{position:fixed;right:1.1rem;bottom:5.4rem;width:min(280px,calc(100vw - 2rem));z-index:9999;display:none;flex-direction:column;gap:.45rem;padding:.7rem;border-radius:16px;background:#152028;border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 40px rgba(10,20,28,.35);font-family:Outfit,sans-serif}
   .sklo-chat-choice.is-open{display:flex}
   .sklo-chat-choice__label{margin:0 .15rem .15rem;font:500 11px/1.3 Outfit,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.55)}
   .sklo-chat-choice__opt{border:0;border-radius:12px;padding:.75rem .9rem;text-align:left;cursor:pointer;font:600 14px/1.25 Outfit,sans-serif;background:rgba(255,255,255,.06);color:#f2f6f8;transition:background .15s ease}
@@ -17,7 +19,7 @@
   .sklo-chat-choice__opt--wa{background:rgba(37,211,102,.14);color:#b8f5cf}
   .sklo-chat-choice__opt--wa:hover{background:rgba(37,211,102,.22)}
   .sklo-chat-choice__hint{margin:0 .15rem;font:500 12px/1.35 Outfit,sans-serif;color:rgba(255,255,255,.45)}
-  .sklo-chat-panel{position:fixed;right:1.1rem;bottom:4.7rem;width:min(360px,calc(100vw - 2rem));height:min(520px,calc(100vh - 6rem));background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border:1px solid rgba(18,24,28,.1);border-radius:18px;z-index:9999;display:none;flex-direction:column;box-shadow:0 22px 50px rgba(18,40,55,.16);overflow:hidden;font-family:Outfit,sans-serif}
+  .sklo-chat-panel{position:fixed;right:1.1rem;bottom:5.4rem;width:min(360px,calc(100vw - 2rem));height:min(520px,calc(100vh - 6rem));background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border:1px solid rgba(18,24,28,.1);border-radius:18px;z-index:9999;display:none;flex-direction:column;box-shadow:0 22px 50px rgba(18,40,55,.16);overflow:hidden;font-family:Outfit,sans-serif}
   .sklo-chat-panel.is-open{display:flex}
   .sklo-chat-panel header{padding:.85rem 1rem;border-bottom:1px solid rgba(18,24,28,.08);display:flex;justify-content:space-between;align-items:center;gap:.5rem;background:linear-gradient(180deg,#f7fbfc,#fff)}
   .sklo-chat-panel header strong{font:600 14px Outfit,sans-serif;color:#12181c}
@@ -50,7 +52,10 @@
   const btn = document.createElement('button');
   btn.className = 'sklo-chat-btn';
   btn.type = 'button';
-  btn.textContent = 'Sklo asistent';
+  btn.innerHTML =
+    '<span class="sklo-chat-btn__line">Sklo asistent</span>' +
+    '<span class="sklo-chat-btn__line sklo-chat-btn__line--wa">WhatsApp</span>';
+  btn.setAttribute('aria-label', 'Sklo asistent, WhatsApp');
   btn.setAttribute('aria-expanded', 'false');
   btn.setAttribute('aria-haspopup', 'dialog');
 
