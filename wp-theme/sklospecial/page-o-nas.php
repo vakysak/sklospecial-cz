@@ -32,7 +32,7 @@ $has_about = is_readable($about_img);
         <h2>Jak to u nás probíhá</h2>
         <ol>
           <li>Pošleš rozměry a fotky (nebo poptávku).</li>
-          <li>Do 1 pracovního dne se ozveme; nabídka bez závazku.</li>
+          <li>Obratem, nejpozději do 1 pracovního dne se ozveme; nabídka bez závazku.</li>
           <li>Po odsouhlasení vystavíme fakturu — výroba startuje po úhradě.</li>
           <li>Expedice: osobní odběr, naše doprava, nebo přepravní firma.</li>
           <li>Volitelná montáž s předávacím protokolem.</li>

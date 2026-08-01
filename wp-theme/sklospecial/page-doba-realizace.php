@@ -24,7 +24,7 @@ $navod = home_url('/navod-na-zamereni/');
     <div class="sklo-prose">
       <h2>Od poptávky k nabídce</h2>
       <ul>
-        <li><strong>Ozveme se</strong> obvykle do <strong>1 pracovního dne</strong> (reakce na poptávku).</li>
+        <li><strong>Ozveme se obratem</strong>, nejpozději do <strong>1 pracovního dne</strong> (reakce na poptávku). Nejrychleji přes WhatsApp.</li>
         <li><strong>Nabídka</strong> obvykle do <strong>1–2 pracovních dnů</strong> od kompletních podkladů (rozměry, fotky, specifikace). Pokud něco chybí, ozveme se dříve s dotazy.</li>
       </ul>
       <p>Jak zaměřit: <a href="<?php echo esc_url($navod); ?>">návod na zaměření</a>.</p>

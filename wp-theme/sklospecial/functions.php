@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.15.0');
+define('SKLO_THEME_VER', '1.16.0');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
@@ -812,8 +812,20 @@ add_action('rest_api_init', static function (): void {
             ];
             $montaz_label = $montaz_map[$montaz] ?? 'Ne';
             $zamereni_label = $zamereni ? 'Ano — volitelné zaměření' : 'Ne';
+            $zaruka_amount = 0;
+            if ($prodlouzena_zaruka && $base > 0) {
+                $zaruka_amount = function_exists('sklo_warranty_surcharge_czk')
+                    ? sklo_warranty_surcharge_czk($base)
+                    : (int) round($base * 0.10);
+            }
             $zaruka_label = $prodlouzena_zaruka
-                ? 'Ano — zájem o +1 rok (10 % ceny výrobku bez dopravy/montáže)'
+                ? (
+                    'Ano — zájem o +1 rok (10 % ceny výrobku bez dopravy/montáže'
+                    . ($zaruka_amount > 0
+                        ? ', orientačně ' . number_format($zaruka_amount, 0, ',', "\u{00a0}") . ' Kč'
+                        : '')
+                    . ')'
+                )
                 : 'Ne';
 
             $body_lines = [
@@ -865,7 +877,7 @@ add_action('rest_api_init', static function (): void {
                     'Dobrý den, ' . $jmeno . ',',
                     '',
                     'děkujeme za poptávku' . ($code !== '' ? ' na ' . $code : '') . '.',
-                    'Ozveme se s konkrétní nabídkou.',
+                    'Ozveme se obratem, nejpozději do 1 pracovního dne — s konkrétní nabídkou.',
                     '',
                     'Sklospeciál',
                     'https://sklospecial.cz',

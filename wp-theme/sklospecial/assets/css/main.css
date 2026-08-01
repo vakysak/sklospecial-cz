@@ -3377,7 +3377,25 @@ a:hover { color: var(--accent-hover); }
   font-size: 0.86rem;
   line-height: 1.45;
   color: var(--muted);
-  max-width: 18rem;
+  max-width: 22rem;
+}
+
+.sklo-cta-sla__text {
+  display: inline;
+}
+
+.sklo-cta-sla__wa {
+  display: inline-block;
+  margin-left: 0.35rem;
+  color: var(--accent, #1a6b4a);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+  white-space: nowrap;
+}
+
+.sklo-cta-sla__wa:hover,
+.sklo-cta-sla__wa:focus-visible {
+  color: var(--ink, #122);
 }
 
 .sklo-cta-sla--intro,
@@ -3623,6 +3641,7 @@ a:hover { color: var(--accent-hover); }
   line-height: 1.55;
 }
 /* —— Audit remediation 1.15: proof gallery, price example, doprava table, O nás, footer cols —— */
+/* —— 1.16: SLA + WhatsApp nudge, prodloužená záruka jako volba u produktu —— */
 
 .sklo-cena-priklad {
   margin: 0.35rem 0 0;

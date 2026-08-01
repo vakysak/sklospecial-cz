@@ -579,9 +579,25 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
             $options[] = [
                 'label' => $label,
                 'type' => (string) ($g['type'] ?? 'select'),
+                'key' => (string) ($g['key'] ?? ''),
                 'choices' => $choices,
             ];
         }
+    }
+
+    $warranty_czk = function_exists('sklo_warranty_surcharge_czk')
+        ? sklo_warranty_surcharge_czk($price)
+        : ($price > 0 ? (int) round($price * 0.10) : 0);
+    if ($warranty_czk > 0) {
+        $options[] = [
+            'label' => 'Prodloužená záruka (+1 rok)',
+            'type' => 'select',
+            'key' => 'prodlouzena_zaruka',
+            'choices' => [
+                ['name' => 'Ne', 'surcharge_czk' => 0],
+                ['name' => 'Ano', 'surcharge_czk' => $warranty_czk],
+            ],
+        ];
     }
 
     $kontakt = home_url('/kontakt/');
@@ -605,6 +621,7 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
     data-code="<?php echo esc_attr($code); ?>"
     data-name="<?php echo esc_attr($name); ?>"
     data-base-price="<?php echo esc_attr((string) $price); ?>"
+    data-warranty-price="<?php echo esc_attr((string) $warranty_czk); ?>"
     data-image="<?php echo esc_url($thumb); ?>"
     data-kontakt="<?php echo esc_url($kontakt); ?>"
     data-poptavka="<?php echo esc_url($poptavka); ?>"
@@ -685,7 +702,7 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
             <p class="sklo-pdetail__avail"><?php echo esc_html($avail); ?></p>
           <?php endif; ?>
 
-          <p class="sklo-pdetail__note">Finální nabídka podle rozměrů a dostupnosti. Volitelně prodloužená záruka +1&nbsp;rok (10&nbsp;% ceny výrobku bez dopravy a montáže) — <a href="<?php echo esc_url(home_url('/zaruka/')); ?>">více o záruce</a>.</p>
+          <p class="sklo-pdetail__note">Finální nabídka podle rozměrů a dostupnosti. Volitelně prodloužená záruka +1&nbsp;rok — 10&nbsp;% ceny výrobku (bez dopravy a montáže); částku v&nbsp;Kč zvolíš ve volbách níže. <a href="<?php echo esc_url(home_url('/zaruka/')); ?>">Více o záruce</a>.</p>
         </div>
       </div>
 
@@ -724,13 +741,14 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
 
       <?php if ($options !== []) : ?>
         <div class="sklo-pdetail__block sklo-pdetail__options" data-sklo-options>
-          <h2>Varianta produktu</h2>
-          <p class="sklo-pdetail__options-lead">Vyberte variantu produktu — jednotlivé volby mohou změnit cenu.</p>
+          <h2>Volby k produktu</h2>
+          <p class="sklo-pdetail__options-lead">Vyber variantu a volitelnou záruku — volby můžou změnit cenu.</p>
           <div class="sklo-pdetail__option-groups">
             <?php foreach ($options as $gi => $g) :
                 $label = (string) ($g['label'] ?? '');
                 $choices = is_array($g['choices'] ?? null) ? $g['choices'] : [];
                 $type = (string) ($g['type'] ?? 'select');
+                $opt_key = (string) ($g['key'] ?? '');
                 $field_id = 'sklo-opt-' . (string) $gi;
                 $free_default_idx = null;
                 foreach ($choices as $ci => $c) {
@@ -754,6 +772,8 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
                     name="opt_<?php echo esc_attr((string) $gi); ?>"
                     data-sklo-option-select
                     data-opt-label="<?php echo esc_attr($label !== '' ? $label : 'Možnost'); ?>"
+                    <?php if ($opt_key !== '') : ?>data-opt-key="<?php echo esc_attr($opt_key); ?>"<?php endif; ?>
+                    <?php if ($opt_key === 'prodlouzena_zaruka') : ?>data-sklo-warranty="1"<?php endif; ?>
                     required
                     aria-label="<?php echo esc_attr($label !== '' ? $label : 'Možnost'); ?>"
                   >

@@ -297,11 +297,14 @@
     let surcharges = 0;
     selects.forEach((sel) => {
       const label = sel.getAttribute('data-opt-label') || '';
+      const key = sel.getAttribute('data-opt-key') || '';
       const opt = sel.options[sel.selectedIndex];
       const text = (opt && opt.value) || '';
       const sur = parseInt((opt && opt.getAttribute('data-surcharge')) || '0', 10) || 0;
       if (label && text) {
-        selections.push({ label, value: text, surcharge: sur });
+        const row = { label, value: text, surcharge: sur };
+        if (key) row.key = key;
+        selections.push(row);
         surcharges += sur;
       }
     });
@@ -538,6 +541,63 @@
   setActiveStep(1);
 
   if (!form) return;
+
+  const zarukaCb = form.querySelector('[data-poptavka-zaruka]');
+  const zarukaAmountEl = form.querySelector('[data-poptavka-zaruka-amount]');
+  const warrantyFromDraft = () => {
+    const sels = Array.isArray(draft.selections) ? draft.selections : [];
+    return sels.find((s) => s.key === 'prodlouzena_zaruka' || /prodloužená záruka/i.test(String(s.label || '')));
+  };
+  const warrantyPriceForBase = () => {
+    const base = parseInt(String(draft.basePrice || 0), 10) || 0;
+    return base > 0 ? Math.round(base * 0.1) : 0;
+  };
+  const syncZarukaUi = () => {
+    const w = warrantyFromDraft();
+    const price = (w && w.surcharge > 0) ? w.surcharge : warrantyPriceForBase();
+    if (zarukaAmountEl) {
+      zarukaAmountEl.textContent = price > 0 ? ' — ' + formatKc(price) : '';
+    }
+    if (zarukaCb && hasProduct && w) {
+      zarukaCb.checked = String(w.value || '').toLowerCase() === 'ano';
+    }
+  };
+  const applyZarukaToDraft = (on) => {
+    if (!hasProduct || !draft) return;
+    const price = warrantyPriceForBase();
+    let sels = Array.isArray(draft.selections) ? draft.selections.slice() : [];
+    sels = sels.filter((s) => s.key !== 'prodlouzena_zaruka' && !/prodloužená záruka/i.test(String(s.label || '')));
+    if (on && price > 0) {
+      sels.push({
+        key: 'prodlouzena_zaruka',
+        label: 'Prodloužená záruka (+1 rok)',
+        value: 'Ano',
+        surcharge: price,
+      });
+    } else if (!on) {
+      sels.push({
+        key: 'prodlouzena_zaruka',
+        label: 'Prodloužená záruka (+1 rok)',
+        value: 'Ne',
+        surcharge: 0,
+      });
+    }
+    draft.selections = sels;
+    draft.surcharges = sels.reduce((acc, s) => acc + (parseInt(String(s.surcharge || 0), 10) || 0), 0);
+    draft.unitTotal = (parseInt(String(draft.basePrice || 0), 10) || 0) + draft.surcharges;
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
+    } catch (e) {}
+    renderProductSummary();
+    syncOrderJson();
+  };
+  syncZarukaUi();
+  if (zarukaCb) {
+    zarukaCb.addEventListener('change', () => {
+      applyZarukaToDraft(!!zarukaCb.checked);
+      syncZarukaUi();
+    });
+  }
 
   const sectionEls = Array.from(form.querySelectorAll('[data-poptavka-section]'));
   const bumpStepFromFocus = (target) => {

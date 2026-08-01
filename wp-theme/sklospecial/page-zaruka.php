@@ -35,7 +35,7 @@ $op = home_url('/obchodni-podminky/');
 
       <h2>3. Prodloužená záruka (+1 rok) za poplatek</h2>
       <p>Volitelná <strong>smluvní záruka za jakost</strong> nad rámec zákona. Prodlouží pokrytí výrobních vad o <strong>+1 rok</strong> po uplynutí zákonné lhůty.</p>
-      <p><strong>Cena:</strong> <strong>10&nbsp;% z ceny výrobku</strong> (bez dopravy a montáže). Přesnou částku doplníme do nabídky podle odsouhlasené ceny výrobku.</p>
+      <p><strong>Cena:</strong> <strong>10&nbsp;% z ceny výrobku</strong> (bez dopravy a montáže). Konkrétní částku v&nbsp;Kč uvádíme u produktu v katalogu — můžete ji rovnou zvolit jako volbu „Prodloužená záruka (+1 rok)“.</p>
 
       <h3>Co kryje</h3>
       <ul>
@@ -54,7 +54,7 @@ $op = home_url('/obchodni-podminky/');
       <p>Prodloužená záruka <strong>nenahrazuje</strong> ani neomezuje zákonná práva z vadného plnění. Podmínky upřesníme písemně v nabídce a na faktuře.</p>
 
       <h2>Jak to objednat</h2>
-      <p>V <a href="<?php echo esc_url($poptavka); ?>">poptávce</a> zaškrtněte zájem o prodlouženou záruku, nebo nám napište. Do nabídky doplníme položku s přesnou cenou.</p>
+      <p>U produktu v katalogu zvolíte „Prodloužená záruka (+1 rok)“ s uvedenou cenou, nebo v <a href="<?php echo esc_url($poptavka); ?>">poptávce</a> zaškrtnete zájem — částku v&nbsp;Kč uvidíte, pokud máte vybraný produkt.</p>
 
       <p><a class="sklo-btn" href="<?php echo esc_url($poptavka); ?>">Napsat poptávku</a></p>
     </div>

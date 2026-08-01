@@ -101,8 +101,8 @@ $katalog = home_url('/sklenene-dvere/');
               <span class="sklo-field__label">Chci volitelné zaměření na místě (u složitějších projektů)</span>
             </label>
             <label class="sklo-field sklo-field--check">
-              <input type="checkbox" name="prodlouzena_zaruka" value="ano">
-              <span class="sklo-field__label">Mám zájem o prodlouženou záruku +1 rok (10&nbsp;% ceny výrobku bez dopravy a montáže). <a href="<?php echo esc_url(home_url('/zaruka/')); ?>">Co kryje</a></span>
+              <input type="checkbox" name="prodlouzena_zaruka" value="ano" data-poptavka-zaruka>
+              <span class="sklo-field__label">Mám zájem o prodlouženou záruku +1 rok<span data-poptavka-zaruka-amount></span> (10&nbsp;% ceny výrobku bez dopravy a montáže). <a href="<?php echo esc_url(home_url('/zaruka/')); ?>">Co kryje</a></span>
             </label>
           </div>
         </section>
@@ -144,7 +144,7 @@ $katalog = home_url('/sklenene-dvere/');
           <?php if (function_exists('sklo_render_poptavka_next_steps')) : ?>
             <?php sklo_render_poptavka_next_steps(); ?>
           <?php else : ?>
-            <p class="sklo-poptavka__form-ok" data-poptavka-ok hidden>Poptávka odeslána. Ozveme se do 1 PD · nabídka bez závazku.</p>
+            <p class="sklo-poptavka__form-ok" data-poptavka-ok hidden>Poptávka odeslána. Obratem, nejpozději do 1 pracovního dne · nabídka bez závazku.</p>
           <?php endif; ?>
 
           <button type="submit" class="sklo-btn" data-poptavka-submit>Odeslat poptávku</button>

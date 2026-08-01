@@ -10,11 +10,38 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * WhatsApp deep link (same number as tel: sitewide).
+ */
+function sklo_whatsapp_url(): string
+{
+    return 'https://wa.me/420736134604';
+}
+
+/**
  * Sitewide CTA response promise.
  */
 function sklo_cta_sla_text(): string
 {
-    return 'Ozveme se do 1 PD · nabídka bez závazku';
+    return 'Obratem, nejpozději do 1 pracovního dne · nabídka bez závazku';
+}
+
+/**
+ * Short SLA for tight UI (same promise).
+ */
+function sklo_cta_sla_text_short(): string
+{
+    return 'Obratem · nejpozději do 1 PD · nabídka bez závazku';
+}
+
+/**
+ * Prodloužená záruka: 10 % z katalogové ceny výrobku (bez dopravy/montáže).
+ */
+function sklo_warranty_surcharge_czk(int $base_price_czk): int
+{
+    if ($base_price_czk <= 0) {
+        return 0;
+    }
+    return (int) round($base_price_czk * 0.10);
 }
 
 /**
@@ -62,12 +89,25 @@ function sklo_render_recenze_rating_link(string $class = ''): void
 }
 
 /**
- * SLA microcopy near primary CTAs.
+ * SLA microcopy near primary CTAs (+ optional WhatsApp nudge).
+ *
+ * @param string $class Extra BEM modifier classes (space-separated).
+ * @param bool   $short Use compact SLA line.
+ * @param bool   $whatsapp Show „Nejrychleji na WhatsApp“ link.
  */
-function sklo_render_cta_sla(string $class = ''): void
+function sklo_render_cta_sla(string $class = '', bool $short = false, bool $whatsapp = true): void
 {
     $classes = trim('sklo-cta-sla ' . $class);
-    echo '<p class="' . esc_attr($classes) . '">' . esc_html(sklo_cta_sla_text()) . '</p>';
+    $text = $short ? sklo_cta_sla_text_short() : sklo_cta_sla_text();
+    echo '<p class="' . esc_attr($classes) . '">';
+    echo '<span class="sklo-cta-sla__text">' . esc_html($text) . '</span>';
+    if ($whatsapp) {
+        echo ' <a class="sklo-cta-sla__wa" href="' . esc_url(sklo_whatsapp_url()) . '"'
+            . ' target="_blank" rel="noopener noreferrer">'
+            . esc_html('Nejrychleji na WhatsApp')
+            . '</a>';
+    }
+    echo '</p>';
 }
 
 /**
@@ -92,7 +132,7 @@ function sklo_render_risk_block(string $tone = 'tykani', string $class = ''): vo
             ],
             [
                 'title' => 'Záruka',
-                'text'  => 'Zákonná práva z vad + volitelná prodloužená záruka (+1 rok, 10&nbsp;% ceny výrobku bez dopravy a montáže). Detail: <a href="' . esc_url($zaruka) . '">záruka a servis</a> a <a href="' . esc_url($op) . '">obchodní podmínky</a>.',
+                'text'  => 'Zákonná práva z vad + volitelná prodloužená záruka (+1 rok, 10&nbsp;% ceny výrobku bez dopravy a montáže — částka v&nbsp;Kč je u produktu). Detail: <a href="' . esc_url($zaruka) . '">záruka a servis</a> a <a href="' . esc_url($op) . '">obchodní podmínky</a>.',
             ],
             [
                 'title' => 'Reklamace',
@@ -110,7 +150,7 @@ function sklo_render_risk_block(string $tone = 'tykani', string $class = ''): vo
             ],
             [
                 'title' => 'Záruka',
-                'text'  => 'Zákonná práva z vad + volitelná prodloužená záruka (+1 rok, 10&nbsp;% ceny výrobku bez dopravy a montáže). Detail: <a href="' . esc_url($zaruka) . '">záruka a servis</a> a <a href="' . esc_url($op) . '">obchodní podmínky</a>.',
+                'text'  => 'Zákonná práva z vad + volitelná prodloužená záruka (+1 rok, 10&nbsp;% ceny výrobku bez dopravy a montáže — částku v&nbsp;Kč vidíš u produktu). Detail: <a href="' . esc_url($zaruka) . '">záruka a servis</a> a <a href="' . esc_url($op) . '">obchodní podmínky</a>.',
             ],
             [
                 'title' => 'Reklamace',
@@ -209,11 +249,11 @@ function sklo_render_poptavka_next_steps(): void
     <p class="sklo-next-steps__ok">Poptávka odeslána. Díky.</p>
     <h2 class="sklo-next-steps__title">Co se stane dál</h2>
     <ol class="sklo-next-steps__list">
-      <li><strong>Do 1 pracovního dne</strong> se ozveme na telefon nebo e-mail.</li>
+      <li><strong>Obratem, nejpozději do 1 pracovního dne</strong> se ozveme na telefon nebo e-mail.</li>
       <li>Pokud chybí rozměry nebo fotky, upřesníme je — nabídka bez závazku.</li>
       <li>Připravíš si ideálně šířku a výšku otvoru (3 měření) a 2–3 fotky prostoru.</li>
     </ol>
-    <p class="sklo-next-steps__hint">Mezitím můžeš projít <a href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">návod na zaměření</a>.</p>
+    <p class="sklo-next-steps__hint">Nejrychleji nám napiš na <a href="<?php echo esc_url(sklo_whatsapp_url()); ?>" target="_blank" rel="noopener noreferrer">WhatsApp</a>. Mezitím můžeš projít <a href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">návod na zaměření</a>.</p>
   </div>
     <?php
 }
