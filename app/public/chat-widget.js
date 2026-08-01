@@ -1,3 +1,4 @@
+/* sklo chat-widget v1.5.0 */
 (() => {
   const API = window.SKLO_API_BASE || '';
   const CONFIG_URL = window.SKLO_CONFIGURATOR_URL || `${API}/public/konfigurator.html`;
@@ -26,9 +27,18 @@
   .sklo-chat-panel header button{border:0;background:transparent;cursor:pointer;font:500 12px Outfit,sans-serif;color:#1a5c6b;padding:.2rem .35rem}
   .sklo-chat-panel header button[data-act="close"]{color:#5b6a75;font-weight:600}
   .sklo-chat-msgs{flex:1;overflow:auto;padding:1rem;display:flex;flex-direction:column;gap:.55rem;background:linear-gradient(180deg,#f3f7f9,#fbfcfd)}
-  .sklo-chat-msg{max-width:88%;padding:.7rem .8rem;font:14px/1.45 Outfit,sans-serif;border-radius:14px;border:1px solid rgba(18,24,28,.08);background:#fff;color:#12181c}
+  .sklo-chat-msg{max-width:92%;padding:.7rem .8rem;font:14px/1.45 Outfit,sans-serif;border-radius:14px;border:1px solid rgba(18,24,28,.08);background:#fff;color:#12181c}
   .sklo-chat-msg.user{align-self:flex-end;background:#1a5c6b;color:#fff;border-color:#1a5c6b}
   .sklo-chat-msg.bot{align-self:flex-start}
+  .sklo-chat-msg a{color:#1a5c6b;font-weight:600;text-decoration:underline;text-underline-offset:2px}
+  .sklo-chat-msg.user a{color:#e8f4f7}
+  .sklo-chat-cards{display:flex;flex-direction:column;gap:.4rem;margin-top:.55rem}
+  .sklo-chat-card{display:flex;gap:.55rem;align-items:center;padding:.45rem;border-radius:12px;border:1px solid rgba(18,24,28,.1);background:#f7fbfc;text-decoration:none;color:#12181c;transition:border-color .15s ease,background .15s ease}
+  .sklo-chat-card:hover{border-color:#1a5c6b;background:#eef6f8}
+  .sklo-chat-card img{width:52px;height:52px;object-fit:cover;border-radius:8px;flex-shrink:0;background:#dde5e9}
+  .sklo-chat-card__body{min-width:0;flex:1}
+  .sklo-chat-card__name{font:600 12.5px/1.3 Outfit,sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .sklo-chat-card__meta{font:500 11px/1.35 Outfit,sans-serif;color:#5b6a75;margin-top:.15rem}
   .sklo-chat-form{display:flex;gap:.45rem;padding:.8rem;border-top:1px solid rgba(18,24,28,.08);background:#fff}
   .sklo-chat-form input{flex:1;border:1px solid rgba(18,24,28,.12);border-radius:999px;padding:.7rem .9rem;font:14px Outfit,sans-serif;outline:none}
   .sklo-chat-form input:focus{border-color:#1a5c6b;box-shadow:0 0 0 3px rgba(26,92,107,.12)}
@@ -45,7 +55,11 @@
     loading: false,
     sessionId: crypto.randomUUID(),
     messages: [
-      { role: 'assistant', content: 'Ahoj, jsem Sklo asistent. Pomůžu s výběrem skleněných dveří, zaměřením nebo poptávkou.' },
+      {
+        role: 'assistant',
+        content: 'Ahoj, jsem Sklo asistent. Pomůžu s výběrem skleněných dveří, zaměřením nebo poptávkou.',
+        products: [],
+      },
     ],
   };
 
@@ -90,6 +104,67 @@
     </form>
   `;
 
+  function detectPageContext() {
+    const params = new URLSearchParams(location.search);
+    let kod = params.get('kod') || '';
+    if (!kod) {
+      const el = document.querySelector('[data-sklo-kod], [data-product-code], [data-kod]');
+      if (el) {
+        kod =
+          el.getAttribute('data-sklo-kod') ||
+          el.getAttribute('data-product-code') ||
+          el.getAttribute('data-kod') ||
+          '';
+      }
+    }
+    if (!kod) {
+      const m = location.pathname.match(/SklS-\d+/i);
+      if (m) kod = m[0];
+    }
+    return {
+      kod: kod || undefined,
+      path: location.pathname || '/',
+    };
+  }
+
+  function formatPrice(n) {
+    const v = Number(n);
+    if (!Number.isFinite(v)) return '';
+    return `${Math.round(v).toLocaleString('cs-CZ')} Kč`;
+  }
+
+  function linkify(escaped) {
+    // markdown [text](url) — url already escaped as text content; rebuild safely
+    return escaped.replace(
+      /\[([^\]]+)\]\(([^)]+)\)/g,
+      (_, text, url) => {
+        const href = String(url)
+          .replaceAll('&amp;', '&')
+          .replace(/"/g, '');
+        if (!/^(https?:\/\/|\/)/i.test(href)) return text;
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+      }
+    );
+  }
+
+  function productCardsHtml(products) {
+    if (!Array.isArray(products) || !products.length) return '';
+    const cards = products
+      .slice(0, 5)
+      .map((p) => {
+        const href = escapeAttr(p.url_path || '#');
+        const name = escapeHtml(p.name || p.code || '');
+        const code = escapeHtml(p.code || '');
+        const price = formatPrice(p.price);
+        const img = p.image
+          ? `<img src="${escapeAttr(p.image)}" alt="" loading="lazy" width="52" height="52" />`
+          : '<img alt="" width="52" height="52" />';
+        return `<a class="sklo-chat-card" href="${href}" target="_blank" rel="noopener noreferrer">${img}<span class="sklo-chat-card__body"><span class="sklo-chat-card__name">${name}</span><span class="sklo-chat-card__meta">${code}${price ? ' · ' + price : ''}</span></span></a>`;
+      })
+      .join('');
+    return `<div class="sklo-chat-cards">${cards}</div>`;
+  }
+
   function setChoiceOpen(open) {
     state.choiceOpen = open;
     choice.classList.toggle('is-open', open);
@@ -119,7 +194,11 @@
   function render() {
     const box = panel.querySelector('[data-msgs]');
     box.innerHTML = state.messages
-      .map((m) => `<div class="sklo-chat-msg ${m.role === 'user' ? 'user' : 'bot'}">${escapeHtml(m.content)}</div>`)
+      .map((m) => {
+        const body = linkify(escapeHtml(m.content));
+        const cards = m.role === 'assistant' ? productCardsHtml(m.products) : '';
+        return `<div class="sklo-chat-msg ${m.role === 'user' ? 'user' : 'bot'}">${body}${cards}</div>`;
+      })
       .join('');
     box.scrollTop = box.scrollHeight;
   }
@@ -127,6 +206,14 @@
   function escapeHtml(s) {
     return String(s)
       .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;');
+  }
+
+  function escapeAttr(s) {
+    return String(s)
+      .replaceAll('&', '&amp;')
+      .replaceAll('"', '&quot;')
       .replaceAll('<', '&lt;')
       .replaceAll('>', '&gt;');
   }
@@ -179,7 +266,12 @@
       });
       state.sessionId = crypto.randomUUID();
       state.messages = [
-        { role: 'assistant', content: 'Konverzace je nová. Kde budou skleněné dveře a preferuješ otočné, nebo posuvné?' },
+        {
+          role: 'assistant',
+          content:
+            'Konverzace je nová. Kde budou skleněné dveře a preferuješ otočné, nebo posuvné?',
+          products: [],
+        },
       ];
       render();
     }
@@ -209,23 +301,34 @@
     render();
     state.loading = true;
     try {
+      const page_context = detectPageContext();
       const res = await fetch(`${API}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           session_id: state.sessionId,
-          messages: state.messages.filter((m) => m.role === 'user' || m.role === 'assistant').slice(-20),
+          messages: state.messages
+            .filter((m) => m.role === 'user' || m.role === 'assistant')
+            .map((m) => ({ role: m.role, content: m.content }))
+            .slice(-20),
+          page_context,
         }),
       });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.error || 'Chat selhal');
-      state.messages.push({ role: 'assistant', content: data.reply });
+      state.messages.push({
+        role: 'assistant',
+        content: data.reply,
+        products: Array.isArray(data.products) ? data.products : [],
+      });
     } catch (err) {
       state.messages.push({
         role: 'assistant',
-        content: err.message.includes('OPENAI') || err.message.includes('nastavený')
-          ? 'Chat ještě nemá API klíč. Mezitím si sestav dveře a pošli rozměry s fotkami.'
-          : `Nepodařilo se odpovědět: ${err.message}`,
+        content:
+          err.message.includes('OPENAI') || err.message.includes('nastavený')
+            ? 'Chat ještě nemá API klíč. Mezitím si sestav dveře a pošli rozměry s fotkami.'
+            : `Nepodařilo se odpovědět: ${err.message}`,
+        products: [],
       });
     } finally {
       state.loading = false;

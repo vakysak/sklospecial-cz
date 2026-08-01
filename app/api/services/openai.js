@@ -1,42 +1,114 @@
 'use strict';
 
 const OpenAI = require('openai');
+const {
+  searchProducts,
+  getProduct,
+  getKonfiguratorLink,
+} = require('./catalog');
 
 const SYSTEM_PROMPT = `Jsi asistent firmy sklospecial.cz specializovaný na skleněné dveře.
 Pomáháš zákazníkům vybrat správný typ skleněných dveří, poradit s zaměřením
 a provést je procesem poptávky.
 
-Konfigurátor nabízí reálné produkty z katalogu SklS (posuvné, do pouzdra,
-kyvné/otočné, otevírané, celoskleněné). Když zákazník chce konkrétní model,
-nasměruj ho do konfigurátoru — tam vybere produkt, varianty a pošle rozměry s fotkami.
+Máš k dispozici nástroje search_products, get_product a get_konfigurator_link.
+Než vymyslíš konkrétní model, cenu nebo kód SklS, VŽDY nejdřív použij nástroje.
+Nikdy nevymýšlej kódy SklS ani ceny — ber je jen z výsledků nástrojů.
+
+Když doporučuješ produkty:
+- maximálně 3 tipy
+- uveď kód (např. SklS-0002) a orientační cenu v Kč
+- odkazuj relativními WP cestami ve formátu /sklenene-dvere/posuvne/?kod=SklS-0002
+  (nebo odpovídající kategorii: otocne, otevirane, celosklenene, posuvne/do-pouzdra)
+
+Konfigurátor: /public/konfigurator.html (nebo odkaz z get_konfigurator_link).
+Návod na zaměření: /navod-na-zamereni/
+Poptávka: /poptavka/ nebo sestavení v konfigurátoru.
+WhatsApp: https://wa.me/420736134604
 
 Odpovídáš pouze k tématu skleněných dveří, zaměření, výběru skla,
-kování a procesu objednávky.
+kování a procesu objednávky. Mimo rozsah zdvořile přesměruj na kontakt.
 
-Pokud se zákazník ptá na něco mimo tento rozsah, zdvořile ho přesměruješ
-na kontakt nebo formulář.
+Vždy mluv česky. Tykej. Buď konkrétní, stručný a praktický.
+Nepoužívej marketingové fráze (luxusní, prémiový, exkluzivní).
 
-Vždy mluv česky. Tykej zákazníkovi.
-Buď konkrétní, stručný a praktický.
-Nepoužívej marketingové fráze.
-
-Pokud zákazník neví, jaký typ dveří chce, zeptej se:
+Pokud zákazník neví typ dveří, zeptej se:
 - Kde budou dveře? (byt, koupelna, kancelář)
 - Kolik je místa kolem otvoru?
 - Preferuješ otočné/kyvné nebo posuvné?
 
-Pokud zákazník chce podat poptávku, řekni mu, co potřebuje:
+Pro poptávku potřebuješ:
 - šířka a výška otvoru (změřit na 3 místech)
 - fotka celého otvoru
 - fotka detailu stěny a podlahy
-- informace o typu otevírání
+- typ otevírání
 - lokalita
 
-Na konci konverzace vždy nabídni sestavení dveří v konfigurátoru
-(/sklenene-dvere/#sestavit nebo /public/konfigurator.html) nebo kontakt.`;
+Na konci nabídni sestavení v konfigurátoru nebo kontakt / WhatsApp.`;
+
+const TOOLS = [
+  {
+    type: 'function',
+    function: {
+      name: 'search_products',
+      description:
+        'Vyhledá produkty v katalogu SklS. Filtruj podle typu dveří, klíčových slov a max. ceny.',
+      parameters: {
+        type: 'object',
+        properties: {
+          typ: {
+            type: 'string',
+            description:
+              'Typ: posuvne, do-pouzdra, otocne (kyvne), otevirane, celosklenene',
+          },
+          keywords: {
+            type: 'string',
+            description: 'Klíčová slova (matné, loft, zrcadlo, …), oddělená mezerou',
+          },
+          max_price: {
+            type: 'number',
+            description: 'Maximální orientační cena v Kč',
+          },
+        },
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'get_product',
+      description: 'Detail jednoho produktu podle kódu SklS (např. SklS-0002).',
+      parameters: {
+        type: 'object',
+        properties: {
+          code: { type: 'string', description: 'Kód produktu SklS-XXXX' },
+        },
+        required: ['code'],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'get_konfigurator_link',
+      description: 'Vrátí odkaz do konfigurátoru s volitelným typem a kódem produktu.',
+      parameters: {
+        type: 'object',
+        properties: {
+          typ: { type: 'string' },
+          kod: { type: 'string', description: 'Kód SklS' },
+        },
+        additionalProperties: false,
+      },
+    },
+  },
+];
 
 const sessions = new Map();
 const MAX_MESSAGES = Number(process.env.CHAT_MAX_MESSAGES || 20);
+const MAX_TOOL_ROUNDS = 4;
 
 function getClient() {
   const key = process.env.OPENAI_API_KEY;
@@ -59,10 +131,63 @@ function resetSession(sessionId) {
   sessions.delete(sessionId);
 }
 
+function pushCollected(collected, item) {
+  if (!item || !item.code) return;
+  if (collected.some((p) => p.code === item.code)) return;
+  if (collected.length >= 5) return;
+  collected.push({
+    code: item.code,
+    name: item.name,
+    price: item.price,
+    url_path: item.url_path,
+    image: item.image || '',
+    typ: item.typ || undefined,
+  });
+}
+
+function executeTool(name, args, collected) {
+  try {
+    if (name === 'search_products') {
+      const hits = searchProducts({
+        typ: args.typ,
+        keywords: args.keywords,
+        max_price: args.max_price,
+        limit: 5,
+      });
+      for (const h of hits) pushCollected(collected, h);
+      return JSON.stringify({ ok: true, items: hits });
+    }
+    if (name === 'get_product') {
+      const item = getProduct(args.code);
+      if (item) pushCollected(collected, item);
+      return JSON.stringify({ ok: true, item });
+    }
+    if (name === 'get_konfigurator_link') {
+      const url = getKonfiguratorLink({ typ: args.typ, kod: args.kod });
+      return JSON.stringify({ ok: true, url });
+    }
+    return JSON.stringify({ ok: false, error: `Neznámý nástroj: ${name}` });
+  } catch (err) {
+    return JSON.stringify({ ok: false, error: err.message || String(err) });
+  }
+}
+
+function parseArgs(raw) {
+  if (!raw) return {};
+  if (typeof raw === 'object') return raw;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return {};
+  }
+}
+
 /**
- * Non-streaming reply for reliability; UI can still feel snappy.
+ * @param {Array<{role:string,content:string}>} userMessages
+ * @param {string} sessionId
+ * @param {{ kod?: string, path?: string }|null} pageContext
  */
-async function chat(userMessages, sessionId) {
+async function chat(userMessages, sessionId, pageContext) {
   const client = getClient();
   const history = getHistory(sessionId);
 
@@ -81,24 +206,63 @@ async function chat(userMessages, sessionId) {
   while (history.length > MAX_MESSAGES) history.shift();
 
   const model = process.env.OPENAI_MODEL || 'gpt-4o';
-  const messages = [{ role: 'system', content: SYSTEM_PROMPT }, ...history];
+  const messages = [{ role: 'system', content: SYSTEM_PROMPT }];
 
+  if (pageContext && (pageContext.kod || pageContext.path)) {
+    const bits = [];
+    if (pageContext.path) bits.push(`cesta ${pageContext.path}`);
+    if (pageContext.kod) bits.push(`produkt kod ${pageContext.kod}`);
+    messages.push({
+      role: 'system',
+      content: `Zákazník je na stránce: ${bits.join(', ')}. Pokud je relevantní, použij get_product pro tento kód.`,
+    });
+  }
+
+  messages.push(...history);
+
+  const collected = [];
   let replyText = '';
-  try {
-    // Prefer Responses API when available
-    if (typeof client.responses?.create === 'function') {
-      const response = await client.responses.create({
-        model,
-        input: messages.map((m) => ({
-          role: m.role,
-          content: m.content,
-        })),
+
+  for (let round = 0; round < MAX_TOOL_ROUNDS; round += 1) {
+    const completion = await client.chat.completions.create({
+      model,
+      messages,
+      tools: TOOLS,
+      tool_choice: 'auto',
+      temperature: 0.4,
+    });
+
+    const choice = completion.choices?.[0];
+    const msg = choice?.message;
+    if (!msg) break;
+
+    const toolCalls = msg.tool_calls;
+    if (toolCalls && toolCalls.length) {
+      messages.push({
+        role: 'assistant',
+        content: msg.content || null,
+        tool_calls: toolCalls,
       });
-      replyText = response.output_text || '';
-    } else {
-      throw new Error('no responses');
+
+      for (const call of toolCalls) {
+        const name = call.function?.name || '';
+        const args = parseArgs(call.function?.arguments);
+        const result = executeTool(name, args, collected);
+        messages.push({
+          role: 'tool',
+          tool_call_id: call.id,
+          content: result,
+        });
+      }
+      continue;
     }
-  } catch {
+
+    replyText = msg.content || '';
+    break;
+  }
+
+  if (!replyText) {
+    // one more pass without forcing tools if loop exhausted mid-tools
     const completion = await client.chat.completions.create({
       model,
       messages,
@@ -107,10 +271,18 @@ async function chat(userMessages, sessionId) {
     replyText = completion.choices?.[0]?.message?.content || '';
   }
 
-  if (!replyText) replyText = 'Teď se mi nepodařilo odpovědět. Zkus to znovu, nebo si sestav dveře a pošli rozměry.';
+  if (!replyText) {
+    replyText =
+      'Teď se mi nepodařilo odpovědět. Zkus to znovu, nebo si sestav dveře a pošli rozměry.';
+  }
 
   history.push({ role: 'assistant', content: replyText });
-  return { reply: replyText, session_id: sessionId, message_count: history.length };
+  return {
+    reply: replyText,
+    session_id: sessionId,
+    message_count: history.length,
+    products: collected,
+  };
 }
 
-module.exports = { chat, resetSession, SYSTEM_PROMPT };
+module.exports = { chat, resetSession, SYSTEM_PROMPT, TOOLS };
