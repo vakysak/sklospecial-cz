@@ -5,13 +5,15 @@ const {
   searchProducts,
   getProduct,
   getKonfiguratorLink,
+  createPoptavka,
 } = require('./catalog');
 
 const SYSTEM_PROMPT = `Jsi asistent firmy sklospecial.cz specializovaný na skleněné dveře.
 Pomáháš zákazníkům vybrat správný typ skleněných dveří, poradit s zaměřením
 a provést je procesem poptávky.
 
-Máš k dispozici nástroje search_products, get_product a get_konfigurator_link.
+Máš k dispozici nástroje search_products, get_product, get_konfigurator_link,
+create_poptavka a vytvor_poptavku.
 Než vymyslíš konkrétní model, cenu nebo kód SklS, VŽDY nejdřív použij nástroje.
 Nikdy nevymýšlej kódy SklS ani ceny — ber je jen z výsledků nástrojů.
 
@@ -21,9 +23,14 @@ Když doporučuješ produkty:
 - odkazuj relativními WP cestami ve formátu /sklenene-dvere/posuvne/?kod=SklS-0002
   (nebo odpovídající kategorii: otocne, otevirane, celosklenene, posuvne/do-pouzdra)
 
+Když zákazník chce poptávku / objednávku / „chci tohle“ u konkrétního produktu:
+- použij create_poptavka (nebo vytvor_poptavku) s kódem, jménem, cenou a krátkým shrnutím výběru
+- v odpovědi uveď, že může kliknout na tlačítko „Odeslat poptávku“ v chatu
+- můžeš také vložit markdown odkaz na vrácené url
+
 Konfigurátor: /public/konfigurator.html (nebo odkaz z get_konfigurator_link).
 Návod na zaměření: /navod-na-zamereni/
-Poptávka: /poptavka/ nebo sestavení v konfigurátoru.
+Poptávka: /poptavka/ nebo create_poptavka / sestavení v konfigurátoru.
 WhatsApp: https://wa.me/420736134604
 
 Odpovídáš pouze k tématu skleněných dveří, zaměření, výběru skla,
@@ -44,7 +51,31 @@ Pro poptávku potřebuješ:
 - typ otevírání
 - lokalita
 
-Na konci nabídni sestavení v konfigurátoru nebo kontakt / WhatsApp.`;
+Na konci nabídni sestavení v konfigurátoru, create_poptavka, nebo kontakt / WhatsApp.`;
+
+const POPTAVKA_TOOL_PARAMS = {
+  type: 'object',
+  properties: {
+    kod: {
+      type: 'string',
+      description: 'Kód produktu SklS-XXXX (doporučeno)',
+    },
+    name: {
+      type: 'string',
+      description: 'Název produktu (pokud znáš z katalogu)',
+    },
+    price: {
+      type: 'number',
+      description: 'Orientační cena v Kč z katalogu',
+    },
+    selected_summary: {
+      type: 'string',
+      description:
+        'Krátké textové shrnutí výběru (typ, sklo, kování, rozměry…) pro poptávku',
+    },
+  },
+  additionalProperties: false,
+};
 
 const TOOLS = [
   {
@@ -104,6 +135,24 @@ const TOOLS = [
       },
     },
   },
+  {
+    type: 'function',
+    function: {
+      name: 'create_poptavka',
+      description:
+        'Sestaví předvyplněný odkaz na /poptavka/ a draft poptávky (kod, name, price, shrnutí). Použij, když zákazník chce odeslat poptávku.',
+      parameters: POPTAVKA_TOOL_PARAMS,
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'vytvor_poptavku',
+      description:
+        'Alias create_poptavka — sestaví předvyplněný odkaz na /poptavka/ a draft poptávky.',
+      parameters: POPTAVKA_TOOL_PARAMS,
+    },
+  },
 ];
 
 const sessions = new Map();
@@ -145,7 +194,7 @@ function pushCollected(collected, item) {
   });
 }
 
-function executeTool(name, args, collected) {
+function executeTool(name, args, collected, poptavkaState) {
   try {
     if (name === 'search_products') {
       const hits = searchProducts({
@@ -166,6 +215,28 @@ function executeTool(name, args, collected) {
       const url = getKonfiguratorLink({ typ: args.typ, kod: args.kod });
       return JSON.stringify({ ok: true, url });
     }
+    if (name === 'create_poptavka' || name === 'vytvor_poptavku') {
+      const result = createPoptavka({
+        kod: args.kod,
+        name: args.name,
+        price: args.price,
+        selected_summary: args.selected_summary,
+      });
+      if (result.ok && poptavkaState) {
+        poptavkaState.draft = result.poptavka_draft;
+        poptavkaState.url = result.url;
+      }
+      if (result.poptavka_draft && result.poptavka_draft.code) {
+        const item = getProduct(result.poptavka_draft.code);
+        if (item) pushCollected(collected, item);
+      }
+      return JSON.stringify({
+        ok: true,
+        url: result.url,
+        poptavka_url: result.poptavka_url,
+        poptavka_draft: result.poptavka_draft,
+      });
+    }
     return JSON.stringify({ ok: false, error: `Neznámý nástroj: ${name}` });
   } catch (err) {
     return JSON.stringify({ ok: false, error: err.message || String(err) });
@@ -182,13 +253,7 @@ function parseArgs(raw) {
   }
 }
 
-/**
- * @param {Array<{role:string,content:string}>} userMessages
- * @param {string} sessionId
- * @param {{ kod?: string, path?: string }|null} pageContext
- */
-async function chat(userMessages, sessionId, pageContext) {
-  const client = getClient();
+function prepareMessages(userMessages, sessionId, pageContext) {
   const history = getHistory(sessionId);
 
   const incoming = (userMessages || [])
@@ -205,7 +270,6 @@ async function chat(userMessages, sessionId, pageContext) {
   history.push(last);
   while (history.length > MAX_MESSAGES) history.shift();
 
-  const model = process.env.OPENAI_MODEL || 'gpt-4o';
   const messages = [{ role: 'system', content: SYSTEM_PROMPT }];
 
   if (pageContext && (pageContext.kod || pageContext.path)) {
@@ -214,15 +278,33 @@ async function chat(userMessages, sessionId, pageContext) {
     if (pageContext.kod) bits.push(`produkt kod ${pageContext.kod}`);
     messages.push({
       role: 'system',
-      content: `Zákazník je na stránce: ${bits.join(', ')}. Pokud je relevantní, použij get_product pro tento kód.`,
+      content: `Zákazník je na stránce: ${bits.join(', ')}. Pokud je relevantní, použij get_product pro tento kód. Pro poptávku použij create_poptavka.`,
     });
   }
 
   messages.push(...history);
+  return { history, messages };
+}
 
-  const collected = [];
-  let replyText = '';
+function buildResult(history, sessionId, replyText, collected, poptavkaState) {
+  history.push({ role: 'assistant', content: replyText });
+  const out = {
+    reply: replyText,
+    session_id: sessionId,
+    message_count: history.length,
+    products: collected,
+  };
+  if (poptavkaState && poptavkaState.draft) {
+    out.poptavka_draft = poptavkaState.draft;
+    out.poptavka_url = poptavkaState.url;
+  }
+  return out;
+}
 
+/**
+ * Run tool-calling rounds (non-streaming). Leaves `messages` ready for a final text reply.
+ */
+async function runToolRounds(client, model, messages, collected, poptavkaState) {
   for (let round = 0; round < MAX_TOOL_ROUNDS; round += 1) {
     const completion = await client.chat.completions.create({
       model,
@@ -234,7 +316,7 @@ async function chat(userMessages, sessionId, pageContext) {
 
     const choice = completion.choices?.[0];
     const msg = choice?.message;
-    if (!msg) break;
+    if (!msg) return '';
 
     const toolCalls = msg.tool_calls;
     if (toolCalls && toolCalls.length) {
@@ -247,7 +329,7 @@ async function chat(userMessages, sessionId, pageContext) {
       for (const call of toolCalls) {
         const name = call.function?.name || '';
         const args = parseArgs(call.function?.arguments);
-        const result = executeTool(name, args, collected);
+        const result = executeTool(name, args, collected, poptavkaState);
         messages.push({
           role: 'tool',
           tool_call_id: call.id,
@@ -257,12 +339,26 @@ async function chat(userMessages, sessionId, pageContext) {
       continue;
     }
 
-    replyText = msg.content || '';
-    break;
+    return msg.content || '';
   }
+  return '';
+}
+
+/**
+ * @param {Array<{role:string,content:string}>} userMessages
+ * @param {string} sessionId
+ * @param {{ kod?: string, path?: string }|null} pageContext
+ */
+async function chat(userMessages, sessionId, pageContext) {
+  const client = getClient();
+  const model = process.env.OPENAI_MODEL || 'gpt-4o';
+  const { history, messages } = prepareMessages(userMessages, sessionId, pageContext);
+  const collected = [];
+  const poptavkaState = { draft: null, url: null };
+
+  let replyText = await runToolRounds(client, model, messages, collected, poptavkaState);
 
   if (!replyText) {
-    // one more pass without forcing tools if loop exhausted mid-tools
     const completion = await client.chat.completions.create({
       model,
       messages,
@@ -276,13 +372,61 @@ async function chat(userMessages, sessionId, pageContext) {
       'Teď se mi nepodařilo odpovědět. Zkus to znovu, nebo si sestav dveře a pošli rozměry.';
   }
 
-  history.push({ role: 'assistant', content: replyText });
-  return {
-    reply: replyText,
-    session_id: sessionId,
-    message_count: history.length,
-    products: collected,
-  };
+  return buildResult(history, sessionId, replyText, collected, poptavkaState);
 }
 
-module.exports = { chat, resetSession, SYSTEM_PROMPT, TOOLS };
+/**
+ * Stream final assistant tokens after tool rounds.
+ * @param {(chunk: object) => void} emit — SSE payload objects
+ */
+async function chatStream(userMessages, sessionId, pageContext, emit) {
+  const client = getClient();
+  const model = process.env.OPENAI_MODEL || 'gpt-4o';
+  const { history, messages } = prepareMessages(userMessages, sessionId, pageContext);
+  const collected = [];
+  const poptavkaState = { draft: null, url: null };
+
+  let replyText = await runToolRounds(client, model, messages, collected, poptavkaState);
+
+  if (replyText) {
+    // Tool round already returned full text — emit as one token for progressive UX
+    emit({ type: 'token', text: replyText });
+  } else {
+    const stream = await client.chat.completions.create({
+      model,
+      messages,
+      temperature: 0.4,
+      stream: true,
+    });
+
+    let acc = '';
+    for await (const part of stream) {
+      const delta = part.choices?.[0]?.delta?.content || '';
+      if (!delta) continue;
+      acc += delta;
+      emit({ type: 'token', text: delta });
+    }
+    replyText = acc;
+  }
+
+  if (!replyText) {
+    replyText =
+      'Teď se mi nepodařilo odpovědět. Zkus to znovu, nebo si sestav dveře a pošli rozměry.';
+    emit({ type: 'token', text: replyText });
+  }
+
+  const result = buildResult(history, sessionId, replyText, collected, poptavkaState);
+  emit({
+    type: 'done',
+    success: true,
+    reply: result.reply,
+    session_id: result.session_id,
+    message_count: result.message_count,
+    products: result.products,
+    poptavka_draft: result.poptavka_draft || null,
+    poptavka_url: result.poptavka_url || null,
+  });
+  return result;
+}
+
+module.exports = { chat, chatStream, resetSession, SYSTEM_PROMPT, TOOLS };

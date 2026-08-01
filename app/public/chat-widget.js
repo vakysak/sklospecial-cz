@@ -1,4 +1,4 @@
-/* sklo chat-widget v1.5.0 */
+/* sklo chat-widget v1.6.0 */
 (() => {
   const API = window.SKLO_API_BASE || '';
   const CONFIG_URL = window.SKLO_CONFIGURATOR_URL || `${API}/public/konfigurator.html`;
@@ -39,6 +39,8 @@
   .sklo-chat-card__body{min-width:0;flex:1}
   .sklo-chat-card__name{font:600 12.5px/1.3 Outfit,sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .sklo-chat-card__meta{font:500 11px/1.35 Outfit,sans-serif;color:#5b6a75;margin-top:.15rem}
+  .sklo-chat-cta{display:block;width:100%;margin-top:.55rem;border:0;border-radius:12px;padding:.7rem .9rem;cursor:pointer;font:600 13px/1.25 Outfit,sans-serif;background:#1a5c6b;color:#fff;text-align:center}
+  .sklo-chat-cta:hover{background:#154a57}
   .sklo-chat-form{display:flex;gap:.45rem;padding:.8rem;border-top:1px solid rgba(18,24,28,.08);background:#fff}
   .sklo-chat-form input{flex:1;border:1px solid rgba(18,24,28,.12);border-radius:999px;padding:.7rem .9rem;font:14px Outfit,sans-serif;outline:none}
   .sklo-chat-form input:focus{border-color:#1a5c6b;box-shadow:0 0 0 3px rgba(26,92,107,.12)}
@@ -59,6 +61,8 @@
         role: 'assistant',
         content: 'Ahoj, jsem Sklo asistent. Pomůžu s výběrem skleněných dveří, zaměřením nebo poptávkou.',
         products: [],
+        poptavka_draft: null,
+        poptavka_url: null,
       },
     ],
   };
@@ -121,10 +125,7 @@
       const m = location.pathname.match(/SklS-\d+/i);
       if (m) kod = m[0];
     }
-    return {
-      kod: kod || undefined,
-      path: location.pathname || '/',
-    };
+    return { kod: kod || undefined, path: location.pathname || '/' };
   }
 
   function formatPrice(n) {
@@ -134,17 +135,11 @@
   }
 
   function linkify(escaped) {
-    // markdown [text](url) — url already escaped as text content; rebuild safely
-    return escaped.replace(
-      /\[([^\]]+)\]\(([^)]+)\)/g,
-      (_, text, url) => {
-        const href = String(url)
-          .replaceAll('&amp;', '&')
-          .replace(/"/g, '');
-        if (!/^(https?:\/\/|\/)/i.test(href)) return text;
-        return `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
-      }
-    );
+    return escaped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
+      const href = String(url).replaceAll('&amp;', '&').replace(/"/g, '');
+      if (!/^(https?:\/\/|\/)/i.test(href)) return text;
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+    });
   }
 
   function productCardsHtml(products) {
@@ -163,6 +158,22 @@
       })
       .join('');
     return `<div class="sklo-chat-cards">${cards}</div>`;
+  }
+
+  function poptavkaCtaHtml(msg) {
+    if (!msg.poptavka_draft && !msg.poptavka_url) return '';
+    return '<button type="button" class="sklo-chat-cta" data-act="poptavka">Odeslat poptávku</button>';
+  }
+
+  function saveDraftAndGo(draft, url) {
+    if (draft) {
+      try {
+        sessionStorage.setItem('sklo_order_draft', JSON.stringify(draft));
+      } catch {
+        // Navigation should still work when storage is unavailable.
+      }
+    }
+    window.location.href = url || '/poptavka/';
   }
 
   function setChoiceOpen(open) {
@@ -195,19 +206,17 @@
     const box = panel.querySelector('[data-msgs]');
     box.innerHTML = state.messages
       .map((m) => {
-        const body = linkify(escapeHtml(m.content));
+        const body = linkify(escapeHtml(m.content || ''));
         const cards = m.role === 'assistant' ? productCardsHtml(m.products) : '';
-        return `<div class="sklo-chat-msg ${m.role === 'user' ? 'user' : 'bot'}">${body}${cards}</div>`;
+        const cta = m.role === 'assistant' ? poptavkaCtaHtml(m) : '';
+        return `<div class="sklo-chat-msg ${m.role === 'user' ? 'user' : 'bot'}">${body}${cards}${cta}</div>`;
       })
       .join('');
     box.scrollTop = box.scrollHeight;
   }
 
   function escapeHtml(s) {
-    return String(s)
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;');
+    return String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
   }
 
   function escapeAttr(s) {
@@ -216,6 +225,112 @@
       .replaceAll('"', '&quot;')
       .replaceAll('<', '&lt;')
       .replaceAll('>', '&gt;');
+  }
+
+  function requestMessages() {
+    return state.messages
+      .filter((m) => (m.role === 'user' || m.role === 'assistant') && m.content)
+      .map((m) => ({ role: m.role, content: m.content }))
+      .slice(-20);
+  }
+
+  function addReply(data) {
+    if (!data || !data.success) throw new Error((data && data.error) || 'Chat selhal');
+    state.messages.push({
+      role: 'assistant',
+      content: data.reply || '',
+      products: Array.isArray(data.products) ? data.products : [],
+      poptavka_draft: data.poptavka_draft || null,
+      poptavka_url: data.poptavka_url || null,
+    });
+    render();
+  }
+
+  async function sendJsonFallback(payload) {
+    const res = await fetch(`${API}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...payload, stream: false }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.error || 'Chat selhal');
+    addReply(data);
+  }
+
+  async function sendStream(payload) {
+    const res = await fetch(`${API}/api/chat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'text/event-stream',
+      },
+      body: JSON.stringify({ ...payload, stream: true }),
+    });
+    if (!res.ok || !res.body) throw new Error('stream fail');
+
+    const ct = res.headers.get('content-type') || '';
+    if (!ct.includes('text/event-stream')) {
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'Chat selhal');
+      addReply(data);
+      return;
+    }
+
+    const botMsg = {
+      role: 'assistant',
+      content: '',
+      products: [],
+      poptavka_draft: null,
+      poptavka_url: null,
+    };
+    state.messages.push(botMsg);
+    render();
+
+    try {
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      const consumeEvent = (part) => {
+        const line = part.split('\n').find((item) => item.startsWith('data: '));
+        if (!line) return;
+        let event;
+        try {
+          event = JSON.parse(line.slice(6));
+        } catch {
+          return;
+        }
+        if (event.type === 'token' && event.text) {
+          botMsg.content += event.text;
+          render();
+        } else if (event.type === 'done') {
+          botMsg.content = event.reply || botMsg.content;
+          botMsg.products = Array.isArray(event.products) ? event.products : [];
+          botMsg.poptavka_draft = event.poptavka_draft || null;
+          botMsg.poptavka_url = event.poptavka_url || null;
+          render();
+        } else if (event.type === 'error') {
+          throw new Error(event.error || 'Chat selhal');
+        }
+      };
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true }).replace(/\r\n/g, '\n');
+        const parts = buffer.split('\n\n');
+        buffer = parts.pop() || '';
+        for (const part of parts) consumeEvent(part);
+      }
+      buffer += decoder.decode().replace(/\r\n/g, '\n');
+      if (buffer.trim()) consumeEvent(buffer);
+      if (!botMsg.content) throw new Error('Prázdná stream odpověď');
+    } catch (err) {
+      const index = state.messages.indexOf(botMsg);
+      if (index !== -1) state.messages.splice(index, 1);
+      render();
+      throw err;
+    }
   }
 
   btn.addEventListener('click', (e) => {
@@ -258,6 +373,20 @@
       window.open(CONFIG_URL, '_blank');
       return;
     }
+    if (act === 'poptavka') {
+      const msg = [...state.messages]
+        .reverse()
+        .find((item) => item.poptavka_draft || item.poptavka_url);
+      if (!msg) return;
+      const draft = msg.poptavka_draft;
+      const url =
+        msg.poptavka_url ||
+        (draft && draft.code
+          ? `/poptavka/?kod=${encodeURIComponent(draft.code)}`
+          : '/poptavka/');
+      saveDraftAndGo(draft, url);
+      return;
+    }
     if (act === 'reset') {
       await fetch(`${API}/api/chat`, {
         method: 'POST',
@@ -271,6 +400,8 @@
           content:
             'Konverzace je nová. Kde budou skleněné dveře a preferuješ otočné, nebo posuvné?',
           products: [],
+          poptavka_draft: null,
+          poptavka_url: null,
         },
       ];
       render();
@@ -300,27 +431,19 @@
     state.messages.push({ role: 'user', content: text });
     render();
     state.loading = true;
+
+    const payload = {
+      session_id: state.sessionId,
+      messages: requestMessages(),
+      page_context: detectPageContext(),
+    };
+
     try {
-      const page_context = detectPageContext();
-      const res = await fetch(`${API}/api/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          session_id: state.sessionId,
-          messages: state.messages
-            .filter((m) => m.role === 'user' || m.role === 'assistant')
-            .map((m) => ({ role: m.role, content: m.content }))
-            .slice(-20),
-          page_context,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.error || 'Chat selhal');
-      state.messages.push({
-        role: 'assistant',
-        content: data.reply,
-        products: Array.isArray(data.products) ? data.products : [],
-      });
+      try {
+        await sendStream(payload);
+      } catch {
+        await sendJsonFallback(payload);
+      }
     } catch (err) {
       state.messages.push({
         role: 'assistant',
@@ -329,6 +452,8 @@
             ? 'Chat ještě nemá API klíč. Mezitím si sestav dveře a pošli rozměry s fotkami.'
             : `Nepodařilo se odpovědět: ${err.message}`,
         products: [],
+        poptavka_draft: null,
+        poptavka_url: null,
       });
     } finally {
       state.loading = false;

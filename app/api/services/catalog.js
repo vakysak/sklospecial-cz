@@ -237,10 +237,73 @@ function getProduct(code) {
   };
 }
 
+/**
+ * Build /poptavka/ URL + sklo_order_draft-compatible payload for the chat widget.
+ * @param {{ kod?: string, name?: string, price?: number, selected_summary?: string, image?: string }} opts
+ */
+function createPoptavka({
+  kod,
+  name,
+  price,
+  selected_summary,
+  image,
+} = {}) {
+  const code = kod ? String(kod).trim() : '';
+  const fromCatalog = code ? getProduct(code) : null;
+  const resolvedName =
+    (name && String(name).trim()) ||
+    (fromCatalog && fromCatalog.name) ||
+    (code || 'Obecná poptávka');
+  const resolvedPrice = (() => {
+    if (price != null && price !== '' && Number.isFinite(Number(price))) {
+      return Math.round(Number(price));
+    }
+    return fromCatalog ? Math.round(Number(fromCatalog.price) || 0) : 0;
+  })();
+  const resolvedImage =
+    (image && String(image).trim()) || (fromCatalog && fromCatalog.image) || '';
+  const summary = selected_summary ? String(selected_summary).trim().slice(0, 800) : '';
+
+  const selections = summary
+    ? [{ label: 'Shrnutí', value: summary, surcharge: 0 }]
+    : [];
+
+  const draft = {
+    v: 1,
+    code: code || (fromCatalog && fromCatalog.code) || '',
+    name: resolvedName,
+    image: resolvedImage,
+    basePrice: resolvedPrice,
+    surcharges: 0,
+    unitTotal: resolvedPrice,
+    qty: 1,
+    selections,
+    createdAt: new Date().toISOString(),
+    source: 'chat',
+  };
+  if (!draft.code) {
+    draft.general = true;
+  }
+
+  const params = new URLSearchParams();
+  if (draft.code) params.set('kod', draft.code);
+  if (draft.name) params.set('name', draft.name.slice(0, 120));
+  if (resolvedPrice > 0) params.set('price', String(resolvedPrice));
+  if (summary) params.set('summary', summary.slice(0, 200));
+
+  const qs = params.toString();
+  const relative = qs ? `/poptavka/?${qs}` : '/poptavka/';
+  const base = (process.env.WP_PUBLIC_URL || '').replace(/\/$/, '');
+  const url = base ? `${base}${relative}` : relative;
+
+  return { ok: true, url, relative, poptavka_draft: draft, poptavka_url: url };
+}
+
 module.exports = {
   searchProducts,
   getProduct,
   getKonfiguratorLink,
+  createPoptavka,
   categoryToUrlPath,
   normalizeTyp,
   // test helpers
