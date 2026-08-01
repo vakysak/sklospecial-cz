@@ -911,6 +911,15 @@ a:hover { color: var(--accent-hover); }
   line-height: 1.55;
 }
 
+.sklo-realizace__note {
+  margin: 0.75rem 0 0;
+  max-width: 36rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
 .sklo-gallery {
   margin: 2rem 0 0;
   padding: 0 max(0.75rem, calc((100vw - min(1200px, 100% - 1.5rem)) / 2));

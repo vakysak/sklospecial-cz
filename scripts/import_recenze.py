@@ -36,11 +36,17 @@ def php_escape(s: str) -> str:
 
 def category_for(text: str) -> str:
     t = text.lower()
-    if any(k in t for k in ("sprch", "walk-in", "walk in", "kout")):
+    if any(k in t for k in ("sprch", "walk-in", "walk in", "kout", "vanič")):
         return "sprcha"
-    if any(k in t for k in ("zábradl", "zabradl", "schodi")):
+    if any(k in t for k in ("francouzsk", "balkon")):
+        return "balkony"
+    if any(k in t for k in ("stříšk", "strisk", "markýz", "konzol")):
+        return "strisky"
+    if any(k in t for k in ("příčk", "prick", "příčka")):
+        return "pricky"
+    if any(k in t for k in ("zábradl", "zabradl", "schodi", "schod")):
         return "zabradli"
-    if any(k in t for k in ("dveř", "dver", "posuvn", "kyvn", "otevír", "otevir")):
+    if any(k in t for k in ("dveř", "dver", "posuvn", "kyvn", "otevír", "otevir", "zárub", "lišt")):
         return "dvere"
     return "ostatni"
 
