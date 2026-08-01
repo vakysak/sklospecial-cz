@@ -18,7 +18,7 @@ function konfigurator() {
       kovani: null,
       montaz: null,
       fotky: [],
-      kontakt: { jmeno: '', telefon: '', email: '', mesto: '', poznamka: '' },
+      kontakt: { jmeno: '', telefon: '', email: '', mesto: '', poznamka: '', gdpr_souhlas: false },
     },
     prostor: {
       file: null,
@@ -301,6 +301,7 @@ function konfigurator() {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.kontakt.email || '')) return 'Neplatný e-mail';
         if (!c.kontakt.telefon || c.kontakt.telefon.replace(/\D/g, '').length < 9) return 'Neplatný telefon';
         if (!c.kontakt.mesto || c.kontakt.mesto.trim().length < 2) return 'Doplň město / PSČ';
+        if (!c.kontakt.gdpr_souhlas) return 'Potřebujeme souhlas se zpracováním osobních údajů';
       }
       return '';
     },
@@ -337,6 +338,7 @@ function konfigurator() {
         fd.append('email', c.kontakt.email);
         fd.append('mesto', c.kontakt.mesto);
         fd.append('poznamka', c.kontakt.poznamka || '');
+        fd.append('gdpr_souhlas', c.kontakt.gdpr_souhlas ? '1' : '0');
         if (this.prostor.file) fd.append('fotky', this.prostor.file, `prostor-${this.prostor.file.name}`);
         c.fotky.forEach((f) => fd.append('fotky', f));
 

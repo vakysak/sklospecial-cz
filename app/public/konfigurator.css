@@ -684,6 +684,33 @@ input:focus, textarea:focus {
   .form-grid { grid-template-columns: 1fr 1fr; }
   .form-grid .full { grid-column: 1 / -1; }
 }
+.form-grid label.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  margin-top: 0.15rem;
+}
+.form-grid label.consent input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: 0.2rem;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.form-grid label.consent span {
+  color: var(--muted);
+}
+.form-grid label.consent a {
+  color: var(--accent);
+  text-underline-offset: 0.15em;
+}
+.form-grid label.consent a:hover {
+  color: var(--accent-hover);
+}
 
 .nav {
   display: flex;

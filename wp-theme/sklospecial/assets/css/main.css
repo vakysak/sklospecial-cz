@@ -2355,7 +2355,30 @@ a:hover { color: var(--accent-hover); }
   width: 1.05rem;
   height: 1.05rem;
   margin-top: 0.2rem;
-  accent-color: var(--accent, #8a6a3a);
+  accent-color: var(--accent, #C9A96E);
+}
+
+.sklo-field--gdpr {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0.35rem 0 1.1rem;
+}
+
+.sklo-field--gdpr .sklo-field__label {
+  color: var(--muted, #A8A8A8);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  font-weight: 400;
+}
+
+.sklo-field--gdpr .sklo-field__label a {
+  color: var(--accent, #C9A96E);
+  text-underline-offset: 0.15em;
+}
+
+.sklo-field--gdpr .sklo-field__label a:hover {
+  color: var(--accent-hover, #E8C98A);
 }
 
 .sklo-field {

@@ -278,6 +278,10 @@
             <label><span>E-mail</span><input type="email" x-model="config.kontakt.email" autocomplete="email" /></label>
             <label><span>Město / PSČ</span><input x-model="config.kontakt.mesto" autocomplete="address-level2" /></label>
             <label class="full"><span>Poznámka <em>volitelné</em></span><textarea x-model="config.kontakt.poznamka" rows="3"></textarea></label>
+            <label class="full consent">
+              <input type="checkbox" x-model="config.kontakt.gdpr_souhlas" />
+              <span>Souhlasím se zpracováním osobních údajů dle <a href="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/ochrana-osobnich-udaju/">zásad ochrany osobních údajů</a>.</span>
+            </label>
           </div>
         </section>
 

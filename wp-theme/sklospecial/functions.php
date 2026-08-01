@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.6.14');
+define('SKLO_THEME_VER', '1.6.15');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
@@ -202,6 +202,15 @@ add_action('rest_api_init', static function (): void {
             } elseif (is_numeric($zamereni_raw)) {
                 $zamereni = ((int) $zamereni_raw) === 1;
             }
+            $gdpr_raw = $req->get_param('gdpr_souhlas');
+            $gdpr_souhlas = false;
+            if (is_bool($gdpr_raw)) {
+                $gdpr_souhlas = $gdpr_raw;
+            } elseif (is_string($gdpr_raw)) {
+                $gdpr_souhlas = in_array(strtolower($gdpr_raw), ['1', 'ano', 'true', 'on', 'yes'], true);
+            } elseif (is_numeric($gdpr_raw)) {
+                $gdpr_souhlas = ((int) $gdpr_raw) === 1;
+            }
             $poznamka = trim((string) $req->get_param('poznamka'));
             $order = $req->get_param('order');
             if (!is_array($order)) {
@@ -216,6 +225,13 @@ add_action('rest_api_init', static function (): void {
             }
             if (mb_strlen($telefon) < 5) {
                 return new WP_Error('bad_telefon', 'Neplatný telefon', ['status' => 400]);
+            }
+            if (!$gdpr_souhlas) {
+                return new WP_Error(
+                    'bad_gdpr',
+                    'Je nutný souhlas se zpracováním osobních údajů',
+                    ['status' => 400]
+                );
             }
 
             $allowed_doprava = ['ne', 'ano', 'vlastni', 'nase_auto', 'prepravni'];
@@ -281,6 +297,7 @@ add_action('rest_api_init', static function (): void {
                 'Doprava: ' . $doprava_label,
                 'Montáž: ' . $montaz_label,
                 'Zaměření: ' . $zamereni_label,
+                'GDPR souhlas: Ano',
                 '',
                 'Produkt: ' . ($name !== '' ? $name : 'Obecná poptávka') . ($code !== '' ? ' (' . $code . ')' : ''),
                 'Počet: ' . $qty,

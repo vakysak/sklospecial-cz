@@ -107,6 +107,11 @@ $katalog = home_url('/sklenene-dvere/');
             <textarea class="sklo-field__input sklo-field__input--area" name="poznamka" rows="4" maxlength="2000" placeholder="Rozměry otvoru, termín, detaily…"></textarea>
           </label>
 
+          <label class="sklo-field sklo-field--check sklo-field--gdpr">
+            <input type="checkbox" name="gdpr_souhlas" value="1" required>
+            <span class="sklo-field__label">Souhlasím se zpracováním osobních údajů dle <a href="<?php echo esc_url(home_url('/ochrana-osobnich-udaju/')); ?>">zásad ochrany osobních údajů</a>.</span>
+          </label>
+
           <input type="hidden" name="order_json" value="" data-poptavka-order-json>
 
           <p class="sklo-poptavka__form-err" data-poptavka-err hidden></p>

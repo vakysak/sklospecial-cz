@@ -67,6 +67,14 @@ async function validatePayload(body) {
   if (!isEmail(body.email)) errors.push('Neplatný e-mail');
   if (!body.mesto || String(body.mesto).trim().length < 2) errors.push('Chybí město / PSČ');
 
+  const gdprRaw = body.gdpr_souhlas;
+  const gdprOk =
+    gdprRaw === true ||
+    gdprRaw === 1 ||
+    gdprRaw === '1' ||
+    (typeof gdprRaw === 'string' && ['ano', 'true', 'on', 'yes'].includes(gdprRaw.toLowerCase()));
+  if (!gdprOk) errors.push('Je nutný souhlas se zpracováním osobních údajů');
+
   if (errors.length) {
     const err = new Error(errors.join('; '));
     err.status = 400;

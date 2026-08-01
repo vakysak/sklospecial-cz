@@ -586,6 +586,7 @@
     }
     syncOrderJson();
 
+    const gdprEl = form.querySelector('[name="gdpr_souhlas"]');
     const payload = {
       jmeno: String(fd.get('jmeno') || '').trim(),
       email: String(fd.get('email') || '').trim(),
@@ -596,6 +597,7 @@
       zamereni: form.querySelector('[name="zamereni"]')
         ? !!form.querySelector('[name="zamereni"]').checked
         : false,
+      gdpr_souhlas: gdprEl ? !!gdprEl.checked : false,
       poznamka: String(fd.get('poznamka') || '').trim(),
       order: draft,
     };
@@ -608,6 +610,16 @@
       setActiveStep(2);
       const firstBad = form.querySelector('[name="jmeno"], [name="email"], [name="telefon"]');
       if (firstBad) firstBad.focus();
+      return;
+    }
+
+    if (!payload.gdpr_souhlas) {
+      if (errEl) {
+        errEl.textContent = 'Potřebujeme souhlas se zpracováním osobních údajů.';
+        errEl.hidden = false;
+      }
+      setActiveStep(4);
+      if (gdprEl) gdprEl.focus();
       return;
     }
 
