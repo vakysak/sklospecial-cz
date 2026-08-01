@@ -1,4 +1,4 @@
-/* sklo chat-widget v1.7.0 */
+/* sklo chat-widget v1.8.0 */
 (() => {
   const API = window.SKLO_API_BASE || '';
   const CONFIG_URL = window.SKLO_CONFIGURATOR_URL || `${API}/public/konfigurator.html`;
@@ -47,6 +47,8 @@
   .sklo-chat-card__meta{font:500 11px/1.35 Outfit,sans-serif;color:#5b6a75;margin-top:.15rem}
   .sklo-chat-cta{display:block;width:100%;margin-top:.55rem;border:0;border-radius:12px;padding:.7rem .9rem;cursor:pointer;font:600 13px/1.25 Outfit,sans-serif;background:#1a5c6b;color:#fff;text-align:center}
   .sklo-chat-cta:hover{background:#154a57}
+  .sklo-chat-cta--ghost{background:#eef6f8;color:#1a5c6b;border:1px solid rgba(26,92,107,.28)}
+  .sklo-chat-cta--ghost:hover{background:#e0eef2}
   .sklo-chat-photo-bar{display:flex;align-items:center;gap:.45rem;padding:.45rem .8rem 0;background:#fff;border-top:1px solid rgba(18,24,28,.06);flex-wrap:wrap}
   .sklo-chat-photo-btn{border:1px solid rgba(26,92,107,.28);background:#eef6f8;color:#1a5c6b;border-radius:999px;padding:.45rem .75rem;cursor:pointer;font:600 12px Outfit,sans-serif}
   .sklo-chat-photo-btn:hover{background:#e0eef2}
@@ -71,15 +73,17 @@
     loading: false,
     sessionId: crypto.randomUUID(),
     pendingImages: [],
+    lastPhotoImages: [],
     messages: [
       {
         role: 'assistant',
         content:
-          'Ahoj, jsem Sklo asistent. Pomůžu s výběrem skleněných dveří, zaměřením nebo poptávkou. Můžeš i poslat fotku otvoru.',
+          'Ahoj, jsem Sklo asistent. Pomůžu s výběrem skleněných dveří, zaměřením nebo poptávkou. Můžeš i poslat fotku otvoru nebo dveří — najdu podobné v katalogu.',
         products: [],
         poptavka_draft: null,
         poptavka_url: null,
         images: [],
+        offer_similar: false,
       },
     ],
   };
@@ -121,7 +125,7 @@
     <div class="sklo-chat-msgs" data-msgs></div>
     <div class="sklo-chat-photo-bar">
       <button type="button" class="sklo-chat-photo-btn" data-act="photo">Poslat fotku otvoru</button>
-      <span class="sklo-chat-photo-hint" data-photo-hint>až 3 fotky · poradím typ dveří</span>
+      <span class="sklo-chat-photo-hint" data-photo-hint>až 3 fotky · typ dveří / podobné</span>
       <div class="sklo-chat-pending" data-pending hidden></div>
       <input type="file" accept="image/jpeg,image/png,image/webp" multiple hidden data-file />
     </div>
@@ -199,6 +203,11 @@
     return '<button type="button" class="sklo-chat-cta" data-act="poptavka">Odeslat poptávku</button>';
   }
 
+  function similarCtaHtml(msg) {
+    if (msg.role !== 'assistant' || !msg.offer_similar) return '';
+    return '<button type="button" class="sklo-chat-cta sklo-chat-cta--ghost" data-act="similar">Najít podobné v katalogu</button>';
+  }
+
   function saveDraftAndGo(draft, url) {
     if (draft) {
       try {
@@ -240,7 +249,7 @@
     if (!state.pendingImages.length) {
       pendingBox.hidden = true;
       pendingBox.innerHTML = '';
-      photoHint.textContent = 'až 3 fotky · poradím typ dveří';
+      photoHint.textContent = 'až 3 fotky · typ dveří / podobné';
       return;
     }
     pendingBox.hidden = false;
@@ -261,7 +270,8 @@
         const thumbs = thumbsHtml(m.images);
         const cards = m.role === 'assistant' ? productCardsHtml(m.products) : '';
         const cta = m.role === 'assistant' ? poptavkaCtaHtml(m) : '';
-        return `<div class="sklo-chat-msg ${m.role === 'user' ? 'user' : 'bot'}">${body}${thumbs}${cards}${cta}</div>`;
+        const similar = m.role === 'assistant' ? similarCtaHtml(m) : '';
+        return `<div class="sklo-chat-msg ${m.role === 'user' ? 'user' : 'bot'}">${body}${thumbs}${cards}${cta}${similar}</div>`;
       })
       .join('');
     box.scrollTop = box.scrollHeight;
@@ -311,6 +321,16 @@
       .slice(-20);
   }
 
+  function lastUserHadPhotos() {
+    for (let i = state.messages.length - 1; i >= 0; i -= 1) {
+      const m = state.messages[i];
+      if (m.role === 'user') {
+        return Array.isArray(m.images) && m.images.length > 0;
+      }
+    }
+    return false;
+  }
+
   function addReply(data) {
     if (!data || !data.success) throw new Error((data && data.error) || 'Chat selhal');
     state.messages.push({
@@ -320,6 +340,7 @@
       poptavka_draft: data.poptavka_draft || null,
       poptavka_url: data.poptavka_url || null,
       images: [],
+      offer_similar: lastUserHadPhotos(),
     });
     render();
   }
@@ -403,6 +424,7 @@
       poptavka_draft: null,
       poptavka_url: null,
       images: [],
+      offer_similar: lastUserHadPhotos(),
     };
     state.messages.push(botMsg);
     render();
@@ -469,7 +491,11 @@
       products: [],
       poptavka_draft: null,
       poptavka_url: null,
+      offer_similar: false,
     });
+    if (images && images.length) {
+      state.lastPhotoImages = images.slice();
+    }
     state.pendingImages = [];
     render();
     state.loading = true;
@@ -497,6 +523,7 @@
         poptavka_draft: null,
         poptavka_url: null,
         images: [],
+        offer_similar: false,
       });
     } finally {
       state.loading = false;
@@ -570,6 +597,17 @@
       saveDraftAndGo(draft, url);
       return;
     }
+    if (act === 'similar') {
+      if (state.loading) return;
+      const photos = state.lastPhotoImages.length
+        ? state.lastPhotoImages.slice()
+        : [];
+      await sendUserTurn(
+        'Najdi podobné dveře v katalogu podle té fotky.',
+        photos
+      );
+      return;
+    }
     if (act === 'reset') {
       await fetch(`${API}/api/chat`, {
         method: 'POST',
@@ -578,15 +616,17 @@
       });
       state.sessionId = crypto.randomUUID();
       state.pendingImages = [];
+      state.lastPhotoImages = [];
       state.messages = [
         {
           role: 'assistant',
           content:
-            'Konverzace je nová. Kde budou skleněné dveře a preferuješ otočné, nebo posuvné? Můžeš i poslat fotku otvoru.',
+            'Konverzace je nová. Kde budou skleněné dveře a preferuješ otočné, nebo posuvné? Můžeš i poslat fotku otvoru nebo dveří.',
           products: [],
           poptavka_draft: null,
           poptavka_url: null,
           images: [],
+          offer_similar: false,
         },
       ];
       render();

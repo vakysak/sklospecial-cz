@@ -1,7 +1,7 @@
 # MEMORY SNAPSHOT — sklospecial.cz
 
 **PROJEKT:** sklospecial.cz  
-**FÁZE:** 1 — Skleněné dveře
+**FÁZE:** 1 — Skleněné dveře · AI Phase **C1** (podobné dveře)
 
 ## SERVER
 
@@ -13,16 +13,22 @@
 
 ## STACK
 
-- WP theme: `wp-theme/sklospecial` (glass UI, front-page)
-
+- WP theme: `wp-theme/sklospecial` (glass UI, front-page) **1.8.0**
 - WordPress (CMS, obsah, realizace)
-- Node.js / Express (API, konfigurátor, chat) — **nová služba**
+- Node.js / Express (API, konfigurátor, chat)
 - MariaDB (WP + `sklo_leads`)
 - Coolify Traefik (proxy + SSL)
-- OpenAI Responses API (chat)
+- OpenAI chat (gpt-4o) + tool calling
 - Alpine.js / vanilla JS (konfigurátor + chat)
 - ACF Pro (custom fields)
 - FluentSMTP + Turnstile + LLAR (už na WP)
+
+## AI FÁZE
+
+- **B** — vision upload v chatu (fotka otvoru) — hotovo
+- **C1** — `find_similar_products` + widget „Najít podobné v katalogu“ + `GET /api/produkty/:code/similar` — hotovo
+- **C2** — AR / DoorVision — **odloženo** (později)
+- **C3** — WhatsApp Business AI — **odloženo** (později)
 
 ## MODEL
 
@@ -38,7 +44,8 @@ Prodej na dálku: konfigurace → rozměry + fotky → nabídka od firmy.
 
 ## CHAT
 
-Floating „Sklo asistent“ · jen skleněné dveře · stream · 20 req/IP/h · klíč jen `.env`
+Floating „Sklo asistent“ · jen skleněné dveře · stream · 20 req/IP/h · klíč jen `.env`  
+Widget **v1.8.0** — fotka + podobné v katalogu (product cards).
 
 ## BRAND
 
@@ -49,7 +56,7 @@ Tykat · konkrétní · bez „luxusní/exkluzivní/prémiový“ · CTA „poš
 - WP: `https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io`
 - API: `https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io` (`db: ok`)
 - Konfigurátor: `/public/konfigurator.html` na API
-- Chat widget: načtený na WP (snippet)
+- Chat widget: načtený na WP (snippet #7, `?ver=1.8.0`)
 
 ## DOPORUČENÝ START
 

@@ -62,6 +62,14 @@ Launcher už je dvouřádkový (bez další změny v tomto kroku):
 
 Po změně `chat-widget.js` bumpni `?ver=` ve WP snippetu / theme enqueue, ať prohlížeče neservírují starou cache.
 
+Aktuálně: widget **v1.8.0** (Phase C1 — podobné dveře). Snippet #7 `?ver=1.8.0`.
+
+## Phase C (AI)
+
+- **C1 DONE:** `find_similar_products` (kód nebo fotka → top 5 SklS), chat CTA „Najít podobné v katalogu“, `GET /api/produkty/:code/similar` + strip na detailu.
+- **C2 later:** AR / DoorVision — odloženo.
+- **C3 later:** WhatsApp Business AI — odloženo.
+
 ---
 
 ## Bezpečnost

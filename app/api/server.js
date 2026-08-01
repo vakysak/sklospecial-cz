@@ -47,7 +47,7 @@ app.get('/api/health', async (_req, res) => {
   const payload = {
     ok: true,
     service: 'sklospecial-api',
-    phase: 'B',
+    phase: 'C1',
     time: new Date().toISOString(),
     db: 'skipped',
   };

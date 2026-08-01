@@ -680,6 +680,20 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
         </div>
       </div>
 
+      <?php if ($code !== '') : ?>
+        <div
+          class="sklo-pdetail__block sklo-pdetail__similar"
+          data-sklo-similar
+          data-code="<?php echo esc_attr($code); ?>"
+          data-api="<?php echo esc_url(function_exists('sklo_api_base') ? sklo_api_base() : ''); ?>"
+          hidden
+        >
+          <h2>Podobné produkty</h2>
+          <p class="sklo-pdetail__similar-lead">Další dveře ve stejném stylu z katalogu.</p>
+          <div class="sklo-produkty__grid sklo-pdetail__similar-grid" data-sklo-similar-grid></div>
+        </div>
+      <?php endif; ?>
+
       <div class="sklo-pdetail__cta sklo-pdetail__cta--bottom sklo-pdetail__cta--triple">
         <button type="button" class="sklo-btn" data-sklo-order-selected>Odeslat poptávku</button>
         <a class="sklo-btn sklo-btn--ghost" href="<?php echo esc_url($poptavka); ?>">Nenašel jsi co hledáš? Pošli nezávaznou poptávku</a>

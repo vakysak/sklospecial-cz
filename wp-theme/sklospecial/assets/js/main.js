@@ -706,3 +706,64 @@
     }
   });
 })();
+
+(() => {
+  const root = document.querySelector('[data-sklo-similar]');
+  if (!root) return;
+  const code = root.getAttribute('data-code') || '';
+  const api = (root.getAttribute('data-api') || '').replace(/\/$/, '');
+  const grid = root.querySelector('[data-sklo-similar-grid]');
+  if (!code || !api || !grid) return;
+
+  const formatKc = (n) => {
+    const v = Number(n);
+    if (!Number.isFinite(v) || v <= 0) return '';
+    return 'od ' + Math.round(v).toLocaleString('cs-CZ') + ' Kč';
+  };
+
+  const esc = (s) =>
+    String(s)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;');
+
+  fetch(api + '/api/produkty/' + encodeURIComponent(code) + '/similar', {
+    headers: { Accept: 'application/json' },
+  })
+    .then((r) => r.json())
+    .then((data) => {
+      const items = (data && data.success && Array.isArray(data.items) && data.items) || [];
+      if (!items.length) return;
+      grid.innerHTML = items
+        .map((p) => {
+          const href = p.url_path || ('?kod=' + encodeURIComponent(p.code || ''));
+          const img = p.image
+            ? '<span class="sklo-produkty__media"><img src="' +
+              esc(p.image) +
+              '" alt="" loading="lazy" decoding="async" width="400" height="400"></span>'
+            : '<div class="sklo-produkty__media sklo-produkty__media--empty" aria-hidden="true"></div>';
+          const price = formatKc(p.price);
+          return (
+            '<article class="sklo-produkty__item">' +
+            '<a class="sklo-produkty__link" href="' +
+            esc(href) +
+            '">' +
+            img +
+            '<div class="sklo-produkty__body">' +
+            '<h3 class="sklo-produkty__name">' +
+            esc(p.name || p.code || '') +
+            '</h3>' +
+            (p.code ? '<p class="sklo-produkty__code">' + esc(p.code) + '</p>' : '') +
+            (price ? '<p class="sklo-produkty__price">' + esc(price) + '</p>' : '') +
+            '<p class="sklo-produkty__more-link">Detail a doplatky</p>' +
+            '</div></a></article>'
+          );
+        })
+        .join('');
+      root.hidden = false;
+    })
+    .catch(() => {
+      /* silent — strip stays hidden */
+    });
+})();

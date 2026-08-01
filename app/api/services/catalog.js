@@ -242,6 +242,145 @@ function getProductRow(code) {
   return catalog.byCode.get(String(code).trim().toLowerCase()) || null;
 }
 
+const SECTION_KEYWORDS = {
+  'design-lux': 'design lux',
+  'ultra-slim': 'ultra slim',
+  loft: 'loft',
+  'trubkovy-system': 'trubkový systém',
+  'do-pouzdra': 'pouzdro',
+  otocne: 'kyvné otočné',
+  otevirane: 'otevírané',
+  pevna: 'pevná zárubeň',
+  nastavitelna: 'nastavitelná zárubeň',
+  hlinikova: 'hliníková',
+  luxe: 'luxe',
+  'rock-glass': 'rock glass',
+};
+
+const KEYWORD_STOP = new Set([
+  'sklenene',
+  'sklenené',
+  'dvere',
+  'dveře',
+  'na',
+  'miru',
+  'míru',
+  'a',
+  's',
+  'se',
+  'pro',
+  'od',
+  'do',
+  'ze',
+  'z',
+  'v',
+  've',
+  'the',
+  'ks',
+  'mm',
+  'cm',
+]);
+
+/**
+ * Build search keywords from a catalog row (name / section / short desc).
+ */
+function keywordsFromProduct(row) {
+  if (!row) return '';
+  const parts = [];
+  if (row.section) {
+    parts.push(SECTION_KEYWORDS[row.section] || String(row.section).replace(/-/g, ' '));
+  }
+  const nameTokens = String(row.name || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .split(/[^a-z0-9]+/)
+    .filter((t) => t.length >= 3 && !KEYWORD_STOP.has(t));
+  // Keep distinctive tokens (skip generic "sklenene/dvere" already filtered)
+  for (const t of nameTokens.slice(0, 6)) {
+    if (!parts.some((p) => p.includes(t))) parts.push(t);
+  }
+  const glassHints = ['matne', 'matné', 'leptane', 'leptané', 'cire', 'čiré', 'zrcadlo', 'satin'];
+  const blob = `${row.name || ''} ${row.description_short || ''}`.toLowerCase();
+  for (const h of glassHints) {
+    if (blob.includes(h)) parts.push(h);
+  }
+  return parts.join(' ').trim();
+}
+
+/**
+ * Find similar SklS products by reference code and/or typ+keywords.
+ * No vector DB — keyword/typ search with self excluded.
+ * @param {{ code?: string, typ?: string, keywords?: string|string[], exclude_code?: string, limit?: number }} opts
+ */
+function findSimilarProducts({ code, typ, keywords, exclude_code, limit = 5 } = {}) {
+  const lim = Math.min(Math.max(Number(limit) || 5, 1), 5);
+  const refCode = code ? String(code).trim() : '';
+  const exclude = String(exclude_code || refCode || '')
+    .trim()
+    .toLowerCase();
+
+  let refTyp = typ ? normalizeTyp(typ) : '';
+  let refKeywords = keywords;
+
+  if (refCode) {
+    const row = getProductRow(refCode);
+    if (!row) {
+      return {
+        ok: false,
+        error: `Produkt ${refCode} nenalezen`,
+        items: [],
+        query: { code: refCode, typ: refTyp, keywords: '' },
+      };
+    }
+    if (!refTyp || refTyp === 'nevim') refTyp = row.typ || '';
+    if (!refKeywords) refKeywords = keywordsFromProduct(row);
+  }
+
+  const kwStr = Array.isArray(refKeywords)
+    ? refKeywords.join(' ')
+    : refKeywords
+      ? String(refKeywords)
+      : '';
+
+  const seen = new Set();
+  const out = [];
+
+  const pushHits = (hits) => {
+    for (const h of hits) {
+      if (!h || !h.code) continue;
+      const key = h.code.toLowerCase();
+      if (exclude && key === exclude) continue;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(h);
+      if (out.length >= lim) return true;
+    }
+    return false;
+  };
+
+  // 1) typ + keywords
+  if (!pushHits(searchProducts({ typ: refTyp, keywords: kwStr, limit: 10 }))) {
+    // 2) keywords only (relax typ)
+    if (kwStr) pushHits(searchProducts({ keywords: kwStr, limit: 10 }));
+  }
+  // 3) typ only if still short
+  if (out.length < lim && refTyp && refTyp !== 'nevim') {
+    pushHits(searchProducts({ typ: refTyp, limit: 10 }));
+  }
+
+  return {
+    ok: true,
+    items: out.slice(0, lim),
+    query: {
+      code: refCode || undefined,
+      typ: refTyp || undefined,
+      keywords: kwStr || undefined,
+      exclude: exclude || undefined,
+    },
+  };
+}
+
 const ADDON_LABEL_HINTS = [
   { keys: ['madlo', 'uchyt', 'úchyt', 'musle', 'mušle'], kind: 'madlo' },
   {
@@ -445,6 +584,8 @@ module.exports = {
   getKonfiguratorLink,
   createPoptavka,
   recommendAddons,
+  findSimilarProducts,
+  keywordsFromProduct,
   categoryToUrlPath,
   normalizeTyp,
   // test helpers

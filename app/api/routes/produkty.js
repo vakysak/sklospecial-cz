@@ -2,6 +2,7 @@
 
 const express = require('express');
 const { listProdukty, getProdukt, listTypy, getKatalogMeta } = require('../services/produkty');
+const { findSimilarProducts } = require('../services/catalog');
 
 const router = express.Router();
 
@@ -29,6 +30,27 @@ router.get('/', (req, res, next) => {
       items,
       typy: listTypy(),
       meta: getKatalogMeta(),
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/produkty/:code/similar — top similar SklS for WP „Podobné produkty“.
+ */
+router.get('/:code/similar', (req, res, next) => {
+  try {
+    const result = findSimilarProducts({ code: req.params.code, limit: 5 });
+    if (!result.ok) {
+      return res.status(404).json({ success: false, error: result.error || 'Produkt nenalezen' });
+    }
+    res.json({
+      success: true,
+      code: req.params.code,
+      count: result.items.length,
+      items: result.items,
+      query: result.query,
     });
   } catch (err) {
     next(err);

@@ -7,15 +7,19 @@ const {
   getKonfiguratorLink,
   createPoptavka,
   recommendAddons,
+  findSimilarProducts,
+  normalizeTyp,
 } = require('./catalog');
 const { checkDimensions } = require('./rozmery');
+
+// Phase C2 (AR / DoorVision) and C3 (WhatsApp Business AI) deferred — later.
 
 const SYSTEM_PROMPT = `Jsi asistent firmy sklospecial.cz specializovaný na skleněné dveře.
 Pomáháš zákazníkům vybrat správný typ skleněných dveří, poradit s zaměřením
 a provést je procesem poptávky.
 
-Máš k dispozici nástroje: search_products, get_product, get_konfigurator_link,
-check_dimensions, recommend_addons, create_poptavka a vytvor_poptavku.
+Máš k dispozici nástroje: search_products, get_product, find_similar_products,
+get_konfigurator_link, check_dimensions, recommend_addons, create_poptavka a vytvor_poptavku.
 Než vymyslíš konkrétní model, cenu nebo kód SklS, VŽDY nejdřív použij nástroje.
 Nikdy nevymýšlej kódy SklS ani ceny — ber je jen z výsledků nástrojů.
 
@@ -23,7 +27,15 @@ Když zákazník pošle fotku otvoru / prostoru:
 - Odhadni pravděpodobný typ dveří: posuvné po stěně, posuvné do pouzdra, kyvné (otočné), otevírané.
 - Uveď nejistotu (co z fotky nevidíš — hloubka stěny, skryté pouzdro, nosnost…).
 - Dej krátký checklist zaměření: 3 šířky, 3 výšky, vždy ber nejmenší, fotky detailů (podlaha, strop, bok stěny).
-- Nenavrhuj konkrétní SklS jen z fotky bez search_products / get_product, pokud to dává smysl.
+- Nenavrhuj konkrétní SklS jen z fotky bez search_products / get_product / find_similar_products, pokud to dává smysl.
+- Po analýze nabídni, že můžeš najít podobné dveře v katalogu (find_similar_products s use_uploaded_image).
+
+Když zákazník pošle fotku dveří (nejen holý otvor), nebo chce „něco podobného“ /
+„najdi podobné“ / „podobné jako …“:
+- Zavolej find_similar_products.
+- U fotky: use_uploaded_image=true (atributy vytáhne vision uvnitř nástroje).
+- U kódu SklS-XXXX: předej code a vyluč stejný produkt.
+- Ukaž až 5 tipů s kódem, cenou a odkazem.
 
 Když zákazník napíše / vloží rozměry (šířky a výšky):
 - Nejdřív zavolej check_dimensions.
@@ -37,7 +49,7 @@ Když doporučuješ produkt nebo zákazník řeší doplňky u SklS kódu:
 - Když zákazník souhlasí s doplňky, při create_poptavka je vlož do addons_summary.
 
 Když doporučuješ produkty:
-- maximálně 3 tipy
+- maximálně 3 tipy (u find_similar_products až 5)
 - uveď kód (např. SklS-0002) a orientační cenu v Kč
 - odkazuj relativními WP cestami ve formátu /sklenene-dvere/posuvne/?kod=SklS-0002
   (nebo odpovídající kategorii: otocne, otevirane, celosklenene, posuvne/do-pouzdra)
@@ -147,6 +159,39 @@ const TOOLS = [
   {
     type: 'function',
     function: {
+      name: 'find_similar_products',
+      description:
+        'Najde až 5 podobných produktů SklS. Použij při fotce dveří, „něco podobného“, nebo referenčním kódu SklS. U fotky nastav use_uploaded_image=true (vision vytáhne typ/sklo/styl). U kódu předej code.',
+      parameters: {
+        type: 'object',
+        properties: {
+          code: {
+            type: 'string',
+            description: 'Referenční kód SklS-XXXX (podobné jako tento produkt)',
+          },
+          use_uploaded_image: {
+            type: 'boolean',
+            description:
+              'true = použij poslední nahranou fotku ze session a vytáhni atributy přes vision',
+          },
+          typ: {
+            type: 'string',
+            description:
+              'Volitelný override typu: posuvne, do-pouzdra, otocne, otevirane, celosklenene',
+          },
+          keywords: {
+            type: 'string',
+            description:
+              'Volitelná klíčová slova (matné, loft, zrcadlo, černý systém…). Pokud chybí u fotky, doplní vision.',
+          },
+        },
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
       name: 'get_konfigurator_link',
       description: 'Vrátí odkaz do konfigurátoru s volitelným typem a kódem produktu.',
       parameters: {
@@ -240,11 +285,15 @@ function getClient() {
   return new OpenAI({ apiKey: key });
 }
 
-function getHistory(sessionId) {
+function getSession(sessionId) {
   if (!sessions.has(sessionId)) {
-    sessions.set(sessionId, []);
+    sessions.set(sessionId, { messages: [], lastImages: [] });
   }
   return sessions.get(sessionId);
+}
+
+function getHistory(sessionId) {
+  return getSession(sessionId).messages;
 }
 
 function resetSession(sessionId) {
@@ -265,7 +314,92 @@ function pushCollected(collected, item) {
   });
 }
 
-function executeTool(name, args, collected, poptavkaState) {
+function keywordsFromAttrs(attrs) {
+  if (!attrs || typeof attrs !== 'object') return '';
+  const parts = [];
+  if (attrs.sklo) parts.push(String(attrs.sklo));
+  if (attrs.barva_systemu) parts.push(String(attrs.barva_systemu));
+  if (attrs.styl) parts.push(String(attrs.styl));
+  if (attrs.keywords) parts.push(String(attrs.keywords));
+  return parts.join(' ').trim();
+}
+
+/**
+ * gpt-4o vision → door attributes for catalog keyword search.
+ */
+async function extractDoorAttributesFromImage(client, model, imageUrl) {
+  const completion = await client.chat.completions.create({
+    model,
+    temperature: 0.2,
+    response_format: { type: 'json_object' },
+    messages: [
+      {
+        role: 'system',
+        content:
+          'Jsi klasifikátor skleněných dveří pro e-shop. Vrať jen JSON s poli: ' +
+          'typ (posuvne|do-pouzdra|otocne|otevirane|celosklenene|unknown), ' +
+          'sklo (matne|cire|zrcadlo|leptane|other), ' +
+          'barva_systemu (cerna|bila|nerez|zlata|other), ' +
+          'styl (loft|design|minimal|classic|other), ' +
+          'keywords (česká klíčová slova oddělená mezerou pro katalogové hledání).',
+      },
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'Popiš typ skleněných dveří na fotce pro vyhledání podobných v katalogu.',
+          },
+          {
+            type: 'image_url',
+            image_url: { url: imageUrl, detail: 'low' },
+          },
+        ],
+      },
+    ],
+  });
+
+  const raw = completion.choices?.[0]?.message?.content || '{}';
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return { typ: 'unknown', keywords: '' };
+  }
+}
+
+async function runFindSimilarProducts(args, ctx) {
+  const code = args.code ? String(args.code).trim() : '';
+  let typ = args.typ ? normalizeTyp(args.typ) : '';
+  let keywords = args.keywords ? String(args.keywords).trim() : '';
+  const useImage = Boolean(args.use_uploaded_image) || (!code && !keywords && !typ);
+  let attributes = null;
+
+  if (useImage) {
+    const img = (ctx.lastImages && ctx.lastImages[0]) || null;
+    if (img && ctx.client) {
+      attributes = await extractDoorAttributesFromImage(ctx.client, ctx.model, img);
+      const attrTyp = attributes.typ && attributes.typ !== 'unknown' ? attributes.typ : '';
+      if (!typ && attrTyp) typ = normalizeTyp(attrTyp);
+      if (!keywords) keywords = keywordsFromAttrs(attributes);
+    }
+  }
+
+  const result = findSimilarProducts({
+    code: code || undefined,
+    typ: typ || undefined,
+    keywords: keywords || undefined,
+    exclude_code: code || undefined,
+    limit: 5,
+  });
+
+  return {
+    ...result,
+    attributes: attributes || undefined,
+    source: code ? 'code' : useImage ? 'image' : 'keywords',
+  };
+}
+
+async function executeTool(name, args, collected, poptavkaState, ctx) {
   try {
     if (name === 'search_products') {
       const hits = searchProducts({
@@ -281,6 +415,11 @@ function executeTool(name, args, collected, poptavkaState) {
       const item = getProduct(args.code);
       if (item) pushCollected(collected, item);
       return JSON.stringify({ ok: true, item });
+    }
+    if (name === 'find_similar_products') {
+      const result = await runFindSimilarProducts(args, ctx || {});
+      for (const h of result.items || []) pushCollected(collected, h);
+      return JSON.stringify(result);
     }
     if (name === 'get_konfigurator_link') {
       const url = getKonfiguratorLink({ typ: args.typ, kod: args.kod });
@@ -399,7 +538,8 @@ function normalizeUserContent(content) {
 }
 
 function prepareMessages(userMessages, sessionId, pageContext) {
-  const history = getHistory(sessionId);
+  const session = getSession(sessionId);
+  const history = session.messages;
 
   const incoming = (userMessages || []).filter(
     (m) => m && (m.role === 'user' || m.role === 'assistant') && m.content
@@ -420,6 +560,14 @@ function prepareMessages(userMessages, sessionId, pageContext) {
     throw err;
   }
 
+  // Keep last uploaded images for find_similar_products (vision path).
+  if (Array.isArray(lastOpenAi)) {
+    const imgs = lastOpenAi
+      .filter((p) => p && p.type === 'image_url' && p.image_url?.url)
+      .map((p) => p.image_url.url);
+    if (imgs.length) session.lastImages = imgs;
+  }
+
   history.push({ role: 'user', content: lastHistory });
   while (history.length > MAX_MESSAGES) history.shift();
 
@@ -431,7 +579,12 @@ function prepareMessages(userMessages, sessionId, pageContext) {
     if (pageContext.kod) bits.push(`produkt kod ${pageContext.kod}`);
     messages.push({
       role: 'system',
-      content: `Zákazník je na stránce: ${bits.join(', ')}. Pokud je relevantní, použij get_product a recommend_addons pro tento kód. Pro poptávku použij create_poptavka.`,
+      content:
+        `Zákazník je na stránce: ${bits.join(', ')}. ` +
+        (pageContext.kod
+          ? `Pokud je relevantní, použij get_product, recommend_addons a nabídni podobné přes find_similar_products s code=${pageContext.kod}. `
+          : '') +
+        'Pro poptávku použij create_poptavka.',
     });
   }
 
@@ -441,7 +594,7 @@ function prepareMessages(userMessages, sessionId, pageContext) {
   }
   messages.push({ role: 'user', content: lastOpenAi });
 
-  return { history, messages };
+  return { history, messages, session };
 }
 
 function buildResult(history, sessionId, replyText, collected, poptavkaState) {
@@ -462,7 +615,7 @@ function buildResult(history, sessionId, replyText, collected, poptavkaState) {
 /**
  * Run tool-calling rounds (non-streaming). Leaves `messages` ready for a final text reply.
  */
-async function runToolRounds(client, model, messages, collected, poptavkaState) {
+async function runToolRounds(client, model, messages, collected, poptavkaState, ctx) {
   for (let round = 0; round < MAX_TOOL_ROUNDS; round += 1) {
     const completion = await client.chat.completions.create({
       model,
@@ -487,7 +640,7 @@ async function runToolRounds(client, model, messages, collected, poptavkaState) 
       for (const call of toolCalls) {
         const name = call.function?.name || '';
         const args = parseArgs(call.function?.arguments);
-        const result = executeTool(name, args, collected, poptavkaState);
+        const result = await executeTool(name, args, collected, poptavkaState, ctx);
         messages.push({
           role: 'tool',
           tool_call_id: call.id,
@@ -510,11 +663,16 @@ async function runToolRounds(client, model, messages, collected, poptavkaState) 
 async function chat(userMessages, sessionId, pageContext) {
   const client = getClient();
   const model = process.env.OPENAI_MODEL || 'gpt-4o';
-  const { history, messages } = prepareMessages(userMessages, sessionId, pageContext);
+  const { history, messages, session } = prepareMessages(userMessages, sessionId, pageContext);
   const collected = [];
   const poptavkaState = { draft: null, url: null };
+  const ctx = {
+    client,
+    model,
+    lastImages: session.lastImages || [],
+  };
 
-  let replyText = await runToolRounds(client, model, messages, collected, poptavkaState);
+  let replyText = await runToolRounds(client, model, messages, collected, poptavkaState, ctx);
 
   if (!replyText) {
     const completion = await client.chat.completions.create({
@@ -540,11 +698,16 @@ async function chat(userMessages, sessionId, pageContext) {
 async function chatStream(userMessages, sessionId, pageContext, emit) {
   const client = getClient();
   const model = process.env.OPENAI_MODEL || 'gpt-4o';
-  const { history, messages } = prepareMessages(userMessages, sessionId, pageContext);
+  const { history, messages, session } = prepareMessages(userMessages, sessionId, pageContext);
   const collected = [];
   const poptavkaState = { draft: null, url: null };
+  const ctx = {
+    client,
+    model,
+    lastImages: session.lastImages || [],
+  };
 
-  let replyText = await runToolRounds(client, model, messages, collected, poptavkaState);
+  let replyText = await runToolRounds(client, model, messages, collected, poptavkaState, ctx);
 
   if (replyText) {
     emit({ type: 'token', text: replyText });
