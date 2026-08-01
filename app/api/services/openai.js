@@ -401,7 +401,18 @@ function normalizeUserContent(content) {
 function prepareMessages(userMessages, sessionId, pageContext) {
   const history = getHistory(sessionId);
 
-  // Rebuild OpenAI message list from session history (text); last user may be multimodal
+  const incoming = (userMessages || []).filter(
+    (m) => m && (m.role === 'user' || m.role === 'assistant') && m.content
+  );
+
+  const lastIncoming = incoming[incoming.length - 1];
+  if (!lastIncoming || lastIncoming.role !== 'user') {
+    const err = new Error('Poslední zpráva musí být od uživatele');
+    err.status = 400;
+    throw err;
+  }
+
+  // Session history stays text-only; last user turn may be multimodal for OpenAI.
   const { openai: lastOpenAi, history: lastHistory } = normalizeUserContent(lastIncoming.content);
   if (!lastOpenAi || (typeof lastOpenAi === 'string' && !lastOpenAi.trim())) {
     const err = new Error('Prázdná zpráva');
