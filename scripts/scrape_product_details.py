@@ -54,6 +54,11 @@ log = logging.getLogger("quba-details")
 
 # Extra option/description phrases (merged into translate via translate_text)
 OPTION_WORD_MAP: dict[str, str] = {
+    # Residual roots verified directly in generated produkty.json.
+    'powstajacego': 'vzniklého',
+    'powstaje': 'vzniká',
+    'sklad zestawu': 'sada obsahuje',
+    'zestawu': 'sady',
     # Residual inflections found by the final verification scan.
     'dotyczy': 'týká se',
     'osadzic': 'usadit',

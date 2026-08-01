@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.8.5');
+define('SKLO_THEME_VER', '1.8.6');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
@@ -473,7 +473,7 @@ add_action('wp_enqueue_scripts', function (): void {
         'sklo-chat-widget',
         $api . '/public/chat-widget.js',
         [],
-        '1.8.5',
+        '1.8.6',
         true
     );
     wp_add_inline_script(

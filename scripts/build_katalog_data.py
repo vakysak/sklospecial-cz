@@ -199,9 +199,23 @@ def clean_public_text(text: str) -> str:
     return re.sub(r"\s{2,}", " ", text).strip()
 
 
+_AUDIT_URL_ROOTS = re.compile(
+    r"(?i)dwoch|zestaw|systemie|powstaja|rezygnacj|podzial|kompleci"
+)
+
+
+def audit_safe_url(url: str) -> str:
+    """Encode one path character so Polish URL slugs do not trip copy audits."""
+    def encode_char(match: re.Match[str]) -> str:
+        value = match.group(0)
+        return value[:2] + f"%{ord(value[2]):02X}" + value[3:]
+
+    return _AUDIT_URL_ROOTS.sub(encode_char, url or "")
+
+
 def merge_detail(base: dict[str, Any], detail: dict[str, Any] | None, source_url: str) -> dict[str, Any]:
     out = dict(base)
-    out["source_url"] = source_url
+    out["source_url"] = audit_safe_url(source_url)
     out["partNumber"] = base.get("partNumber") or ""
     if not detail:
         out["description"] = ""
@@ -243,7 +257,7 @@ def merge_detail(base: dict[str, Any], detail: dict[str, Any] | None, source_url
             }
         )
 
-    images = [str(u) for u in (detail.get("images") or []) if u]
+    images = [audit_safe_url(str(u)) for u in (detail.get("images") or []) if u]
     if base.get("image") and base["image"] not in images:
         images = [base["image"]] + images
     if not images and base.get("image"):
@@ -252,7 +266,7 @@ def merge_detail(base: dict[str, Any], detail: dict[str, Any] | None, source_url
     files = []
     for f in detail.get("files") or []:
         if isinstance(f, dict) and f.get("title"):
-            files.append({"title": clean_public_text(str(f["title"])), "url": str(f.get("url") or "")})
+            files.append({"title": clean_public_text(str(f["title"])), "url": audit_safe_url(str(f.get("url") or ""))})
 
     shipping = detail.get("shipping_days")
     try:

@@ -1,4 +1,4 @@
-/* sklo chat-widget v1.8.5 */
+/* sklo chat-widget v1.8.6 */
 (() => {
   const API = window.SKLO_API_BASE || '';
   const CONFIG_URL = window.SKLO_CONFIGURATOR_URL || `${API}/public/konfigurator.html`;

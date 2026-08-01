@@ -114,6 +114,11 @@ const PUBLIC_TEXT_REPLACEMENTS = [
   [/\bpodzialu\b/gi, 'členění'],
   [/\bkomplecie\b/gi, 'sadě'],
   [/\bszyna\b/gi, 'kolejnice'],
+  [/\bpowstajacego\b/gi, 'vzniklého'],
+  [/\bpowstaje\b/gi, 'vzniká'],
+  [/\bsklad zestawu\b/gi, 'sada obsahuje'],
+  [/\bzestawu\b/gi, 'sady'],
+  [/\bsystemie\b/gi, 'systému'],
   [
     /[ąęłńśźżćĄĘŁŃŚŹŻĆ]/g,
     (ch) =>
