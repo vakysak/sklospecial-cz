@@ -274,13 +274,23 @@
 
         <p class="flash error" x-show="error" x-text="error" x-transition></p>
         <p class="flash warn" x-show="dimWarn && !error" x-text="dimWarn" x-transition style="background:#fff8e8;color:#6a4b12;border:1px solid rgba(201,169,110,.45);padding:.65rem .8rem;border-radius:10px;font-size:.9rem"></p>
-        <p class="flash ok" x-show="done" x-text="done" x-transition></p>
+        <div class="flash ok next-steps" x-show="done" x-transition>
+          <p x-text="done"></p>
+          <h3 style="margin:0.75rem 0 0.4rem;font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:1.2rem">Co se stane dál</h3>
+          <ol style="margin:0;padding-left:1.15rem;font-size:.92rem;line-height:1.55;color:#555">
+            <li><strong>Do 1 pracovního dne</strong> se ozveme na telefon nebo e-mail.</li>
+            <li>Pokud chybí rozměry nebo fotky, upřesníme je — nabídka bez závazku.</li>
+            <li>Připrav si ideálně šířku a výšku otvoru (3 měření) a 2–3 fotky prostoru.</li>
+          </ol>
+          <p style="margin:.65rem 0 0;font-size:.86rem;color:#777">Ozveme se do 1 PD · nabídka bez závazku</p>
+        </div>
 
         <footer class="nav">
           <button type="button" class="btn ghost" @click="back()" :disabled="krok===1 || sending">Zpět</button>
           <button type="button" class="btn primary" x-show="krok<totalSteps" @click="next()">Pokračovat</button>
           <button type="button" class="btn primary" x-show="krok===totalSteps" @click="submit()" :disabled="sending" x-text="sending ? 'Odesílám…' : 'Odeslat poptávku'"></button>
         </footer>
+        <p x-show="krok===totalSteps && !done" style="margin:.55rem 0 0;font-size:.86rem;color:#777;text-align:right">Ozveme se do 1 PD · nabídka bez závazku</p>
       </div>
     </div>
   </main>

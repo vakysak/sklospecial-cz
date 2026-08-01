@@ -12,6 +12,7 @@ function konfigurator() {
     loadingProducts: false,
     error: '',
     done: '',
+    doneDetail: false,
     dimWarn: '',
     searchQ: '',
     typy: [],
@@ -515,6 +516,7 @@ function konfigurator() {
       this.dimWarn = await this.softCheckDimensionsApi();
       this.sending = true;
       this.done = '';
+      this.doneDetail = false;
       try {
         const c = this.config;
         const product = this.selectedProduct();
@@ -544,7 +546,8 @@ function konfigurator() {
         const data = await res.json();
         if (!res.ok || !data.success) throw new Error(data.error || 'Odeslání selhalo');
         const codeNote = data.product_code ? ` (${data.product_code})` : '';
-        this.done = `Poptávka #${data.id}${codeNote} je odeslaná. Ozveme se s nabídkou.`;
+        this.done = `Poptávka #${data.id}${codeNote} je odeslaná.`;
+        this.doneDetail = true;
       } catch (err) {
         this.error = err.message || 'Odeslání selhalo';
       } finally {

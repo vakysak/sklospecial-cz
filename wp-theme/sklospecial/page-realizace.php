@@ -65,6 +65,58 @@ $gallery = [
       <p class="sklo-realizace__lead">Inspirace — jak může sklo vypadat v interiéru: dveře, zábradlí, příčky. Jde o ilustrační fotografie, ne o katalog našich konkrétních zakázek.</p>
       <p class="sklo-realizace__note">Fotodokumentaci vlastních realizací doplníme. Mezitím si typ a sklo složíš ve studiu podle svých rozměrů.</p>
     </header>
+
+    <section class="sklo-cases" aria-labelledby="cases-heading">
+      <header class="sklo-cases__head">
+        <p class="sklo-eyebrow">Jak to řešíme</p>
+        <h2 id="cases-heading">Typické scénáře</h2>
+        <p class="sklo-cases__lead">Nejsou to pojmenované zakázky — jde o běžný postup, který u podobných zadání opakujeme.</p>
+      </header>
+      <div class="sklo-cases__grid">
+        <article class="sklo-case">
+          <p class="sklo-case__label">Typický scénář</p>
+          <h3 class="sklo-case__title">Sprcha do malé koupelny</h3>
+          <dl class="sklo-case__steps">
+            <div>
+              <dt>Problém</dt>
+              <dd>Klasická zástěna nebo vanička se nevejde; potřebuješ průchod a snadný úklid.</dd>
+            </div>
+            <div>
+              <dt>Řešení</dt>
+              <dd>Walk-in stěna na míru podle fotek a rozměrů — bez zbytečných kování, kde překážejí.</dd>
+            </div>
+            <div>
+              <dt>Výsledek</dt>
+              <dd>Víc prostoru, čistší linie, nabídka podle tvého otvoru — ne podle stock fotky.</dd>
+            </div>
+          </dl>
+          <p class="sklo-case__cta">
+            <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Poslat rozměry koupelny</a>
+          </p>
+        </article>
+        <article class="sklo-case">
+          <p class="sklo-case__label">Typický scénář</p>
+          <h3 class="sklo-case__title">Dveře do pouzdra</h3>
+          <dl class="sklo-case__steps">
+            <div>
+              <dt>Problém</dt>
+              <dd>Otevírané křídlo bere místo; pouzdro už je ve zdi, ale typ a šířka nejsou jasné.</dd>
+            </div>
+            <div>
+              <dt>Řešení</dt>
+              <dd>Ověříme typ pouzdra (fotky + míry), navrhneme posuvné křídlo a sklo, které sedí do kapsy.</dd>
+            </div>
+            <div>
+              <dt>Výsledek</dt>
+              <dd>Průchod bez překážky; výroba startuje až po odsouhlasené nabídce.</dd>
+            </div>
+          </dl>
+          <p class="sklo-case__cta">
+            <a class="sklo-link" href="<?php echo esc_url($cfg); ?>">Složit dveře ve studiu</a>
+          </p>
+        </article>
+      </div>
+    </section>
   </div>
 
   <div class="sklo-gallery" data-gallery>
@@ -103,6 +155,9 @@ $gallery = [
       <div class="sklo-cta-band__actions">
         <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Navrhni si dveře</a>
         <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
+        <?php if (function_exists('sklo_render_cta_sla')) : ?>
+          <?php sklo_render_cta_sla(); ?>
+        <?php endif; ?>
       </div>
     </div>
   </section>

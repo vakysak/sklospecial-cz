@@ -75,6 +75,9 @@ $stars_html = static function (int $n): string {
       <p>Chceš podobný výsledek u sebe?</p>
       <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Navrhni si dveře</a>
       <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
+      <?php if (function_exists('sklo_render_cta_sla')) : ?>
+        <?php sklo_render_cta_sla(); ?>
+      <?php endif; ?>
     </div>
   </div>
 </article>

@@ -61,6 +61,10 @@ $poptavka = home_url('/poptavka/');
       </ol>
     </section>
 
+    <?php if (function_exists('sklo_render_risk_block')) : ?>
+      <?php sklo_render_risk_block('vykani', 'sklo-risk--kontakt'); ?>
+    <?php endif; ?>
+
     <section class="sklo-kontakt__grid" aria-labelledby="kontakt-udaje">
       <div class="sklo-kontakt__card">
         <h2 id="kontakt-udaje">Spojení</h2>
@@ -94,6 +98,9 @@ $poptavka = home_url('/poptavka/');
 
     <p class="sklo-kontakt__cta">
       <a class="sklo-btn" href="<?php echo esc_url($poptavka); ?>">Napsat poptávku</a>
+      <?php if (function_exists('sklo_render_cta_sla')) : ?>
+        <?php sklo_render_cta_sla(); ?>
+      <?php endif; ?>
     </p>
   </div>
 </article>

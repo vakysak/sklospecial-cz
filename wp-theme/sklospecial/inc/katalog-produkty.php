@@ -675,6 +675,9 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
               <p class="sklo-pdetail__price-base">Základ <?php echo esc_html(sklo_format_cena($price)); ?> · doplatky podle výběru níže</p>
             <?php endif; ?>
           <?php endif; ?>
+          <?php if (function_exists('sklo_render_recenze_rating_link')) : ?>
+            <?php sklo_render_recenze_rating_link('sklo-rating-link--pdetail'); ?>
+          <?php endif; ?>
           <?php if ($ship !== null && (int) $ship > 0) : ?>
             <p class="sklo-pdetail__ship">Expedice cca <?php echo esc_html((string) (int) $ship); ?> pracovních dní</p>
           <?php endif; ?>
@@ -816,10 +819,19 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
         </div>
       <?php endif; ?>
 
+      <?php if (function_exists('sklo_render_risk_block')) : ?>
+        <div class="sklo-pdetail__block">
+          <?php sklo_render_risk_block('tykani', 'sklo-risk--compact'); ?>
+        </div>
+      <?php endif; ?>
+
       <div class="sklo-pdetail__cta sklo-pdetail__cta--bottom sklo-pdetail__cta--triple">
         <button type="button" class="sklo-btn" data-sklo-order-selected>Odeslat poptávku</button>
         <a class="sklo-btn sklo-btn--ghost" href="<?php echo esc_url($poptavka); ?>">Nenašel jsi co hledáš? Pošli nezávaznou poptávku</a>
         <a class="sklo-link" href="<?php echo esc_url($cfg_url); ?>" target="_blank" rel="noopener">Konfigurátor</a>
+        <?php if (function_exists('sklo_render_cta_sla')) : ?>
+          <?php sklo_render_cta_sla('sklo-cta-sla--pdetail'); ?>
+        <?php endif; ?>
       </div>
     </div>
   </section>
@@ -858,6 +870,9 @@ function sklo_render_produkty_grid(string $slug, ?string $section = null, int $i
         <p class="sklo-eyebrow">Produkty</p>
         <h2><?php echo $section ? 'Vybrané produkty' : 'Nabídka v této kategorii'; ?></h2>
         <p><span data-sklo-produkty-count><?php echo esc_html((string) $total); ?></span> položek · <?php echo esc_html($note); ?></p>
+        <?php if (function_exists('sklo_render_recenze_rating_link')) : ?>
+          <p class="sklo-produkty__rating"><?php sklo_render_recenze_rating_link('sklo-rating-link--inline'); ?></p>
+        <?php endif; ?>
       </header>
       <div class="sklo-produkty__grid" data-gallery>
         <?php foreach ($products as $i => $p) :

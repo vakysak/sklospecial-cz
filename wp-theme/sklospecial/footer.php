@@ -20,6 +20,9 @@
     <div class="sklo-footer__cta">
       <a class="sklo-btn" href="<?php echo esc_url(sklo_konfigurator_url()); ?>">Navrhni si dveře</a>
       <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
+      <?php if (function_exists('sklo_render_cta_sla')) : ?>
+        <?php sklo_render_cta_sla('sklo-cta-sla--footer'); ?>
+      <?php endif; ?>
     </div>
   </div>
   <div class="sklo-wrap sklo-footer__meta">

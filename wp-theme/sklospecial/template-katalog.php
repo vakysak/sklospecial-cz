@@ -373,6 +373,9 @@ $back_url = (string) get_permalink();
           <a class="sklo-btn" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Napsat poptávku</a>
         <?php endif; ?>
         <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
+        <?php if (function_exists('sklo_render_cta_sla')) : ?>
+          <?php sklo_render_cta_sla(); ?>
+        <?php endif; ?>
       </div>
     </div>
   </section>

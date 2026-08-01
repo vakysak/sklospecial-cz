@@ -247,6 +247,9 @@ $recenze_stars = static function (int $n): string {
     <div class="sklo-cta-band__actions">
       <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Otevřít studio</a>
       <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
+      <?php if (function_exists('sklo_render_cta_sla')) : ?>
+        <?php sklo_render_cta_sla(); ?>
+      <?php endif; ?>
     </div>
   </div>
 </section>

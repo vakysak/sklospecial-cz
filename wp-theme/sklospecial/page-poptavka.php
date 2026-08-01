@@ -18,6 +18,9 @@ $katalog = home_url('/sklenene-dvere/');
       <p class="sklo-eyebrow">Provede tě poptávkou</p>
       <h1>Poptávka</h1>
       <p class="sklo-poptavka__intro">Vyplň pár údajů — ozveme se s nabídkou.</p>
+      <?php if (function_exists('sklo_render_cta_sla')) : ?>
+        <?php sklo_render_cta_sla('sklo-cta-sla--intro'); ?>
+      <?php endif; ?>
     </header>
 
     <ol class="sklo-poptavka__steps" aria-label="Kroky poptávky">
@@ -133,9 +136,16 @@ $katalog = home_url('/sklenene-dvere/');
           <input type="hidden" name="order_json" value="" data-poptavka-order-json>
 
           <p class="sklo-poptavka__form-err" data-poptavka-err hidden></p>
-          <p class="sklo-poptavka__form-ok" data-poptavka-ok hidden>Poptávka odeslána. Ozveme se co nejdřív.</p>
+          <?php if (function_exists('sklo_render_poptavka_next_steps')) : ?>
+            <?php sklo_render_poptavka_next_steps(); ?>
+          <?php else : ?>
+            <p class="sklo-poptavka__form-ok" data-poptavka-ok hidden>Poptávka odeslána. Ozveme se do 1 PD · nabídka bez závazku.</p>
+          <?php endif; ?>
 
           <button type="submit" class="sklo-btn" data-poptavka-submit>Odeslat poptávku</button>
+          <?php if (function_exists('sklo_render_cta_sla')) : ?>
+            <?php sklo_render_cta_sla('sklo-cta-sla--submit'); ?>
+          <?php endif; ?>
         </section>
       </form>
     </div>

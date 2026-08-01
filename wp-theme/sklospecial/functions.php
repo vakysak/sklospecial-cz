@@ -9,13 +9,14 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.10.0');
+define('SKLO_THEME_VER', '1.11.0');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
 require_once get_template_directory() . '/inc/seo-landings-data.php';
 require_once get_template_directory() . '/inc/pruvodce-data.php';
 require_once get_template_directory() . '/inc/recenze-data.php';
+require_once get_template_directory() . '/inc/trust-helpers.php';
 
 /**
  * Production host? (sklospecial.cz / www) — not sslip staging.
