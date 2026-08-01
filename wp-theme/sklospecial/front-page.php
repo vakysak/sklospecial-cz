@@ -85,6 +85,38 @@ $cfg = sklo_konfigurator_url();
   </div>
 </section>
 
+<section class="sklo-section sklo-trust" id="proc-sklospecial" aria-labelledby="trust-heading">
+  <div class="sklo-wrap">
+    <header class="sklo-section__head sklo-section__head--center">
+      <p class="sklo-eyebrow">Jistota</p>
+      <h2 id="trust-heading">Proč Sklospeciál</h2>
+      <p>Bez falešných hvězdiček — jen to, na čem stavíme zakázky každý den.</p>
+    </header>
+    <div class="sklo-trust__grid">
+      <div class="sklo-trust__block">
+        <h3>Garance a jistota</h3>
+        <ul class="sklo-trust__list">
+          <li>Rodinná firma — třetí generace na jedné adrese</li>
+          <li>30&nbsp;let zkušeností se sklem na míru</li>
+          <li>Výroba na míru podle tvých rozměrů a fotek</li>
+          <li>Montáž s předávacím protokolem — víš, co přebíráš</li>
+        </ul>
+      </div>
+      <div class="sklo-trust__block">
+        <h3>Jak probíhá úhrada</h3>
+        <ol class="sklo-trust__pay">
+          <li>Nabídka</li>
+          <li>Faktura</li>
+          <li>Výroba</li>
+          <li>Expedice</li>
+          <li>Montáž na místě</li>
+        </ol>
+        <p class="sklo-trust__note">Výroba startuje po úhradě faktury. Montáž se hradí na místě po podepsání předávacího protokolu. Detailní postup je na stránce <a href="<?php echo esc_url(home_url('/kontakt/')); ?>">Kontakt</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="sklo-section sklo-types">
   <div class="sklo-wrap">
     <header class="sklo-section__head sklo-section__head--center">

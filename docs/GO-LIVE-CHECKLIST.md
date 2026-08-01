@@ -2,7 +2,9 @@
 
 Day-of DNS / production flip. Staging: `*.sslip.io`. Theme `sklo_is_production()` auto-drops noindex when host contains `sklospecial.cz`.
 
-**Last code ship:** theme **1.7.1** (security P1 + SEO + go-live switches).
+**Pro majitele (české odškrtávací body):** [`KONTROLNI-CHECKLIST.md`](./KONTROLNI-CHECKLIST.md).
+
+**Last code ship:** theme **1.8.3** (homepage trust / Proč Sklospeciál + kontrolní checklist).
 
 ---
 

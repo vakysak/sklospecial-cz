@@ -702,6 +702,88 @@ a:hover { color: var(--accent-hover); }
   font-size: 0.95rem;
 }
 
+/* —— Trust (Proč Sklospeciál) —— */
+.sklo-trust__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem 3rem;
+  align-items: start;
+  max-width: 52rem;
+  margin-inline: auto;
+}
+
+.sklo-trust__block h3 {
+  margin: 0 0 1rem;
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+
+.sklo-trust__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sklo-trust__list li {
+  position: relative;
+  padding-left: 1.35rem;
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.sklo-trust__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.85;
+}
+
+.sklo-trust__pay {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.15rem;
+}
+
+.sklo-trust__pay li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+.sklo-trust__pay li:not(:last-child)::after {
+  content: "→";
+  margin-left: 0.35rem;
+  color: var(--accent);
+  font-weight: 300;
+  opacity: 0.85;
+}
+
+.sklo-trust__note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  max-width: 28rem;
+}
+
 /* —— FAQ —— */
 .sklo-faq__grid {
   display: grid;
@@ -1083,6 +1165,7 @@ a:hover { color: var(--accent-hover); }
   .sklo-steps--4,
   .sklo-strip__inner,
   .sklo-about__grid,
+  .sklo-trust__grid,
   .sklo-faq__grid,
   .sklo-footer__meta {
     grid-template-columns: 1fr;
