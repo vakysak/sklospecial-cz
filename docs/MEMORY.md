@@ -13,7 +13,7 @@
 
 ## STACK
 
-- WP theme: `wp-theme/sklospecial` (glass UI, front-page) **1.8.0**
+- WP theme: `wp-theme/sklospecial` (glass UI, front-page) **1.8.2**
 - WordPress (CMS, obsah, realizace)
 - Node.js / Express (API, konfigurátor, chat)
 - MariaDB (WP + `sklo_leads`)
@@ -36,7 +36,7 @@ Prodej na dálku: konfigurace → rozměry + fotky → nabídka od firmy.
 
 ## STRÁNKY FÁZE 1
 
-`/` · `/sklenene-dvere/` · `/posuvne/` · `/otocne/` · `/celosklenene/` · `/navod-na-zamereni/` · `/realizace/` · `/kontakt/`
+`/` · `/sklenene-dvere/` · `/posuvne/` · `/otocne/` · `/celosklenene/` · `/navod-na-zamereni/` · `/pruvodce/` · `/realizace/` · `/kontakt/`
 
 ## KONFIGURÁTOR
 
@@ -45,7 +45,7 @@ Prodej na dálku: konfigurace → rozměry + fotky → nabídka od firmy.
 ## CHAT
 
 Floating „Sklo asistent“ · jen skleněné dveře · stream · 20 req/IP/h · klíč jen `.env`  
-Widget **v1.8.0** — fotka + podobné v katalogu (product cards).
+Widget **v1.8.2** — fotka + podobné v katalogu (product cards).
 
 ## BRAND
 
@@ -56,7 +56,7 @@ Tykat · konkrétní · bez „luxusní/exkluzivní/prémiový“ · CTA „poš
 - WP: `https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io`
 - API: `https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io` (`db: ok`)
 - Konfigurátor: `/public/konfigurator.html` na API
-- Chat widget: načtený na WP (snippet #7, `?ver=1.8.0`)
+- Chat widget: načtený na WP (snippet #7, `?ver=1.8.2`)
 
 ## DOPORUČENÝ START
 

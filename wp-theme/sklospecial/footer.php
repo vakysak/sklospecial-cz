@@ -39,6 +39,7 @@
     <div>
       <h3>Zaměření</h3>
       <p><a href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">Návod na zaměření</a></p>
+      <p><a href="<?php echo esc_url(home_url('/pruvodce/')); ?>">Průvodce</a></p>
     </div>
   </div>
   <div class="sklo-wrap sklo-footer__copy">

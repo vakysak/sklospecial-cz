@@ -9,11 +9,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.8.1');
+define('SKLO_THEME_VER', '1.8.2');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
 require_once get_template_directory() . '/inc/seo-landings-data.php';
+require_once get_template_directory() . '/inc/pruvodce-data.php';
 
 /**
  * Production host? (sklospecial.cz / www) — not sslip staging.
@@ -482,6 +483,7 @@ function sklo_nav_fallback(): void
         ['/francouzske-balkony/', 'Balkony'],
         ['/realizace/', 'Realizace'],
         ['/navod-na-zamereni/', 'Návod'],
+        ['/pruvodce/', 'Průvodce'],
         ['/kontakt/', 'Kontakt'],
     ];
     echo '<ul class="nav-list">';

@@ -2885,3 +2885,96 @@ a:hover { color: var(--accent-hover); }
   align-items: center;
   gap: 0.85rem 1.1rem;
 }
+
+/* —— Průvodce —— */
+.sklo-pruvodce__crumbs {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.sklo-pruvodce__crumbs a {
+  color: inherit;
+  text-decoration: none;
+}
+.sklo-pruvodce__crumbs a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+.sklo-pruvodce__lead {
+  margin: 0.85rem 0 0;
+  max-width: 36rem;
+  color: var(--muted);
+  font-size: 1.12rem;
+  line-height: 1.55;
+}
+.sklo-pruvodce__list {
+  list-style: none;
+  margin: 0 0 2.5rem;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+.sklo-pruvodce__card {
+  display: block;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+.sklo-pruvodce__card strong {
+  display: block;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.25rem;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+}
+.sklo-pruvodce__card span {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.sklo-pruvodce__card:hover strong {
+  text-decoration: underline;
+}
+.sklo-pruvodce__body {
+  margin-top: 0.5rem;
+}
+.sklo-pruvodce__body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.95rem;
+}
+.sklo-pruvodce__body th,
+.sklo-pruvodce__body td {
+  text-align: left;
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.sklo-pruvodce__body th {
+  color: var(--ink);
+  font-weight: 600;
+}
+.sklo-pruvodce__related {
+  margin: 2.5rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  max-width: 42rem;
+}
+.sklo-pruvodce__related h2 {
+  margin: 0 0 0.75rem;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+}
+.sklo-pruvodce__related ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.sklo-pruvodce__related a {
+  color: inherit;
+}

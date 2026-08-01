@@ -29,6 +29,7 @@ $types = sklo_seo_type_landings();
         <?php endforeach; ?>
         <li><a href="<?php echo esc_url(home_url('/realizace/')); ?>">Realizace</a></li>
         <li><a href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">Návod na zaměření</a></li>
+        <li><a href="<?php echo esc_url(home_url('/pruvodce/')); ?>">Průvodce</a></li>
         <li><a href="<?php echo esc_url(home_url('/poptavka/')); ?>">Poptávka</a></li>
         <li><a href="<?php echo esc_url(home_url('/kontakt/')); ?>">Kontakt</a></li>
       </ul>
