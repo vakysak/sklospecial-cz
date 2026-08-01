@@ -335,6 +335,16 @@ add_action('wp_head', static function (): void {
                 if (!empty($cat['seo_title'])) {
                     $title = (string) $cat['seo_title'];
                 }
+            } else {
+                $guide = sklo_pruvodce_for_page();
+                if ($guide) {
+                    $emit = true;
+                    $url = (string) get_permalink();
+                    $desc = (string) ($guide['seo_desc'] ?? '');
+                    if (!empty($guide['seo_title'])) {
+                        $title = (string) $guide['seo_title'];
+                    }
+                }
             }
         }
     }
@@ -545,6 +555,12 @@ add_filter('document_title_parts', function (array $parts): array {
     if ($cat && !empty($cat['seo_title'])) {
         $parts['title'] = (string) $cat['seo_title'];
         unset($parts['tagline'], $parts['site']);
+        return $parts;
+    }
+    $guide = sklo_pruvodce_for_page();
+    if ($guide && !empty($guide['seo_title'])) {
+        $parts['title'] = (string) $guide['seo_title'];
+        unset($parts['tagline'], $parts['site']);
     }
     return $parts;
 }, 20);
@@ -565,6 +581,11 @@ add_action('wp_head', function (): void {
         $cat  = sklo_katalog_for_slug($slug);
         if ($cat && !empty($cat['seo_desc'])) {
             $desc = (string) $cat['seo_desc'];
+        } else {
+            $guide = sklo_pruvodce_for_page();
+            if ($guide && !empty($guide['seo_desc'])) {
+                $desc = (string) $guide['seo_desc'];
+            }
         }
     }
     if ($desc === '') {

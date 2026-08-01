@@ -9,7 +9,6 @@ declare(strict_types=1);
 get_header();
 
 $cfg = sklo_konfigurator_url();
-$guides = sklo_pruvodce_guides();
 $is_hub = is_page('pruvodce');
 $current_slug = get_post_field('post_name', get_queried_object_id()) ?: '';
 
@@ -22,7 +21,7 @@ if ($is_hub) {
 }
 
 $related = [];
-foreach ($guides as $g) {
+foreach (sklo_pruvodce_hub_list() as $g) {
     if (($g['slug'] ?? '') === $current_slug) {
         continue;
     }
@@ -56,7 +55,7 @@ foreach ($guides as $g) {
 
       <?php if ($is_hub) : ?>
         <ul class="sklo-pruvodce__list">
-          <?php foreach ($guides as $g) : ?>
+          <?php foreach (sklo_pruvodce_hub_list() as $g) : ?>
             <li>
               <a class="sklo-pruvodce__card" href="<?php echo esc_url(home_url((string) $g['path'])); ?>">
                 <strong><?php echo esc_html((string) $g['title']); ?></strong>
