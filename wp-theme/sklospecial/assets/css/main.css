@@ -2726,6 +2726,25 @@ a:hover { color: var(--accent-hover); }
   }
 }
 
+.sklo-hp {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.sklo-poptavka__turnstile {
+  margin: 1rem 0;
+}
+
+.sklo-seo-landing__local {
+  margin: 0.75rem 0 0;
+  color: var(--muted, #5a5a5a);
+  max-width: 40rem;
+}
+
 @media (max-width: 720px) {
   .sklo-type-grid--6 {
     grid-template-columns: repeat(2, 1fr);

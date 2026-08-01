@@ -139,26 +139,131 @@ function sklo_seo_categories(): array
 /**
  * Cities for local SEO paths (no fake offices).
  *
- * @return list<array{slug:string,name:string,locative:string,v:string}>
+ * @return list<array{slug:string,name:string,locative:string,v:string,kraj:string,note:string}>
  */
 function sklo_seo_cities(): array
 {
     return [
-        ['slug' => 'praha', 'name' => 'Praha', 'locative' => 'Praze', 'v' => 'v'],
-        ['slug' => 'brno', 'name' => 'Brno', 'locative' => 'Brně', 'v' => 'v'],
-        ['slug' => 'ostrava', 'name' => 'Ostrava', 'locative' => 'Ostravě', 'v' => 'v'],
-        ['slug' => 'plzen', 'name' => 'Plzeň', 'locative' => 'Plzni', 'v' => 'v'],
-        ['slug' => 'liberec', 'name' => 'Liberec', 'locative' => 'Liberci', 'v' => 'v'],
-        ['slug' => 'olomouc', 'name' => 'Olomouc', 'locative' => 'Olomouci', 'v' => 'v'],
-        ['slug' => 'ceske-budejovice', 'name' => 'České Budějovice', 'locative' => 'Českých Budějovicích', 'v' => 'v'],
-        ['slug' => 'hradec-kralove', 'name' => 'Hradec Králové', 'locative' => 'Hradci Králové', 'v' => 'v'],
-        ['slug' => 'usti-nad-labem', 'name' => 'Ústí nad Labem', 'locative' => 'Ústí nad Labem', 'v' => 'v'],
-        ['slug' => 'pardubice', 'name' => 'Pardubice', 'locative' => 'Pardubicích', 'v' => 'v'],
-        ['slug' => 'zlin', 'name' => 'Zlín', 'locative' => 'Zlíně', 'v' => 've'],
-        ['slug' => 'havirov', 'name' => 'Havířov', 'locative' => 'Havířově', 'v' => 'v'],
-        ['slug' => 'kladno', 'name' => 'Kladno', 'locative' => 'Kladně', 'v' => 'v'],
-        ['slug' => 'jihlava', 'name' => 'Jihlava', 'locative' => 'Jihlavě', 'v' => 'v'],
-        ['slug' => 'teplice', 'name' => 'Teplice', 'locative' => 'Teplicích', 'v' => 'v'],
+        [
+            'slug' => 'praha',
+            'name' => 'Praha',
+            'locative' => 'Praze',
+            'v' => 'v',
+            'kraj' => 'Hlavní město Praha',
+            'note' => 'V Praze často řešíme panelové byty a posuvné do pouzdra. Dopravu a montáž plánujeme mimo špičku — termín domluvíme podle domu a výtahu.',
+        ],
+        [
+            'slug' => 'brno',
+            'name' => 'Brno',
+            'locative' => 'Brně',
+            'v' => 'v',
+            'kraj' => 'Jihomoravský kraj',
+            'note' => 'Do Brna a okolí jezdíme pravidelně. Typicky zaměření podle fotek, výroba v dílně a montáž v domluveném okně — bez showroomu ve městě.',
+        ],
+        [
+            'slug' => 'ostrava',
+            'name' => 'Ostrava',
+            'locative' => 'Ostravě',
+            'v' => 'v',
+            'kraj' => 'Moravskoslezský kraj',
+            'note' => 'Ostrava a okolí (včetně Havířova) máme blízko provozovny v Horních Bludovicích — kratší dojezd na montáž i volitelné zaměření.',
+        ],
+        [
+            'slug' => 'plzen',
+            'name' => 'Plzeň',
+            'locative' => 'Plzni',
+            'v' => 'v',
+            'kraj' => 'Plzeňský kraj',
+            'note' => 'Do Plzně dodáváme po celé ČR modelu: online podklady, výroba na míru, doprava firemním autem nebo přepravní službou podle objemu.',
+        ],
+        [
+            'slug' => 'liberec',
+            'name' => 'Liberec',
+            'locative' => 'Liberci',
+            'v' => 'v',
+            'kraj' => 'Liberecký kraj',
+            'note' => 'Liberec a podhůří — počítáme s delším dojezdem. Montáž a volitelné zaměření plánujeme s předstihem; nabídku připravíme z fotek a rozměrů.',
+        ],
+        [
+            'slug' => 'olomouc',
+            'name' => 'Olomouc',
+            'locative' => 'Olomouci',
+            'v' => 'v',
+            'kraj' => 'Olomoucký kraj',
+            'note' => 'Olomoucko je v dosahu z Moravy. Často kombinujeme DIY zaměření s montáží na místě — bez fiktivní pobočky ve městě.',
+        ],
+        [
+            'slug' => 'ceske-budejovice',
+            'name' => 'České Budějovice',
+            'locative' => 'Českých Budějovicích',
+            'v' => 'v',
+            'kraj' => 'Jihočeský kraj',
+            'note' => 'Jižní Čechy obsluhujeme na dálku. Dopravu skla plánujeme pečlivě (křehký náklad) — termín a cenu dopravy uvidíš v nabídce.',
+        ],
+        [
+            'slug' => 'hradec-kralove',
+            'name' => 'Hradec Králové',
+            'locative' => 'Hradci Králové',
+            'v' => 'v',
+            'kraj' => 'Královéhradecký kraj',
+            'note' => 'Hradec a okolí — online proces, výroba na míru. Montáž domluvíme podle lokality; volitelné zaměření, pokud nechceš měřit sám.',
+        ],
+        [
+            'slug' => 'usti-nad-labem',
+            'name' => 'Ústí nad Labem',
+            'locative' => 'Ústí nad Labem',
+            'v' => 'v',
+            'kraj' => 'Ústecký kraj',
+            'note' => 'Ústecko obsluhujeme stejným remote modelem jako zbytek ČR. Pošli rozměry a fotky — nabídku a termín montáže připravíme individuálně.',
+        ],
+        [
+            'slug' => 'pardubice',
+            'name' => 'Pardubice',
+            'locative' => 'Pardubicích',
+            'v' => 'v',
+            'kraj' => 'Pardubický kraj',
+            'note' => 'Pardubice a východní Čechy — dodávka a montáž po domluvě. Bez showroomu; vše řešíme online a na místě až při montáži nebo zaměření.',
+        ],
+        [
+            'slug' => 'zlin',
+            'name' => 'Zlín',
+            'locative' => 'Zlíně',
+            'v' => 've',
+            'kraj' => 'Zlínský kraj',
+            'note' => 'Zlínsko máme v rozumném dojezdu z Moravy. Často stačí fotky a rozměry; montáž a doprava se domluví podle konkrétního projektu.',
+        ],
+        [
+            'slug' => 'havirov',
+            'name' => 'Havířov',
+            'locative' => 'Havířově',
+            'v' => 'v',
+            'kraj' => 'Moravskoslezský kraj',
+            'note' => 'Havířov je blízko naší provozovny v Horních Bludovicích — kratší logistika montáže i volitelného zaměření v regionu.',
+        ],
+        [
+            'slug' => 'kladno',
+            'name' => 'Kladno',
+            'locative' => 'Kladně',
+            'v' => 'v',
+            'kraj' => 'Středočeský kraj',
+            'note' => 'Kladno a Středočesko často spojujeme s pražskými termíny montáže. Online zaměření, výroba na míru, doprava podle objemu zakázky.',
+        ],
+        [
+            'slug' => 'jihlava',
+            'name' => 'Jihlava',
+            'locative' => 'Jihlavě',
+            'v' => 'v',
+            'kraj' => 'Kraj Vysočina',
+            'note' => 'Vysočina — delší trasy, proto termín montáže plánujeme s předstihem. Nabídku připravíme z podkladů; showroom ve městě nemáme.',
+        ],
+        [
+            'slug' => 'teplice',
+            'name' => 'Teplice',
+            'locative' => 'Teplicích',
+            'v' => 'v',
+            'kraj' => 'Ústecký kraj',
+            'note' => 'Teplicko obsluhujeme remote modelem po celé ČR. Dopravu a montáž naceníme podle vzdálenosti a typu skla — bez fiktivní pobočky.',
+        ],
     ];
 }
 
@@ -414,8 +519,8 @@ function sklo_seo_variation(string $a, string $b, int $n): int
  * Build unique-ish city landing copy.
  *
  * @param array<string, mixed> $category
- * @param array{slug:string,name:string,locative:string,v:string} $city
- * @return array{h1:string,intro:string,bullets:list<string>,service:string,faq:list<array{q:string,a:string}>,seo_title:string,seo_desc:string,price_from:?string}
+ * @param array{slug:string,name:string,locative:string,v:string,kraj?:string,note?:string} $city
+ * @return array{h1:string,intro:string,bullets:list<string>,service:string,local_note:string,faq:list<array{q:string,a:string}>,seo_title:string,seo_desc:string,price_from:?string}
  */
 function sklo_seo_city_copy(array $category, array $city): array
 {
@@ -427,6 +532,8 @@ function sklo_seo_city_copy(array $category, array $city): array
     $gen = (string) $category['genitive'];
     $slug_cat = (string) ($category['slug'] ?? '');
     $var = sklo_seo_variation($slug_cat, $city['slug'], 3);
+    $kraj = trim((string) ($city['kraj'] ?? ''));
+    $local_note = trim((string) ($city['note'] ?? ''));
 
     $intros = [
         sprintf(
@@ -450,6 +557,11 @@ function sklo_seo_city_copy(array $category, array $city): array
             $loc
         ),
     ];
+
+    $intro = $intros[$var];
+    if ($kraj !== '') {
+        $intro .= sprintf(' Působíme remote i v oblasti %s.', $kraj);
+    }
 
     $bullet_sets = [
         (array) ($category['benefits'] ?? []),
@@ -502,23 +614,27 @@ function sklo_seo_city_copy(array $category, array $city): array
         }
     }
 
+    $service = sprintf(
+        'Dodáváme a montujeme i %s %s / po celé ČR. Pracujeme online — zaměříš sám, nebo přijedeme zaměřit. Žádná fiktivní „pobočka %s“ — jen výroba na míru a montáž k tobě.',
+        $v,
+        $loc,
+        $name
+    );
+
     return [
         'h1'         => $product . ' ' . $name,
-        'intro'      => $intros[$var],
+        'intro'      => $intro,
         'bullets'    => array_values(array_filter($bullet_sets[$var] ?: $bullet_sets[0])),
-        'service'    => sprintf(
-            'Dodáváme a montujeme i %s %s / po celé ČR. Pracujeme online — zaměříš sám, nebo přijedeme zaměřit. Žádná fiktivní „pobočka %s“ — jen výroba na míru a montáž k tobě.',
-            $v,
-            $loc,
-            $name
-        ),
+        'service'    => $service,
+        'local_note' => $local_note,
         'faq'        => $faq,
         'seo_title'  => sprintf('%s %s na míru | Sklospeciál', $product, $name),
         'seo_desc'   => sprintf(
-            '%s %s %s — online zaměření, výroba na míru, montáž. Rodinná firma, 30 let.',
+            '%s %s %s (%s) — online zaměření, výroba na míru, montáž. Rodinná firma, 30 let.',
             $product,
             $v,
-            $loc
+            $loc,
+            $kraj !== '' ? $kraj : 'ČR'
         ),
         'price_from' => $price,
     ];

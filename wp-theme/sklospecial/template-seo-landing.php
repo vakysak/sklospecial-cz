@@ -33,6 +33,7 @@ $h1 = '';
 $eyebrow = 'Sklospeciál';
 $intro = '';
 $service = '';
+$local_note = '';
 $parent_url = '';
 $parent_label = '';
 $crumbs = [['/', 'Domů']];
@@ -47,6 +48,7 @@ if ($kind === 'city') {
     $intro = $copy['intro'];
     $bullets = $copy['bullets'];
     $service = $copy['service'];
+    $local_note = (string) ($copy['local_note'] ?? '');
     $faq = $copy['faq'];
     $price_from = $copy['price_from'];
     $related = (array) ($category['related'] ?? []);
@@ -63,6 +65,7 @@ if ($kind === 'city') {
     $intro = (string) $type['intro'];
     $bullets = (array) ($type['bullets'] ?? []);
     $service = 'Pracujeme online — zaměříš sám, nebo přijedeme zaměřit. Dodáváme a montujeme po celé ČR. Nemáme síť showroomů; výroba jde z dílny k tobě.';
+    $local_note = '';
     $faq = (array) ($type['faq'] ?? []);
     $related = (array) ($type['related'] ?? []);
     $parent_url = (string) ($type['parent_url'] ?? '/');
@@ -122,6 +125,9 @@ if ($kind === 'city') {
           <?php endforeach; ?>
         </ul>
         <p class="sklo-seo-landing__service"><?php echo esc_html($service); ?></p>
+        <?php if ($local_note !== '' && $kind === 'city') : ?>
+          <p class="sklo-seo-landing__local"><?php echo esc_html($local_note); ?></p>
+        <?php endif; ?>
         <p>
           <a class="sklo-link" href="<?php echo esc_url(home_url($parent_url)); ?>">← <?php echo esc_html($parent_label); ?></a>
           ·

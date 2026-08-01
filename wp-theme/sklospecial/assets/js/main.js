@@ -599,8 +599,23 @@
         : false,
       gdpr_souhlas: gdprEl ? !!gdprEl.checked : false,
       poznamka: String(fd.get('poznamka') || '').trim(),
+      website: String(fd.get('website') || ''),
       order: draft,
     };
+
+    const turnstileInput =
+      form.querySelector('[name="cf-turnstile-response"]') ||
+      form.querySelector('textarea[name="cf-turnstile-response"]') ||
+      form.querySelector('input[name="cf-turnstile-response"]');
+    if (turnstileInput && turnstileInput.value) {
+      payload.cf_turnstile_response = String(turnstileInput.value);
+    } else if (window.turnstile && form.querySelector('.cf-turnstile')) {
+      try {
+        const widget = form.querySelector('.cf-turnstile');
+        const token = window.turnstile.getResponse(widget);
+        if (token) payload.cf_turnstile_response = token;
+      } catch (err) {}
+    }
 
     if (payload.jmeno.length < 2 || !payload.email || payload.telefon.length < 5) {
       if (errEl) {

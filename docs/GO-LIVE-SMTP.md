@@ -14,8 +14,8 @@ Datum snapshotu: 2026-08-01 · větev `sklospecial`
 | Coolify API app `c93wrq6ujvo02103pn26bxbr` → Environment | **Chybí** `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` |
 | Coolify API env už má | `MAIL_FROM`, `MAIL_TO` (nastavené), DB_*, `CORS_ORIGIN`, … |
 | Live mailer | Node `mailer.js` bez `SMTP_HOST` spadne na „Chybí SMTP_HOST“ |
-| FluentSMTP na WP | Plugin **nainstalovaný** (REST namespace `fluent-smtp`), ale **nefunguje odesílání** |
-| `POST /wp-json/sklo/v1/poptavka` | Odpověď `mail_fail` — „E-mail se nepodařilo odeslat“ |
+| FluentSMTP na WP | Plugin **není** v aktivních pluginech (2026-08-01 recheck) — dříve `fluent-smtp` REST 404. **Nainstalovat + nakonfigurovat** se SMTP credentials |
+| `POST /wp-json/sklo/v1/poptavka` | Odpověď `mail_fail` — „E-mail se nepodařilo odeslat“ (bez fungujícího maileru) |
 | WP Coolify env | Žádné `SMTP_*` (FluentSMTP se konfiguruje v WP adminu, ne v Coolify env) |
 | Coolify MCP | Nedostupný; env čteno přes Coolify HTTP API (jen názvy klíčů) |
 

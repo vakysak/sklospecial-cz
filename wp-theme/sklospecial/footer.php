@@ -47,6 +47,7 @@
       <a href="<?php echo esc_url(home_url('/ochrana-osobnich-udaju/')); ?>">Ochrana osobních údajů</a>
       <a href="<?php echo esc_url(home_url('/obchodni-podminky/')); ?>">Obchodní podmínky</a>
       <a href="<?php echo esc_url(home_url('/cookies/')); ?>">Cookies</a>
+      <a href="<?php echo esc_url(home_url('/mapa-stranek/')); ?>">Mapa stránek</a>
     </nav>
   </div>
 </footer>

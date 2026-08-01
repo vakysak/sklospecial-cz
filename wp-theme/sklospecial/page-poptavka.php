@@ -112,6 +112,24 @@ $katalog = home_url('/sklenene-dvere/');
             <span class="sklo-field__label">Souhlasím se zpracováním osobních údajů dle <a href="<?php echo esc_url(home_url('/ochrana-osobnich-udaju/')); ?>">zásad ochrany osobních údajů</a>.</span>
           </label>
 
+          <?php // Honeypot — leave empty (hidden from humans) ?>
+          <div class="sklo-hp" aria-hidden="true">
+            <label>
+              <span>Webová stránka</span>
+              <input type="text" name="website" value="" tabindex="-1" autocomplete="off">
+            </label>
+          </div>
+
+          <?php if (function_exists('sklo_turnstile_configured') && sklo_turnstile_configured()) : ?>
+            <div class="sklo-poptavka__turnstile"
+                 data-poptavka-turnstile
+                 data-sitekey="<?php echo esc_attr(sklo_turnstile_site_key()); ?>">
+              <div class="cf-turnstile"
+                   data-sitekey="<?php echo esc_attr(sklo_turnstile_site_key()); ?>"
+                   data-theme="light"></div>
+            </div>
+          <?php endif; ?>
+
           <input type="hidden" name="order_json" value="" data-poptavka-order-json>
 
           <p class="sklo-poptavka__form-err" data-poptavka-err hidden></p>
