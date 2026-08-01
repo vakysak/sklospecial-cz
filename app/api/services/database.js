@@ -45,12 +45,14 @@ async function insertLead(lead) {
       typ_dveri, pouziti,
       sirka_min, sirka_max, vyska_min, vyska_max, hloubka,
       typ_skla, kovani, vzor_id, kovani_id, montaz,
+      product_code, product_name, options_selected, price_total,
       jmeno, telefon, email, mesto, poznamka,
       fotky, stav
     ) VALUES (
       :typ_dveri, :pouziti,
       :sirka_min, :sirka_max, :vyska_min, :vyska_max, :hloubka,
       :typ_skla, :kovani, :vzor_id, :kovani_id, :montaz,
+      :product_code, :product_name, :options_selected, :price_total,
       :jmeno, :telefon, :email, :mesto, :poznamka,
       :fotky, :stav
     )
@@ -69,6 +71,10 @@ async function insertLead(lead) {
     vzor_id: lead.vzor_id || null,
     kovani_id: lead.kovani_id || null,
     montaz: lead.montaz,
+    product_code: lead.product_code || null,
+    product_name: lead.product_name || null,
+    options_selected: JSON.stringify(lead.options_selected || []),
+    price_total: lead.price_total != null ? Number(lead.price_total) : null,
     jmeno: lead.jmeno,
     telefon: lead.telefon,
     email: lead.email,

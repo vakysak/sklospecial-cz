@@ -7,7 +7,7 @@ const { isEmail, isPhoneCzSk, isDimMm } = require('../middleware/validate');
 const { insertLead, updateLeadPhotos } = require('../services/database');
 const { saveLeadPhotos, maxFileBytes, maxFiles, uploadRoot } = require('../services/storage');
 const { sendLeadToFirm, sendConfirmationToClient } = require('../services/mailer');
-const { findBySlug } = require('../services/katalog');
+const { findTyp, getProdukt, productExists, computePrice } = require('../services/produkty');
 
 const router = express.Router();
 
@@ -35,17 +35,45 @@ function numList(raw) {
   return [];
 }
 
+function parseOptionsSelected(raw) {
+  if (Array.isArray(raw)) return raw;
+  if (typeof raw === 'string' && raw.trim()) {
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
+
 async function validatePayload(body) {
   const errors = [];
 
-  const typ = await findBySlug('sklo_katalog_typy', body.typ_dveri);
-  const vzor = await findBySlug('sklo_katalog_vzory', body.typ_skla || body.vzor);
-  const kovani = await findBySlug('sklo_katalog_kovani', body.kovani);
-
+  const typSlug = String(body.typ_dveri || '').trim();
+  const typ = findTyp(typSlug);
   if (!typ) errors.push('Neplatný typ dveří');
+
+  const needsAdvice =
+    body.needs_advice === true ||
+    body.needs_advice === '1' ||
+    body.needs_advice === 'true' ||
+    typSlug === 'nevim';
+
+  let product = null;
+  const productCode = body.product_code ? String(body.product_code).trim() : '';
+  if (productCode) {
+    if (!productExists(productCode)) {
+      errors.push('Neplatný kód produktu');
+    } else {
+      product = getProdukt(productCode);
+    }
+  } else if (!needsAdvice) {
+    errors.push('Vyber produkt z katalogu, nebo zvol „potřebuju poradit“');
+  }
+
   if (!ALLOWED_POUZITI.has(body.pouziti)) errors.push('Neplatné použití');
-  if (!vzor) errors.push('Neplatný vzor skla');
-  if (!kovani) errors.push('Neplatné kování / lišta');
   if (!ALLOWED_MONTAZ.has(body.montaz)) errors.push('Neplatná montáž');
 
   const sirka = numList(body.sirka || body['sirka[]']);
@@ -75,11 +103,27 @@ async function validatePayload(body) {
     (typeof gdprRaw === 'string' && ['ano', 'true', 'on', 'yes'].includes(gdprRaw.toLowerCase()));
   if (!gdprOk) errors.push('Je nutný souhlas se zpracováním osobních údajů');
 
+  const optionsRaw = parseOptionsSelected(body.options_selected);
+  let priceInfo = { price_base: 0, price_surcharge: 0, price_total: 0, options_selected: [] };
+  if (product) {
+    priceInfo = computePrice(product, optionsRaw);
+    const clientTotal = Number(body.price_total);
+    if (Number.isFinite(clientTotal) && Math.abs(clientTotal - priceInfo.price_total) > 2) {
+      // Prefer server-side total; ignore client drift beyond rounding
+    }
+  } else if (Number.isFinite(Number(body.price_total))) {
+    priceInfo.price_total = Math.round(Number(body.price_total));
+  }
+
   if (errors.length) {
     const err = new Error(errors.join('; '));
     err.status = 400;
     throw err;
   }
+
+  const optionsSummary = priceInfo.options_selected
+    .map((o) => `${o.label}: ${o.choice}${o.surcharge_czk ? ` (+${o.surcharge_czk} Kč)` : ''}`)
+    .join(' | ');
 
   return {
     typ_dveri: typ.slug,
@@ -89,10 +133,20 @@ async function validatePayload(body) {
     vyska_min: Math.min(...vyska),
     vyska_max: Math.max(...vyska),
     hloubka,
-    typ_skla: vzor.slug,
-    kovani: kovani.slug,
-    vzor_id: vzor.id,
-    kovani_id: kovani.id,
+    typ_skla: optionsSummary ? 'katalog' : needsAdvice ? 'nevim' : 'katalog',
+    kovani: product ? 'katalog' : 'nevim',
+    vzor_id: null,
+    kovani_id: null,
+    product_code: product ? product.code : null,
+    product_name: product
+      ? product.name
+      : body.product_name
+        ? String(body.product_name).trim()
+        : needsAdvice
+          ? 'Potřebuje poradit'
+          : null,
+    options_selected: priceInfo.options_selected,
+    price_total: priceInfo.price_total || null,
     montaz: body.montaz,
     jmeno: String(body.jmeno).trim(),
     telefon: String(body.telefon).trim(),
@@ -134,6 +188,8 @@ router.post('/odeslat', upload.array('fotky', maxFiles()), async (req, res, next
     res.json({
       success: true,
       id: String(id),
+      product_code: lead.product_code || null,
+      price_total: lead.price_total || null,
       mail_warnings: mailErrors.length ? mailErrors : undefined,
     });
   } catch (err) {

@@ -4,6 +4,8 @@
 Writes:
   - wp-theme/sklospecial/inc/katalog-produkty-data.php  (listing + rich fields)
   - wp-theme/sklospecial/assets/data/produkty.json       (keyed by code, for detail view)
+  - app/data/produkty.json                               (API source of truth copy)
+  - app/data/katalog-konfigurator.json                   (slim door index for konfigurátor)
 
 If the PHP file would exceed ~4.5 MB, listing stays lean and rich details
 live only in the JSON file (PHP still includes partNumber + has_detail).
@@ -24,11 +26,62 @@ CSV_PATH = ROOT / "scripts/output/shoptet_import.csv"
 DETAILS_PATH = ROOT / "scripts/output/product_details.json"
 OUT_PATH = ROOT / "wp-theme/sklospecial/inc/katalog-produkty-data.php"
 JSON_OUT = ROOT / "wp-theme/sklospecial/assets/data/produkty.json"
+APP_DATA_DIR = ROOT / "app/data"
+APP_JSON_OUT = APP_DATA_DIR / "produkty.json"
+APP_KONFIG_OUT = APP_DATA_DIR / "katalog-konfigurator.json"
 CROPPED_DIR = ROOT / "scripts/output/images_cropped"
 PUBLIC_IMG_DIR = ROOT / "app/public/katalog-img"
 CROPPED_BASE_URL = (
     "https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img"
 )
+
+# Door-focused typy for konfigurátor (section → typ slug).
+KONFIG_TYP_DEFS: list[dict[str, Any]] = [
+    {
+        "slug": "posuvne",
+        "nazev": "Posuvné",
+        "popis": "Křídlo pojede podél stěny",
+        "thumb_class": "thumb-posuvne_stena",
+        "sections": ["design-lux", "ultra-slim", "loft", "trubkovy-system"],
+        "sort_order": 1,
+    },
+    {
+        "slug": "do-pouzdra",
+        "nazev": "Do pouzdra",
+        "popis": "Dveře zmizí ve stěně",
+        "thumb_class": "thumb-posuvne_pouzdro",
+        "sections": ["do-pouzdra"],
+        "sort_order": 2,
+    },
+    {
+        "slug": "otocne",
+        "nazev": "Kyvné / otočné",
+        "popis": "Kývavé otevírání oběma směry",
+        "thumb_class": "thumb-otocne",
+        "sections": ["otocne"],
+        "sort_order": 3,
+    },
+    {
+        "slug": "otevirane",
+        "nazev": "Otevírané",
+        "popis": "Klasické otevírání do místnosti",
+        "thumb_class": "thumb-otevirane",
+        "sections": ["otevirane"],
+        "sort_order": 4,
+    },
+    {
+        "slug": "celosklenene",
+        "nazev": "Celoskleněné / se zárubní",
+        "popis": "Celoskleněné dveře a systémy se zárubní",
+        "thumb_class": "thumb-dvoukridle",
+        "sections": ["pevna", "nastavitelna", "hlinikova", "luxe", "rock-glass"],
+        "sort_order": 5,
+    },
+]
+
+SECTION_TO_TYP: dict[str, str] = {
+    sec: typ["slug"] for typ in KONFIG_TYP_DEFS for sec in typ["sections"]
+}
 
 PHP_SOFT_LIMIT = 4_500_000  # bytes — prefer JSON for heavy payloads beyond this
 
@@ -427,14 +480,81 @@ def main() -> None:
     probe_bytes = sum(len(x.encode("utf-8")) for x in probe_lines)
     embed_full = probe_bytes < PHP_SOFT_LIMIT
 
-    # Write JSON always (detail lookup by code)
-    JSON_OUT.parent.mkdir(parents=True, exist_ok=True)
+    # Write JSON always (detail lookup by code) — theme + API share the same payload
+    generated = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     json_payload = {
-        "generated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
+        "generated": generated,
         "count": len(by_code),
         "products": by_code,
     }
-    JSON_OUT.write_text(json.dumps(json_payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    JSON_OUT.parent.mkdir(parents=True, exist_ok=True)
+    APP_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    payload_text = json.dumps(json_payload, ensure_ascii=False, separators=(",", ":"))
+    JSON_OUT.write_text(payload_text, encoding="utf-8")
+    APP_JSON_OUT.write_text(payload_text, encoding="utf-8")
+
+    # Slim door index for konfigurátor API (smaller payload, typed)
+    slim_products: dict[str, dict[str, Any]] = {}
+    typ_counts: dict[str, int] = {t["slug"]: 0 for t in KONFIG_TYP_DEFS}
+    for code, product in by_code.items():
+        section = str(product.get("section") or "")
+        typ = SECTION_TO_TYP.get(section)
+        if not typ:
+            # Fallback: pouzdro in name → do-pouzdra
+            name_l = str(product.get("name") or "").lower()
+            if "pouzdro" in name_l or "pouzdra" in name_l:
+                typ = "do-pouzdra"
+            else:
+                continue
+        desc = str(product.get("description") or "").strip()
+        desc_short = desc[:220].rsplit(" ", 1)[0] + ("…" if len(desc) > 220 else "") if desc else ""
+        slim_products[code] = {
+            "code": code,
+            "name": product.get("name") or "",
+            "price": int(product.get("price") or 0),
+            "image": product.get("image") or "",
+            "section": section,
+            "typ": typ,
+            "options": product.get("options") or [],
+            "description_short": desc_short,
+        }
+        typ_counts[typ] = typ_counts.get(typ, 0) + 1
+
+    typy_out = []
+    for typ in KONFIG_TYP_DEFS:
+        typy_out.append(
+            {
+                "slug": typ["slug"],
+                "nazev": typ["nazev"],
+                "popis": typ["popis"],
+                "thumb_class": typ["thumb_class"],
+                "sections": typ["sections"],
+                "sort_order": typ["sort_order"],
+                "count": typ_counts.get(typ["slug"], 0),
+            }
+        )
+    typy_out.append(
+        {
+            "slug": "nevim",
+            "nazev": "Nevím, potřebuju poradit",
+            "popis": "Doporučíme podle prostoru — můžeš pokračovat i bez výběru modelu",
+            "thumb_class": "thumb-nevim",
+            "sections": [],
+            "sort_order": 99,
+            "count": 0,
+        }
+    )
+
+    konfig_payload = {
+        "generated": generated,
+        "count": len(slim_products),
+        "typy": typy_out,
+        "products": slim_products,
+    }
+    APP_KONFIG_OUT.write_text(
+        json.dumps(konfig_payload, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8",
+    )
 
     lines: list[str] = [
         "<?php",
@@ -487,8 +607,13 @@ def main() -> None:
         "embed_full": embed_full,
         "out_php": str(OUT_PATH.relative_to(ROOT)),
         "out_json": str(JSON_OUT.relative_to(ROOT)),
+        "out_app_json": str(APP_JSON_OUT.relative_to(ROOT)),
+        "out_konfig": str(APP_KONFIG_OUT.relative_to(ROOT)),
         "php_bytes": OUT_PATH.stat().st_size,
         "json_bytes": JSON_OUT.stat().st_size,
+        "konfig_bytes": APP_KONFIG_OUT.stat().st_size,
+        "konfig_count": len(slim_products),
+        "konfig_typy": typ_counts,
     }
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 

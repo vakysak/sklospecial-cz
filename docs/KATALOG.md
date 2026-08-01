@@ -1,55 +1,40 @@
-# Katalog vzorů a kování
+# Katalog produktů (konfigurátor)
 
-Konfigurátor bere data z DB přes `GET /api/katalog`.
+Konfigurátor bere **produkty SklS** z JSON (ne ze seed DB tabulek typů).
 
-## Tabulky
+## Source of truth
 
-| Tabulka | Účel |
-|---------|------|
-| `sklo_katalog_typy` | otočné / posuvné / … |
-| `sklo_katalog_vzory` | vzory skla |
-| `sklo_katalog_kovani` | lišty + kování (barva) |
+| Soubor | Účel |
+|--------|------|
+| `wp-theme/sklospecial/assets/data/produkty.json` | WP detail + listing |
+| `app/data/produkty.json` | API kopie (full) |
+| `app/data/katalog-konfigurator.json` | Slim index dveří (~300 produktů) |
 
-## Pole pro fotky
+Generuj: `python3 scripts/build_katalog_data.py` (zapíše i `app/data/*`).
 
-- `image_url` — náhled ve výběru (čtverec / swatch)
-- `preview_url` — volitelně velký náhled do studia
-- dokud jsou prázdné, FE použije `css_class` (vzory) nebo `color_hex` (lišty)
+## API
 
-## Jak doplnit reálné fotky
+| Endpoint | Popis |
+|----------|--------|
+| `GET /api/katalog` | `typy` z door katalogu + legacy `vzory`/`kovani` |
+| `GET /api/produkty?typ=posuvne&q=` | filtrovaný listing |
+| `GET /api/produkty/:code` | detail + options |
+| `POST /api/konfigurator/odeslat` | lead s `product_code`, `options_selected`, `price_total` |
 
-1. Nahraj JPG/WebP na WP media nebo do `app/public/katalog/`
-2. UPDATE v DB, např.:
+## Typy (dveře)
 
-```sql
-UPDATE sklo_katalog_vzory
-SET image_url = 'https://…/vzory/matne.jpg',
-    preview_url = 'https://…/vzory/matne-large.jpg'
-WHERE slug = 'matne';
+- `posuvne` — design-lux, ultra-slim, loft, trubkovy-system
+- `do-pouzdra` — do-pouzdra (+ name obsahuje pouzdro)
+- `otocne` — kyvné / otočné
+- `otevirane` — otevírané
+- `celosklenene` — zárubně / luxe / rock-glass
+- `nevim` — soft advise bez SKU
 
-UPDATE sklo_katalog_kovani
-SET image_url = 'https://…/kovani/cerne.jpg',
-    color_hex = '#1a1a1a'
-WHERE slug = 'cerne';
-```
+## Legacy DB tabulky
 
-3. Nový vzor:
+`sklo_katalog_typy|vzory|kovani` zůstávají pro zpětnou kompatibilitu / soft advise fallback.
+Lead tabulka má navíc `product_code`, `product_name`, `options_selected`, `price_total`.
 
-```sql
-INSERT INTO sklo_katalog_vzory (slug, nazev, popis, image_url, css_class, sort_order, aktivni)
-VALUES ('satinato', 'Satinato', 'Jemně matné', 'https://…/satinato.jpg', 'p-matne', 6, 1);
-```
+## Fotka prostoru
 
-## Fotka prostoru + otvor podle zaměření
-
-Ano — klient může:
-
-1. **Vložit fotku prostoru** do náhledu  
-2. **Posunout rámeček** na otvor ve fotce  
-3. **Škálovat rohy** — poměr stran rámečku se bere z **nejmenší zaměřené šířky × výšky**  
-
-Fotka na telefonu má jiný úhel než „pravý“ otvor — proto se **nečeká**, že fotka = přesné mm.  
-Zaměření řídí **poměr** (a nabídku), rámeček na fotce jen **umístění vizualizace**.
-
-Tohle není plné AR s perspektivou (zkreslení stěn). Pro Fázi 1 stačí osový rámeček + poměr z mm. Perspektivní 4-bodový warp lze doplnit později.
-
+Klient může vložit fotku prostoru a posunout rámeček — poměr stran z nejmenší zaměřené šířky × výšky.

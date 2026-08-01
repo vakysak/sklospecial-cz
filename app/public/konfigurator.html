@@ -6,7 +6,7 @@
   <title>Navrhni si skleněné dveře — Sklospeciál</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
   <link rel="stylesheet" href="./konfigurator.css" />
 </head>
@@ -17,66 +17,47 @@
     <header class="hero">
       <p class="brand">Sklospeciál</p>
       <h1>Navrhni si <em>skleněné dveře</em></h1>
-      <p class="lead">Vlož fotku prostoru, nastav otvor podle zaměření a skládej vzor se lištou — jako u konfigurátoru kol.</p>
+      <p class="lead">Vyber model z katalogu SklS, nastav varianty, zaměř otvor a pošli fotky — sestavíme nabídku na míru.</p>
       <ol class="steps" aria-label="Postup">
-        <template x-for="i in 7" :key="i">
+        <template x-for="i in totalSteps" :key="i">
           <li :class="{ done: i < krok, current: i === krok }"><span x-text="i"></span></li>
         </template>
       </ol>
     </header>
 
-    <div class="studio">
-      <!-- LIVE PREVIEW — always visible -->
+    <p class="flash error" x-show="loading" x-text="'Načítám katalog…'"></p>
+
+    <div class="studio" x-show="!loading">
       <aside class="preview" aria-label="Náhled dveří">
         <div
           class="preview-stage"
-          :class="{ 'has-photo': !!prostor.url }"
-          :style="prostor.url ? `background-image:url('${prostor.url}')` : ''"
+          :class="{ 'has-photo': !!prostor.url, 'has-product': !!selectedProduct()?.image && !prostor.url }"
+          :style="prostor.url ? `background-image:url('${prostor.url}')` : (selectedProduct()?.image ? `background-image:url('${selectedProduct().image}')` : '')"
           @pointerdown="onStagePointerDown($event)"
           @pointermove="onStagePointerMove($event)"
           @pointerup="onStagePointerUp($event)"
           @pointercancel="onStagePointerUp($event)"
         >
-          <!-- Bez fotky: stylizovaná místnost -->
-          <div class="room" x-show="!prostor.url">
+          <div class="room" x-show="!prostor.url && !selectedProduct()?.image">
             <div class="wall"></div>
             <div class="opening" :style="openingStyle()">
               <div class="door-set" :class="doorClass()">
-                <template x-if="config.typ_dveri !== 'dvoukridle'">
-                  <div class="leaf" :class="glassClass()" :style="{ '--frame': (selectedKovani()?.color_hex || '#1a1a1a') }">
-                    <div class="glass-face"></div>
-                    <div class="pattern" :class="glassClass()"></div>
-                    <div class="handle" :style="handleStyle()"></div>
-                    <div class="rail top"></div>
-                    <div class="rail bottom"></div>
-                  </div>
-                </template>
-                <template x-if="config.typ_dveri === 'dvoukridle'">
-                  <div class="leaf left" :class="glassClass()" :style="{ '--frame': (selectedKovani()?.color_hex || '#1a1a1a') }">
-                    <div class="glass-face"></div>
-                    <div class="pattern" :class="glassClass()"></div>
-                    <div class="handle rightish" :style="handleStyle()"></div>
-                    <div class="rail top"></div>
-                    <div class="rail bottom"></div>
-                  </div>
-                </template>
-                <template x-if="config.typ_dveri === 'dvoukridle'">
-                  <div class="leaf right" :class="glassClass()" :style="{ '--frame': (selectedKovani()?.color_hex || '#1a1a1a') }">
-                    <div class="glass-face"></div>
-                    <div class="pattern" :class="glassClass()"></div>
-                    <div class="handle leftish" :style="handleStyle()"></div>
-                    <div class="rail top"></div>
-                    <div class="rail bottom"></div>
-                  </div>
-                </template>
-                <div class="track" x-show="isSliding()" :style="{ background: (selectedKovani()?.color_hex || '#1a1a1a') }"></div>
-                <div class="pocket" x-show="config.typ_dveri === 'posuvne_pouzdro'"></div>
+                <div class="leaf p-cire" style="--frame:#1a1a1a">
+                  <div class="glass-face"></div>
+                  <div class="pattern p-cire"></div>
+                  <div class="handle" style="background:#1a1a1a"></div>
+                  <div class="rail top"></div>
+                  <div class="rail bottom"></div>
+                </div>
+                <div class="track" x-show="isSliding()" style="background:#1a1a1a"></div>
+                <div class="pocket" x-show="config.typ_dveri === 'do-pouzdra'"></div>
               </div>
             </div>
             <div class="floor"></div>
           </div>
 
-          <!-- S fotkou: otvor na fotce (poměr stran = zaměření) -->
+          <div class="product-hero" x-show="!prostor.url && selectedProduct()?.image"></div>
+
           <div
             class="photo-frame"
             x-show="prostor.url"
@@ -84,34 +65,11 @@
             data-drag="move"
           >
             <div class="door-set" :class="doorClass()">
-              <template x-if="config.typ_dveri !== 'dvoukridle'">
-                <div class="leaf" :class="glassClass()" :style="{ '--frame': (selectedKovani()?.color_hex || '#1a1a1a') }">
-                  <div class="glass-face"></div>
-                  <div class="pattern" :class="glassClass()"></div>
-                  <div class="handle" :style="handleStyle()"></div>
-                  <div class="rail top"></div>
-                  <div class="rail bottom"></div>
-                </div>
-              </template>
-              <template x-if="config.typ_dveri === 'dvoukridle'">
-                <div class="leaf left" :class="glassClass()" :style="{ '--frame': (selectedKovani()?.color_hex || '#1a1a1a') }">
-                  <div class="glass-face"></div>
-                  <div class="pattern" :class="glassClass()"></div>
-                  <div class="handle rightish" :style="handleStyle()"></div>
-                  <div class="rail top"></div>
-                  <div class="rail bottom"></div>
-                </div>
-              </template>
-              <template x-if="config.typ_dveri === 'dvoukridle'">
-                <div class="leaf right" :class="glassClass()" :style="{ '--frame': (selectedKovani()?.color_hex || '#1a1a1a') }">
-                  <div class="glass-face"></div>
-                  <div class="pattern" :class="glassClass()"></div>
-                  <div class="handle leftish" :style="handleStyle()"></div>
-                  <div class="rail top"></div>
-                  <div class="rail bottom"></div>
-                </div>
-              </template>
-              <div class="track" x-show="isSliding()" :style="{ background: (selectedKovani()?.color_hex || '#1a1a1a') }"></div>
+              <div class="leaf" :style="selectedProduct()?.image ? `background-image:url('${selectedProduct().image}'); background-size:cover; background-position:center;` : ''">
+                <div class="glass-face" x-show="!selectedProduct()?.image"></div>
+                <div class="handle" style="background:#1a1a1a"></div>
+              </div>
+              <div class="track" x-show="isSliding()" style="background:#1a1a1a"></div>
             </div>
             <span class="frame-handle tl" data-drag="tl"></span>
             <span class="frame-handle tr" data-drag="tr"></span>
@@ -126,7 +84,6 @@
           <p class="preview-sub" x-text="previewSub()"></p>
           <div class="sample-rooms" x-show="!prostor.url || prostor.sampleId">
             <p class="sample-label">Ukázkové místnosti</p>
-            <p class="sample-lead">Zkus ukázkovou fotku — posuň rámeček na otvor, nebo nahraj vlastní.</p>
             <div class="sample-grid" role="list">
               <template x-for="s in samples" :key="s.id">
                 <button
@@ -151,42 +108,83 @@
             </label>
             <button type="button" class="linkish" x-show="prostor.url" @click="clearProstor()">Odstranit fotku</button>
           </div>
-          <p class="photo-hint" x-show="prostor.url">
-            Posuň rámeček na otvor. Rohy = změna velikosti.
-            Poměr stran bere zaměřenou šířku × výšku (nejmenší hodnoty).
-          </p>
         </div>
       </aside>
 
       <div class="controls">
-        <!-- STEP 1: door type — visual cards -->
+        <!-- 1 Typ -->
         <section class="panel" x-show="krok===1" x-transition.opacity.duration.200ms>
           <h2>Typ dveří</h2>
+          <p class="hint">Jen skleněné dveře z katalogu SklS — sprchy a zábradlí tu nejsou.</p>
           <div class="visual-grid">
-            <template x-for="o in katalog.typy" :key="o.slug">
-              <button type="button" class="visual-card" :class="config.typ_dveri===o.slug && 'on'" @click="config.typ_dveri=o.slug">
-                <span class="thumb" :class="o.thumb_class || ('thumb-' + o.slug)" aria-hidden="true">
-                  <img x-show="o.image_url" :src="o.image_url" :alt="o.nazev" />
-                </span>
+            <template x-for="o in typy" :key="o.slug">
+              <button type="button" class="visual-card" :class="config.typ_dveri===o.slug && 'on'" @click="selectTyp(o.slug)">
+                <span class="thumb" :class="o.thumb_class || ('thumb-' + o.slug)" aria-hidden="true"></span>
                 <span class="visual-label" x-text="o.nazev"></span>
+                <span class="visual-desc" x-text="o.popis"></span>
+                <span class="visual-count" x-show="o.count" x-text="o.count + ' modelů'"></span>
               </button>
             </template>
           </div>
         </section>
 
-        <!-- STEP 2: usage -->
+        <!-- 2 Produkt -->
         <section class="panel" x-show="krok===2" x-transition.opacity.duration.200ms>
-          <h2>Kde budou stát?</h2>
-          <div class="chip-row">
-            <template x-for="o in options.pouziti" :key="o.v">
-              <button type="button" class="chip" :class="config.pouziti===o.v && 'on'" @click="config.pouziti=o.v" x-text="o.l"></button>
+          <h2>Výběr produktu</h2>
+          <p class="hint" x-text="(selectedTyp()?.nazev || '') + ' — reálné kódy SklS z katalogu'"></p>
+          <div class="search-row">
+            <input type="search" placeholder="Hledat (matné, loft, zrcadlo…)" x-model="searchQ" @keydown.enter.prevent="loadProdukty()" />
+            <button type="button" class="btn ghost compact" @click="loadProdukty()">Filtrovat</button>
+          </div>
+          <button type="button" class="advise-skip" @click="skipProductAdvice()">Nevím přesný model — potřebuju poradit</button>
+          <p class="muted" x-show="loadingProducts">Načítám produkty…</p>
+          <div class="product-grid" x-show="!loadingProducts">
+            <template x-for="p in produkty" :key="p.code">
+              <button type="button" class="product-card" :class="config.product_code===p.code && 'on'" @click="selectProduct(p.code)">
+                <span class="product-img">
+                  <img :src="p.image" :alt="p.name" loading="lazy" decoding="async" />
+                </span>
+                <span class="product-body">
+                  <span class="product-code" x-text="p.code"></span>
+                  <span class="product-name" x-text="p.name"></span>
+                  <span class="product-price" x-text="'od ' + formatPrice(p.price)"></span>
+                </span>
+              </button>
             </template>
           </div>
+          <p class="muted" x-show="!loadingProducts && !produkty.length">V této kategorii nic nenalezeno. Zkus jiný filtr nebo „potřebuju poradit“.</p>
         </section>
 
-        <!-- STEP 3: dimensions with graphic opening -->
+        <!-- 3 Varianty -->
         <section class="panel" x-show="krok===3" x-transition.opacity.duration.200ms>
-          <h2>Zaměření otvoru</h2>
+          <h2>Varianty produktu</h2>
+          <template x-if="selectedProduct()">
+            <div>
+              <p class="product-picked">
+                <strong x-text="selectedProduct().code"></strong>
+                <span x-text="selectedProduct().name"></span>
+              </p>
+              <p class="price-live">Orientační cena: <strong x-text="formatPrice(priceTotal())"></strong></p>
+              <div class="option-stack">
+                <template x-for="g in (selectedProduct().options || [])" :key="g.label">
+                  <label class="option-group" x-show="g.choices && g.choices.length">
+                    <span class="option-label" x-text="g.label"></span>
+                    <select x-model="config.optionChoices[g.label]">
+                      <template x-for="c in g.choices" :key="c.name">
+                        <option :value="c.name" x-text="c.name + (c.surcharge_czk ? ` (+${c.surcharge_czk} Kč)` : '')"></option>
+                      </template>
+                    </select>
+                  </label>
+                </template>
+              </div>
+              <p class="muted" x-show="!(selectedProduct().options || []).length">Tento model nemá další varianty — pokračuj na zaměření.</p>
+            </div>
+          </template>
+        </section>
+
+        <!-- 4 Rozměry + fotky -->
+        <section class="panel" x-show="krok===4" x-transition.opacity.duration.200ms>
+          <h2>Rozměry a fotky</h2>
           <p class="hint">Změř na 3 místech. Nejmenší šířka × výška nastaví poměr rámečku na fotce prostoru.</p>
           <div class="measure-visual">
             <svg viewBox="0 0 280 200" class="measure-svg" aria-hidden="true">
@@ -217,42 +215,24 @@
             <span>Hloubka stěny <em>mm</em></span>
             <input type="number" min="20" max="800" inputmode="numeric" x-model.number="config.rozmery.hloubka" />
           </label>
+          <p class="hint">2–8 fotek otvoru, max 5&nbsp;MB. JPG, PNG nebo WebP.</p>
+          <label class="drop" :class="config.fotky.length && 'has'">
+            <input type="file" accept="image/jpeg,image/png,image/webp" multiple @change="onFiles($event)" />
+            <span class="drop-title" x-text="config.fotky.length ? `${config.fotky.length} fotek připraveno` : 'Přetáhni fotky otvoru sem'"></span>
+            <span class="drop-sub">celý otvor, podlaha, strop, bok stěny</span>
+          </label>
         </section>
 
-        <!-- STEP 4: glass pattern — swatches -->
-        <section class="panel" x-show="krok===4" x-transition.opacity.duration.200ms>
-          <h2>Vzor skla</h2>
-          <div class="swatch-grid">
-            <template x-for="o in katalog.vzory" :key="o.slug">
-              <button type="button" class="swatch" :class="config.typ_skla===o.slug && 'on'" @click="config.typ_skla=o.slug">
-                <span class="swatch-glass" :class="o.css_class || ('p-' + o.slug)">
-                  <img x-show="o.image_url" :src="o.image_url" :alt="o.nazev" />
-                </span>
-                <span class="swatch-name" x-text="o.nazev"></span>
-              </button>
-            </template>
-          </div>
-        </section>
-
-        <!-- STEP 5: trim / lišta — color rings like wheels -->
+        <!-- 5 Montáž -->
         <section class="panel" x-show="krok===5" x-transition.opacity.duration.200ms>
-          <h2>Lišta a kování</h2>
-          <p class="hint">Barva rámu / lišty kolem skla a madla.</p>
-          <div class="finish-row">
-            <template x-for="o in katalog.kovani" :key="o.slug">
-              <button type="button" class="finish" :class="config.kovani===o.slug && 'on'" @click="config.kovani=o.slug">
-                <span class="finish-ring" :class="'fin-' + o.slug" :style="o.color_hex ? `background:${o.color_hex}` : ''">
-                  <img x-show="o.image_url" :src="o.image_url" :alt="o.nazev" />
-                </span>
-                <span class="finish-name" x-text="o.nazev"></span>
-              </button>
+          <h2>Montáž a místo</h2>
+          <h3 class="subhead">Kde budou stát?</h3>
+          <div class="chip-row">
+            <template x-for="o in options.pouziti" :key="o.v">
+              <button type="button" class="chip" :class="config.pouziti===o.v && 'on'" @click="config.pouziti=o.v" x-text="o.l"></button>
             </template>
           </div>
-        </section>
-
-        <!-- STEP 6: montage -->
-        <section class="panel" x-show="krok===6" x-transition.opacity.duration.200ms>
-          <h2>Montáž</h2>
+          <h3 class="subhead">Montáž</h3>
           <div class="chip-row">
             <template x-for="o in options.montaz" :key="o.v">
               <button type="button" class="chip wide" :class="config.montaz===o.v && 'on'" @click="config.montaz=o.v">
@@ -263,15 +243,21 @@
           </div>
         </section>
 
-        <!-- STEP 7: photos + contact -->
-        <section class="panel" x-show="krok===7" x-transition.opacity.duration.200ms>
-          <h2>Fotky otvoru a kontakt</h2>
-          <p class="hint">2–8 fotek, max 5&nbsp;MB. JPG, PNG nebo WebP.</p>
-          <label class="drop" :class="config.fotky.length && 'has'">
-            <input type="file" accept="image/jpeg,image/png,image/webp" multiple @change="onFiles($event)" />
-            <span class="drop-title" x-text="config.fotky.length ? `${config.fotky.length} fotek připraveno` : 'Přetáhni fotky otvoru sem'"></span>
-            <span class="drop-sub">celý otvor, podlaha, strop, bok stěny</span>
-          </label>
+        <!-- 6 Souhrn -->
+        <section class="panel" x-show="krok===6" x-transition.opacity.duration.200ms>
+          <h2>Souhrn a odeslání</h2>
+          <div class="summary">
+            <p><span>Typ</span><strong x-text="selectedTyp()?.nazev || '—'"></strong></p>
+            <p x-show="config.product_code"><span>Produkt</span><strong x-text="(config.product_code || '') + ' · ' + (selectedProduct()?.name || '')"></strong></p>
+            <p x-show="config.needs_advice || config.typ_dveri==='nevim'"><span>Produkt</span><strong>Potřebuje poradit</strong></p>
+            <p x-show="priceTotal() != null"><span>Cena</span><strong x-text="formatPrice(priceTotal())"></strong></p>
+            <template x-for="o in optionsSelected()" :key="o.label">
+              <p><span x-text="o.label"></span><strong x-text="o.choice + (o.surcharge_czk ? ` (+${o.surcharge_czk} Kč)` : '')"></strong></p>
+            </template>
+            <p><span>Rozměry</span><strong x-text="`šířka ${Math.min(...config.rozmery.sirka)}–${Math.max(...config.rozmery.sirka)} · výška ${Math.min(...config.rozmery.vyska)}–${Math.max(...config.rozmery.vyska)} · hloubka ${config.rozmery.hloubka} mm`"></strong></p>
+            <p><span>Fotky</span><strong x-text="config.fotky.length + ' souborů'"></strong></p>
+            <p><span>Montáž</span><strong x-text="config.montaz === 's_montazi' ? 'S montáží' : 'Bez montáže'"></strong></p>
+          </div>
           <div class="form-grid">
             <label><span>Jméno</span><input x-model="config.kontakt.jmeno" autocomplete="name" /></label>
             <label><span>Telefon</span><input x-model="config.kontakt.telefon" placeholder="+420…" autocomplete="tel" /></label>
@@ -290,8 +276,8 @@
 
         <footer class="nav">
           <button type="button" class="btn ghost" @click="back()" :disabled="krok===1 || sending">Zpět</button>
-          <button type="button" class="btn primary" x-show="krok<7" @click="next()">Pokračovat</button>
-          <button type="button" class="btn primary" x-show="krok===7" @click="submit()" :disabled="sending" x-text="sending ? 'Odesílám…' : 'Odeslat poptávku'"></button>
+          <button type="button" class="btn primary" x-show="krok<totalSteps" @click="next()">Pokračovat</button>
+          <button type="button" class="btn primary" x-show="krok===totalSteps" @click="submit()" :disabled="sending" x-text="sending ? 'Odesílám…' : 'Odeslat poptávku'"></button>
         </footer>
       </div>
     </div>

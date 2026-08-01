@@ -14,6 +14,7 @@ const chatRouter = require('./routes/chat');
 const konfiguratorRouter = require('./routes/konfigurator');
 const uploadRouter = require('./routes/upload');
 const katalogRouter = require('./routes/katalog');
+const produktyRouter = require('./routes/produkty');
 const { apiRateLimit } = require('./middleware/rateLimit');
 
 const PORT = Number(process.env.PORT || 3001);
@@ -64,6 +65,7 @@ app.get('/api/health', async (_req, res) => {
 });
 
 app.use('/api/katalog', katalogRouter);
+app.use('/api/produkty', produktyRouter);
 app.use('/api', apiRateLimit);
 app.use('/api/chat', chatRouter);
 app.use('/api/konfigurator', konfiguratorRouter);

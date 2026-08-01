@@ -11,6 +11,14 @@
      <strong>Telefon:</strong> {{telefon}}<br />
      <strong>E-mail:</strong> {{email}}<br />
      <strong>Město:</strong> {{mesto}}</p>
+  <h2 style="font-size: 16px;">Produkt (katalog SklS)</h2>
+  <ul>
+    <li>Kód: <strong>{{product_code}}</strong></li>
+    <li>Název: {{product_name}}</li>
+    <li>Cena (orientační): {{price_total}}</li>
+  </ul>
+  <p><strong>Vybrané varianty:</strong></p>
+  <ul>{{options_html}}</ul>
   <h2 style="font-size: 16px;">Konfigurace</h2>
   <ul>
     <li>Typ dveří: {{typ_dveri}}</li>
@@ -18,8 +26,6 @@
     <li>Šířka (min–max): {{sirka_min}}–{{sirka_max}} mm</li>
     <li>Výška (min–max): {{vyska_min}}–{{vyska_max}} mm</li>
     <li>Hloubka: {{hloubka}} mm</li>
-    <li>Sklo: {{typ_skla}}</li>
-    <li>Kování: {{kovani}}</li>
     <li>Montáž: {{montaz}}</li>
   </ul>
   <p><strong>Poznámka:</strong><br />{{poznamka}}</p>

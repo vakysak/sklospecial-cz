@@ -9,6 +9,7 @@ RUN npm ci --omit=dev
 
 COPY api ./api
 COPY public ./public
+COPY data ./data
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN mkdir -p /app/uploads/poptavky && chmod +x /docker-entrypoint.sh
 

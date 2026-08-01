@@ -39,6 +39,26 @@ async function loadTemplate(name, vars) {
 }
 
 function leadVars(lead) {
+  const options = Array.isArray(lead.options_selected)
+    ? lead.options_selected
+    : (() => {
+        try {
+          return JSON.parse(lead.options_selected || '[]');
+        } catch {
+          return [];
+        }
+      })();
+  const optionsHtml = options.length
+    ? options
+        .map(
+          (o) =>
+            `<li>${o.label}: ${o.choice}${
+              o.surcharge_czk ? ` (+${o.surcharge_czk}&nbsp;Kč)` : ''
+            }</li>`
+        )
+        .join('')
+    : '<li>—</li>';
+
   return {
     id: lead.id,
     jmeno: lead.jmeno,
@@ -55,6 +75,10 @@ function leadVars(lead) {
     typ_skla: lead.typ_skla,
     kovani: lead.kovani,
     montaz: lead.montaz,
+    product_code: lead.product_code || '—',
+    product_name: lead.product_name || '—',
+    price_total: lead.price_total != null ? `${lead.price_total} Kč` : '—',
+    options_html: optionsHtml,
     poznamka: lead.poznamka || '—',
     fotky_count: Array.isArray(lead.fotky) ? lead.fotky.length : 0,
     mail_from: process.env.MAIL_FROM || 'info@sklospecial.cz',

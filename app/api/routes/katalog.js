@@ -2,12 +2,13 @@
 
 const express = require('express');
 const { getKatalog, findBySlug } = require('../services/katalog');
+const { listTypy, getKatalogMeta } = require('../services/produkty');
 
 const router = express.Router();
 
 /**
  * GET /api/katalog
- * Kompletní katalog pro konfigurátor: typy, vzory skla, kování/lišty
+ * Typy from SklS door catalog + legacy vzory/kovani (soft advise / fallback).
  */
 router.get('/', async (_req, res, next) => {
   try {
@@ -16,7 +17,8 @@ router.get('/', async (_req, res, next) => {
       success: true,
       ...data,
       meta: {
-        note: 'image_url / preview_url doplň reálnými fotkami; css_class a color_hex jsou dočasný vizuální fallback',
+        ...(data.meta || {}),
+        note: 'typy = skleněné dveře z katalogu SklS; produkty přes GET /api/produkty?typ=',
       },
     });
   } catch (err) {
@@ -44,8 +46,7 @@ router.get('/kovani', async (_req, res, next) => {
 
 router.get('/typy', async (_req, res, next) => {
   try {
-    const { typy } = await getKatalog();
-    res.json({ success: true, items: typy });
+    res.json({ success: true, items: listTypy(), meta: getKatalogMeta() });
   } catch (err) {
     next(err);
   }
