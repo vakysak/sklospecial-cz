@@ -12,6 +12,128 @@ let fullCache = null;
 let konfigMtime = 0;
 let fullMtime = 0;
 
+/** Polish leftovers → Czech (longest phrases first). */
+const PUBLIC_TEXT_REPLACEMENTS = [
+  [/představujeme\s+nowe\s+skleněné\s+dveře\s+na\s+systemie\s+posuvném/gi, 'představujeme nové skleněné dveře na posuvném systému'],
+  [/Po\s+czarnym\s+systemie\s+LOFT-ART\s+przyszla\s+kolej\s+na/gi, 'Po černém systému LOFT-ART přišel na řadu'],
+  [/LOFT-ART\s+BIALYM/gi, 'LOFT-ART bílý'],
+  [/jde\s+o\s+systém\s+w\s+minimalistycznym\s+stylu\s+industrialnym,\s+dodávající\s+idealnej\s+eleganckiej\s+lekkosci\s+I\s+poczucia\s+przestrzeni\s+w\s+kazdym\s+wnetrzu/gi, 'jde o systém v minimalistickém industriálním stylu, který dodává lehkost a pocit prostoru v každém interiéru'],
+  [/systém\s+ten\s+pozwala\s+dzielic\s+przestrzen\s+bez\s+utraty\s+doswietlenia/gi, 'systém umožňuje dělit prostor bez ztráty světla'],
+  [/Dveře\s+oferujemy\s+w\s+pieciu\s+rozmiarach/gi, 'Dveře nabízíme v pěti rozměrech'],
+  [/Po\s+skreceniu\s+rámu\s+hliníkové\s+wraz\s+ze\s+szklem\s+uzyskamy\s+rozměry\s+calosciowe/gi, 'Po sešroubování hliníkového rámu se sklem získáte celkové rozměry'],
+  [/délky\s+systemow/gi, 'délky systémů'],
+  [/délka\s+systemu/gi, 'délka systému'],
+  [/Oferujemy\s+skleněné\s+dveře/gi, 'Nabízíme skleněné dveře'],
+  [/ideálně\s+se\s+hodí\s+wiec\s+do\s+pomieszczen\s+o\s+duzej\s+wilgotnosci/gi, 'ideálně se hodí do místností s vyšší vlhkostí'],
+  [/Duzym\s+plusem/gi, 'Velkým plusem'],
+  [/jest\s+rowniez\s+to,\s+ze\s+nadaje\s+sie\s+do\s+bardzo\s+duzych/gi, 'je také to, že se hodí i na velmi velké'],
+  [/Jest\s+wiec\s+bardziej\s+wytrzymala\s+na\s+duze\s+obciazenia/gi, 'Je tedy odolnější vůči velkému zatížení'],
+  [/wytrzymuje\s+ciezar\s+szerokich\s+i\s+ciezkich\s+tafli\s+skla/gi, 'unese váhu širokých a těžkých tabulí skla'],
+  [/Dzieki\s+zastosowanej\s+uszczelce/gi, 'Díky použitému těsnění'],
+  [/tlumienia\s+dzwiekow/gi, 'tlumení zvuků'],
+  [/W\s+sklad\s+zárubně\s+hliníkové\s+wchodzi/gi, 'Součástí hliníkové zárubně je'],
+  [/\bnowe\b/gi, 'nové'],
+  [/\bsystemie\b/gi, 'systému'],
+  [/\bminimalistycznym\b/gi, 'minimalistickém'],
+  [/\bindustrialnym\b/gi, 'industriálním'],
+  [/\beleganckiej\b/gi, 'elegantní'],
+  [/\blekkosci\b/gi, 'lehkosti'],
+  [/\bpoczucia\b/gi, 'pocitu'],
+  [/\bprzestrzeni\b/gi, 'prostoru'],
+  [/\bkazdym\b/gi, 'každém'],
+  [/\bwnetrzu\b/gi, 'interiéru'],
+  [/\bczarnym\b/gi, 'černém'],
+  [/\bprzyszla\b/gi, 'přišla'],
+  [/\bOferujemy\b/gi, 'Nabízíme'],
+  [/\boferujemy\b/gi, 'nabízíme'],
+  [/\bprzedstawiamy\b/gi, 'představujeme'],
+  [/\bpomieszczen\b/gi, 'místností'],
+  [/\bwilgotnosci\b/gi, 'vlhkosti'],
+  [/\bwiec\b/gi, 'tedy'],
+  [/\browniez\b/gi, 'také'],
+  [/\bbardzo\b/gi, 'velmi'],
+  [/\bduzych\b/gi, 'velkých'],
+  [/\bduzej\b/gi, 'velké'],
+  [/\bduzym\b/gi, 'velkým'],
+  [/\bduze\b/gi, 'velké'],
+  [/\bwytrzymala\b/gi, 'odolná'],
+  [/\bobciazenia\b/gi, 'zatížení'],
+  [/\bciezar\b/gi, 'váhu'],
+  [/\bszerokich\b/gi, 'širokých'],
+  [/\bciezkich\b/gi, 'těžkých'],
+  [/\btafli\b/gi, 'tabulí'],
+  [/\buszczelce\b/gi, 'těsnění'],
+  [/\buszczelka\b/gi, 'těsnění'],
+  [/\bdzwiekow\b/gi, 'zvuků'],
+  [/\bwchodzi\b/gi, 'patří'],
+  [/\bsrebrnej\b/gi, 'stříbrné'],
+  [/\bpionowy\b/gi, 'svislý'],
+  [/\bpoziomy\b/gi, 'vodorovný'],
+  [/\bhartowna\b/gi, 'kalené'],
+  [/\bhydrauliczne\b/gi, 'hydraulické'],
+  [/\belektrozaczepem\b/gi, 'elektrickým dorazem'],
+  [/\bwycena\s+mailowa\b/gi, 'cena na e-mail'],
+  [/\bjest\b/gi, 'je'],
+  [
+    /[ąęłńśźżćĄĘŁŃŚŹŻĆ]/g,
+    (ch) =>
+      ({
+        ą: 'a',
+        ć: 'c',
+        ę: 'e',
+        ł: 'l',
+        ń: 'n',
+        ś: 's',
+        ź: 'z',
+        ż: 'z',
+        Ą: 'A',
+        Ć: 'C',
+        Ę: 'E',
+        Ł: 'L',
+        Ń: 'N',
+        Ś: 'S',
+        Ź: 'Z',
+        Ż: 'Z',
+      }[ch] || ch),
+  ],
+];
+
+function sanitizePublicText(text) {
+  if (!text) return '';
+  let out = String(text);
+  for (const [pattern, replacement] of PUBLIC_TEXT_REPLACEMENTS) {
+    out = out.replace(pattern, replacement);
+  }
+  return out.replace(/\s{2,}/g, ' ').trim();
+}
+
+function sanitizeProduct(p) {
+  if (!p || typeof p !== 'object') return p;
+  const out = { ...p };
+  if (out.name) out.name = sanitizePublicText(out.name);
+  if (out.description_short) out.description_short = sanitizePublicText(out.description_short);
+  if (out.description) out.description = sanitizePublicText(out.description);
+  if (out.availability) out.availability = sanitizePublicText(out.availability);
+  if (Array.isArray(out.includes)) {
+    out.includes = out.includes.map((x) => sanitizePublicText(String(x))).filter(Boolean);
+  }
+  if (Array.isArray(out.options)) {
+    out.options = out.options.map((g) => {
+      if (!g || typeof g !== 'object') return g;
+      return {
+        ...g,
+        label: sanitizePublicText(g.label || ''),
+        choices: Array.isArray(g.choices)
+          ? g.choices.map((c) =>
+              c && typeof c === 'object' ? { ...c, name: sanitizePublicText(c.name || '') } : c
+            )
+          : g.choices,
+      };
+    });
+  }
+  return out;
+}
+
 function loadJson(filePath, getCache, setCache) {
   const stat = fs.statSync(filePath);
   const cached = getCache();
@@ -75,7 +197,7 @@ function listProdukty(filters = {}) {
   }
 
   items.sort((a, b) => a.price - b.price || String(a.name).localeCompare(String(b.name), 'cs'));
-  return items;
+  return items.map(sanitizeProduct);
 }
 
 function getProdukt(code) {
@@ -89,7 +211,7 @@ function getProdukt(code) {
   if (!slim && !rich) return null;
 
   if (!slim && rich) {
-    return {
+    return sanitizeProduct({
       code: rich.code || key,
       name: rich.name || '',
       price: Number(rich.price) || 0,
@@ -100,17 +222,17 @@ function getProdukt(code) {
       description_short: String(rich.description || '').slice(0, 220),
       description: rich.description || '',
       images: rich.images || [],
-    };
+    });
   }
 
-  return {
+  return sanitizeProduct({
     ...slim,
     description: rich?.description || slim.description_short || '',
     images: rich?.images || (slim.image ? [slim.image] : []),
     includes: rich?.includes || [],
     shipping_days: rich?.shipping_days ?? null,
     availability: rich?.availability || '',
-  };
+  });
 }
 
 function productExists(code) {
@@ -165,4 +287,5 @@ module.exports = {
   computePrice,
   getKatalogMeta,
   loadKonfig,
+  sanitizePublicText,
 };

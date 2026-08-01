@@ -1266,6 +1266,21 @@ a:hover { color: var(--accent-hover); }
     linear-gradient(180deg, rgba(36, 36, 36, 0.55), transparent);
 }
 
+.sklo-katalog__notice {
+  margin: 0 0 1.25rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid rgba(201, 169, 110, 0.35);
+  background: rgba(201, 169, 110, 0.08);
+  color: var(--text);
+  max-width: 40rem;
+}
+
+.sklo-katalog__notice p {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
 .sklo-katalog__hero h1 {
   margin: 0.25rem 0 0.55rem;
   font-size: clamp(2.1rem, 4.5vw, 3.2rem);

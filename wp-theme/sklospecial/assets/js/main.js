@@ -214,6 +214,7 @@
   if (moreBtn) {
     moreBtn.addEventListener('click', () => {
       expanded = true;
+      apply(active);
     });
   }
 

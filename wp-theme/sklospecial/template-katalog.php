@@ -49,6 +49,7 @@ $has_section_nav = count($sections) > 1;
 
 $kod = isset($_GET['kod']) ? sanitize_text_field(wp_unslash((string) $_GET['kod'])) : '';
 $detail_product = $kod !== '' ? sklo_produkt_by_code($kod) : null;
+$kod_missing = $kod !== '' && $detail_product === null;
 $back_url = (string) get_permalink();
 ?>
 
@@ -58,6 +59,11 @@ $back_url = (string) get_permalink();
   <?php else : ?>
   <header class="sklo-katalog__hero">
     <div class="sklo-wrap">
+      <?php if ($kod_missing) : ?>
+        <div class="sklo-katalog__notice" role="status">
+          <p>Produkt <strong><?php echo esc_html($kod); ?></strong> jsme v katalogu nenašli. Vyber jiný z nabídky níže, nebo <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">pošli poptávku</a>.</p>
+        </div>
+      <?php endif; ?>
       <?php if (!empty($cat['eyebrow'])) : ?>
         <p class="sklo-eyebrow"><?php echo esc_html((string) $cat['eyebrow']); ?></p>
       <?php endif; ?>

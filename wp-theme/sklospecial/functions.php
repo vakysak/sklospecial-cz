@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.8.2');
+define('SKLO_THEME_VER', '1.8.4');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
@@ -464,6 +464,29 @@ add_action('wp_enqueue_scripts', function (): void {
         [],
         SKLO_THEME_VER,
         true
+    );
+
+    // Chat widget (API-hosted). Version via WP only — do not put ?ver= in the URL
+    // (snippet #7 used to double-append ver=1.8.0&ver=1.7.0).
+    $api = rtrim(sklo_api_base(), '/');
+    wp_enqueue_script(
+        'sklo-chat-widget',
+        $api . '/public/chat-widget.js',
+        [],
+        '1.8.4',
+        true
+    );
+    wp_add_inline_script(
+        'sklo-chat-widget',
+        'window.SKLO_API_BASE=' . wp_json_encode($api) . ';'
+        . 'window.SKLO_CONFIGURATOR_URL=' . wp_json_encode($api . '/public/konfigurator.html') . ';',
+        'before'
+    );
+    wp_add_inline_style(
+        'sklo-main',
+        '.sklo-chat-panel[hidden]{display:none!important}'
+        . '.sklo-chat-panel:not(.is-open){display:none!important}'
+        . '.sklo-chat-panel.is-open{display:flex!important}'
     );
 });
 
