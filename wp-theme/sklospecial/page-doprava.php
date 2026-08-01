@@ -38,6 +38,15 @@ $realizace = home_url('/doba-realizace/');
         <li>U většího objemu nebo atypických rozměrů naceníme nejvhodnější variantu — ozvěte se v poptávce.</li>
       </ul>
 
+      <h2 id="praha">Výjezdy do Prahy a vzdálenějších regionů</h2>
+      <p>Do Prahy (a případně dalších vzdálenějších lokalit) plánujeme montáže dávkově — typicky když se sejdou <strong>3–5 montáží</strong> na jednu trasu. Náklady na výjezd se tak rozdělí mezi zákazníky a vychází to výhodněji.</p>
+      <p>Termíny v Praze vypisujeme pravidelně — napište nám a zařadíme vás do nejbližšího výjezdu.</p>
+      <ul>
+        <li>Orientační doprava na zákazníka při sdíleném výjezdu: <strong>1&nbsp;200–1&nbsp;500&nbsp;Kč</strong> (příklad při cca 4 montážích na jeden výjezd).</li>
+        <li>Finální částku uvedeme v nabídce podle konkrétní trasy a rozsahu.</li>
+        <li>Pokud nechcete čekat na společný termín, individuální / expresní výjezd je možný — bývá ale dražší.</li>
+      </ul>
+
       <h2 id="montaz">Orientační ceny montáže</h2>
       <p>Montáž nabízíme volitelně — výrobek můžete objednat i bez ní. Částky níže jsou <strong>orientační</strong> (práce); finální cenu včetně dojezdu uvedeme v nabídce po zaměření / podle lokality.</p>
       <?php if (function_exists('sklo_montaz_orientacni_ceny')) : ?>

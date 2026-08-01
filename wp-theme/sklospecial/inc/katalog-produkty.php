@@ -787,13 +787,14 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
             <p>
               Doprava po ČR — individuálně dle rozměrů a vzdálenosti.
               U skla počítej s atypickou přepravou.
+              Do Prahy často jezdíme ve společných výjezdech (více montáží najednou).
               <?php if ($ship_from > 0) : ?>
                 Orientačně od <strong><?php echo esc_html(sklo_format_cena($ship_from)); ?></strong>.
               <?php endif; ?>
               <?php if ($ship !== null && (int) $ship > 0) : ?>
                 Expedice cca <?php echo esc_html((string) (int) $ship); ?> pracovních dní.
               <?php endif; ?>
-              Detaily: <a href="<?php echo esc_url(home_url('/doprava/')); ?>">doprava</a>,
+              Detaily: <a href="<?php echo esc_url(home_url('/doprava/#praha')); ?>">doprava</a>,
               <a href="<?php echo esc_url(home_url('/doba-realizace/')); ?>">lhůty</a>.
             </p>
           </div>

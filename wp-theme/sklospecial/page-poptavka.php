@@ -95,7 +95,7 @@ $katalog = home_url('/sklenene-dvere/');
                 <option value="konzultace">Jen konzultaci</option>
               </select>
             </label>
-            <p class="sklo-field__hint">Orientačně: dveře od 2&nbsp;500&nbsp;Kč/ks · sprcha od 3&nbsp;500&nbsp;Kč · zábradlí od 1&nbsp;500&nbsp;Kč/bm. Finální cena v nabídce. <a href="<?php echo esc_url(home_url('/doprava/#montaz')); ?>">Více</a></p>
+            <p class="sklo-field__hint">Orientačně: dveře od 2&nbsp;500&nbsp;Kč/ks · sprcha od 3&nbsp;500&nbsp;Kč · zábradlí od 1&nbsp;500&nbsp;Kč/bm. Finální cena v nabídce. V Praze často společné výjezdy — <a href="<?php echo esc_url(home_url('/doprava/#praha')); ?>">jak to funguje</a>. <a href="<?php echo esc_url(home_url('/doprava/#montaz')); ?>">Montáž</a></p>
             <label class="sklo-field sklo-field--check">
               <input type="checkbox" name="zamereni" value="ano">
               <span class="sklo-field__label">Chci volitelné zaměření na místě (u složitějších projektů)</span>

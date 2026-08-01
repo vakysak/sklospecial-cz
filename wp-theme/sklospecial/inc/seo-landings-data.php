@@ -150,7 +150,7 @@ function sklo_seo_cities(): array
             'locative' => 'Praze',
             'v' => 'v',
             'kraj' => 'Hlavní město Praha',
-            'note' => 'V Praze často řešíme panelové byty a posuvné do pouzdra. Dopravu a montáž plánujeme mimo špičku — termín domluvíme podle domu a výtahu.',
+            'note' => 'V Praze často řešíme panelové byty a posuvné do pouzdra. Montáže dávkujeme do společných výjezdů (typicky 3–5 zakázek) — napište nám a zařadíme vás do nejbližšího termínu. Dopravu plánujeme mimo špičku podle domu a výtahu.',
         ],
         [
             'slug' => 'brno',
