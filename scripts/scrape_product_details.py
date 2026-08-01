@@ -533,6 +533,8 @@ OPTION_WORD_MAP: dict[str, str] = {
     "dostepny na zamowienie": "na objednávku",
     "dostępny": "dostupný",
     "dostepny": "dostupný",
+    "dostepnymi": "dostupnými",
+    "dostępnymi": "dostupnými",
     "na zamówienie": "na objednávku",
     "na zamowienie": "na objednávku",
     "zamówienie": "objednávka",

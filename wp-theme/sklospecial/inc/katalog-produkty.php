@@ -153,6 +153,7 @@ function sklo_public_product_text(string $text): string
         // Availability (Quba leftovers)
         '/\bDost[eę]pny\s+na\s+zam[oó]wienie\b/iu' => 'Na objednávku',
         '/\bDost[eę]pny\s+na\s+zamowienie\b/iu' => 'Na objednávku',
+        '/\bdost[eę]pnymi\b/iu' => 'dostupnými',
         '/\b[SŚ]rednia\s+ilo[sś][cć]\b/iu' => 'Omezené množství',
         '/\bSrednia\s+ilosc\b/iu' => 'Omezené množství',
         '/\bNa\s+wyczerpaniu\b/iu' => 'Dochází',
