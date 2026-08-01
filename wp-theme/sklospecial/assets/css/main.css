@@ -1115,7 +1115,7 @@ a:hover { color: var(--accent-hover); }
 
 .sklo-footer__meta {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
   padding: 1.25rem 0;
   border-top: 1px solid var(--line);
@@ -3599,4 +3599,13 @@ a:hover { color: var(--accent-hover); }
   .sklo-cases__grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Legal info pages */
+.sklo-legal-page__intro {
+  max-width: 40rem;
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.55;
 }

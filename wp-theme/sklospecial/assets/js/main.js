@@ -598,6 +598,9 @@
       zamereni: form.querySelector('[name="zamereni"]')
         ? !!form.querySelector('[name="zamereni"]').checked
         : false,
+      prodlouzena_zaruka: form.querySelector('[name="prodlouzena_zaruka"]')
+        ? !!form.querySelector('[name="prodlouzena_zaruka"]').checked
+        : false,
       gdpr_souhlas: gdprEl ? !!gdprEl.checked : false,
       poznamka: String(fd.get('poznamka') || '').trim(),
       website: String(fd.get('website') || ''),

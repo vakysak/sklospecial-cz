@@ -44,12 +44,23 @@
       <p><a href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">Návod na zaměření</a></p>
       <p><a href="<?php echo esc_url(home_url('/pruvodce/')); ?>">Průvodce</a></p>
     </div>
+    <div>
+      <h3>Obchodní info</h3>
+      <p><a href="<?php echo esc_url(home_url('/doprava/')); ?>">Doprava</a></p>
+      <p><a href="<?php echo esc_url(home_url('/platba/')); ?>">Platba</a></p>
+      <p><a href="<?php echo esc_url(home_url('/doba-realizace/')); ?>">Doba realizace</a></p>
+      <p><a href="<?php echo esc_url(home_url('/zaruka/')); ?>">Záruka a servis</a></p>
+    </div>
   </div>
   <div class="sklo-wrap sklo-footer__copy">
     <p>&copy; <?php echo esc_html(gmdate('Y')); ?> Sklospeciál · provozovatel Stolařství Aleš s.r.o. · IČO 29457335 · DIČ CZ29457335</p>
     <nav class="sklo-footer__legal" aria-label="Právní informace">
       <a href="<?php echo esc_url(home_url('/ochrana-osobnich-udaju/')); ?>">Ochrana osobních údajů</a>
       <a href="<?php echo esc_url(home_url('/obchodni-podminky/')); ?>">Obchodní podmínky</a>
+      <a href="<?php echo esc_url(home_url('/zaruka/')); ?>">Záruka</a>
+      <a href="<?php echo esc_url(home_url('/doprava/')); ?>">Doprava</a>
+      <a href="<?php echo esc_url(home_url('/platba/')); ?>">Platba</a>
+      <a href="<?php echo esc_url(home_url('/doba-realizace/')); ?>">Lhůty</a>
       <a href="<?php echo esc_url(home_url('/cookies/')); ?>">Cookies</a>
       <a href="<?php echo esc_url(home_url('/mapa-stranek/')); ?>">Mapa stránek</a>
     </nav>

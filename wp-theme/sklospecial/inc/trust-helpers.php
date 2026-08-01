@@ -80,6 +80,7 @@ function sklo_render_risk_block(string $tone = 'tykani', string $class = ''): vo
 {
     $formal = $tone === 'vykani';
     $op = home_url('/obchodni-podminky/');
+    $zaruka = home_url('/zaruka/');
     $navod = home_url('/navod-na-zamereni/');
     $classes = trim('sklo-risk ' . $class);
 
@@ -91,7 +92,7 @@ function sklo_render_risk_block(string $tone = 'tykani', string $class = ''): vo
             ],
             [
                 'title' => 'Záruka',
-                'text'  => 'Záruka a práva z vadného plnění platí podle <a href="' . esc_url($op) . '">obchodních podmínek</a> a faktury k zakázce.',
+                'text'  => 'Zákonná práva z vad + volitelná prodloužená záruka (+1 rok, od cca 10&nbsp;% ceny). Detail: <a href="' . esc_url($zaruka) . '">záruka a servis</a> a <a href="' . esc_url($op) . '">obchodní podmínky</a>.',
             ],
             [
                 'title' => 'Reklamace',
@@ -109,7 +110,7 @@ function sklo_render_risk_block(string $tone = 'tykani', string $class = ''): vo
             ],
             [
                 'title' => 'Záruka',
-                'text'  => 'Záruka a práva z vadného plnění platí podle <a href="' . esc_url($op) . '">obchodních podmínek</a> a faktury k zakázce.',
+                'text'  => 'Zákonná práva z vad + volitelná prodloužená záruka (+1 rok, od cca 10&nbsp;% ceny). Detail: <a href="' . esc_url($zaruka) . '">záruka a servis</a> a <a href="' . esc_url($op) . '">obchodní podmínky</a>.',
             ],
             [
                 'title' => 'Reklamace',

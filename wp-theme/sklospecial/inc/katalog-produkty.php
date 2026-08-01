@@ -685,7 +685,7 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
             <p class="sklo-pdetail__avail"><?php echo esc_html($avail); ?></p>
           <?php endif; ?>
 
-          <p class="sklo-pdetail__note">Finální nabídka podle rozměrů a dostupnosti.</p>
+          <p class="sklo-pdetail__note">Finální nabídka podle rozměrů a dostupnosti. Volitelně prodloužená záruka +1&nbsp;rok (od cca 10&nbsp;% ceny) — <a href="<?php echo esc_url(home_url('/zaruka/')); ?>">více o záruce</a>.</p>
         </div>
       </div>
 
@@ -793,6 +793,8 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
               <?php if ($ship !== null && (int) $ship > 0) : ?>
                 Expedice cca <?php echo esc_html((string) (int) $ship); ?> pracovních dní.
               <?php endif; ?>
+              Detaily: <a href="<?php echo esc_url(home_url('/doprava/')); ?>">doprava</a>,
+              <a href="<?php echo esc_url(home_url('/doba-realizace/')); ?>">lhůty</a>.
             </p>
           </div>
           <div class="sklo-shipcard__col">

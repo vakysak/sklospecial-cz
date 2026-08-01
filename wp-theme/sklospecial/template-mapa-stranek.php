@@ -32,6 +32,11 @@ $types = sklo_seo_type_landings();
         <li><a href="<?php echo esc_url(home_url('/pruvodce/')); ?>">Průvodce</a></li>
         <li><a href="<?php echo esc_url(home_url('/poptavka/')); ?>">Poptávka</a></li>
         <li><a href="<?php echo esc_url(home_url('/kontakt/')); ?>">Kontakt</a></li>
+        <li><a href="<?php echo esc_url(home_url('/doprava/')); ?>">Doprava</a></li>
+        <li><a href="<?php echo esc_url(home_url('/platba/')); ?>">Platba</a></li>
+        <li><a href="<?php echo esc_url(home_url('/doba-realizace/')); ?>">Doba realizace</a></li>
+        <li><a href="<?php echo esc_url(home_url('/zaruka/')); ?>">Záruka a servis</a></li>
+        <li><a href="<?php echo esc_url(home_url('/obchodni-podminky/')); ?>">Obchodní podmínky</a></li>
       </ul>
     </section>
 

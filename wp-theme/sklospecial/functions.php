@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.11.0');
+define('SKLO_THEME_VER', '1.12.0');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
@@ -718,6 +718,15 @@ add_action('rest_api_init', static function (): void {
             } elseif (is_numeric($zamereni_raw)) {
                 $zamereni = ((int) $zamereni_raw) === 1;
             }
+            $zaruka_raw = $req->get_param('prodlouzena_zaruka');
+            $prodlouzena_zaruka = false;
+            if (is_bool($zaruka_raw)) {
+                $prodlouzena_zaruka = $zaruka_raw;
+            } elseif (is_string($zaruka_raw)) {
+                $prodlouzena_zaruka = in_array(strtolower($zaruka_raw), ['1', 'ano', 'true', 'on', 'yes'], true);
+            } elseif (is_numeric($zaruka_raw)) {
+                $prodlouzena_zaruka = ((int) $zaruka_raw) === 1;
+            }
             $gdpr_raw = $req->get_param('gdpr_souhlas');
             $gdpr_souhlas = false;
             if (is_bool($gdpr_raw)) {
@@ -802,6 +811,9 @@ add_action('rest_api_init', static function (): void {
             ];
             $montaz_label = $montaz_map[$montaz] ?? 'Ne';
             $zamereni_label = $zamereni ? 'Ano — volitelné zaměření' : 'Ne';
+            $zaruka_label = $prodlouzena_zaruka
+                ? 'Ano — zájem o +1 rok (od cca 10 % ceny, upřesníme v nabídce)'
+                : 'Ne';
 
             $body_lines = [
                 'Nová poptávka z katalogu (sklospecial.cz)',
@@ -813,6 +825,7 @@ add_action('rest_api_init', static function (): void {
                 'Doprava: ' . $doprava_label,
                 'Montáž: ' . $montaz_label,
                 'Zaměření: ' . $zamereni_label,
+                'Prodloužená záruka: ' . $zaruka_label,
                 'GDPR souhlas: Ano',
                 '',
                 'Produkt: ' . ($name !== '' ? $name : 'Obecná poptávka') . ($code !== '' ? ' (' . $code . ')' : ''),
