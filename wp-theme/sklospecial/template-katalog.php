@@ -348,6 +348,10 @@ $back_url = (string) get_permalink();
   if (!empty($cat['show_products'])) {
       sklo_render_produkty_grid($slug, null, 24);
   }
+
+  if (sklo_seo_category_by_slug($slug)) {
+      sklo_render_city_cloud($slug);
+  }
   ?>
 
   <section class="sklo-section sklo-cta-band">

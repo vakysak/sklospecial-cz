@@ -2594,3 +2594,144 @@ a:hover { color: var(--accent-hover); }
   content-visibility: hidden;
   contain-intrinsic-size: 400px 480px;
 }
+
+/* SEO landings + city cloud + sitemap */
+.sklo-type-grid--6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.sklo-seo-landing__crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+  align-items: center;
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.sklo-seo-landing__crumbs a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.sklo-seo-landing__price-note {
+  margin: 0.25rem 0 1rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.sklo-seo-landing__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.sklo-seo-landing__bullets {
+  margin: 0 0 1.25rem;
+  padding-left: 1.15rem;
+}
+
+.sklo-seo-landing__bullets li {
+  margin: 0.4rem 0;
+}
+
+.sklo-seo-landing__service {
+  margin: 0 0 1.25rem;
+  max-width: 42rem;
+}
+
+.sklo-seo-landing__aside {
+  padding: 1.25rem 1.35rem;
+  background: linear-gradient(160deg, rgba(255,255,255,0.55), rgba(230,238,242,0.4));
+  border: 1px solid rgba(18, 40, 55, 0.08);
+}
+
+.sklo-seo-landing__aside h2 {
+  margin-top: 0;
+  font-size: 1.15rem;
+}
+
+.sklo-seo-landing__related {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sklo-seo-landing__related li {
+  margin: 0.45rem 0;
+}
+
+.sklo-seo-landing__related a {
+  color: inherit;
+}
+
+.sklo-city-cloud__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+}
+
+.sklo-city-cloud__list a {
+  display: inline-block;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid rgba(18, 40, 55, 0.12);
+  background: rgba(255, 255, 255, 0.45);
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.92rem;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.sklo-city-cloud__list a:hover {
+  border-color: rgba(18, 40, 55, 0.28);
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.sklo-city-cloud__note {
+  margin: 1.25rem 0 0;
+  text-align: center;
+}
+
+.sklo-sitemap__block {
+  margin: 2rem 0;
+}
+
+.sklo-sitemap__list {
+  columns: 2;
+  gap: 1.5rem;
+  margin: 0.75rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.sklo-sitemap__list--cities {
+  columns: 3;
+}
+
+@media (max-width: 960px) {
+  .sklo-type-grid--6 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .sklo-seo-landing__grid {
+    grid-template-columns: 1fr;
+  }
+  .sklo-sitemap__list--cities {
+    columns: 2;
+  }
+}
+
+@media (max-width: 720px) {
+  .sklo-type-grid--6 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .sklo-sitemap__list,
+  .sklo-sitemap__list--cities {
+    columns: 1;
+  }
+}

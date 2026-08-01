@@ -523,6 +523,27 @@ function sklo_katalog(): array
             'uploads' => $uploads,
         ],
 
+        'sklenene-pricky' => [
+            'title'      => 'Skleněné příčky na míru',
+            'eyebrow'    => 'Nabídka · Příčky',
+            'lead'       => 'Odděl místnosti bez těžké stěny. Skleněné příčky a zabudování pustí světlo dál — zaměříš sám, my vyrobíme.',
+            'seo_title'  => 'Skleněné příčky na míru | Sklospeciál',
+            'seo_desc'   => 'Skleněné příčky a zabudování na míru. Online zaměření, výroba, montáž. Rodinná firma, 30 let.',
+            'price_from' => $od('pricky-a-zabudovani'),
+            'show_products' => true,
+            'hero_image' => $img('pricky-a-zabudovani'),
+            'sections'   => [
+                [
+                    'id'    => 'pricky',
+                    'title' => 'Skleněné příčky',
+                    'lead'  => 'Pevné nebo s dveřním křídlem. Hodí se do open-space, pracovny i bytu.',
+                    'price' => $od('pricky-a-zabudovani'),
+                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0326.jpg',
+                ],
+            ],
+            'uploads' => $uploads,
+        ],
+
         'zabradli' => [
             'title'      => 'Skleněné zábradlí',
             'eyebrow'    => 'Nabídka · Zábradlí',

@@ -76,6 +76,8 @@ $children = is_array($cat['children'] ?? null) ? $cat['children'] : [];
     </div>
   </section>
 
+  <?php sklo_render_city_cloud('sklenene-dvere'); ?>
+
   <section class="sklo-section sklo-cta-band">
     <div class="sklo-wrap sklo-cta-band__inner sklo-cta-band__inner--wide">
       <div>

@@ -13,8 +13,8 @@ $cfg = sklo_konfigurator_url();
   <div class="sklo-wrap sklo-hero__content">
     <p class="sklo-pill">Skleněné dveře na míru</p>
     <p class="sklo-hero__brand">Sklospeciál</p>
-    <h1 class="sklo-hero__title">Dveře, které sedí<br>do <em>tvého</em> otvoru</h1>
-    <p class="sklo-hero__lead">Zaměříš sám, pošleš fotky a ve studiu si složíš dveře — typ, sklo, lištu. My z toho připravíme konkrétní nabídku. Bez showroomu, bez zbytečných kol.</p>
+    <h1 class="sklo-hero__title">Skleněné dveře a sklo na míru — online, bez showroomu</h1>
+    <p class="sklo-hero__lead">Posuvné dveře, sprchové kouty, zábradlí a stříšky. Zaměříš sám, my vyrobíme — nabídku připravíme podle tvých rozměrů a fotek. Bez showroomu, bez zbytečných kol.</p>
     <div class="sklo-hero__actions">
       <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Navrhni si dveře</a>
       <a class="sklo-btn sklo-btn--ghost-light" href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">Jak zaměřit</a>
@@ -92,7 +92,7 @@ $cfg = sklo_konfigurator_url();
       <h2>Sklo do domu — od dveří po stříšky</h2>
       <p>Hlavní směry nabídky. U dveří doladíš detaily ve <a href="<?php echo esc_url($cfg); ?>">studiu</a>.</p>
     </header>
-    <div class="sklo-type-grid sklo-type-grid--5">
+    <div class="sklo-type-grid sklo-type-grid--6">
       <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/')); ?>">
         <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/posuvne-sklenene-dvere-matne-sklo.webp" alt="Skleněné dveře" width="507" height="626" loading="lazy" decoding="async">
         <h3>Dveře</h3>
@@ -112,6 +112,11 @@ $cfg = sklo_konfigurator_url();
         <img class="sklo-type__image" src="https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0832.jpg" alt="Skleněné stříšky" width="400" height="400" loading="lazy" decoding="async">
         <h3>Stříšky</h3>
         <p>Na konzolách, táhlech i skladem.</p>
+      </a>
+      <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-pricky/')); ?>">
+        <img class="sklo-type__image" src="https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0326.jpg" alt="Skleněné příčky" width="400" height="400" loading="lazy" decoding="async">
+        <h3>Příčky</h3>
+        <p>Skleněné příčky a zabudování.</p>
       </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/francouzske-balkony/')); ?>">
         <img class="sklo-type__image" src="https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0645.jpg" alt="Francouzské balkony" width="400" height="400" loading="lazy" decoding="async">

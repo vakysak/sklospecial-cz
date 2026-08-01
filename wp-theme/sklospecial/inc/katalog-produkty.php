@@ -65,6 +65,9 @@ function sklo_produkty_json_map(): array
  */
 function sklo_produkty_for_slug(string $slug): ?array
 {
+    if ($slug === 'sklenene-pricky') {
+        $slug = 'pricky-a-zabudovani';
+    }
     $all = sklo_produkty_all();
     return isset($all[$slug]) && is_array($all[$slug]) ? $all[$slug] : null;
 }

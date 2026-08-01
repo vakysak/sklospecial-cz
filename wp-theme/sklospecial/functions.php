@@ -9,10 +9,11 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.6.16');
+define('SKLO_THEME_VER', '1.7.0');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
+require_once get_template_directory() . '/inc/seo-landings-data.php';
 
 /**
  * Staging host? (not production sklospecial.cz).
@@ -141,6 +142,7 @@ function sklo_nav_fallback(): void
         ['/sprchove-kouty/', 'Sprchové kouty'],
         ['/zabradli/', 'Zábradlí'],
         ['/strisky/', 'Stříšky'],
+        ['/sklenene-pricky/', 'Příčky'],
         ['/francouzske-balkony/', 'Balkony'],
         ['/realizace/', 'Realizace'],
         ['/navod-na-zamereni/', 'Návod'],
@@ -177,11 +179,25 @@ function sklo_nav_fallback(): void
 }
 
 /**
- * Rank Math / document title for katalog pages.
+ * Document title for katalog + SEO landings.
  */
 add_filter('document_title_parts', function (array $parts): array {
     if (!is_page()) {
         return $parts;
+    }
+    $landing = sklo_seo_resolve_landing();
+    if ($landing) {
+        if (($landing['kind'] ?? '') === 'city') {
+            $copy = sklo_seo_city_copy($landing['category'], $landing['city']);
+            $parts['title'] = $copy['seo_title'];
+            unset($parts['tagline'], $parts['site']);
+            return $parts;
+        }
+        if (($landing['kind'] ?? '') === 'type') {
+            $parts['title'] = (string) ($landing['type']['seo_title'] ?? $parts['title']);
+            unset($parts['tagline'], $parts['site']);
+            return $parts;
+        }
     }
     $slug = get_post_field('post_name', get_queried_object_id()) ?: '';
     $cat  = sklo_katalog_for_slug($slug);
@@ -196,12 +212,24 @@ add_action('wp_head', function (): void {
     if (!is_page()) {
         return;
     }
-    $slug = get_post_field('post_name', get_queried_object_id()) ?: '';
-    $cat  = sklo_katalog_for_slug($slug);
-    if (!$cat || empty($cat['seo_desc'])) {
+    $desc = '';
+    $landing = sklo_seo_resolve_landing();
+    if ($landing && ($landing['kind'] ?? '') === 'city') {
+        $copy = sklo_seo_city_copy($landing['category'], $landing['city']);
+        $desc = $copy['seo_desc'];
+    } elseif ($landing && ($landing['kind'] ?? '') === 'type') {
+        $desc = (string) ($landing['type']['seo_desc'] ?? '');
+    } else {
+        $slug = get_post_field('post_name', get_queried_object_id()) ?: '';
+        $cat  = sklo_katalog_for_slug($slug);
+        if ($cat && !empty($cat['seo_desc'])) {
+            $desc = (string) $cat['seo_desc'];
+        }
+    }
+    if ($desc === '') {
         return;
     }
-    echo '<meta name="description" content="' . esc_attr((string) $cat['seo_desc']) . '" />' . "\n";
+    echo '<meta name="description" content="' . esc_attr($desc) . '" />' . "\n";
 }, 1);
 
 function sklo_is_current(string $path): bool
