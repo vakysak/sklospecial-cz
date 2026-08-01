@@ -685,7 +685,7 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
             <p class="sklo-pdetail__avail"><?php echo esc_html($avail); ?></p>
           <?php endif; ?>
 
-          <p class="sklo-pdetail__note">Finální nabídka podle rozměrů a dostupnosti. Volitelně prodloužená záruka +1&nbsp;rok (od cca 10&nbsp;% ceny) — <a href="<?php echo esc_url(home_url('/zaruka/')); ?>">více o záruce</a>.</p>
+          <p class="sklo-pdetail__note">Finální nabídka podle rozměrů a dostupnosti. Volitelně prodloužená záruka +1&nbsp;rok (10&nbsp;% ceny výrobku bez dopravy a montáže) — <a href="<?php echo esc_url(home_url('/zaruka/')); ?>">více o záruce</a>.</p>
         </div>
       </div>
 
@@ -800,8 +800,10 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
           <div class="sklo-shipcard__col">
             <h3>Montáž</h3>
             <p>
-              Montáž na klíč — domluvíme individuálně podle lokality a typu výrobku.
+              Orientačně: dveře od 2&nbsp;500&nbsp;Kč/ks, sprcha od 3&nbsp;500&nbsp;Kč, zábradlí od 1&nbsp;500&nbsp;Kč/bm.
+              Finální cena včetně dojezdu je v nabídce po zaměření.
               Můžeš objednat výrobek samostatně nebo s montáží.
+              Detaily: <a href="<?php echo esc_url(home_url('/doprava/#montaz')); ?>">doprava a montáž</a>.
             </p>
           </div>
         </div>

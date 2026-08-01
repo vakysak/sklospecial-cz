@@ -32,17 +32,17 @@ PAGES = [
         "menu_title": "Záruka",
         "menu_order": 20,
         "seo_title": "Záruka, reklamace a servis | Sklospeciál",
-        "seo_desc": "Zákonná odpovědnost za vady, pozáruční servis a volitelná prodloužená záruka +1 rok od cca 10 % ceny výrobku.",
+        "seo_desc": "Zákonná odpovědnost za vady, pozáruční servis a volitelná prodloužená záruka +1 rok za 10 % ceny výrobku (bez dopravy a montáže).",
         "content": "<p>Obsah stránky je v šabloně tématu.</p>",
     },
     {
         "slug": "doprava",
-        "title": "Doprava",
+        "title": "Doprava a montáž",
         "template": "page-doprava.php",
-        "menu_title": "Doprava",
+        "menu_title": "Doprava a montáž",
         "menu_order": 21,
-        "seo_title": "Doprava a náklady dopravy | Sklospeciál",
-        "seo_desc": "Doprava skla po ČR — vlastní odběr, firemní auto nebo přepravní služba. Cenu naceníme v nabídce.",
+        "seo_title": "Doprava a montáž | Sklospeciál",
+        "seo_desc": "Doprava skla po ČR a orientační montáž: dveře od 2 500 Kč, sprcha od 3 500 Kč, zábradlí od 1 500 Kč/bm. Finální cena v nabídce.",
         "content": "<p>Obsah stránky je v šabloně tématu.</p>",
     },
     {
@@ -111,10 +111,10 @@ OP_CONTENT = """
 <h2>8. Reklamace, vady a záruka</h2>
 <p>Zboží při převzetí zkontrolujte. Zjevné vady (poškození při dopravě, zjevná odchylka od specifikace) reklamujte bez zbytečného odkladu, ideálně písemně e-mailem, s fotodokumentací.</p>
 <p>U spotřebitelů odpovídáme za vady podle právních předpisů (typicky 24 měsíců od převzetí). Na skle se mohou vyskytovat běžné optické jevy a tolerance dle norem / praxe sklářské výroby; drobné odchylky v mezích tolerance nejsou vadou.</p>
-<p>Volitelně lze sjednat <strong>prodlouženou smluvní záruku (+1&nbsp;rok)</strong> za poplatek (orientačně od cca 10&nbsp;% ceny výrobku bez dopravy a montáže). Kryje výrobní vady; typicky <strong>nekryje</strong> rozbití skla nárazem či neodbornou manipulací. Podrobnosti: <a href="/zaruka/">Záruka a servis</a>. Prodloužená záruka nenahrazuje ani neomezuje zákonná práva z vadného plnění.</p>
+<p>Volitelně lze sjednat <strong>prodlouženou smluvní záruku (+1&nbsp;rok)</strong> za poplatek <strong>10&nbsp;% ceny výrobku</strong> (bez dopravy a montáže). Kryje výrobní vady; typicky <strong>nekryje</strong> rozbití skla nárazem či neodbornou manipulací. Podrobnosti: <a href="/zaruka/">Záruka a servis</a>. Prodloužená záruka nenahrazuje ani neomezuje zákonná práva z vadného plnění.</p>
 
 <h2>9. Doprava a předání</h2>
-<p>Riziko škody na věci přechází dle domluvy v nabídce (typicky předáním dopravci nebo při osobním odběru). Sklo vyžaduje opatrnou manipulaci — dodržujte pokyny k dopravě a skladování. Možnosti a náklady: <a href="/doprava/">Doprava</a>.</p>
+<p>Riziko škody na věci přechází dle domluvy v nabídce (typicky předáním dopravci nebo při osobním odběru). Sklo vyžaduje opatrnou manipulaci — dodržujte pokyny k dopravě a skladování. Možnosti, náklady a orientační montáž: <a href="/doprava/">Doprava a montáž</a>.</p>
 
 <h2>10. Duševní vlastnictví</h2>
 <p>Podklady konfigurátoru, texty a fotografie na webu jsou chráněny. Nepoužívejte je komerčně bez souhlasu.</p>

@@ -46,7 +46,7 @@
     </div>
     <div>
       <h3>Obchodní info</h3>
-      <p><a href="<?php echo esc_url(home_url('/doprava/')); ?>">Doprava</a></p>
+      <p><a href="<?php echo esc_url(home_url('/doprava/')); ?>">Doprava a montáž</a></p>
       <p><a href="<?php echo esc_url(home_url('/platba/')); ?>">Platba</a></p>
       <p><a href="<?php echo esc_url(home_url('/doba-realizace/')); ?>">Doba realizace</a></p>
       <p><a href="<?php echo esc_url(home_url('/zaruka/')); ?>">Záruka a servis</a></p>
@@ -58,7 +58,7 @@
       <a href="<?php echo esc_url(home_url('/ochrana-osobnich-udaju/')); ?>">Ochrana osobních údajů</a>
       <a href="<?php echo esc_url(home_url('/obchodni-podminky/')); ?>">Obchodní podmínky</a>
       <a href="<?php echo esc_url(home_url('/zaruka/')); ?>">Záruka</a>
-      <a href="<?php echo esc_url(home_url('/doprava/')); ?>">Doprava</a>
+      <a href="<?php echo esc_url(home_url('/doprava/')); ?>">Doprava a montáž</a>
       <a href="<?php echo esc_url(home_url('/platba/')); ?>">Platba</a>
       <a href="<?php echo esc_url(home_url('/doba-realizace/')); ?>">Lhůty</a>
       <a href="<?php echo esc_url(home_url('/cookies/')); ?>">Cookies</a>

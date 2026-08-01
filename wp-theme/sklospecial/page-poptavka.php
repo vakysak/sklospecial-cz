@@ -95,13 +95,14 @@ $katalog = home_url('/sklenene-dvere/');
                 <option value="konzultace">Jen konzultaci</option>
               </select>
             </label>
+            <p class="sklo-field__hint">Orientačně: dveře od 2&nbsp;500&nbsp;Kč/ks · sprcha od 3&nbsp;500&nbsp;Kč · zábradlí od 1&nbsp;500&nbsp;Kč/bm. Finální cena v nabídce. <a href="<?php echo esc_url(home_url('/doprava/#montaz')); ?>">Více</a></p>
             <label class="sklo-field sklo-field--check">
               <input type="checkbox" name="zamereni" value="ano">
               <span class="sklo-field__label">Chci volitelné zaměření na místě (u složitějších projektů)</span>
             </label>
             <label class="sklo-field sklo-field--check">
               <input type="checkbox" name="prodlouzena_zaruka" value="ano">
-              <span class="sklo-field__label">Mám zájem o prodlouženou záruku +1 rok (od cca 10&nbsp;% ceny výrobku — upřesníme v nabídce). <a href="<?php echo esc_url(home_url('/zaruka/')); ?>">Co kryje</a></span>
+              <span class="sklo-field__label">Mám zájem o prodlouženou záruku +1 rok (10&nbsp;% ceny výrobku bez dopravy a montáže). <a href="<?php echo esc_url(home_url('/zaruka/')); ?>">Co kryje</a></span>
             </label>
           </div>
         </section>

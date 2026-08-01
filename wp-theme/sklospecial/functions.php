@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.12.0');
+define('SKLO_THEME_VER', '1.13.0');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
@@ -812,7 +812,7 @@ add_action('rest_api_init', static function (): void {
             $montaz_label = $montaz_map[$montaz] ?? 'Ne';
             $zamereni_label = $zamereni ? 'Ano — volitelné zaměření' : 'Ne';
             $zaruka_label = $prodlouzena_zaruka
-                ? 'Ano — zájem o +1 rok (od cca 10 % ceny, upřesníme v nabídce)'
+                ? 'Ano — zájem o +1 rok (10 % ceny výrobku bez dopravy/montáže)'
                 : 'Ne';
 
             $body_lines = [

@@ -37,7 +37,7 @@ $navod = home_url('/navod-na-zamereni/');
       <p>Po dokončení výroby domluvíme předání: osobní odběr, naše auto, nebo přepravní služba. Samotná doprava po ČR obvykle <strong>1–3 pracovní dny</strong> podle dopravce. Více: <a href="<?php echo esc_url($doprava); ?>">doprava</a>.</p>
 
       <h2>Montáž</h2>
-      <p>Termín montáže závisí na kalendáři techniků a lokalitě. Domlouváme individuálně po výrobě (nebo souběžně, pokud to dává smysl). Montáž se typicky hradí na místě po podpisu předávacího protokolu.</p>
+      <p>Termín montáže závisí na kalendáři techniků a lokalitě. Domlouváme individuálně po výrobě (nebo souběžně, pokud to dává smysl). Orientační ceny montáže a dopravy: <a href="<?php echo esc_url($doprava); ?>#montaz">doprava a montáž</a>. Montáž se typicky hradí na místě po podpisu předávacího protokolu.</p>
 
       <h2>Co lhůty prodlužuje</h2>
       <ul>

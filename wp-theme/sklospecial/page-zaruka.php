@@ -35,7 +35,7 @@ $op = home_url('/obchodni-podminky/');
 
       <h2>3. Prodloužená záruka (+1 rok) za poplatek</h2>
       <p>Volitelná <strong>smluvní záruka za jakost</strong> nad rámec zákona. Prodlouží pokrytí výrobních vad o <strong>+1 rok</strong> po uplynutí zákonné lhůty.</p>
-      <p><strong>Cena:</strong> orientačně <strong>10&nbsp;% z ceny výrobku</strong> (bez dopravy a montáže). U zakázkové výroby upřesníme přesnou částku v nabídce — obvykle v pásmu 8–12&nbsp;% podle typu výrobku a rozsahu.</p>
+      <p><strong>Cena:</strong> <strong>10&nbsp;% z ceny výrobku</strong> (bez dopravy a montáže). Přesnou částku doplníme do nabídky podle odsouhlasené ceny výrobku.</p>
 
       <h3>Co kryje</h3>
       <ul>

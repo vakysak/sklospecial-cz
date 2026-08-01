@@ -305,7 +305,7 @@ function sklo_seo_type_landings(): array
                 ],
                 [
                     'q' => 'Děláte i montáž dveří do pouzdra?',
-                    'a' => 'Ano. V poptávce zvolíš montáž nebo jen dodávku. Termín a cenu montáže domluvíme podle lokality.',
+                    'a' => 'Ano. V poptávce zvolíš montáž nebo jen dodávku. Orientačně od 2 500 Kč/ks — finální cena včetně dojezdu je v nabídce. Více: doprava a montáž.',
                 ],
             ],
             'seo_title' => 'Posuvné skleněné dveře do pouzdra na míru | Sklospeciál',
@@ -333,7 +333,7 @@ function sklo_seo_type_landings(): array
             'bullets'      => [
                 'Jedna nebo více stěn podle dispozice koupelny',
                 'Čiré i matné sklo, kování podle výběru',
-                'Doprava a montáž domluvíme individuálně',
+                'Montáž orientačně od 3 500 Kč / sestava',
             ],
             'faq' => [
                 [
@@ -346,7 +346,7 @@ function sklo_seo_type_landings(): array
                 ],
                 [
                     'q' => 'Dodáváte walk-in i mimo velké města?',
-                    'a' => 'Ano. Pracujeme na dálku a montujeme po celé ČR. Nemáme pobočky v každém městě — dodávku a montáž plánujeme k tobě.',
+                    'a' => 'Ano. Pracujeme na dálku a montujeme po celé ČR. Orientační montáž sprchy od 3 500 Kč — finální cena v nabídce. Nemáme pobočky v každém městě.',
                 ],
             ],
             'seo_title' => 'Walk-in sprchové kouty na míru | Sklospeciál',
@@ -415,7 +415,7 @@ function sklo_seo_type_landings(): array
             'bullets'      => [
                 'Kotvení do stupňů, bočnice nebo podlahy podle stavby',
                 'Bezpečnostní sklo a profily podle projektu',
-                'DIY sestavy i kompletní montáž',
+                'Montáž orientačně od 1 500 Kč / bm',
             ],
             'faq' => [
                 [
@@ -428,7 +428,7 @@ function sklo_seo_type_landings(): array
                 ],
                 [
                     'q' => 'Montujete i mimo Prahu a Brno?',
-                    'a' => 'Ano. Nemáme pobočku v každém městě — jezdíme za tebou. Termín montáže domluvíme podle lokality.',
+                    'a' => 'Ano. Nemáme pobočku v každém městě — jezdíme za tebou. Orientační montáž od 1 500 Kč/bm, finální cena v nabídce.',
                 ],
             ],
             'seo_title' => 'Skleněné zábradlí na schodiště na míru | Sklospeciál',

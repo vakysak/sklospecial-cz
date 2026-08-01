@@ -220,7 +220,7 @@ $recenze_stars = static function (int $n): string {
       </details>
       <details class="sklo-faq__item">
         <summary>Děláte i montáž?</summary>
-        <p>Ano. V poptávce zvolíš dveře s montáží nebo bez. Montáž domlouváme individuálně podle lokality a typu dveří.</p>
+        <p>Ano. V poptávce zvolíš výrobek s montáží nebo bez. Orientačně: dveře od 2&nbsp;500&nbsp;Kč/ks, sprcha od 3&nbsp;500&nbsp;Kč, zábradlí od 1&nbsp;500&nbsp;Kč/bm — finální cena v nabídce. Více na stránce <a href="<?php echo esc_url(home_url('/doprava/#montaz')); ?>">doprava a montáž</a>.</p>
       </details>
       <details class="sklo-faq__item">
         <summary>Kdy dostanu nabídku?</summary>

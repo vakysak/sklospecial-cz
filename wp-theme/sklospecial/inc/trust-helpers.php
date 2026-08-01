@@ -92,7 +92,7 @@ function sklo_render_risk_block(string $tone = 'tykani', string $class = ''): vo
             ],
             [
                 'title' => 'Záruka',
-                'text'  => 'Zákonná práva z vad + volitelná prodloužená záruka (+1 rok, od cca 10&nbsp;% ceny). Detail: <a href="' . esc_url($zaruka) . '">záruka a servis</a> a <a href="' . esc_url($op) . '">obchodní podmínky</a>.',
+                'text'  => 'Zákonná práva z vad + volitelná prodloužená záruka (+1 rok, 10&nbsp;% ceny výrobku bez dopravy a montáže). Detail: <a href="' . esc_url($zaruka) . '">záruka a servis</a> a <a href="' . esc_url($op) . '">obchodní podmínky</a>.',
             ],
             [
                 'title' => 'Reklamace',
@@ -110,7 +110,7 @@ function sklo_render_risk_block(string $tone = 'tykani', string $class = ''): vo
             ],
             [
                 'title' => 'Záruka',
-                'text'  => 'Zákonná práva z vad + volitelná prodloužená záruka (+1 rok, od cca 10&nbsp;% ceny). Detail: <a href="' . esc_url($zaruka) . '">záruka a servis</a> a <a href="' . esc_url($op) . '">obchodní podmínky</a>.',
+                'text'  => 'Zákonná práva z vad + volitelná prodloužená záruka (+1 rok, 10&nbsp;% ceny výrobku bez dopravy a montáže). Detail: <a href="' . esc_url($zaruka) . '">záruka a servis</a> a <a href="' . esc_url($op) . '">obchodní podmínky</a>.',
             ],
             [
                 'title' => 'Reklamace',
@@ -143,6 +143,59 @@ function sklo_render_risk_block(string $tone = 'tykani', string $class = ''): vo
       <?php endforeach; ?>
     </ul>
   </aside>
+    <?php
+}
+
+/**
+ * Orientační ceny montáže (customer-facing tiers).
+ *
+ * @return list<array{label: string, from: string}>
+ */
+function sklo_montaz_orientacni_ceny(): array
+{
+    return [
+        [
+            'label' => 'Skleněné dveře (otočné / posuvné)',
+            'from'  => 'od 2 500 Kč / ks',
+        ],
+        [
+            'label' => 'Sprchové kouty a stěny',
+            'from'  => 'od 3 500 Kč / sestava',
+        ],
+        [
+            'label' => 'Zábradlí a příčky',
+            'from'  => 'od 1 500 Kč / bm',
+        ],
+    ];
+}
+
+/**
+ * Short montáž pricing blurb + optional tier list.
+ */
+function sklo_render_montaz_orientacni(bool $with_list = true, string $class = ''): void
+{
+    $doprava = home_url('/doprava/#montaz');
+    $classes = trim('sklo-montaz-orient ' . $class);
+    ?>
+  <div class="<?php echo esc_attr($classes); ?>">
+    <p>
+      Orientační ceny montáže (práce). Finální částku včetně dojezdu uvedeme v nabídce po zaměření / podle lokality.
+      <?php if (!$with_list) : ?>
+        Přehled: <a href="<?php echo esc_url($doprava); ?>">doprava a montáž</a>.
+      <?php endif; ?>
+    </p>
+    <?php if ($with_list) : ?>
+      <ul>
+        <?php foreach (sklo_montaz_orientacni_ceny() as $tier) : ?>
+          <li>
+            <strong><?php echo esc_html($tier['label']); ?></strong>
+            — <?php echo esc_html($tier['from']); ?>
+          </li>
+        <?php endforeach; ?>
+      </ul>
+      <p>Nejde o pevný ceník — atypické kotvení, výška, přístup nebo delší dojezd cenu posunou. Můžeš objednat výrobek i bez montáže.</p>
+    <?php endif; ?>
+  </div>
     <?php
 }
 
