@@ -9,10 +9,41 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.6.15');
+define('SKLO_THEME_VER', '1.6.16');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
+
+/**
+ * Staging host? (not production sklospecial.cz).
+ */
+function sklo_is_staging_host(): bool
+{
+    $host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
+    $host = preg_replace('/:\d+$/', '', $host) ?: '';
+    return !in_array($host, ['sklospecial.cz', 'www.sklospecial.cz'], true);
+}
+
+/**
+ * Theme pojistka: noindex on non-production hosts.
+ */
+function sklo_staging_robots_noindex(): void
+{
+    if (!sklo_is_staging_host()) {
+        return;
+    }
+    echo '<meta name="robots" content="noindex, nofollow">' . "\n";
+}
+add_action('wp_head', 'sklo_staging_robots_noindex', 0);
+
+add_filter('robots_txt', function ($output, $public) {
+    $host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
+    $host = preg_replace('/:\d+$/', '', $host) ?: '';
+    if (!in_array($host, ['sklospecial.cz', 'www.sklospecial.cz'], true)) {
+        return "User-agent: *\nDisallow: /\n";
+    }
+    return $output;
+}, 10, 2);
 
 function sklo_api_base(): string
 {

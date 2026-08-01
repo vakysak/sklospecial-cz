@@ -150,7 +150,34 @@ function sklo_public_product_text(string $text): string
     $replacements = [
         // Longest phrases first
 
+        // Availability (Quba leftovers)
+        '/\bDost[eę]pny\s+na\s+zam[oó]wienie\b/iu' => 'Na objednávku',
+        '/\bDost[eę]pny\s+na\s+zamowienie\b/iu' => 'Na objednávku',
+        '/\b[SŚ]rednia\s+ilo[sś][cć]\b/iu' => 'Omezené množství',
+        '/\bSrednia\s+ilosc\b/iu' => 'Omezené množství',
+        '/\bNa\s+wyczerpaniu\b/iu' => 'Dochází',
+
         // Aggressive PL→CS (product copy leftovers)
+        '/\bdo\s+wymiar[oó]w\b/iu' => 'na míru',
+        '/\bdo\s+wymiaru\b/iu' => 'na míru',
+        '/\bwymiar[oó]w\b/iu' => 'rozměrů',
+        '/\bwymiaru\b/iu' => 'rozměru',
+        '/\bwymiar\b/iu' => 'rozměr',
+        '/\bna\s+zam[oó]wienie\b/iu' => 'na objednávku',
+        '/\bna\s+zamowienie\b/iu' => 'na objednávku',
+        '/\bzam[oó]wienia\b/iu' => 'objednávky',
+        '/\bzamowienia\b/iu' => 'objednávky',
+        '/\bzam[oó]wienie\b/iu' => 'objednávka',
+        '/\bzamowienie\b/iu' => 'objednávka',
+        '/\bodp[lł]ywowy\b/iu' => 'odtokový',
+        '/\bodplywowy\b/iu' => 'odtokový',
+        '/\bbezbarwnego\b/iu' => 'čirého',
+        '/\bbezbarwne\b/iu' => 'čiré',
+        '/\bwahad[lł]owe\b/iu' => 'kyvné',
+        '/\bwahadlowe\b/iu' => 'kyvné',
+        '/\bInstrukcja\b/iu' => 'Návod',
+        '/\binstrukcja\b/iu' => 'návod',
+        '/\bschemat\b/iu' => 'schéma',
         // Matte-side N/A choice (Polish + hybrid leftovers)
         '/\bBrak\s*-?\s*gdy\s+(?:dveře\s+)?(?:čiré|bezbarwne|bezbarvé)\s+(?:nebo|lub)\s+laminat\b/iu' => 'chybí, pokud jsou dveře bezbarvé nebo laminátové',
         '/\bBrak\s*-?\s*gdy\s+drzwi\s+bezbarwne\s+lub\s+laminat\b/iu' => 'chybí, pokud jsou dveře bezbarvé nebo laminátové',
@@ -650,7 +677,7 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
       </div>
 
       <div class="sklo-pdetail__cta sklo-pdetail__cta--bottom sklo-pdetail__cta--triple">
-        <button type="button" class="sklo-btn" data-sklo-order-selected>Objednat vybrané</button>
+        <button type="button" class="sklo-btn" data-sklo-order-selected>Odeslat poptávku</button>
         <a class="sklo-btn sklo-btn--ghost" href="<?php echo esc_url($poptavka); ?>">Nenašel jsi co hledáš? Pošli nezávaznou poptávku</a>
         <a class="sklo-link" href="<?php echo esc_url($cfg_url); ?>" target="_blank" rel="noopener">Konfigurátor</a>
       </div>

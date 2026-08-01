@@ -99,22 +99,22 @@ $cfg = sklo_konfigurator_url();
         <p>Posuvné, kyvné, otevírané i vzory skla.</p>
       </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/sprchove-kouty/')); ?>">
-        <img class="sklo-type__image" src="https://qubaglass.pl/environment/cache/images/productGfx_10851_700_700/kabina_szklana_kabiny_szklane_prysznicowe.jpg" alt="Skleněné sprchové kouty" width="400" height="400" loading="lazy" decoding="async">
+        <img class="sklo-type__image" src="https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0608.jpg" alt="Skleněné sprchové kouty" width="400" height="400" loading="lazy" decoding="async">
         <h3>Sprchy</h3>
         <p>Walk-in stěny a kouty na míru.</p>
       </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/zabradli/')); ?>">
-        <img class="sklo-type__image" src="https://qubaglass.pl/environment/cache/images/productGfx_1149_700_700/e9efeb56b15e45023393897de32d9d6c.jpg" alt="Skleněné zábradlí" width="400" height="400" loading="lazy" decoding="async">
+        <img class="sklo-type__image" src="https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0734.jpg" alt="Skleněné zábradlí" width="400" height="400" loading="lazy" decoding="async">
         <h3>Zábradlí</h3>
         <p>DIY, s montáží i profily.</p>
       </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/strisky/')); ?>">
-        <img class="sklo-type__image" src="https://qubaglass.pl/environment/cache/images/productGfx_13144_700_700/daszek_szklany_bialy_qubaglass_bezpieczny.jpg" alt="Skleněné stříšky" width="400" height="400" loading="lazy" decoding="async">
+        <img class="sklo-type__image" src="https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0832.jpg" alt="Skleněné stříšky" width="400" height="400" loading="lazy" decoding="async">
         <h3>Stříšky</h3>
         <p>Na konzolách, táhlech i skladem.</p>
       </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/francouzske-balkony/')); ?>">
-        <img class="sklo-type__image" src="https://qubaglass.pl/environment/cache/images/productGfx_12556_700_700/balkon-szklany-balkony-szklane-montowane-na-listwie-Biale.jpg" alt="Francouzské balkony" width="400" height="400" loading="lazy" decoding="async">
+        <img class="sklo-type__image" src="https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0645.jpg" alt="Francouzské balkony" width="400" height="400" loading="lazy" decoding="async">
         <h3>Balkony</h3>
         <p>Francouzské balkony ze skla.</p>
       </a>

@@ -1,7 +1,7 @@
 <?php
 /**
  * Auto-generated product catalog from shoptet_import.csv + product_details.json.
- * Generated: 2026-07-31 20:20:33 UTC
+ * Generated: 2026-08-01 06:48:16 UTC
  * Products: 1020 (incl. laminovane overlap)
  * Details matched: 1004
  * Embed mode: lean+json
@@ -271,7 +271,7 @@ return [
             ['code' => 'SklS-0207', 'name' => 'Skleněné kyvné dveře otevírané na míru grafika KOL/133', 'price' => 12363, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0207.jpg', 'section' => 'otocne', 'partNumber' => '1341', 'has_detail' => true],
             ['code' => 'SklS-0208', 'name' => 'Skleněné kyvné dveře otevírané na míru grafika KOL/134', 'price' => 12363, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0208.jpg', 'section' => 'otocne', 'partNumber' => '1342', 'has_detail' => true],
             ['code' => 'SklS-0209', 'name' => 'Skleněné kyvné dveře otevírané na míru grafika KOL/140', 'price' => 12363, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0209.jpg', 'section' => 'otocne', 'partNumber' => '1343', 'has_detail' => true],
-            ['code' => 'SklS-0225', 'name' => 'Skleněné kyvné dveře z zawiasami hydraulicznymi z regulacja zamykania čiré', 'price' => 12447, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0225.jpg', 'section' => 'otocne', 'partNumber' => '1825', 'has_detail' => true],
+            ['code' => 'SklS-0225', 'name' => 'Skleněné kyvné dveře s hydraulickými závěsy s regulací zavírání čiré', 'price' => 12447, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0225.jpg', 'section' => 'otocne', 'partNumber' => '1825', 'has_detail' => true],
             ['code' => 'SklS-0202', 'name' => 'Skleněné kyvné dveře otevírané laminované černé', 'price' => 13456, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0202.jpg', 'section' => 'otocne', 'partNumber' => '1370', 'has_detail' => true],
             ['code' => 'SklS-0204', 'name' => 'Skleněné kyvné dveře otevírané loft potisk příčky rámeček černá', 'price' => 14297, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0204.jpg', 'section' => 'otocne', 'partNumber' => '1299', 'has_detail' => true],
             ['code' => 'SklS-0210', 'name' => 'Skleněné kyvné dveře otevírané na míru grafitové čiré', 'price' => 14297, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0210.jpg', 'section' => 'otocne', 'partNumber' => '1347', 'has_detail' => true],
@@ -1075,8 +1075,8 @@ return [
             's-montazi' => 7600,
         ],
         'products' => [
-            ['code' => 'SklS-0755', 'name' => 'Profil odplywowy do A/0004-ECO-Drain', 'price' => 294, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0755.jpg', 'section' => 'profily', 'partNumber' => '1549', 'has_detail' => true],
-            ['code' => 'SklS-0823', 'name' => 'Profil odplywowy do AL/0004-UnoXL', 'price' => 294, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0823.jpg', 'section' => 'profily-fix', 'partNumber' => '1791', 'has_detail' => true],
+            ['code' => 'SklS-0755', 'name' => 'Profil odtokový do A/0004-ECO-Drain', 'price' => 294, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0755.jpg', 'section' => 'profily', 'partNumber' => '1549', 'has_detail' => true],
+            ['code' => 'SklS-0823', 'name' => 'Profil odtokový do AL/0004-UnoXL', 'price' => 294, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0823.jpg', 'section' => 'profily-fix', 'partNumber' => '1791', 'has_detail' => true],
             ['code' => 'SklS-0781', 'name' => 'Záslepka bočního profilu AL/0034-005-D-S-E', 'price' => 420, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0781.jpg', 'section' => 'profily', 'partNumber' => '1722', 'has_detail' => true],
             ['code' => 'SklS-0825', 'name' => 'Záslepka profilu AL/0005-UNO-S-E', 'price' => 420, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0825.jpg', 'section' => 'profily-fix', 'partNumber' => '1819', 'has_detail' => true],
             ['code' => 'SklS-0831', 'name' => 'Záslepka profilu AL/0034-004-PRO-S-E', 'price' => 463, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0831.jpg', 'section' => 'profily-fix', 'partNumber' => '1780', 'has_detail' => true],

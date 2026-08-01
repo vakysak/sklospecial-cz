@@ -17,6 +17,7 @@ $poptavka = home_url('/poptavka/');
       <p class="sklo-eyebrow">Ozvěte se nám</p>
       <h1>Kontaktujte nás</h1>
       <p class="sklo-kontakt__intro">Níže najdete, jak probíhá poptávka, a všechny údaje pro spojení i fakturaci.</p>
+      <p class="sklo-kontakt__tone-note">Na webu a v nabídce ti tykáme. U právních a procesních textů na této stránce zůstáváme u vykání.</p>
     </header>
 
     <section class="sklo-kontakt__process" aria-labelledby="kontakt-process">
@@ -65,8 +66,8 @@ $poptavka = home_url('/poptavka/');
         <h2 id="kontakt-udaje">Spojení</h2>
         <dl class="sklo-kontakt__dl">
           <div>
-            <dt>Adresa</dt>
-            <dd>Prostřední Bludovice 193<br>739 37 – Horní Bludovice</dd>
+            <dt>Provozovna / kontakt</dt>
+            <dd>Prostřední Bludovice 193<br>739 37 Horní Bludovice</dd>
           </div>
           <div>
             <dt>Telefon</dt>
@@ -79,13 +80,14 @@ $poptavka = home_url('/poptavka/');
         </dl>
       </div>
       <div class="sklo-kontakt__card">
-        <h2>Fakturační údaje</h2>
+        <h2>Fakturační údaje / sídlo</h2>
         <p class="sklo-kontakt__billing">
           Stolařství Aleš s.r.o.<br>
-          Horní Bludovice 193<br>
+          <strong>Sídlo:</strong> Horní Bludovice 193<br>
           739 37 Horní Bludovice<br>
           IČO: 29457335<br>
-          DIČ: CZ29457335
+          DIČ: CZ29457335<br>
+          <span class="sklo-kontakt__brand-note">Veřejná značka: Sklospeciál</span>
         </p>
       </div>
     </section>
