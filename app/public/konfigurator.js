@@ -12,6 +12,7 @@ function konfigurator() {
     loadingProducts: false,
     error: '',
     done: '',
+    dimWarn: '',
     searchQ: '',
     typy: [],
     produkty: [],
@@ -206,6 +207,55 @@ function konfigurator() {
       const v = this.config.rozmery.vyska.map(Number).filter((n) => Number.isFinite(n) && n >= 300);
       if (!s.length || !v.length) return null;
       return { w: Math.min(...s), h: Math.min(...v) };
+    },
+
+    openChatHint() {
+      const chatBtn = document.querySelector('.sklo-chat-btn');
+      if (chatBtn) chatBtn.click();
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+
+    /**
+     * Soft client-side rules (same spirit as POST /api/rozmery/check).
+     * Returns warning string or '' — does not block submit.
+     */
+    softCheckDimensionsLocal() {
+      const w = (this.config.rozmery.sirka || []).map(Number);
+      const h = (this.config.rozmery.vyska || []).map(Number);
+      if (w.length !== 3 || h.length !== 3) return '';
+      if (!w.every((n) => Number.isFinite(n)) || !h.every((n) => Number.isFinite(n))) return '';
+      const minW = Math.min(...w);
+      const minH = Math.min(...h);
+      const spreadW = Math.max(...w) - minW;
+      const spreadH = Math.max(...h) - minH;
+      const notes = [];
+      notes.push(`Bereme nejmenší: ${minW} × ${minH} mm.`);
+      if (spreadW >= 15 || spreadH >= 15) {
+        notes.push(`Otvor je hodně nerovný (Δš ${spreadW} mm, Δv ${spreadH} mm).`);
+      } else if (spreadW >= 10 || spreadH >= 10) {
+        notes.push(`Otvor je mírně nerovný (Δš ${spreadW} mm, Δv ${spreadH} mm).`);
+      }
+      if (minW < 500 || minW > 1500) notes.push(`Šířka ${minW} mm je mimo typický rozsah 500–1500 mm.`);
+      if (minH < 1800 || minH > 2500) notes.push(`Výška ${minH} mm je mimo typický rozsah 1800–2500 mm.`);
+      return notes.length > 1 ? notes.join(' ') : notes[0] || '';
+    },
+
+    async softCheckDimensionsApi() {
+      try {
+        const res = await fetch(`${API}/api/rozmery/check`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            widths: this.config.rozmery.sirka,
+            heights: this.config.rozmery.vyska,
+          }),
+        });
+        const data = await res.json();
+        if (data && data.summary_cs) return data.summary_cs;
+      } catch {
+        // fall back to local
+      }
+      return this.softCheckDimensionsLocal();
     },
 
     openingStyle() {
@@ -408,6 +458,10 @@ function konfigurator() {
       this.error = this.validate();
       if (this.error) return;
 
+      if (this.krok === 4) {
+        this.dimWarn = await this.softCheckDimensionsApi();
+      }
+
       if (this.krok === 1) {
         if (this.config.typ_dveri === 'nevim') {
           this.config.needs_advice = true;
@@ -458,6 +512,7 @@ function konfigurator() {
     async submit() {
       this.error = this.validate();
       if (this.error) return;
+      this.dimWarn = await this.softCheckDimensionsApi();
       this.sending = true;
       this.done = '';
       try {

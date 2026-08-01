@@ -237,15 +237,153 @@ function getProduct(code) {
   };
 }
 
+function getProductRow(code) {
+  if (!code) return null;
+  return catalog.byCode.get(String(code).trim().toLowerCase()) || null;
+}
+
+const ADDON_LABEL_HINTS = [
+  { keys: ['madlo', 'uchyt', 'úchyt', 'musle', 'mušle'], kind: 'madlo' },
+  {
+    keys: ['samozavirac', 'samozavírač', 'tichy', 'tichý', 'dojezd'],
+    kind: 'samozavirac',
+  },
+  { keys: ['barva', 'kovani', 'kování', 'povrch'], kind: 'kovani' },
+];
+
+const SERVICE_ADDONS = [
+  {
+    kind: 'service',
+    label: 'Doprava',
+    note: 'Doprava na adresu — cenu dopočítáme podle lokality',
+    surcharge_czk: null,
+    sku: false,
+  },
+  {
+    kind: 'service',
+    label: 'Montáž',
+    note: 'Montáž na místě — podle typu dveří a dostupnosti',
+    surcharge_czk: null,
+    sku: false,
+  },
+  {
+    kind: 'service',
+    label: 'Zaměření',
+    note: 'Profesionální zaměření otvoru (doporučeno u atypů / nerovností)',
+    surcharge_czk: null,
+    sku: false,
+  },
+];
+
+function normalizeLabel(s) {
+  return String(s || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+function matchAddonKind(label) {
+  const n = normalizeLabel(label);
+  for (const hint of ADDON_LABEL_HINTS) {
+    if (hint.keys.some((k) => n.includes(normalizeLabel(k)))) return hint.kind;
+  }
+  return null;
+}
+
+/**
+ * Suggest 1–3 paid/upgradable options + always service addons (doprava/montáž/zaměření).
+ * @param {string} code
+ */
+function recommendAddons(code) {
+  const row = getProductRow(code);
+  if (!row) {
+    return {
+      ok: false,
+      error: `Produkt ${code} nenalezen`,
+      suggestions: [],
+      services: SERVICE_ADDONS,
+    };
+  }
+
+  const suggestions = [];
+  const options = Array.isArray(row.options) ? row.options : [];
+
+  for (const group of options) {
+    if (!group || group.type === 'text') continue;
+    const kind = matchAddonKind(group.label);
+    if (!kind) continue;
+    const choices = (group.choices || []).filter((c) => c && c.name);
+    if (!choices.length) continue;
+
+    const paid = choices
+      .filter((c) => Number(c.surcharge_czk) > 0)
+      .sort((a, b) => Number(a.surcharge_czk) - Number(b.surcharge_czk));
+    const free = choices.filter((c) => !Number(c.surcharge_czk));
+
+    let pick = null;
+    if (paid.length) {
+      pick = paid[0];
+    } else if (free.length > 1) {
+      // offer a non-default variant when all free
+      pick = free[1] || free[0];
+    } else if (free.length === 1) {
+      pick = free[0];
+    }
+    if (!pick) continue;
+
+    const surcharge = Math.round(Number(pick.surcharge_czk) || 0);
+    suggestions.push({
+      kind,
+      option_label: group.label,
+      choice: pick.name,
+      surcharge_czk: surcharge,
+      price_note: surcharge > 0 ? `+ ${surcharge.toLocaleString('cs-CZ')} Kč` : 'bez příplatku',
+      alternatives: choices.slice(0, 5).map((c) => ({
+        name: c.name,
+        surcharge_czk: Math.round(Number(c.surcharge_czk) || 0),
+      })),
+    });
+  }
+
+  // Prefer madlo / samozavírač / kování — max 3
+  const priority = ['madlo', 'samozavirac', 'kovani'];
+  suggestions.sort((a, b) => {
+    const ia = priority.indexOf(a.kind);
+    const ib = priority.indexOf(b.kind);
+    return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+  });
+  const top = suggestions.slice(0, 3);
+
+  const text_lines = [
+    ...top.map(
+      (s) =>
+        `${s.option_label}: ${s.choice}${s.surcharge_czk > 0 ? ` (${s.price_note})` : ''}`
+    ),
+    ...SERVICE_ADDONS.map((s) => `${s.label}: ${s.note}`),
+  ];
+
+  return {
+    ok: true,
+    code: row.code,
+    name: row.name,
+    base_price: row.price,
+    suggestions: top,
+    services: SERVICE_ADDONS,
+    summary_cs: text_lines.join(' · '),
+    text_for_poptavka: text_lines.join('; '),
+  };
+}
+
 /**
  * Build /poptavka/ URL + sklo_order_draft-compatible payload for the chat widget.
- * @param {{ kod?: string, name?: string, price?: number, selected_summary?: string, image?: string }} opts
+ * @param {{ kod?: string, name?: string, price?: number, selected_summary?: string, addons_summary?: string, image?: string }} opts
  */
 function createPoptavka({
   kod,
   name,
   price,
   selected_summary,
+  addons_summary,
   image,
 } = {}) {
   const code = kod ? String(kod).trim() : '';
@@ -263,10 +401,11 @@ function createPoptavka({
   const resolvedImage =
     (image && String(image).trim()) || (fromCatalog && fromCatalog.image) || '';
   const summary = selected_summary ? String(selected_summary).trim().slice(0, 800) : '';
+  const addons = addons_summary ? String(addons_summary).trim().slice(0, 600) : '';
 
-  const selections = summary
-    ? [{ label: 'Shrnutí', value: summary, surcharge: 0 }]
-    : [];
+  const selections = [];
+  if (summary) selections.push({ label: 'Shrnutí', value: summary, surcharge: 0 });
+  if (addons) selections.push({ label: 'Doplňky', value: addons, surcharge: 0 });
 
   const draft = {
     v: 1,
@@ -289,7 +428,8 @@ function createPoptavka({
   if (draft.code) params.set('kod', draft.code);
   if (draft.name) params.set('name', draft.name.slice(0, 120));
   if (resolvedPrice > 0) params.set('price', String(resolvedPrice));
-  if (summary) params.set('summary', summary.slice(0, 200));
+  const summaryQ = [summary, addons].filter(Boolean).join(' | ').slice(0, 200);
+  if (summaryQ) params.set('summary', summaryQ);
 
   const qs = params.toString();
   const relative = qs ? `/poptavka/?${qs}` : '/poptavka/';
@@ -304,6 +444,7 @@ module.exports = {
   getProduct,
   getKonfiguratorLink,
   createPoptavka,
+  recommendAddons,
   categoryToUrlPath,
   normalizeTyp,
   // test helpers

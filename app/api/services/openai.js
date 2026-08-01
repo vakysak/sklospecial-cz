@@ -6,16 +6,35 @@ const {
   getProduct,
   getKonfiguratorLink,
   createPoptavka,
+  recommendAddons,
 } = require('./catalog');
+const { checkDimensions } = require('./rozmery');
 
 const SYSTEM_PROMPT = `Jsi asistent firmy sklospecial.cz specializovaný na skleněné dveře.
 Pomáháš zákazníkům vybrat správný typ skleněných dveří, poradit s zaměřením
 a provést je procesem poptávky.
 
-Máš k dispozici nástroje search_products, get_product, get_konfigurator_link,
-create_poptavka a vytvor_poptavku.
+Máš k dispozici nástroje: search_products, get_product, get_konfigurator_link,
+check_dimensions, recommend_addons, create_poptavka a vytvor_poptavku.
 Než vymyslíš konkrétní model, cenu nebo kód SklS, VŽDY nejdřív použij nástroje.
 Nikdy nevymýšlej kódy SklS ani ceny — ber je jen z výsledků nástrojů.
+
+Když zákazník pošle fotku otvoru / prostoru:
+- Odhadni pravděpodobný typ dveří: posuvné po stěně, posuvné do pouzdra, kyvné (otočné), otevírané.
+- Uveď nejistotu (co z fotky nevidíš — hloubka stěny, skryté pouzdro, nosnost…).
+- Dej krátký checklist zaměření: 3 šířky, 3 výšky, vždy ber nejmenší, fotky detailů (podlaha, strop, bok stěny).
+- Nenavrhuj konkrétní SklS jen z fotky bez search_products / get_product, pokud to dává smysl.
+
+Když zákazník napíše / vloží rozměry (šířky a výšky):
+- Nejdřív zavolej check_dimensions.
+- Teprve potom doporuč poptávku / create_poptavka.
+- Vždy připomeň, že se řídíme nejmenšími hodnotami.
+
+Když doporučuješ produkt nebo zákazník řeší doplňky u SklS kódu:
+- Zavolej recommend_addons.
+- Navrhni 1–3 volitelné upgrady s + Kč (pokud existuje surcharge).
+- Vždy nabídni i služby: doprava, montáž, zaměření (bez SKU).
+- Když zákazník souhlasí s doplňky, při create_poptavka je vlož do addons_summary.
 
 Když doporučuješ produkty:
 - maximálně 3 tipy
@@ -24,7 +43,7 @@ Když doporučuješ produkty:
   (nebo odpovídající kategorii: otocne, otevirane, celosklenene, posuvne/do-pouzdra)
 
 Když zákazník chce poptávku / objednávku / „chci tohle“ u konkrétního produktu:
-- použij create_poptavka (nebo vytvor_poptavku) s kódem, jménem, cenou a krátkým shrnutím výběru
+- použij create_poptavka (nebo vytvor_poptavku) s kódem, jménem, cenou, shrnutím a případně addons_summary
 - v odpovědi uveď, že může kliknout na tlačítko „Odeslat poptávku“ v chatu
 - můžeš také vložit markdown odkaz na vrácené url
 
@@ -72,6 +91,11 @@ const POPTAVKA_TOOL_PARAMS = {
       type: 'string',
       description:
         'Krátké textové shrnutí výběru (typ, sklo, kování, rozměry…) pro poptávku',
+    },
+    addons_summary: {
+      type: 'string',
+      description:
+        'Text doporučených / odsouhlasených doplňků (madlo, samozavírač, doprava, montáž…)',
     },
   },
   additionalProperties: false,
@@ -138,9 +162,54 @@ const TOOLS = [
   {
     type: 'function',
     function: {
+      name: 'check_dimensions',
+      description:
+        'Zkontroluje 3 šířky a 3 výšky otvoru v mm. Spočítá minimum, varuje u nerovností a nereálných rozměrů. Volej PŘED create_poptavka, když zákazník uvede rozměry.',
+      parameters: {
+        type: 'object',
+        properties: {
+          widths: {
+            type: 'array',
+            items: { type: 'number' },
+            description: '3 šířky v mm (vlevo, uprostřed, vpravo)',
+            minItems: 3,
+            maxItems: 3,
+          },
+          heights: {
+            type: 'array',
+            items: { type: 'number' },
+            description: '3 výšky v mm (vlevo, uprostřed, vpravo)',
+            minItems: 3,
+            maxItems: 3,
+          },
+        },
+        required: ['widths', 'heights'],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'recommend_addons',
+      description:
+        'Doporučí doplňky (madlo/úchyt, samozavírač, barva kování) + služby doprava/montáž/zaměření pro daný SklS kód. Volej před poptávkou u konkrétního produktu.',
+      parameters: {
+        type: 'object',
+        properties: {
+          code: { type: 'string', description: 'Kód produktu SklS-XXXX' },
+        },
+        required: ['code'],
+        additionalProperties: false,
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
       name: 'create_poptavka',
       description:
-        'Sestaví předvyplněný odkaz na /poptavka/ a draft poptávky (kod, name, price, shrnutí). Použij, když zákazník chce odeslat poptávku.',
+        'Sestaví předvyplněný odkaz na /poptavka/ a draft poptávky (kod, name, price, shrnutí, doplňky). Použij, když zákazník chce odeslat poptávku.',
       parameters: POPTAVKA_TOOL_PARAMS,
     },
   },
@@ -158,6 +227,8 @@ const TOOLS = [
 const sessions = new Map();
 const MAX_MESSAGES = Number(process.env.CHAT_MAX_MESSAGES || 20);
 const MAX_TOOL_ROUNDS = 4;
+const MAX_IMAGES = 3;
+const MAX_IMAGE_CHARS = 900_000; // ~base64 budget per image data URL
 
 function getClient() {
   const key = process.env.OPENAI_API_KEY;
@@ -215,12 +286,28 @@ function executeTool(name, args, collected, poptavkaState) {
       const url = getKonfiguratorLink({ typ: args.typ, kod: args.kod });
       return JSON.stringify({ ok: true, url });
     }
+    if (name === 'check_dimensions') {
+      const result = checkDimensions({
+        widths: args.widths,
+        heights: args.heights,
+      });
+      return JSON.stringify(result);
+    }
+    if (name === 'recommend_addons') {
+      const result = recommendAddons(args.code);
+      if (result.ok && result.code) {
+        const item = getProduct(result.code);
+        if (item) pushCollected(collected, item);
+      }
+      return JSON.stringify(result);
+    }
     if (name === 'create_poptavka' || name === 'vytvor_poptavku') {
       const result = createPoptavka({
         kod: args.kod,
         name: args.name,
         price: args.price,
         selected_summary: args.selected_summary,
+        addons_summary: args.addons_summary,
       });
       if (result.ok && poptavkaState) {
         poptavkaState.draft = result.poptavka_draft;
@@ -253,21 +340,76 @@ function parseArgs(raw) {
   }
 }
 
+function sanitizeImageUrl(url) {
+  if (!url || typeof url !== 'string') return null;
+  const s = url.trim();
+  if (!s.startsWith('data:image/')) return null;
+  if (!/^data:image\/(jpeg|jpg|png|webp);base64,/i.test(s)) return null;
+  if (s.length > MAX_IMAGE_CHARS) return null;
+  return s;
+}
+
+/**
+ * Normalize inbound message content for OpenAI (text or multimodal).
+ * History stores a compact text+flag form; OpenAI gets full multimodal parts.
+ */
+function normalizeUserContent(content) {
+  if (typeof content === 'string') {
+    return { openai: content.slice(0, 4000), history: content.slice(0, 4000) };
+  }
+  if (Array.isArray(content)) {
+    const textParts = [];
+    const imageParts = [];
+    for (const part of content) {
+      if (!part || typeof part !== 'object') continue;
+      if (part.type === 'text' && part.text) {
+        textParts.push(String(part.text).slice(0, 4000));
+      } else if (part.type === 'image_url') {
+        const url = sanitizeImageUrl(part.image_url?.url || part.url);
+        if (url && imageParts.length < MAX_IMAGES) {
+          imageParts.push({
+            type: 'image_url',
+            image_url: { url, detail: 'low' },
+          });
+        }
+      }
+    }
+    const text =
+      textParts.join('\n').trim() ||
+      (imageParts.length ? 'Posílám fotku otvoru — poradíš typ dveří a checklist zaměření?' : '');
+    if (!imageParts.length) {
+      return { openai: text.slice(0, 4000), history: text.slice(0, 4000) };
+    }
+    const openai = [{ type: 'text', text: text.slice(0, 4000) }, ...imageParts];
+    const history = `${text.slice(0, 3500)}\n[přiloženo ${imageParts.length} fotografie]`;
+    return { openai, history };
+  }
+  if (content && typeof content === 'object' && content.text) {
+    return normalizeUserContent([
+      { type: 'text', text: content.text },
+      ...(Array.isArray(content.images)
+        ? content.images.map((url) => ({
+            type: 'image_url',
+            image_url: { url },
+          }))
+        : []),
+    ]);
+  }
+  return { openai: '', history: '' };
+}
+
 function prepareMessages(userMessages, sessionId, pageContext) {
   const history = getHistory(sessionId);
 
-  const incoming = (userMessages || [])
-    .filter((m) => m && (m.role === 'user' || m.role === 'assistant') && m.content)
-    .map((m) => ({ role: m.role, content: String(m.content).slice(0, 4000) }));
-
-  const last = incoming[incoming.length - 1];
-  if (!last || last.role !== 'user') {
-    const err = new Error('Poslední zpráva musí být od uživatele');
+  // Rebuild OpenAI message list from session history (text); last user may be multimodal
+  const { openai: lastOpenAi, history: lastHistory } = normalizeUserContent(lastIncoming.content);
+  if (!lastOpenAi || (typeof lastOpenAi === 'string' && !lastOpenAi.trim())) {
+    const err = new Error('Prázdná zpráva');
     err.status = 400;
     throw err;
   }
 
-  history.push(last);
+  history.push({ role: 'user', content: lastHistory });
   while (history.length > MAX_MESSAGES) history.shift();
 
   const messages = [{ role: 'system', content: SYSTEM_PROMPT }];
@@ -278,11 +420,16 @@ function prepareMessages(userMessages, sessionId, pageContext) {
     if (pageContext.kod) bits.push(`produkt kod ${pageContext.kod}`);
     messages.push({
       role: 'system',
-      content: `Zákazník je na stránce: ${bits.join(', ')}. Pokud je relevantní, použij get_product pro tento kód. Pro poptávku použij create_poptavka.`,
+      content: `Zákazník je na stránce: ${bits.join(', ')}. Pokud je relevantní, použij get_product a recommend_addons pro tento kód. Pro poptávku použij create_poptavka.`,
     });
   }
 
-  messages.push(...history);
+  const histWithoutLast = history.slice(0, -1);
+  for (const m of histWithoutLast) {
+    messages.push({ role: m.role, content: m.content });
+  }
+  messages.push({ role: 'user', content: lastOpenAi });
+
   return { history, messages };
 }
 
@@ -345,7 +492,7 @@ async function runToolRounds(client, model, messages, collected, poptavkaState) 
 }
 
 /**
- * @param {Array<{role:string,content:string}>} userMessages
+ * @param {Array<{role:string,content:string|object|array}>} userMessages
  * @param {string} sessionId
  * @param {{ kod?: string, path?: string }|null} pageContext
  */
@@ -389,7 +536,6 @@ async function chatStream(userMessages, sessionId, pageContext, emit) {
   let replyText = await runToolRounds(client, model, messages, collected, poptavkaState);
 
   if (replyText) {
-    // Tool round already returned full text — emit as one token for progressive UX
     emit({ type: 'token', text: replyText });
   } else {
     const stream = await client.chat.completions.create({

@@ -1,10 +1,13 @@
-/* sklo chat-widget v1.6.0 */
+/* sklo chat-widget v1.7.0 */
 (() => {
   const API = window.SKLO_API_BASE || '';
   const CONFIG_URL = window.SKLO_CONFIGURATOR_URL || `${API}/public/konfigurator.html`;
   const WA_URL =
     'https://wa.me/420736134604?text=' +
     encodeURIComponent('Dobrý den, mám dotaz ke skleněným dveřím…');
+  const MAX_PHOTOS = 3;
+  const MAX_PHOTO_EDGE = 1280;
+  const JPEG_QUALITY = 0.72;
 
   const css = `
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&display=swap');
@@ -20,7 +23,7 @@
   .sklo-chat-choice__opt--wa{background:rgba(37,211,102,.14);color:#b8f5cf}
   .sklo-chat-choice__opt--wa:hover{background:rgba(37,211,102,.22)}
   .sklo-chat-choice__hint{margin:0 .15rem;font:500 12px/1.35 Outfit,sans-serif;color:rgba(255,255,255,.45)}
-  .sklo-chat-panel{position:fixed;right:1.1rem;bottom:5.4rem;width:min(360px,calc(100vw - 2rem));height:min(520px,calc(100vh - 6rem));background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border:1px solid rgba(18,24,28,.1);border-radius:18px;z-index:9999;display:none;flex-direction:column;box-shadow:0 22px 50px rgba(18,40,55,.16);overflow:hidden;font-family:Outfit,sans-serif}
+  .sklo-chat-panel{position:fixed;right:1.1rem;bottom:5.4rem;width:min(360px,calc(100vw - 2rem));height:min(560px,calc(100vh - 6rem));background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border:1px solid rgba(18,24,28,.1);border-radius:18px;z-index:9999;display:none;flex-direction:column;box-shadow:0 22px 50px rgba(18,40,55,.16);overflow:hidden;font-family:Outfit,sans-serif}
   .sklo-chat-panel.is-open{display:flex}
   .sklo-chat-panel header{padding:.85rem 1rem;border-bottom:1px solid rgba(18,24,28,.08);display:flex;justify-content:space-between;align-items:center;gap:.5rem;background:linear-gradient(180deg,#f7fbfc,#fff)}
   .sklo-chat-panel header strong{font:600 14px Outfit,sans-serif;color:#12181c}
@@ -32,6 +35,9 @@
   .sklo-chat-msg.bot{align-self:flex-start}
   .sklo-chat-msg a{color:#1a5c6b;font-weight:600;text-decoration:underline;text-underline-offset:2px}
   .sklo-chat-msg.user a{color:#e8f4f7}
+  .sklo-chat-thumbs{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem}
+  .sklo-chat-thumbs img{width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid rgba(18,24,28,.12)}
+  .sklo-chat-msg.user .sklo-chat-thumbs img{border-color:rgba(255,255,255,.35)}
   .sklo-chat-cards{display:flex;flex-direction:column;gap:.4rem;margin-top:.55rem}
   .sklo-chat-card{display:flex;gap:.55rem;align-items:center;padding:.45rem;border-radius:12px;border:1px solid rgba(18,24,28,.1);background:#f7fbfc;text-decoration:none;color:#12181c;transition:border-color .15s ease,background .15s ease}
   .sklo-chat-card:hover{border-color:#1a5c6b;background:#eef6f8}
@@ -41,10 +47,18 @@
   .sklo-chat-card__meta{font:500 11px/1.35 Outfit,sans-serif;color:#5b6a75;margin-top:.15rem}
   .sklo-chat-cta{display:block;width:100%;margin-top:.55rem;border:0;border-radius:12px;padding:.7rem .9rem;cursor:pointer;font:600 13px/1.25 Outfit,sans-serif;background:#1a5c6b;color:#fff;text-align:center}
   .sklo-chat-cta:hover{background:#154a57}
+  .sklo-chat-photo-bar{display:flex;align-items:center;gap:.45rem;padding:.45rem .8rem 0;background:#fff;border-top:1px solid rgba(18,24,28,.06);flex-wrap:wrap}
+  .sklo-chat-photo-btn{border:1px solid rgba(26,92,107,.28);background:#eef6f8;color:#1a5c6b;border-radius:999px;padding:.45rem .75rem;cursor:pointer;font:600 12px Outfit,sans-serif}
+  .sklo-chat-photo-btn:hover{background:#e0eef2}
+  .sklo-chat-photo-hint{font:500 11px/1.3 Outfit,sans-serif;color:#5b6a75}
+  .sklo-chat-pending{display:flex;gap:.3rem;flex-wrap:wrap;width:100%;padding:.35rem 0 0}
+  .sklo-chat-pending__item{position:relative;width:48px;height:48px}
+  .sklo-chat-pending__item img{width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid rgba(18,24,28,.12)}
+  .sklo-chat-pending__rm{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border:0;border-radius:999px;background:#12181c;color:#fff;font:600 11px/18px Outfit,sans-serif;cursor:pointer;padding:0}
   .sklo-chat-form{display:flex;gap:.45rem;padding:.8rem;border-top:1px solid rgba(18,24,28,.08);background:#fff}
-  .sklo-chat-form input{flex:1;border:1px solid rgba(18,24,28,.12);border-radius:999px;padding:.7rem .9rem;font:14px Outfit,sans-serif;outline:none}
-  .sklo-chat-form input:focus{border-color:#1a5c6b;box-shadow:0 0 0 3px rgba(26,92,107,.12)}
-  .sklo-chat-form button{border:0;background:#1a5c6b;color:#fff;border-radius:999px;padding:.7rem 1rem;cursor:pointer;font:600 13px Outfit,sans-serif}
+  .sklo-chat-form input[type="text"]{flex:1;border:1px solid rgba(18,24,28,.12);border-radius:999px;padding:.7rem .9rem;font:14px Outfit,sans-serif;outline:none}
+  .sklo-chat-form input[type="text"]:focus{border-color:#1a5c6b;box-shadow:0 0 0 3px rgba(26,92,107,.12)}
+  .sklo-chat-form button[type="submit"]{border:0;background:#1a5c6b;color:#fff;border-radius:999px;padding:.7rem 1rem;cursor:pointer;font:600 13px Outfit,sans-serif}
   `;
 
   const style = document.createElement('style');
@@ -56,13 +70,16 @@
     choiceOpen: false,
     loading: false,
     sessionId: crypto.randomUUID(),
+    pendingImages: [],
     messages: [
       {
         role: 'assistant',
-        content: 'Ahoj, jsem Sklo asistent. Pomůžu s výběrem skleněných dveří, zaměřením nebo poptávkou.',
+        content:
+          'Ahoj, jsem Sklo asistent. Pomůžu s výběrem skleněných dveří, zaměřením nebo poptávkou. Můžeš i poslat fotku otvoru.',
         products: [],
         poptavka_draft: null,
         poptavka_url: null,
+        images: [],
       },
     ],
   };
@@ -102,11 +119,21 @@
       </span>
     </header>
     <div class="sklo-chat-msgs" data-msgs></div>
+    <div class="sklo-chat-photo-bar">
+      <button type="button" class="sklo-chat-photo-btn" data-act="photo">Poslat fotku otvoru</button>
+      <span class="sklo-chat-photo-hint" data-photo-hint>až 3 fotky · poradím typ dveří</span>
+      <div class="sklo-chat-pending" data-pending hidden></div>
+      <input type="file" accept="image/jpeg,image/png,image/webp" multiple hidden data-file />
+    </div>
     <form class="sklo-chat-form">
-      <input name="q" placeholder="Napiš otázku…" autocomplete="off" />
+      <input type="text" name="q" placeholder="Napiš otázku…" autocomplete="off" />
       <button type="submit">Odeslat</button>
     </form>
   `;
+
+  const fileInput = panel.querySelector('[data-file]');
+  const pendingBox = panel.querySelector('[data-pending]');
+  const photoHint = panel.querySelector('[data-photo-hint]');
 
   function detectPageContext() {
     const params = new URLSearchParams(location.search);
@@ -160,6 +187,13 @@
     return `<div class="sklo-chat-cards">${cards}</div>`;
   }
 
+  function thumbsHtml(images) {
+    if (!Array.isArray(images) || !images.length) return '';
+    return `<div class="sklo-chat-thumbs">${images
+      .map((src) => `<img src="${escapeAttr(src)}" alt="" />`)
+      .join('')}</div>`;
+  }
+
   function poptavkaCtaHtml(msg) {
     if (!msg.poptavka_draft && !msg.poptavka_url) return '';
     return '<button type="button" class="sklo-chat-cta" data-act="poptavka">Odeslat poptávku</button>';
@@ -202,17 +236,36 @@
     btn.setAttribute('aria-controls', 'sklo-chat-panel');
   }
 
+  function renderPending() {
+    if (!state.pendingImages.length) {
+      pendingBox.hidden = true;
+      pendingBox.innerHTML = '';
+      photoHint.textContent = 'až 3 fotky · poradím typ dveří';
+      return;
+    }
+    pendingBox.hidden = false;
+    photoHint.textContent = `${state.pendingImages.length}/${MAX_PHOTOS} fotek připraveno`;
+    pendingBox.innerHTML = state.pendingImages
+      .map(
+        (src, i) =>
+          `<span class="sklo-chat-pending__item"><img src="${escapeAttr(src)}" alt="" /><button type="button" class="sklo-chat-pending__rm" data-act="rm-photo" data-i="${i}" aria-label="Odebrat">×</button></span>`
+      )
+      .join('');
+  }
+
   function render() {
     const box = panel.querySelector('[data-msgs]');
     box.innerHTML = state.messages
       .map((m) => {
         const body = linkify(escapeHtml(m.content || ''));
+        const thumbs = thumbsHtml(m.images);
         const cards = m.role === 'assistant' ? productCardsHtml(m.products) : '';
         const cta = m.role === 'assistant' ? poptavkaCtaHtml(m) : '';
-        return `<div class="sklo-chat-msg ${m.role === 'user' ? 'user' : 'bot'}">${body}${cards}${cta}</div>`;
+        return `<div class="sklo-chat-msg ${m.role === 'user' ? 'user' : 'bot'}">${body}${thumbs}${cards}${cta}</div>`;
       })
       .join('');
     box.scrollTop = box.scrollHeight;
+    renderPending();
   }
 
   function escapeHtml(s) {
@@ -228,9 +281,33 @@
   }
 
   function requestMessages() {
-    return state.messages
-      .filter((m) => (m.role === 'user' || m.role === 'assistant') && m.content)
-      .map((m) => ({ role: m.role, content: m.content }))
+    const filtered = state.messages.filter((m) => m.role === 'user' || m.role === 'assistant');
+    const lastIdx = filtered.length - 1;
+    return filtered
+      .map((m, idx) => {
+        const isLastUser = idx === lastIdx && m.role === 'user';
+        if (isLastUser && Array.isArray(m.images) && m.images.length) {
+          return {
+            role: 'user',
+            content: [
+              { type: 'text', text: m.content || 'Posílám fotku otvoru.' },
+              ...m.images.map((url) => ({
+                type: 'image_url',
+                image_url: { url },
+              })),
+            ],
+          };
+        }
+        let text = m.content || '';
+        if (m.role === 'user' && Array.isArray(m.images) && m.images.length) {
+          text = `${text}\n[přiloženo ${m.images.length} fotografie]`.trim();
+        }
+        return { role: m.role, content: text };
+      })
+      .filter((m) => {
+        if (typeof m.content === 'string') return !!m.content;
+        return Array.isArray(m.content) && m.content.length > 0;
+      })
       .slice(-20);
   }
 
@@ -242,8 +319,51 @@
       products: Array.isArray(data.products) ? data.products : [],
       poptavka_draft: data.poptavka_draft || null,
       poptavka_url: data.poptavka_url || null,
+      images: [],
     });
     render();
+  }
+
+  function resizeImageFile(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Nepodařilo se načíst fotku'));
+      reader.onload = () => {
+        const img = new Image();
+        img.onerror = () => reject(new Error('Neplatný obrázek'));
+        img.onload = () => {
+          let { width, height } = img;
+          const max = MAX_PHOTO_EDGE;
+          if (width > max || height > max) {
+            const scale = Math.min(max / width, max / height);
+            width = Math.round(width * scale);
+            height = Math.round(height * scale);
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', JPEG_QUALITY));
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function addFiles(fileList) {
+    const files = Array.from(fileList || []).filter((f) => f && f.type.startsWith('image/'));
+    for (const file of files) {
+      if (state.pendingImages.length >= MAX_PHOTOS) break;
+      try {
+        const dataUrl = await resizeImageFile(file);
+        state.pendingImages.push(dataUrl);
+      } catch {
+        // skip broken file
+      }
+    }
+    renderPending();
   }
 
   async function sendJsonFallback(payload) {
@@ -282,6 +402,7 @@
       products: [],
       poptavka_draft: null,
       poptavka_url: null,
+      images: [],
     };
     state.messages.push(botMsg);
     render();
@@ -333,6 +454,56 @@
     }
   }
 
+  async function sendUserTurn(text, images) {
+    const contentText =
+      text ||
+      (images && images.length
+        ? 'Posílám fotku otvoru — poradíš typ dveří a checklist zaměření?'
+        : '');
+    if (!contentText && !(images && images.length)) return;
+
+    state.messages.push({
+      role: 'user',
+      content: contentText,
+      images: images || [],
+      products: [],
+      poptavka_draft: null,
+      poptavka_url: null,
+    });
+    state.pendingImages = [];
+    render();
+    state.loading = true;
+
+    const payload = {
+      session_id: state.sessionId,
+      messages: requestMessages(),
+      page_context: detectPageContext(),
+    };
+
+    try {
+      try {
+        await sendStream(payload);
+      } catch {
+        await sendJsonFallback(payload);
+      }
+    } catch (err) {
+      state.messages.push({
+        role: 'assistant',
+        content:
+          err.message.includes('OPENAI') || err.message.includes('nastavený')
+            ? 'Chat ještě nemá API klíč. Mezitím si sestav dveře a pošli rozměry s fotkami.'
+            : `Nepodařilo se odpovědět: ${err.message}`,
+        products: [],
+        poptavka_draft: null,
+        poptavka_url: null,
+        images: [],
+      });
+    } finally {
+      state.loading = false;
+      render();
+    }
+  }
+
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (state.open) {
@@ -373,6 +544,18 @@
       window.open(CONFIG_URL, '_blank');
       return;
     }
+    if (act === 'photo') {
+      fileInput.click();
+      return;
+    }
+    if (act === 'rm-photo') {
+      const i = Number(actEl.getAttribute('data-i'));
+      if (Number.isFinite(i)) {
+        state.pendingImages.splice(i, 1);
+        renderPending();
+      }
+      return;
+    }
     if (act === 'poptavka') {
       const msg = [...state.messages]
         .reverse()
@@ -394,18 +577,25 @@
         body: JSON.stringify({ session_id: state.sessionId, reset: true }),
       });
       state.sessionId = crypto.randomUUID();
+      state.pendingImages = [];
       state.messages = [
         {
           role: 'assistant',
           content:
-            'Konverzace je nová. Kde budou skleněné dveře a preferuješ otočné, nebo posuvné?',
+            'Konverzace je nová. Kde budou skleněné dveře a preferuješ otočné, nebo posuvné? Můžeš i poslat fotku otvoru.',
           products: [],
           poptavka_draft: null,
           poptavka_url: null,
+          images: [],
         },
       ];
       render();
     }
+  });
+
+  fileInput.addEventListener('change', async () => {
+    await addFiles(fileInput.files);
+    fileInput.value = '';
   });
 
   document.addEventListener('keydown', (e) => {
@@ -426,39 +616,10 @@
     if (state.loading) return;
     const input = panel.querySelector('input[name="q"]');
     const text = input.value.trim();
-    if (!text) return;
+    const images = state.pendingImages.slice();
+    if (!text && !images.length) return;
     input.value = '';
-    state.messages.push({ role: 'user', content: text });
-    render();
-    state.loading = true;
-
-    const payload = {
-      session_id: state.sessionId,
-      messages: requestMessages(),
-      page_context: detectPageContext(),
-    };
-
-    try {
-      try {
-        await sendStream(payload);
-      } catch {
-        await sendJsonFallback(payload);
-      }
-    } catch (err) {
-      state.messages.push({
-        role: 'assistant',
-        content:
-          err.message.includes('OPENAI') || err.message.includes('nastavený')
-            ? 'Chat ještě nemá API klíč. Mezitím si sestav dveře a pošli rozměry s fotkami.'
-            : `Nepodařilo se odpovědět: ${err.message}`,
-        products: [],
-        poptavka_draft: null,
-        poptavka_url: null,
-      });
-    } finally {
-      state.loading = false;
-      render();
-    }
+    await sendUserTurn(text, images);
   });
 
   document.body.appendChild(btn);
