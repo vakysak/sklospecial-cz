@@ -767,3 +767,94 @@
       /* silent — strip stays hidden */
     });
 })();
+
+(() => {
+  const KEY = 'sklo_cookie_consent';
+  const listeners = [];
+
+  const read = () => {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      if (!data || typeof data !== 'object') return null;
+      return data;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const notify = (data) => {
+    window.dispatchEvent(new CustomEvent('sklo_cookie_consent', { detail: data }));
+    listeners.forEach((fn) => {
+      try {
+        fn(data);
+      } catch (e) {}
+    });
+    if (typeof window.skloOnCookieConsent === 'function') {
+      try {
+        window.skloOnCookieConsent(data);
+      } catch (e) {}
+    }
+  };
+
+  const write = (choice) => {
+    const data = {
+      v: 1,
+      choice: choice === 'all' ? 'all' : 'necessary',
+      necessary: true,
+      analytics: choice === 'all',
+      ts: new Date().toISOString(),
+    };
+    try {
+      localStorage.setItem(KEY, JSON.stringify(data));
+    } catch (e) {}
+    notify(data);
+    return data;
+  };
+
+  window.skloGetCookieConsent = read;
+  window.skloOnCookieConsentChange = (fn) => {
+    if (typeof fn === 'function') listeners.push(fn);
+  };
+
+  const existing = read();
+  if (existing) {
+    notify(existing);
+    return;
+  }
+
+  const cookiesUrl = new URL('/cookies/', window.location.origin).href;
+  const bar = document.createElement('div');
+  bar.className = 'sklo-cookie';
+  bar.setAttribute('role', 'dialog');
+  bar.setAttribute('aria-label', 'Souhlas s cookies');
+  bar.innerHTML =
+    '<div class="sklo-wrap sklo-cookie__inner">' +
+    '<div class="sklo-cookie__text">' +
+    '<p><strong>Cookies</strong> — nezbytné cookies používáme vždy. Analytické cookies zapneme jen po tvém souhlasu.</p>' +
+    '<p class="sklo-cookie__more"><a href="' +
+    cookiesUrl +
+    '">Více o cookies</a></p>' +
+    '</div>' +
+    '<div class="sklo-cookie__actions">' +
+    '<button type="button" class="sklo-btn sklo-btn--filled sklo-btn--sm" data-cookie-accept="all">Přijmout vše</button>' +
+    '<button type="button" class="sklo-btn sklo-btn--ghost sklo-btn--sm" data-cookie-accept="necessary">Pouze nezbytné</button>' +
+    '</div>' +
+    '</div>';
+
+  const dismiss = () => {
+    bar.classList.remove('is-visible');
+    window.setTimeout(() => bar.remove(), 220);
+  };
+
+  bar.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-cookie-accept]');
+    if (!btn) return;
+    write(btn.getAttribute('data-cookie-accept') || 'necessary');
+    dismiss();
+  });
+
+  document.body.appendChild(bar);
+  requestAnimationFrame(() => bar.classList.add('is-visible'));
+})();
