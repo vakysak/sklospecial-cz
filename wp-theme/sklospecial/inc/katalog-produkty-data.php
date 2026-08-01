@@ -1,7 +1,7 @@
 <?php
 /**
  * Auto-generated product catalog from shoptet_import.csv + product_details.json.
- * Generated: 2026-08-01 06:48:16 UTC
+ * Generated: 2026-08-01 16:54:19 UTC
  * Products: 1020 (incl. laminovane overlap)
  * Details matched: 1004
  * Embed mode: lean+json
