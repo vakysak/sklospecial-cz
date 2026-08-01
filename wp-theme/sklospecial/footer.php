@@ -40,7 +40,12 @@
     </div>
   </div>
   <div class="sklo-wrap sklo-footer__copy">
-    <p>&copy; <?php echo esc_html(gmdate('Y')); ?> Sklospeciál</p>
+    <p>&copy; <?php echo esc_html(gmdate('Y')); ?> Sklospeciál · provozovatel Stolařství Aleš s.r.o. · IČO 29457335 · DIČ CZ29457335</p>
+    <nav class="sklo-footer__legal" aria-label="Právní informace">
+      <a href="<?php echo esc_url(home_url('/ochrana-osobnich-udaju/')); ?>">Ochrana osobních údajů</a>
+      <a href="<?php echo esc_url(home_url('/obchodni-podminky/')); ?>">Obchodní podmínky</a>
+      <a href="<?php echo esc_url(home_url('/cookies/')); ?>">Cookies</a>
+    </nav>
   </div>
 </footer>
 
