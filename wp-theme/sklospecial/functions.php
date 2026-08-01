@@ -9,12 +9,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.8.6');
+define('SKLO_THEME_VER', '1.9.0');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
 require_once get_template_directory() . '/inc/seo-landings-data.php';
 require_once get_template_directory() . '/inc/pruvodce-data.php';
+require_once get_template_directory() . '/inc/recenze-data.php';
 
 /**
  * Production host? (sklospecial.cz / www) — not sslip staging.
@@ -232,6 +233,10 @@ add_filter('document_title_parts', function (array $parts): array {
     } elseif (is_page('realizace')) {
         $parts['title'] = 'Realizace — skleněné dveře v interiérech';
         unset($parts['tagline']);
+    } elseif (is_page('recenze')) {
+        $stats = function_exists('sklo_recenze_stats') ? sklo_recenze_stats() : ['avg' => 0, 'count' => 0];
+        $parts['title'] = 'Recenze zákazníků — průměr ' . number_format_i18n((float) $stats['avg'], 1) . ' z 5';
+        unset($parts['tagline']);
     }
     return $parts;
 });
@@ -265,6 +270,13 @@ add_action('wp_head', function (): void {
         $desc = 'Zaměř otvor, pošli fotky a navrhni si dveře online. Kyvné, posuvné i celoskleněné. Nabídku připravíme podle tvých rozměrů.';
     } elseif (is_page('realizace')) {
         $desc = 'Galerie hotových skleněných dveří — kyvné, posuvné i celoskleněné v bytech a kancelářích. Podívej se na realizace a navrhni si vlastní.';
+    } elseif (is_page('recenze')) {
+        $stats = function_exists('sklo_recenze_stats') ? sklo_recenze_stats() : ['avg' => 0, 'count' => 0];
+        $desc = 'Recenze zákazníků Sklospeciál — průměr '
+            . number_format_i18n((float) $stats['avg'], 1)
+            . ' z 5 z '
+            . (int) $stats['count']
+            . ' hodnocení. Skleněné dveře, sprchy a zábradlí na míru.';
     } else {
         return;
     }
@@ -473,7 +485,7 @@ add_action('wp_enqueue_scripts', function (): void {
         'sklo-chat-widget',
         $api . '/public/chat-widget.js',
         [],
-        '1.8.6',
+        '1.9.0',
         true
     );
     wp_add_inline_script(
@@ -515,6 +527,7 @@ function sklo_nav_fallback(): void
         ['/sklenene-pricky/', 'Příčky'],
         ['/francouzske-balkony/', 'Balkony'],
         ['/realizace/', 'Realizace'],
+        ['/recenze/', 'Recenze'],
         ['/navod-na-zamereni/', 'Návod'],
         ['/pruvodce/', 'Průvodce'],
         ['/kontakt/', 'Kontakt'],

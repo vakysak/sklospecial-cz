@@ -859,3 +859,101 @@
   document.body.appendChild(bar);
   requestAnimationFrame(() => bar.classList.add('is-visible'));
 })();
+
+(() => {
+  const track = document.querySelector('[data-reviews-track]');
+  if (!track) return;
+  const slides = Array.from(track.querySelectorAll('[data-reviews-slide]'));
+  const dots = Array.from(document.querySelectorAll('[data-reviews-goto]'));
+  if (slides.length < 2) return;
+
+  let index = 0;
+  let timer = null;
+
+  const show = (i) => {
+    index = (i + slides.length) % slides.length;
+    slides.forEach((el, n) => {
+      const on = n === index;
+      el.classList.toggle('is-active', on);
+      if (on) el.removeAttribute('hidden');
+      else el.setAttribute('hidden', '');
+    });
+    dots.forEach((d, n) => d.classList.toggle('is-active', n === index));
+  };
+
+  const next = () => show(index + 1);
+  const start = () => {
+    stop();
+    timer = window.setInterval(next, 6500);
+  };
+  const stop = () => {
+    if (timer) window.clearInterval(timer);
+    timer = null;
+  };
+
+  dots.forEach((d) => {
+    d.addEventListener('click', () => {
+      const i = Number(d.getAttribute('data-reviews-goto') || 0);
+      show(i);
+      start();
+    });
+  });
+
+  track.addEventListener('mouseenter', stop);
+  track.addEventListener('mouseleave', start);
+  show(0);
+  start();
+})();
+
+(() => {
+  const list = document.querySelector('[data-recenze-list]');
+  if (!list) return;
+  const pageSize = Number(list.getAttribute('data-page-size') || 24);
+  const items = Array.from(list.querySelectorAll('.sklo-recenze-item'));
+  const chips = Array.from(document.querySelectorAll('[data-recenze-filters] [data-filter]'));
+  const moreBtn = document.querySelector('[data-recenze-more]');
+  const countEl = document.querySelector('[data-recenze-count]');
+  let filter = 'all';
+  let visible = pageSize;
+
+  const matching = () =>
+    items.filter((el) => filter === 'all' || el.getAttribute('data-category') === filter);
+
+  const render = () => {
+    const match = matching();
+    items.forEach((el) => el.setAttribute('hidden', ''));
+    match.slice(0, visible).forEach((el) => el.removeAttribute('hidden'));
+    const shown = Math.min(visible, match.length);
+    const remaining = match.length - shown;
+    if (moreBtn) {
+      moreBtn.hidden = remaining <= 0;
+    }
+    if (countEl) {
+      if (match.length === 0) {
+        countEl.hidden = false;
+        countEl.textContent = 'Žádné recenze v této kategorii.';
+      } else {
+        countEl.hidden = false;
+        countEl.textContent = `Zobrazeno ${shown} z ${match.length}`;
+      }
+    }
+  };
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      filter = chip.getAttribute('data-filter') || 'all';
+      visible = pageSize;
+      chips.forEach((c) => c.classList.toggle('is-active', c === chip));
+      render();
+    });
+  });
+
+  if (moreBtn) {
+    moreBtn.addEventListener('click', () => {
+      visible += pageSize;
+      render();
+    });
+  }
+
+  render();
+})();
