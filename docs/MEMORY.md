@@ -53,4 +53,4 @@ Tykat · konkrétní · bez „luxusní/exkluzivní/prémiový“ · CTA „poš
 
 ## DOPORUČENÝ START
 
-Hotovo přes Coolify. Doplň `OPENAI_API_KEY` + SMTP env u API app.
+Hotovo přes Coolify. **Secrets chybí** — viz `docs/GO-LIVE-SMTP.md` + `docs/GO-LIVE-CHAT.md` (SMTP + FluentSMTP + `OPENAI_API_KEY`).

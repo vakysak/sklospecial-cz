@@ -3,8 +3,8 @@
 ## Blokuje ostrý provoz (doplnit)
 
 - [ ] Cloudflare Turnstile — Site + Secret key
-- [ ] SMTP — host/port/user/heslo (FluentSMTP + Node `SMTP_*`)
-- [ ] OpenAI API key → Coolify env `OPENAI_API_KEY` u `sklospecial-api`
+- [ ] SMTP — host/port/user/heslo (FluentSMTP + Node `SMTP_*`) — viz `docs/GO-LIVE-SMTP.md`
+- [ ] OpenAI API key → Coolify env `OPENAI_API_KEY` u `sklospecial-api` — viz `docs/GO-LIVE-CHAT.md`
 
 ## Hotovo
 
