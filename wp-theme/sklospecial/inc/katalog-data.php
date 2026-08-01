@@ -28,6 +28,58 @@ function sklo_cena_note(): string
 }
 
 /**
+ * Concrete example anchor near „od X Kč“ on category/hub pages.
+ * Catalog-based examples — not a binding quote.
+ *
+ * @return array{text: string}|null
+ */
+function sklo_cena_priklad(?string $slug = null): ?array
+{
+    $slug = $slug ?? '';
+    $map = [
+        'sklenene-dvere' => 'Příklad: posuvné dveře 90×210 cm, matné sklo, černá lišta — od 12 400 Kč',
+        'posuvne'        => 'Příklad: posuvné dveře 90×210 cm, matné sklo, černá lišta — od 12 400 Kč',
+        'otocne'         => 'Příklad: kyvné dveře 80×210 cm, čiré sklo — od 11 800 Kč',
+        'otevirane'      => 'Příklad: otevírané dveře 70×210 cm, matné sklo — od 10 900 Kč',
+        'dvere-se-zarubni' => 'Příklad: dveře se zárubní 80×210 cm, čiré sklo — od 12 900 Kč',
+        'sprchove-kouty' => 'Příklad: Walk-In stěna 90×200 cm, chromové kování — od 4 600 Kč',
+        'zabradli'       => 'Příklad: zábradlí s montáží na spigotech, běžný úsek — od 7 600 Kč',
+        'strisky'        => 'Příklad: stříška ECO skladem 120×100 cm — od 7 100 Kč',
+        'sklenene-pricky' => 'Příklad: pevná příčka + kyvné dveře ~150×220 cm — od 21 000 Kč',
+        'pricky-a-zabudovani' => 'Příklad: pevná příčka + kyvné dveře ~150×220 cm — od 21 000 Kč',
+        'francouzske-balkony' => 'Příklad: francouzský balkon 120×100 cm, čiré sklo — od 7 100 Kč',
+    ];
+
+    // Map child/alias slugs.
+    $aliases = [
+        'pricky' => 'sklenene-pricky',
+        'balkony' => 'francouzske-balkony',
+        'sprchy' => 'sprchove-kouty',
+        'dvere' => 'sklenene-dvere',
+    ];
+    if (isset($aliases[$slug])) {
+        $slug = $aliases[$slug];
+    }
+    if ($slug === '' || !isset($map[$slug])) {
+        return null;
+    }
+    return ['text' => $map[$slug]];
+}
+
+/**
+ * Render example price anchor (if available for slug).
+ */
+function sklo_render_cena_priklad(?string $slug = null, string $class = ''): void
+{
+    $ex = sklo_cena_priklad($slug);
+    if ($ex === null) {
+        return;
+    }
+    $classes = trim('sklo-cena-priklad ' . $class);
+    echo '<p class="' . esc_attr($classes) . '">' . esc_html($ex['text']) . '</p>';
+}
+
+/**
  * Min cena z product data, nebo fallback.
  */
 function sklo_katalog_min_price(string $slug, ?int $fallback = null): ?int

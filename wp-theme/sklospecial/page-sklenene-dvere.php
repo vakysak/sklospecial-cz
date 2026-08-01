@@ -19,6 +19,23 @@ $children = is_array($cat['children'] ?? null) ? $cat['children'] : [];
       <p class="sklo-eyebrow"><?php echo esc_html((string) ($cat['eyebrow'] ?? 'Katalog')); ?></p>
       <h1><?php echo esc_html((string) ($cat['title'] ?? 'Skleněné dveře na míru')); ?></h1>
       <p class="sklo-katalog__lead"><?php echo esc_html((string) ($cat['lead'] ?? '')); ?></p>
+      <?php
+      $hub_from = $cat['price_from'] ?? null;
+      if (!$hub_from && function_exists('sklo_format_cena_od')) {
+          $hub_from = sklo_format_cena_od(10100);
+      }
+      if ($hub_from) :
+          ?>
+        <p class="sklo-katalog__from"><?php echo esc_html((string) $hub_from); ?></p>
+      <?php endif; ?>
+      <?php if (function_exists('sklo_render_cena_priklad')) : ?>
+        <?php sklo_render_cena_priklad('sklenene-dvere'); ?>
+      <?php endif; ?>
+      <?php if (function_exists('sklo_render_recenze_rating_link')) : ?>
+        <div class="sklo-katalog__rating">
+          <?php sklo_render_recenze_rating_link('sklo-rating-link--inline'); ?>
+        </div>
+      <?php endif; ?>
       <div class="sklo-katalog__hero-actions">
         <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Navrhni si dveře</a>
         <a class="sklo-btn sklo-btn--ghost-light" href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">Jak zaměřit</a>

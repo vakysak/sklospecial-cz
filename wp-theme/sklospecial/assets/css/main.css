@@ -3622,3 +3622,238 @@ a:hover { color: var(--accent-hover); }
   font-size: 1.05rem;
   line-height: 1.55;
 }
+/* —— Audit remediation 1.15: proof gallery, price example, doprava table, O nás, footer cols —— */
+
+.sklo-cena-priklad {
+  margin: 0.35rem 0 0;
+  max-width: 36rem;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.sklo-katalog__rating {
+  margin: 0.75rem 0 0;
+}
+
+.sklo-proof__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+.sklo-proof__item {
+  margin: 0;
+  opacity: 0;
+  animation: sklo-proof-in 0.55s ease forwards;
+  animation-delay: calc(var(--i, 0) * 0.07s);
+}
+
+@keyframes sklo-proof-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.sklo-proof__item img {
+  display: block;
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+}
+
+.sklo-proof__item figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.sklo-proof__more {
+  margin: 1.25rem 0 0;
+  text-align: center;
+}
+
+.sklo-about__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+  margin-top: 1rem;
+}
+
+.sklo-orient-table-wrap {
+  margin: 1.25rem 0 1.75rem;
+  overflow-x: auto;
+}
+
+.sklo-orient-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.sklo-orient-table caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.sklo-orient-table th,
+.sklo-orient-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 0.65rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.sklo-orient-table th {
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sklo-orient-table__note {
+  margin: 0.65rem 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.sklo-footer__cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem 2rem;
+}
+
+.sklo-footer__col h3 {
+  margin: 0 0 0.45rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-weight: 400;
+  font-family: var(--font);
+}
+
+.sklo-footer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sklo-footer__list li { margin: 0.2rem 0; }
+
+.sklo-footer__list a {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 400;
+}
+
+.sklo-footer__list a:hover { color: var(--accent); }
+
+.sklo-footer__addr {
+  margin: 0.85rem 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.sklo-footer__addr a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.sklo-footer__inner {
+  grid-template-columns: 1.2fr 2fr;
+}
+
+.sklo-o-nas__intro {
+  max-width: 40rem;
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.sklo-o-nas__grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 2rem;
+  margin-top: 1.75rem;
+  align-items: start;
+}
+
+.sklo-o-nas__photo,
+.sklo-kontakt__photo {
+  margin: 0 0 1rem;
+}
+
+.sklo-o-nas__photo img,
+.sklo-kontakt__photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 16rem;
+  object-fit: cover;
+}
+
+.sklo-o-nas__photo figcaption,
+.sklo-kontakt__photo figcaption {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.sklo-o-nas__photo-placeholder {
+  padding: 1.25rem;
+  border: 1px dashed var(--line);
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.sklo-o-nas__card {
+  margin-bottom: 1rem;
+}
+
+.sklo-o-nas__card h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.sklo-o-nas__map iframe {
+  width: 100%;
+  height: 220px;
+  border: 0;
+  background: var(--bg-secondary);
+}
+
+.sklo-o-nas__cta {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+}
+
+@media (max-width: 900px) {
+  .sklo-proof__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .sklo-footer__cols,
+  .sklo-o-nas__grid,
+  .sklo-footer__inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .sklo-proof__grid {
+    grid-template-columns: 1fr;
+  }
+  .sklo-proof__item img {
+    height: 14rem;
+  }
+}

@@ -32,20 +32,46 @@ $realizace = home_url('/doba-realizace/');
       </ul>
 
       <h2>Náklady dopravy</h2>
-      <ul>
-        <li>Orientační údaje „od“ u produktů v katalogu, pokud jsou uvedeny, jsou jen vodítko.</li>
-        <li>Finální dopravné = individuální kalkulace (rozměry, počet kusů, adresa, typ přepravy).</li>
-        <li>U většího objemu nebo atypických rozměrů naceníme nejvhodnější variantu — ozvěte se v poptávce.</li>
-      </ul>
+      <p>Orientační přehled níže — aby bylo vidět řády cen, ne jen „individuální kalkulace“. <strong>Finální dopravné vždy v nabídce</strong> (rozměry, počet kusů, adresa, typ přepravy).</p>
+
+      <div class="sklo-orient-table-wrap">
+        <table class="sklo-orient-table">
+          <caption>Orientační doprava (bez montáže)</caption>
+          <thead>
+            <tr>
+              <th scope="col">Režim / region</th>
+              <th scope="col">Orientačně</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Osobní odběr — Prostřední Bludovice</td>
+              <td><strong>0&nbsp;Kč</strong></td>
+            </tr>
+            <tr>
+              <td>Naše doprava — okolí / Morava (dostupný region)</td>
+              <td><strong>od 800–2&nbsp;500&nbsp;Kč</strong></td>
+            </tr>
+            <tr>
+              <td>Praha — sdílený výjezd (typicky 3–5 montáží na trasu)</td>
+              <td><strong>1&nbsp;200–1&nbsp;500&nbsp;Kč</strong> / zákazník</td>
+            </tr>
+            <tr>
+              <td>Praha — individuální / expresní výjezd</td>
+              <td><strong>od cca 3&nbsp;500–6&nbsp;000&nbsp;Kč</strong></td>
+            </tr>
+            <tr>
+              <td>Přepravní firma (paleta / specializovaná přeprava skla)</td>
+              <td><strong>dle nabídky</strong> (orientačně od cca 1&nbsp;500&nbsp;Kč)</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="sklo-orient-table__note">Nejde o pevný ceník. Atypické rozměry, více kusů nebo špatný přístup cenu posunou — přesnou částku napíšeme do nabídky.</p>
+      </div>
 
       <h2 id="praha">Výjezdy do Prahy a vzdálenějších regionů</h2>
       <p>Do Prahy (a případně dalších vzdálenějších lokalit) plánujeme montáže dávkově — typicky když se sejdou <strong>3–5 montáží</strong> na jednu trasu. Náklady na výjezd se tak rozdělí mezi zákazníky a vychází to výhodněji.</p>
-      <p>Termíny v Praze vypisujeme pravidelně — napište nám a zařadíme vás do nejbližšího výjezdu.</p>
-      <ul>
-        <li>Orientační doprava na zákazníka při sdíleném výjezdu: <strong>1&nbsp;200–1&nbsp;500&nbsp;Kč</strong> (příklad při cca 4 montážích na jeden výjezd).</li>
-        <li>Finální částku uvedeme v nabídce podle konkrétní trasy a rozsahu.</li>
-        <li>Pokud nechcete čekat na společný termín, individuální / expresní výjezd je možný — bývá ale dražší.</li>
-      </ul>
+      <p>Termíny v Praze vypisujeme pravidelně — napište nám a zařadíme vás do nejbližšího výjezdu. Pokud nechcete čekat na společný termín, individuální výjezd je možný — bývá dražší (viz tabulka výše).</p>
 
       <h2 id="montaz">Orientační ceny montáže</h2>
       <p>Montáž nabízíme volitelně — výrobek můžete objednat i bez ní. Částky níže jsou <strong>orientační</strong> (práce); finální cenu včetně dojezdu uvedeme v nabídce po zaměření / podle lokality.</p>

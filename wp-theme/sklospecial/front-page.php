@@ -46,11 +46,55 @@ $cfg = sklo_konfigurator_url();
       <p class="sklo-eyebrow">O nás</p>
       <h2>Už 30&nbsp;let nás najdete na jedné adrese. Pokračuje třetí generace.</h2>
       <p>Rodinná firma Sklospeciál. Stavíme na stabilitě a jistotě — od zaměření po montáž víš, s kým jednáš. Skleněné dveře na míru vyřídíš na dálku: zaměříš sám, pošleš fotky a ve studiu si složíš dveře.</p>
-      <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Otevřít studio</a>
+      <div class="sklo-about__actions">
+        <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Otevřít studio</a>
+        <a class="sklo-link" href="<?php echo esc_url(home_url('/o-nas/')); ?>">Víc o nás</a>
+      </div>
     </div>
     <div class="sklo-about__panel" aria-hidden="true">
       <div class="sklo-about__glass"></div>
     </div>
+  </div>
+</section>
+
+<?php
+$proof_uploads = content_url('uploads/2026/07');
+$proof_items = [
+    ['file' => 'posuvne-sklenene-dvere-matne-sklo.webp', 'caption' => 'Posuvné dveře — matné sklo', 'w' => 507, 'h' => 626],
+    ['file' => 'sklene-zabradli-s-masivnim-drevem.webp', 'caption' => 'Zábradlí se dřevěným madlem', 'w' => 626, 'h' => 417],
+    ['file' => 'sklenene-dvere-v-interieru.webp', 'caption' => 'Skleněné dveře v interiéru', 'w' => 626, 'h' => 470],
+    ['file' => 'moderni-interier-sklene-prcky-dreveny-stolek.webp', 'caption' => 'Skleněné příčky', 'w' => 626, 'h' => 417],
+    ['file' => 'sklenene-zabradli-na-zakazku.webp', 'caption' => 'Celoskleněné zábradlí', 'w' => 352, 'h' => 626],
+    ['file' => 'sklenene-dvere-s-matnym-sklem.webp', 'caption' => 'Posuvné dveře s matným sklem', 'w' => 626, 'h' => 417],
+];
+?>
+<section class="sklo-section sklo-proof" id="ukazky" aria-labelledby="proof-heading">
+  <div class="sklo-wrap">
+    <header class="sklo-section__head sklo-section__head--center">
+      <p class="sklo-eyebrow">Ukázky</p>
+      <h2 id="proof-heading">Ukázky skleněných řešení</h2>
+      <p>Ilustrační fotografie typů řešení — ne pojmenované zakázky konkrétních zákazníků. Další inspirace na stránce Realizace.</p>
+    </header>
+    <div class="sklo-proof__grid">
+      <?php foreach ($proof_items as $i => $item) :
+          $src = trailingslashit($proof_uploads) . $item['file'];
+          ?>
+        <figure class="sklo-proof__item" style="--i: <?php echo esc_attr((string) $i); ?>">
+          <img
+            src="<?php echo esc_url($src); ?>"
+            alt="<?php echo esc_attr($item['caption']); ?>"
+            width="<?php echo esc_attr((string) $item['w']); ?>"
+            height="<?php echo esc_attr((string) $item['h']); ?>"
+            loading="lazy"
+            decoding="async"
+          >
+          <figcaption><?php echo esc_html($item['caption']); ?></figcaption>
+        </figure>
+      <?php endforeach; ?>
+    </div>
+    <p class="sklo-proof__more">
+      <a class="sklo-link" href="<?php echo esc_url(home_url('/realizace/')); ?>">Více ukázek</a>
+    </p>
   </div>
 </section>
 

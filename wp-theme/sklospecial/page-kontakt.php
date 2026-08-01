@@ -65,6 +65,24 @@ $poptavka = home_url('/poptavka/');
       <?php sklo_render_risk_block('vykani', 'sklo-risk--kontakt'); ?>
     <?php endif; ?>
 
+    <?php
+    $about_img = get_template_directory() . '/assets/images/about.jpg';
+    $about_uri = get_template_directory_uri() . '/assets/images/about.jpg';
+    if (is_readable($about_img)) :
+        ?>
+    <figure class="sklo-kontakt__photo">
+      <img
+        src="<?php echo esc_url($about_uri); ?>"
+        alt="Provozovna Sklospeciál — dílenské prostředí"
+        width="800"
+        height="600"
+        loading="lazy"
+        decoding="async"
+      >
+      <figcaption>Provozovna v Horních Bludovicích — atmosféra dílny, ne portrét týmu. Více na stránce <a href="<?php echo esc_url(home_url('/o-nas/')); ?>">O nás</a>.</figcaption>
+    </figure>
+    <?php endif; ?>
+
     <section class="sklo-kontakt__grid" aria-labelledby="kontakt-udaje">
       <div class="sklo-kontakt__card">
         <h2 id="kontakt-udaje">Spojení</h2>

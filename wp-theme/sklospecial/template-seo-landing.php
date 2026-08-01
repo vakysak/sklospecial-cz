@@ -29,6 +29,7 @@ $faq = [];
 $related = [];
 $bullets = [];
 $price_from = null;
+$katalog_slug = '';
 $h1 = '';
 $eyebrow = 'Sklospeciál';
 $intro = '';
@@ -51,6 +52,7 @@ if ($kind === 'city') {
     $local_note = (string) ($copy['local_note'] ?? '');
     $faq = $copy['faq'];
     $price_from = $copy['price_from'];
+    $katalog_slug = (string) ($category['katalog_slug'] ?? ($category['slug'] ?? ''));
     $related = (array) ($category['related'] ?? []);
     $parent_url = (string) ($category['pillar_path'] ?? '/');
     $parent_label = (string) ($category['name'] ?? 'Katalog');
@@ -106,7 +108,15 @@ if ($kind === 'city') {
       <p class="sklo-katalog__lead"><?php echo esc_html($intro); ?></p>
       <?php if ($price_from) : ?>
         <p class="sklo-katalog__from"><?php echo esc_html($price_from); ?></p>
+        <?php if (function_exists('sklo_render_cena_priklad')) : ?>
+          <?php sklo_render_cena_priklad($katalog_slug !== '' ? $katalog_slug : null); ?>
+        <?php endif; ?>
         <p class="sklo-seo-landing__price-note"><?php echo esc_html(sklo_cena_note()); ?></p>
+      <?php endif; ?>
+      <?php if (function_exists('sklo_render_recenze_rating_link')) : ?>
+        <div class="sklo-katalog__rating">
+          <?php sklo_render_recenze_rating_link('sklo-rating-link--inline'); ?>
+        </div>
       <?php endif; ?>
       <div class="sklo-katalog__hero-actions">
         <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Otevřít studio</a>

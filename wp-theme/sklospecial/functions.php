@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.14.0');
+define('SKLO_THEME_VER', '1.15.0');
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
@@ -531,6 +531,7 @@ function sklo_nav_fallback(): void
         ['/recenze/', 'Recenze'],
         ['/navod-na-zamereni/', 'Návod'],
         ['/pruvodce/', 'Průvodce'],
+        ['/o-nas/', 'O nás'],
         ['/kontakt/', 'Kontakt'],
     ];
     echo '<ul class="nav-list">';

@@ -73,6 +73,14 @@ $back_url = (string) get_permalink();
       <?php endif; ?>
       <?php if ($price_from) : ?>
         <p class="sklo-katalog__from"><?php echo esc_html((string) $price_from); ?></p>
+        <?php if (function_exists('sklo_render_cena_priklad')) : ?>
+          <?php sklo_render_cena_priklad($slug); ?>
+        <?php endif; ?>
+      <?php endif; ?>
+      <?php if (function_exists('sklo_render_recenze_rating_link')) : ?>
+        <div class="sklo-katalog__rating">
+          <?php sklo_render_recenze_rating_link('sklo-rating-link--inline'); ?>
+        </div>
       <?php endif; ?>
       <?php if ($parent !== '') : ?>
         <p class="sklo-katalog__back">
