@@ -105,6 +105,15 @@ const PUBLIC_TEXT_REPLACEMENTS = [
   [/\bniezawodny\b/gi, 'spolehlivý'],
   [/\bprosimy podac\b/gi, 'uveďte prosím'],
   [/\botrzymuja Panstwo\b/gi, 'obdržíte'],
+  [/pokud zalezy panstwu na jakims konkretnym prvku w danej grafice, nalezy to uvést podczas skládání objednávky- w przeciwnym wypadku reklamacje ne beda uwzgledniane/gi, 'pokud vám záleží na konkrétním prvku grafiky, uveďte jej při objednávce; k pozdějším reklamacím tohoto výběru nelze přihlížet'],
+  [/Stosowanie nadruku powoduje ozdobe wizualna dveře/gi, 'Potisk vytváří dekorativní vzhled dveří'],
+  [/Kolorystyka ram aluminiowych wpisuje se w najnowsze trendy/gi, 'Barevnost hliníkových rámů odpovídá nejnovějším trendům'],
+  [/\bdwoch\b/gi, 'dvou'],
+  [/\bzestaw\b/gi, 'sada'],
+  [/\brezygnacji\b/gi, 'zrušení'],
+  [/\bpodzialu\b/gi, 'členění'],
+  [/\bkomplecie\b/gi, 'sadě'],
+  [/\bszyna\b/gi, 'kolejnice'],
   [
     /[ąęłńśźżćĄĘŁŃŚŹŻĆ]/g,
     (ch) =>
