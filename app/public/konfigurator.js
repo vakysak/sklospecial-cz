@@ -329,8 +329,8 @@ function konfigurator() {
       if (this.config.needs_advice) return 'Bez konkrétního modelu — doporučíme podle fotek';
       if (this.prostor.url) {
         return this.prostor.sampleId
-          ? 'Ukázková místnost: posuň rámeček na otvor'
-          : 'Fotka prostoru: posuň rámeček na otvor';
+          ? 'Ukázková místnost: přetáhni dveře na otvor'
+          : 'Fotka prostoru: přetáhni dveře na otvor';
       }
       return 'Vyber typ a produkt z katalogu SklS';
     },
@@ -395,7 +395,9 @@ function konfigurator() {
 
     onStagePointerDown(e) {
       if (!this.prostor.url) return;
-      const handle = e.target?.dataset?.drag;
+      // img/leaf fill the frame — resolve data-drag from nearest ancestor
+      const handleEl = e.target?.closest?.('[data-drag]');
+      const handle = handleEl?.dataset?.drag;
       if (!handle) return;
       const stage = e.currentTarget.getBoundingClientRect();
       this.drag = {
