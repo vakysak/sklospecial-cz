@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.23.0');
+define('SKLO_THEME_VER', '1.23.3');
 
 /** Default konfigurátor/API host. Override via option sklo_api_base or env SKLO_API_BASE. */
 define(
@@ -63,6 +63,14 @@ function sklo_staging_robots_noindex(): void
 }
 add_action('wp_head', 'sklo_staging_robots_noindex', 0);
 
+
+/**
+ * Omit XSL stylesheet PIs from core sitemaps.
+ * Some external fetchers (XSLT-aware) choke on xml-stylesheet and mis-report errors.
+ */
+add_filter('wp_sitemaps_stylesheet_url', '__return_false');
+add_filter('wp_sitemaps_stylesheet_index_url', '__return_false');
+
 add_filter('robots_txt', static function ($output, $public) {
     if (!sklo_is_production()) {
         return "User-agent: *\nDisallow: /\n";
@@ -71,10 +79,10 @@ add_filter('robots_txt', static function ($output, $public) {
     if ($out === '' || !str_contains($out, 'User-agent:')) {
         $out = "User-agent: *\nAllow: /\n";
     }
-    $sitemap = home_url('/sitemap_index.xml');
-    if (!str_contains($out, 'Sitemap:')) {
-        $out = rtrim($out) . "\n\nSitemap: {$sitemap}\n";
-    }
+    // Canonical WP core sitemap (Rank Math not installed — do not advertise sitemap_index.xml).
+    $sitemap = home_url('/wp-sitemap.xml');
+    $out = preg_replace('/^Sitemap:\s*.*$/mi', '', $out) ?? $out;
+    $out = rtrim($out) . "\n\nSitemap: {$sitemap}\n";
     return $out;
 }, 10, 2);
 
@@ -551,6 +559,22 @@ add_filter('get_site_icon_url', static function ($url, $size) {
     }
     return sklo_favicon_uri($file) . '?v=' . rawurlencode(SKLO_THEME_VER);
 }, 10, 2);
+
+/**
+ * Seznam Webmaster Tools verification file (plain text at exact path).
+ */
+add_action('template_redirect', static function (): void {
+    $uri = (string) ($_SERVER['REQUEST_URI'] ?? '');
+    $path = (string) (parse_url($uri, PHP_URL_PATH) ?: '');
+    if ($path !== '/seznam-wmt-OxuZbtSPb2d6JOCCXliXqyxrhk6UREAM.txt') {
+        return;
+    }
+    status_header(200);
+    header('Content-Type: text/plain; charset=UTF-8');
+    header('X-Robots-Tag: noindex');
+    echo "OxuZbtSPb2d6JOCCXliXqyxrhk6UREAM\n";
+    exit;
+}, 0);
 
 /** Serve theme favicon at /favicon.ico instead of WP blue W. */
 add_action('do_faviconico', static function (): void {
