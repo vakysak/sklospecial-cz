@@ -79,7 +79,7 @@ $poptavka = home_url('/poptavka/');
         loading="lazy"
         decoding="async"
       >
-      <figcaption>Provozovna v Horních Bludovicích — atmosféra dílny, ne portrét týmu. Více na stránce <a href="<?php echo esc_url(home_url('/o-nas/')); ?>">O nás</a>.</figcaption>
+      <figcaption>Provozovna v Prostředních Bludovicích — atmosféra dílny, ne portrét týmu. Více na stránce <a href="<?php echo esc_url(home_url('/o-nas/')); ?>">O nás</a>.</figcaption>
     </figure>
     <?php endif; ?>
 
