@@ -9,12 +9,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.17.1');
+define('SKLO_THEME_VER', '1.17.3');
 
-/** Default konfigurátor/API host while api.sklospecial.* is not live. Override via option/env. */
+/** Default konfigurátor/API host. Override via option sklo_api_base or env SKLO_API_BASE. */
 define(
     'SKLO_API_BASE_DEFAULT',
-    'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io'
+    'https://api.sklospecial.eu'
 );
 
 require_once get_template_directory() . '/inc/katalog-data.php';
@@ -875,7 +875,7 @@ add_action('rest_api_init', static function (): void {
                 : 'Ne';
 
             $body_lines = [
-                'Nová poptávka z katalogu (sklospecial.cz)',
+                'Nová poptávka z katalogu (sklospecial.eu)',
                 '',
                 'Jméno: ' . $jmeno,
                 'E-mail: ' . $email,

@@ -44,12 +44,12 @@ DB_ROOT_PASSWORD=
 
 OPENAI_API_KEY=
 
-SMTP_HOST=
+SMTP_HOST=mail.webglobe.cz
 SMTP_PORT=587
-SMTP_USER=
+SMTP_USER=info@sklospecial.eu
 SMTP_PASS=
-MAIL_FROM=info@sklospecial.cz
-MAIL_TO=info@sklospecial.cz
+MAIL_FROM=info@sklospecial.eu
+MAIL_TO=info@sklospecial.eu
 
 NODE_ENV=production
 PORT=3001

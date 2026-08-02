@@ -97,7 +97,7 @@ $poptavka = home_url('/poptavka/');
           </div>
           <div>
             <dt>E-mail</dt>
-            <dd><a href="mailto:info@sklospecial.cz">info@sklospecial.cz</a></dd>
+            <dd><a href="mailto:info@sklospecial.eu">info@sklospecial.eu</a></dd>
           </div>
         </dl>
       </div>

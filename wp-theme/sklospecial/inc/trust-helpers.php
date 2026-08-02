@@ -136,7 +136,7 @@ function sklo_render_risk_block(string $tone = 'tykani', string $class = ''): vo
             ],
             [
                 'title' => 'Reklamace',
-                'text'  => 'Vadné zboží nebo montáž řešíme podle obchodních podmínek — napište na <a href="mailto:info@sklospecial.cz">info@sklospecial.cz</a> nebo volejte.',
+                'text'  => 'Vadné zboží nebo montáž řešíme podle obchodních podmínek — napište na <a href="mailto:info@sklospecial.eu">info@sklospecial.eu</a> nebo volejte.',
             ],
             [
                 'title' => 'Předání',
@@ -154,7 +154,7 @@ function sklo_render_risk_block(string $tone = 'tykani', string $class = ''): vo
             ],
             [
                 'title' => 'Reklamace',
-                'text'  => 'Vadné zboží nebo montáž řešíme podle obchodních podmínek — napiš na <a href="mailto:info@sklospecial.cz">info@sklospecial.cz</a> nebo zavolej.',
+                'text'  => 'Vadné zboží nebo montáž řešíme podle obchodních podmínek — napiš na <a href="mailto:info@sklospecial.eu">info@sklospecial.eu</a> nebo zavolej.',
             ],
             [
                 'title' => 'Předání',

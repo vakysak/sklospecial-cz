@@ -12,7 +12,7 @@ Day-of DNS / production flip. Staging: `*.sslip.io`. Theme `sklo_is_production()
 
 | Item | Status | Where |
 |------|--------|--------|
-| **SMTP** (FluentSMTP + Coolify `SMTP_*`) | **BROKEN / needs you** | See `docs/GO-LIVE-SMTP.md`. WP poptávka → `mail_fail`. FluentSMTP **not** in active plugins list (reinstall/configure). API konfigurátor mail needs Coolify `SMTP_HOST/USER/PASS`. |
+| **SMTP** (FluentSMTP + Coolify `SMTP_*`) | **Needs Webglobe mailbox + password** | See `docs/GO-LIVE-SMTP.md`. Host `mail.webglobe.cz:587`. Coolify má `MAIL_FROM`/`MAIL_TO`=`info@sklospecial.eu` (po redeploy); **chybí** `SMTP_*`. FluentSMTP plugin je na WP — connection + test v adminu. From musí být `@sklospecial.eu` (ne `.cz` = Active24 SPF). |
 | **OPENAI_API_KEY** | **Missing** | Coolify API env → redeploy. See `docs/GO-LIVE-CHAT.md`. Live chat returns `OPENAI_API_KEY není nastavený`. |
 | **Turnstile Site + Secret** | **Wired** (site key present on `/poptavka/`) | Theme verifies token when configured. Curl without token → `bad_captcha`. |
 | **DNS** | Manual | `docs/GO-LIVE-DNS.md` |

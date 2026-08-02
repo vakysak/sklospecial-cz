@@ -756,7 +756,7 @@
       );
       if (errEl) {
         errEl.innerHTML =
-          'Nepodařilo se odeslat přes server. <a href="mailto:info@sklospecial.cz?subject=' +
+          'Nepodařilo se odeslat přes server. <a href="mailto:info@sklospecial.eu?subject=' +
           subject +
           '&body=' +
           body +

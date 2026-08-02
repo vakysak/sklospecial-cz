@@ -62,4 +62,4 @@ Tykat · konkrétní · bez „luxusní/exkluzivní/prémiový“ · CTA „poš
 
 ## DOPORUČENÝ START
 
-Hotovo přes Coolify. **Secrets chybí** — viz `docs/GO-LIVE-SMTP.md` + `docs/GO-LIVE-CHAT.md` (SMTP + FluentSMTP + `OPENAI_API_KEY`).
+Hotovo přes Coolify. **SMTP heslo chybí** (Webglobe schránka `info@sklospecial.eu`) — viz `docs/GO-LIVE-SMTP.md`. Chat: `docs/GO-LIVE-CHAT.md` (`OPENAI_API_KEY`).

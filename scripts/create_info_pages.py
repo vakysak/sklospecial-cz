@@ -75,7 +75,7 @@ OP_CONTENT = """
 <li>Stolařství Aleš s.r.o., IČO 29457335, DIČ CZ29457335</li>
 <li>Sídlo: Horní Bludovice 193, 739 37 Horní Bludovice</li>
 <li>Kontakt / provozovna: Prostřední Bludovice 193, 739 37 Horní Bludovice</li>
-<li>E-mail: <a href="mailto:info@sklospecial.cz">info@sklospecial.cz</a> · tel. <a href="tel:+420736134604">+420 736 134 604</a></li>
+<li>E-mail: <a href="mailto:info@sklospecial.eu">info@sklospecial.eu</a> · tel. <a href="tel:+420736134604">+420 736 134 604</a></li>
 </ul>
 <p>Web a značka: Sklospeciál.</p>
 
@@ -124,7 +124,7 @@ OP_CONTENT = """
 
 <h2>12. Rozhodné právo</h2>
 <p>Tyto podmínky se řídí právem České republiky. Spory se snažíme řešit dohodou. Spotřebitel může využít i mimosoudní řešení spotřebitelských sporů (ČOI).</p>
-<p>Otázky k podmínkám: <a href="mailto:info@sklospecial.cz">info@sklospecial.cz</a>.</p>
+<p>Otázky k podmínkám: <a href="mailto:info@sklospecial.eu">info@sklospecial.eu</a>.</p>
 <p><em>Tento text je informativní shrnutí obchodní praxe; doporučujeme právní kontrolu před ostrým provozem.</em></p>
 """.strip()
 

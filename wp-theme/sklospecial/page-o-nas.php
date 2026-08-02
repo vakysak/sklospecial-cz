@@ -50,7 +50,7 @@ $has_about = is_readable($about_img);
               loading="lazy"
               decoding="async"
             >
-            <figcaption>Provozovna / dílenské prostředí — Horní Bludovice. Nejde o portrét pojmenovaného týmu.</figcaption>
+            <figcaption>Provozovna / dílenské prostředí — Prostřední Bludovice. Nejde o portrét pojmenovaného týmu.</figcaption>
           </figure>
         <?php else : ?>
           <div class="sklo-o-nas__photo-placeholder">
@@ -62,7 +62,7 @@ $has_about = is_readable($about_img);
           <h2>Provozovna / kontakt</h2>
           <p>Prostřední Bludovice 193<br>739 37 Horní Bludovice</p>
           <p><a href="tel:+420736134604">+420 736 134 604</a><br>
-          <a href="mailto:info@sklospecial.cz">info@sklospecial.cz</a></p>
+          <a href="mailto:info@sklospecial.eu">info@sklospecial.eu</a></p>
         </div>
 
         <div class="sklo-o-nas__card">

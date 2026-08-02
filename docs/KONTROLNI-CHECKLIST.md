@@ -19,7 +19,7 @@ Technický denní plán: [`GO-LIVE-CHECKLIST.md`](./GO-LIVE-CHECKLIST.md).
 
 - [ ] DNS `sklospecial.cz` (+ `www`, `api`) → `46.225.122.108` — postup v [`GO-LIVE-DNS.md`](./GO-LIVE-DNS.md)
 - [ ] Coolify: SSL (Let’s Encrypt) + domény připojené na WP a API služby
-- [ ] SMTP: FluentSMTP ve WP + Coolify `SMTP_*` pro API — [`GO-LIVE-SMTP.md`](./GO-LIVE-SMTP.md)
+- [ ] SMTP: Webglobe schránka `info@sklospecial.eu` + FluentSMTP ve WP + Coolify `SMTP_*` — [`GO-LIVE-SMTP.md`](./GO-LIVE-SMTP.md)
 - [ ] OPENAI: ověřit chat (mělo by už fungovat) — [`GO-LIVE-CHAT.md`](./GO-LIVE-CHAT.md)
 - [ ] Zálohy DB + uploads (UpdraftPlus / export) stažené a ověřené
 - [ ] Licence fotek Quba / partnership — [`GO-LIVE-FOTKY.md`](./GO-LIVE-FOTKY.md)

@@ -81,14 +81,14 @@ function leadVars(lead) {
     options_html: optionsHtml,
     poznamka: lead.poznamka || '—',
     fotky_count: Array.isArray(lead.fotky) ? lead.fotky.length : 0,
-    mail_from: process.env.MAIL_FROM || 'info@sklospecial.cz',
+    mail_from: process.env.MAIL_FROM || 'info@sklospecial.eu',
   };
 }
 
 async function sendLeadToFirm(lead, attachments = []) {
   const html = await loadTemplate('email-firma.html', leadVars(lead));
   await getTransporter().sendMail({
-    from: process.env.MAIL_FROM || 'info@sklospecial.cz',
+    from: process.env.MAIL_FROM || 'info@sklospecial.eu',
     to: process.env.MAIL_TO || process.env.MAIL_FROM,
     subject: `Poptávka #${lead.id} — ${lead.jmeno} (${lead.mesto})`,
     html,
@@ -99,7 +99,7 @@ async function sendLeadToFirm(lead, attachments = []) {
 async function sendConfirmationToClient(lead) {
   const html = await loadTemplate('email-klient.html', leadVars(lead));
   await getTransporter().sendMail({
-    from: process.env.MAIL_FROM || 'info@sklospecial.cz',
+    from: process.env.MAIL_FROM || 'info@sklospecial.eu',
     to: lead.email,
     subject: `Potvrzení poptávky #${lead.id} — sklospecial.cz`,
     html,

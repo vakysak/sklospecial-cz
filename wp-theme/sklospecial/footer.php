@@ -49,9 +49,10 @@
         </ul>
         <p class="sklo-footer__addr">
           <strong>Provozovna:</strong> Prostřední Bludovice 193<br>
+          <strong>Sídlo:</strong> Horní Bludovice 193<br>
           739 37 Horní Bludovice<br>
           <a href="tel:+420736134604">+420 736 134 604</a><br>
-          <a href="mailto:info@sklospecial.cz">info@sklospecial.cz</a>
+          <a href="mailto:info@sklospecial.eu">info@sklospecial.eu</a>
         </p>
       </div>
     </nav>

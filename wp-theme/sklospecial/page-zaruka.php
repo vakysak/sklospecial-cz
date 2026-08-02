@@ -24,7 +24,7 @@ $op = home_url('/obchodni-podminky/');
       <h2>1. Zákonná odpovědnost za vady (reklamace)</h2>
       <p>U spotřebitelů odpovídáme za vady podle občanského zákoníku a zákona o ochraně spotřebitele — typicky <strong>24 měsíců</strong> od převzetí. Nejde o „smluvní dárek“, ale o zákonná práva. Podrobnosti jsou v <a href="<?php echo esc_url($op); ?>">obchodních podmínkách</a>.</p>
       <ul>
-        <li>Reklamujte bez zbytečného odkladu — e-mailem na <a href="mailto:info@sklospecial.cz">info@sklospecial.cz</a> nebo telefonicky, ideálně s fotkami a číslem faktury / zakázky.</li>
+        <li>Reklamujte bez zbytečného odkladu — e-mailem na <a href="mailto:info@sklospecial.eu">info@sklospecial.eu</a> nebo telefonicky, ideálně s fotkami a číslem faktury / zakázky.</li>
         <li>Zjevné poškození při dopravě hlaste ihned při převzetí (nebo hned po rozbalení).</li>
         <li>Na skle mohou být běžné optické jevy a výrobní tolerance dle norem; drobné odchylky v mezích praxe nejsou vadou.</li>
         <li>Výrobek vyrobený podle vámi potvrzených rozměrů nelze reklamovat jen proto, že se později ukáže chyba ve vlastním zaměření (pokud jsme nezaměřovali my).</li>

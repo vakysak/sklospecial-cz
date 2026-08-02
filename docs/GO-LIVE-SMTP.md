@@ -1,9 +1,9 @@
 # Go-live: SMTP (položka 4)
 
-**Stav:** audit hotov — **needs your secret** (SMTP credentials).  
-Žádné heslo ani host jsme nevymýšleli ani neukládali.
+**Stav:** částečně připraveno — **chybí Webglobe schránka + heslo** (`SMTP_USER` / `SMTP_PASS`).  
+Žádné heslo jsme nevymýšleli ani neukládali.
 
-Datum snapshotu: 2026-08-01 · větev `sklospecial`
+Datum snapshotu: 2026-08-02 · produkce `sklospecial.eu` · větev `sklospecial`
 
 ---
 
@@ -11,97 +11,138 @@ Datum snapshotu: 2026-08-01 · větev `sklospecial`
 
 | Kontrola | Výsledek |
 |----------|----------|
-| Coolify API app `c93wrq6ujvo02103pn26bxbr` → Environment | **Chybí** `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` |
-| Coolify API env už má | `MAIL_FROM`, `MAIL_TO` (nastavené), DB_*, `CORS_ORIGIN`, … |
-| Live mailer | Node `mailer.js` bez `SMTP_HOST` spadne na „Chybí SMTP_HOST“ |
-| FluentSMTP na WP | Plugin **není** v aktivních pluginech (2026-08-01 recheck) — dříve `fluent-smtp` REST 404. **Nainstalovat + nakonfigurovat** se SMTP credentials |
-| `POST /wp-json/sklo/v1/poptavka` | Odpověď `mail_fail` — „E-mail se nepodařilo odeslat“ (bez fungujícího maileru) |
-| WP Coolify env | Žádné `SMTP_*` (FluentSMTP se konfiguruje v WP adminu, ne v Coolify env) |
-| Coolify MCP | Nedostupný; env čteno přes Coolify HTTP API (jen názvy klíčů) |
+| Coolify API `c93wrq6ujvo02103pn26bxbr` | **Chybí** `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` (2026-08-02 REST) |
+| Coolify API `MAIL_FROM` / `MAIL_TO` | Nastaveno na **`info@sklospecial.eu`** (dříve `hampl@vakysak.cz`) — **platí až po redeploy** |
+| DNS `sklospecial.eu` | MX → `email*.webglobe.cz`, SPF `include:_spf.webglobe.cz`, DKIM `default._domainkey` OK |
+| DNS `sklospecial.cz` | MX → **Active24**, SPF `include:_spf.websupport.cz` — **ne Webglobe** |
+| Live kontakt na webu | `info@sklospecial.eu` (mailto v tématu) |
+| FluentSMTP na WP | Namespace `fluent-smtp` v REST **je** (plugin přítomen); konfigurace jen v WP adminu |
+| `POST /wp-json/sklo/v1/poptavka` | Bez Turnstile → `bad_captcha`; s mailerem bez SMTP → historicky `mail_fail` |
+| Dedicated API SMTP test | **Není** — jen `/api/health` (db); mail se ověří konfigurátorem / FluentSMTP testem |
+| Lokální `.env` / transcripts | **Žádné** SMTP heslo |
 
-Poptávka z katalogu (`/poptavka/` → `sklo/v1/poptavka`) jde přes **`wp_mail()`** → FluentSMTP.  
-Konfigurátor (`POST /api/konfigurator/odeslat`) jde přes **Node nodemailer** → `SMTP_*` v Coolify u API.
+**Proč ne `info@sklospecial.cz` jako From při Webglobe SMTP:**  
+odesílání přes Webglobe musí mít From na doméně se SPF Webglobe (= **`sklospecial.eu`**). From `@sklospecial.cz` by při Webglobe SMTP padal na SPF fail (`.cz` = Websupport/Active24).
 
-Obě cesty teď **neodesílají** bez tvých SMTP credentials.
+Poptávka z katalogu (`/poptavka/` → `sklo/v1/poptavka`) → **`wp_mail()`** → FluentSMTP.  
+Konfigurátor (`POST /api/konfigurator/odeslat`) → **Node nodemailer** → Coolify `SMTP_*`.
 
 ---
 
-## A) Node API — Coolify env (konfigurátor maily)
+## Webglobe SMTP — přesné hodnoty
 
-1. Otevři Coolify: `http://46.225.122.108:8000/`
-2. Project → app **sklospecial-api** (`c93wrq6ujvo02103pn26bxbr`)
-3. **Environment** → přidej / doplň:
+Oficiální parametry ([Webglobe poradna](https://www.webglobe.cz/poradna/odesilani-emailu-z-webu)):
+
+| Pole | Hodnota |
+|------|---------|
+| SMTP host | **`mail.webglobe.cz`** (aliasy: `smtp.webglobe.cz`, `mail.sklospecial.eu` → stejný cluster) |
+| Port | **`587`** (doporučeno) |
+| Encryption | **STARTTLS** / TLS |
+| Alternativa | Port **`465`** + SSL/TLS (`secure: true` — API to nastaví automaticky při `SMTP_PORT=465`) |
+| Username | celá adresa schránky, např. `info@sklospecial.eu` |
+| Password | heslo schránky z Webglobe (jen ty) |
+| From Email | stejná schránka (nebo alias na stejné doméně Webglobe) |
+| From Name | `Sklospeciál` |
+
+**SPF neměň** — už je `v=spf1 a mx include:_spf.webglobe.cz -all`. Při odesílání přes Webglobe SMTP zůstává SPF v pořádku.
+
+---
+
+## Co musíš udělat ve Webglobe (povinné)
+
+1. Přihlas se do Webglobe → doména **`sklospecial.eu`** → E-mailové schránky.
+2. **Vytvoř schránku** (pokud ještě neexistuje):
+   - doporučeno: **`info@sklospecial.eu`**
+   - nebo `poptavky@sklospecial.eu` / `noreply@sklospecial.eu` (pak From = tato adresa)
+3. Nastav **silné heslo** a ulož si ho (do gitu nepatří).
+4. Volitelně: v Roundcube ověř, že schránka přijímá poštu.
+5. Volitelně na webu: kontakt `mailto:` je sjednocený na `info@sklospecial.eu` (téma + právní stránky).
+
+Bez této schránky + hesla **nelze** doplnit `SMTP_USER` / `SMTP_PASS` ani dokončit FluentSMTP.
+
+---
+
+## A) Node API — Coolify env (konfigurátor)
+
+1. Coolify: `http://46.225.122.108:8000/`
+2. App **sklospecial-api** (`c93wrq6ujvo02103pn26bxbr`) → **Environment**
+3. Doplň (MAIL_* už má být `info@sklospecial.eu`):
 
 ```env
-SMTP_HOST=
+SMTP_HOST=mail.webglobe.cz
 SMTP_PORT=587
-SMTP_USER=
-SMTP_PASS=
-MAIL_FROM=info@sklospecial.cz
-MAIL_TO=info@sklospecial.cz
+SMTP_USER=info@sklospecial.eu
+SMTP_PASS=<heslo ze Webglobe — jen ty>
+MAIL_FROM=info@sklospecial.eu
+MAIL_TO=info@sklospecial.eu
 ```
 
 | Proměnná | Poznámka |
 |----------|----------|
-| `SMTP_HOST` | např. `smtp.seznam.cz`, `smtp.gmail.com`, `email-smtp.eu-west-1.amazonaws.com`, … |
-| `SMTP_PORT` | obvykle `587` (STARTTLS) nebo `465` (SSL) — API nastaví `secure` podle 465 |
-| `SMTP_USER` | login schránky / SMTP user |
-| `SMTP_PASS` | heslo nebo app password — **jen ty** |
-| `MAIL_FROM` | odesílatel (musí být povolený u providera) |
-| `MAIL_TO` | schránka firmy pro leady z konfigurátoru |
+| `SMTP_HOST` | `mail.webglobe.cz` |
+| `SMTP_PORT` | `587` (STARTTLS) nebo `465` (SSL) |
+| `SMTP_USER` | celá adresa Webglobe schránky |
+| `SMTP_PASS` | heslo schránky — **jen ty** |
+| `MAIL_FROM` | musí být `@sklospecial.eu` (Webglobe SPF) |
+| `MAIL_TO` | schránka firmy pro leady (stejná nebo jiná `@sklospecial.eu`) |
 
 4. **Redeploy** API (Deploy / restart se znovunačtením env).
-5. Ověření:
-   - Pošli testovací konfigurátor (s ≥2 fotkami) → v odpovědi **nesmí** být `mail_warnings` s `Chybí SMTP_HOST` / auth chybou.
-   - Zkontroluj doručení na `MAIL_TO` a potvrzení klientovi.
+5. Ověření: konfigurátor s ≥2 fotkami → odpověď **bez** `mail_warnings` typu `Chybí SMTP_HOST` / auth error; doručení na `MAIL_TO` + potvrzení klientovi.
 
-Kód: `app/api/services/mailer.js` (`sendLeadToFirm`, `sendConfirmationToClient`).
+Kód: `app/api/services/mailer.js`. Dedikovaný SMTP health endpoint **není**.
 
----
+REST (až budeš mít heslo — agent / ty):
 
-## B) WordPress — FluentSMTP (poptávka `/poptavka/`)
-
-1. WP admin → **FluentSMTP** (Settings / Connections)
-2. Přidej connection se **stejným** (nebo firemním) SMTP jako u API:
-   - From Email / From Name
-   - Host, Port, Encryption, Username, Password
-3. Save → **Send Test Email** v FluentSMTP
-4. Ověření poptávky:
-
-```bash
-curl -sS -X POST \
-  "https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-json/sklo/v1/poptavka" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jmeno":"Test SMTP",
-    "email":"tvoje@schranka.cz",
-    "telefon":"+420736134604",
-    "adresa":"Praha",
-    "doprava":"ne",
-    "montaz":"ne",
-    "gdpr_souhlas":true,
-    "poznamka":"Test po nastavení FluentSMTP",
-    "order":{}
-  }'
+```http
+PATCH /api/v1/applications/c93wrq6ujvo02103pn26bxbr/envs
+{"key":"SMTP_HOST","value":"mail.webglobe.cz","is_literal":true}
 ```
 
-Očekáváno: `{"success":true}` (ne `mail_fail`).
-
-Příjemce firemního mailu = `admin_email` ve WP (`get_option('admin_email')` v `functions.php`). Po go-live nastav na `info@sklospecial.cz` (nebo jinou ostrý adresu).
+Stejně pro `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` (POST pokud klíč ještě neexistuje).
 
 ---
 
-## Doporučený postup
+## B) WordPress — FluentSMTP (poptávka `/poptávka/`)
 
-1. Zvol SMTP providera (Seznam / Google Workspace / Amazon SES / …) a vytvoř **app password** nebo SMTP credentials.
-2. Nejdřív FluentSMTP test v WP (poptávka).
-3. Stejné údaje do Coolify `SMTP_*` u API (konfigurátor).
-4. MX / DNS e-mailové záznamy **neměň** kvůli webu, pokud mail hostuješ jinde — jen SMTP odesílání.
+Click-path:
+
+1. WP admin → **FluentSMTP** (nebo **Settings → FluentSMTP** / `wp-admin/admin.php?page=fluent-mail`)
+2. **Add Connection** / Other SMTP:
+   - From Email: `info@sklospecial.eu`
+   - From Name: `Sklospeciál`
+   - Host: `mail.webglobe.cz`
+   - Port: `587`
+   - Encryption: **TLS** (STARTTLS)
+   - Username: `info@sklospecial.eu`
+   - Password: *(heslo Webglobe)*
+3. Save → **Send Test Email**
+4. Settings → General: **admin_email** ideálně `info@sklospecial.eu` (příjemce poptávek z `functions.php`).
+
+Ověření poptávky (s platným Turnstile tokenem z prohlížeče, nebo dočasně z WP admin testu):
+
+```bash
+# Očekáváno po SMTP: {"success":true} — ne mail_fail
+# Bez Turnstile tokenu: bad_captcha
+curl -sS -X POST "https://sklospecial.eu/wp-json/sklo/v1/poptavka" \
+  -H "Content-Type: application/json" \
+  -d '{"jmeno":"Test SMTP","email":"tvoje@schranka.cz","telefon":"+420736134604","adresa":"Praha","doprava":"ne","montaz":"ne","gdpr_souhlas":true,"poznamka":"Test FluentSMTP","order":{}}'
+```
+
+---
+
+## Doporučený postup (po vytvoření schránky)
+
+1. Webglobe: vytvoř `info@sklospecial.eu` + heslo.
+2. FluentSMTP test v WP.
+3. Stejné údaje do Coolify `SMTP_*` + ověř `MAIL_FROM`/`MAIL_TO` = `@sklospecial.eu`.
+4. Redeploy API → test konfigurátoru.
+5. MX / SPF / DKIM **neměň**.
 
 ---
 
 ## Co agent neudělá bez tebe
 
-- Nevymyslí SMTP heslo ani host.
-- Nenastaví FluentSMTP v WP adminu bez credentials.
-- Neuloží secrets do gitu (`.env` je v `.gitignore`).
+- Nevymyslí SMTP heslo.
+- Nenastaví FluentSMTP UI bez credentials.
+- Neuloží secrets do gitu.
+- Netešuje ostrý mail bez `SMTP_PASS`.

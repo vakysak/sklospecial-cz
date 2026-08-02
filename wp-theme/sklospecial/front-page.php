@@ -47,9 +47,10 @@ $cfg = sklo_konfigurator_url();
       <h2>Už 30&nbsp;let nás najdete na jedné adrese. Pokračuje třetí generace.</h2>
       <p>Rodinná firma Sklospeciál. Stavíme na stabilitě a jistotě — od zaměření po montáž víš, s kým jednáš. Skleněné dveře na míru vyřídíš na dálku: zaměříš sám, pošleš fotky a ve studiu si složíš dveře.</p>
       <div class="sklo-about__actions">
-        <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Otevřít studio</a>
+        <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>" rel="noopener">Otevřít studio</a>
         <a class="sklo-link" href="<?php echo esc_url(home_url('/o-nas/')); ?>">Víc o nás</a>
       </div>
+      <p class="sklo-studio-note">Studio běží na <code>api.sklospecial.eu</code> (samostatná doména) — při prvním otevření může prohlížeč žádat cookies třetí strany.</p>
     </div>
     <div class="sklo-about__panel" aria-hidden="true">
       <div class="sklo-about__glass"></div>
@@ -204,44 +205,102 @@ $recenze_stars = static function (int $n): string {
   </div>
 </section>
 
+<?php
+$katalog = function_exists('sklo_katalog') ? sklo_katalog() : [];
+$home_types = [
+    [
+        'slug' => 'sklenene-dvere',
+        'href' => home_url('/sklenene-dvere/'),
+        'img'  => content_url('uploads/2026/07/posuvne-sklenene-dvere-matne-sklo.webp'),
+        'alt'  => 'Skleněné dveře',
+        'w'    => 507,
+        'h'    => 626,
+        'title'=> 'Dveře',
+        'text' => 'Posuvné, kyvné, otevírané i vzory skla.',
+        'fallback_price' => 10100,
+    ],
+    [
+        'slug' => 'sprchove-kouty',
+        'href' => home_url('/sprchove-kouty/'),
+        'img'  => sklo_katalog_img_url('SklS-0608'),
+        'alt'  => 'Skleněné sprchové kouty',
+        'w'    => 400,
+        'h'    => 400,
+        'title'=> 'Sprchy',
+        'text' => 'Walk-in stěny a kouty na míru.',
+        'fallback_price' => 4600,
+    ],
+    [
+        'slug' => 'zabradli',
+        'href' => home_url('/zabradli/'),
+        'img'  => sklo_katalog_img_url('SklS-0734'),
+        'alt'  => 'Skleněné zábradlí',
+        'w'    => 400,
+        'h'    => 400,
+        'title'=> 'Zábradlí',
+        'text' => 'DIY, s montáží i profily.',
+        'fallback_price' => 2800,
+    ],
+    [
+        'slug' => 'strisky',
+        'href' => home_url('/strisky/'),
+        'img'  => sklo_katalog_img_url('SklS-0832'),
+        'alt'  => 'Skleněné stříšky',
+        'w'    => 400,
+        'h'    => 400,
+        'title'=> 'Stříšky',
+        'text' => 'Na konzolách, táhlech i skladem.',
+        'fallback_price' => 7100,
+    ],
+    [
+        'slug' => 'sklenene-pricky',
+        'href' => home_url('/sklenene-pricky/'),
+        'img'  => sklo_katalog_img_url('SklS-0326'),
+        'alt'  => 'Skleněné příčky',
+        'w'    => 400,
+        'h'    => 400,
+        'title'=> 'Příčky',
+        'text' => 'Skleněné příčky a zabudování.',
+        'fallback_price' => 21000,
+    ],
+    [
+        'slug' => 'francouzske-balkony',
+        'href' => home_url('/francouzske-balkony/'),
+        'img'  => sklo_katalog_img_url('SklS-0645'),
+        'alt'  => 'Francouzské balkony',
+        'w'    => 400,
+        'h'    => 400,
+        'title'=> 'Balkony',
+        'text' => 'Francouzské balkony ze skla.',
+        'fallback_price' => 7100,
+    ],
+];
+?>
 <section class="sklo-section sklo-types">
   <div class="sklo-wrap">
     <header class="sklo-section__head sklo-section__head--center">
       <p class="sklo-eyebrow">Nabídka</p>
       <h2>Sklo do domu — od dveří po stříšky</h2>
-      <p>Hlavní směry nabídky. U dveří doladíš detaily ve <a href="<?php echo esc_url($cfg); ?>">studiu</a>.</p>
+      <p>Hlavní směry nabídky. Orientační ceny „od“ — finální nabídka podle rozměrů. U dveří doladíš detaily ve <a href="<?php echo esc_url($cfg); ?>">studiu</a>.</p>
     </header>
     <div class="sklo-type-grid sklo-type-grid--6">
-      <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/')); ?>">
-        <img class="sklo-type__image" src="<?php echo esc_url(content_url('uploads/2026/07/posuvne-sklenene-dvere-matne-sklo.webp')); ?>" alt="Skleněné dveře" width="507" height="626" loading="lazy" decoding="async">
-        <h3>Dveře</h3>
-        <p>Posuvné, kyvné, otevírané i vzory skla.</p>
-      </a>
-      <a class="sklo-type" href="<?php echo esc_url(home_url('/sprchove-kouty/')); ?>">
-        <img class="sklo-type__image" src="<?php echo esc_url(sklo_katalog_img_url('SklS-0608')); ?>" alt="Skleněné sprchové kouty" width="400" height="400" loading="lazy" decoding="async">
-        <h3>Sprchy</h3>
-        <p>Walk-in stěny a kouty na míru.</p>
-      </a>
-      <a class="sklo-type" href="<?php echo esc_url(home_url('/zabradli/')); ?>">
-        <img class="sklo-type__image" src="<?php echo esc_url(sklo_katalog_img_url('SklS-0734')); ?>" alt="Skleněné zábradlí" width="400" height="400" loading="lazy" decoding="async">
-        <h3>Zábradlí</h3>
-        <p>DIY, s montáží i profily.</p>
-      </a>
-      <a class="sklo-type" href="<?php echo esc_url(home_url('/strisky/')); ?>">
-        <img class="sklo-type__image" src="<?php echo esc_url(sklo_katalog_img_url('SklS-0832')); ?>" alt="Skleněné stříšky" width="400" height="400" loading="lazy" decoding="async">
-        <h3>Stříšky</h3>
-        <p>Na konzolách, táhlech i skladem.</p>
-      </a>
-      <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-pricky/')); ?>">
-        <img class="sklo-type__image" src="<?php echo esc_url(sklo_katalog_img_url('SklS-0326')); ?>" alt="Skleněné příčky" width="400" height="400" loading="lazy" decoding="async">
-        <h3>Příčky</h3>
-        <p>Skleněné příčky a zabudování.</p>
-      </a>
-      <a class="sklo-type" href="<?php echo esc_url(home_url('/francouzske-balkony/')); ?>">
-        <img class="sklo-type__image" src="<?php echo esc_url(sklo_katalog_img_url('SklS-0645')); ?>" alt="Francouzské balkony" width="400" height="400" loading="lazy" decoding="async">
-        <h3>Balkony</h3>
-        <p>Francouzské balkony ze skla.</p>
-      </a>
+      <?php foreach ($home_types as $type) :
+          $cat = $katalog[$type['slug']] ?? null;
+          $price = is_array($cat) && !empty($cat['price_from'])
+              ? (string) $cat['price_from']
+              : (function_exists('sklo_format_cena_od')
+                  ? sklo_format_cena_od((int) $type['fallback_price'])
+                  : '');
+          ?>
+        <a class="sklo-type" href="<?php echo esc_url($type['href']); ?>">
+          <img class="sklo-type__image" src="<?php echo esc_url($type['img']); ?>" alt="<?php echo esc_attr($type['alt']); ?>" width="<?php echo esc_attr((string) $type['w']); ?>" height="<?php echo esc_attr((string) $type['h']); ?>" loading="lazy" decoding="async">
+          <h3><?php echo esc_html($type['title']); ?></h3>
+          <p><?php echo esc_html($type['text']); ?></p>
+          <?php if ($price !== '') : ?>
+            <p class="sklo-type__from"><?php echo esc_html($price); ?></p>
+          <?php endif; ?>
+        </a>
+      <?php endforeach; ?>
     </div>
   </div>
 </section>
@@ -287,9 +346,10 @@ $recenze_stars = static function (int $n): string {
     <div>
       <h2>Máš rozměry? Pojď rovnou do studia.</h2>
       <p>Vlož fotku prostoru, nastav otvor a skládej sklo se lištou. Nabídku připravíme podle toho, co si složíš.</p>
+      <p class="sklo-studio-note">Otevře se na <code>api.sklospecial.eu</code> — cookies studia jsou na této doméně (známý GDPR dluh vůči hlavnímu webu).</p>
     </div>
     <div class="sklo-cta-band__actions">
-      <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Otevřít studio</a>
+      <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>" rel="noopener">Otevřít studio</a>
       <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
       <?php if (function_exists('sklo_render_cta_sla')) : ?>
         <?php sklo_render_cta_sla(); ?>

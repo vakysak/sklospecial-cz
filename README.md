@@ -39,13 +39,15 @@ https://github.com/vakysak/sklospecial-cz (větev `sklospecial`)
 
 ```
 OPENAI_API_KEY=
-SMTP_HOST=
+SMTP_HOST=mail.webglobe.cz
 SMTP_PORT=587
-SMTP_USER=
+SMTP_USER=info@sklospecial.eu
 SMTP_PASS=
+MAIL_FROM=info@sklospecial.eu
+MAIL_TO=info@sklospecial.eu
 ```
 
-Pak redeploy API. Chat a maily z konfigurátoru začnou fungovat.
+Pak redeploy API. Detaily SMTP (Webglobe): `docs/GO-LIVE-SMTP.md`. Chat a maily z konfigurátoru začnou fungovat až po doplnění hesla.
 
 ## Lokálně
 
