@@ -3723,7 +3723,7 @@ function sklo_recenze_stats(): array
     return [
         'count' => $count,
         'sum' => $sum,
-        'average' => $count > 0 ? round($sum / $count, 2) : 0.0,
+        'avg' => $count > 0 ? round($sum / $count, 2) : 0.0,
     ];
 }
 
