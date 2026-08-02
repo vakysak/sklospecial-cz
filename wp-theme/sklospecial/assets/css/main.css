@@ -2940,6 +2940,26 @@ a:hover { color: var(--accent-hover); }
   max-width: 40rem;
 }
 
+.sklo-seo-landing__why-inner {
+  max-width: 46rem;
+}
+
+.sklo-seo-landing__why-text {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--ink, #122837);
+}
+
+.sklo-seo-landing__why-links {
+  margin: 1.1rem 0 0;
+}
+
+.sklo-seo-landing__aside-sub {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.05rem;
+}
+
 @media (max-width: 720px) {
   .sklo-type-grid--6 {
     grid-template-columns: repeat(2, 1fr);

@@ -34,6 +34,9 @@ $eyebrow = 'Sklospeciál';
 $intro = '';
 $service = '';
 $local_note = '';
+$why_title = '';
+$why_local = '';
+$sibling_cities = [];
 $parent_url = '';
 $parent_label = '';
 $crumbs = [['/', 'Domů']];
@@ -41,7 +44,7 @@ $crumbs = [['/', 'Domů']];
 if ($kind === 'city') {
     /** @var array<string, mixed> $category */
     $category = $landing['category'];
-    /** @var array{slug:string,name:string,locative:string,v:string} $city */
+    /** @var array<string, mixed> $city */
     $city = $landing['city'];
     $copy = sklo_seo_city_copy($category, $city);
     $h1 = $copy['h1'];
@@ -49,6 +52,9 @@ if ($kind === 'city') {
     $bullets = $copy['bullets'];
     $service = $copy['service'];
     $local_note = (string) ($copy['local_note'] ?? '');
+    $why_title = (string) ($copy['why_title'] ?? '');
+    $why_local = (string) ($copy['why_local'] ?? '');
+    $sibling_cities = (array) ($copy['sibling_cities'] ?? []);
     $faq = $copy['faq'];
     $price_from = $copy['price_from'];
     $katalog_slug = (string) ($category['katalog_slug'] ?? ($category['slug'] ?? ''));
@@ -67,6 +73,9 @@ if ($kind === 'city') {
     $bullets = (array) ($type['bullets'] ?? []);
     $service = 'Pracujeme online — zaměříš sám, nebo přijedeme zaměřit. Dodáváme a montujeme po celé ČR. Nemáme síť showroomů; výroba jde z dílny k tobě.';
     $local_note = '';
+    $why_title = '';
+    $why_local = '';
+    $sibling_cities = [];
     $faq = (array) ($type['faq'] ?? []);
     $related = (array) ($type['related'] ?? []);
     $parent_url = (string) ($type['parent_url'] ?? '/');
@@ -142,6 +151,8 @@ if ($kind === 'city') {
           <a class="sklo-link" href="<?php echo esc_url(home_url($parent_url)); ?>">← <?php echo esc_html($parent_label); ?></a>
           ·
           <a class="sklo-link" href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">Návod na zaměření</a>
+          ·
+          <a class="sklo-link" href="<?php echo esc_url(home_url('/doprava/')); ?>">Doprava a montáž</a>
         </p>
       </div>
       <aside class="sklo-seo-landing__aside">
@@ -157,9 +168,42 @@ if ($kind === 'city') {
             <li><a href="<?php echo esc_url(home_url($rurl)); ?>"><?php echo esc_html($rlabel); ?></a></li>
           <?php endforeach; ?>
         </ul>
+        <?php if ($kind === 'city' && $sibling_cities) : ?>
+          <h2 class="sklo-seo-landing__aside-sub">Další města</h2>
+          <ul class="sklo-seo-landing__related">
+            <?php foreach ($sibling_cities as $rel) :
+                $rurl = is_array($rel) ? (string) ($rel[0] ?? '') : '';
+                $rlabel = is_array($rel) ? (string) ($rel[1] ?? '') : '';
+                if ($rurl === '' || $rlabel === '') {
+                    continue;
+                }
+                ?>
+              <li><a href="<?php echo esc_url(home_url($rurl)); ?>"><?php echo esc_html($rlabel); ?></a></li>
+            <?php endforeach; ?>
+          </ul>
+        <?php endif; ?>
       </aside>
     </div>
   </section>
+
+  <?php if ($kind === 'city' && $why_local !== '') : ?>
+  <section class="sklo-section sklo-seo-landing__why">
+    <div class="sklo-wrap sklo-seo-landing__why-inner">
+      <header class="sklo-section__head">
+        <p class="sklo-eyebrow">Lokálně a férově</p>
+        <h2><?php echo esc_html($why_title !== '' ? $why_title : 'Jak to u vás řešíme'); ?></h2>
+      </header>
+      <p class="sklo-seo-landing__why-text"><?php echo esc_html($why_local); ?></p>
+      <p class="sklo-seo-landing__why-links">
+        <a class="sklo-link" href="<?php echo esc_url(home_url('/o-nas/')); ?>">O nás a dílně</a>
+        ·
+        <a class="sklo-link" href="<?php echo esc_url(home_url('/kontakt/')); ?>">Kontakt</a>
+        ·
+        <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Poptávka</a>
+      </p>
+    </div>
+  </section>
+  <?php endif; ?>
 
   <?php if ($faq) : ?>
   <section class="sklo-section sklo-faq sklo-seo-landing__faq" id="faq">
