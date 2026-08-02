@@ -66,13 +66,30 @@
           <div
             class="photo-frame"
             x-show="prostor.url"
+            :class="{ 'has-cutout': hasDoorCutout(), 'has-jpg-overlay': !!selectedProduct()?.image && !hasDoorCutout() }"
             :style="photoFrameStyle()"
             data-drag="move"
           >
             <div class="door-set" :class="doorClass()">
-              <div class="leaf" :style="selectedProduct()?.image ? `background-image:url('${selectedProduct().image}'); background-size:cover; background-position:center;` : ''">
+              <div
+                class="leaf"
+                :class="{
+                  'has-cutout': hasDoorCutout(),
+                  'has-product-photo': !!selectedProduct()?.image,
+                }"
+              >
+                <img
+                  class="door-overlay-img"
+                  x-show="selectedProduct()?.image"
+                  :src="doorOverlayUrl()"
+                  :alt="selectedProduct()?.name || 'Náhled dveří'"
+                  :key="(selectedProduct()?.code || '') + (hasDoorCutout() ? '-cut' : '-jpg')"
+                  decoding="async"
+                  draggable="false"
+                  @error="onDoorOverlayError($event)"
+                />
                 <div class="glass-face" x-show="!selectedProduct()?.image"></div>
-                <div class="handle" style="background:#1a1a1a"></div>
+                <div class="handle" x-show="!selectedProduct()?.image" style="background:#1a1a1a"></div>
               </div>
               <div class="track" x-show="isSliding()" style="background:#1a1a1a"></div>
             </div>

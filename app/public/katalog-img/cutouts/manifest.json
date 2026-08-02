@@ -1,0 +1,17 @@
+{
+  "generated_by": "scripts/make_door_cutouts.py",
+  "count": 10,
+  "codes": [
+    "SklS-0001",
+    "SklS-0002",
+    "SklS-0101",
+    "SklS-0102",
+    "SklS-0152",
+    "SklS-0228",
+    "SklS-0240",
+    "SklS-0241",
+    "SklS-0243",
+    "SklS-0244"
+  ],
+  "path_pattern": "katalog-img/cutouts/{code}.png"
+}

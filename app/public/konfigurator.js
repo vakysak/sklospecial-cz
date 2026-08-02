@@ -49,6 +49,8 @@ function konfigurator() {
       { id: 'posuvne', file: 'posuvne-sklenene-dvere-matne-sklo.webp', label: 'Posuvné matné' },
     ].map((s) => ({ ...s, url: `${MEDIA_BASE}/${s.file}` })),
     drag: null,
+    /** Codes with transparent PNG cutouts under katalog-img/cutouts/ */
+    cutoutCodes: new Set(),
     options: {
       pouziti: [
         { v: 'byt_dum', l: 'Byt / dům' },
@@ -68,9 +70,12 @@ function konfigurator() {
       );
 
       try {
-        const res = await fetch(`${API}/api/katalog`);
-        const data = await res.json();
-        if (!res.ok || !data.success) throw new Error(data.error || 'Katalog se nenačetl');
+        const [katalogRes] = await Promise.all([
+          fetch(`${API}/api/katalog`),
+          this.loadCutoutManifest(),
+        ]);
+        const data = await katalogRes.json();
+        if (!katalogRes.ok || !data.success) throw new Error(data.error || 'Katalog se nenačetl');
         this.typy = data.typy || [];
         if (!this.config.typ_dveri && this.typy[0]) {
           this.config.typ_dveri = this.typy.find((t) => t.slug !== 'nevim')?.slug || this.typy[0].slug;
@@ -80,6 +85,42 @@ function konfigurator() {
       } finally {
         this.loading = false;
       }
+    },
+
+    async loadCutoutManifest() {
+      try {
+        const res = await fetch('./katalog-img/cutouts/manifest.json', { cache: 'no-cache' });
+        if (!res.ok) return;
+        const data = await res.json();
+        const codes = Array.isArray(data?.codes) ? data.codes : [];
+        this.cutoutCodes = new Set(codes.map(String));
+      } catch {
+        // phase-1 cutouts optional — JPG overlay still works
+      }
+    },
+
+    hasDoorCutout(product = this.selectedProduct()) {
+      return Boolean(product?.code && this.cutoutCodes.has(product.code));
+    },
+
+    cutoutUrl(code) {
+      return `./katalog-img/cutouts/${encodeURIComponent(code)}.png`;
+    },
+
+    /** Prefer transparent PNG cutout for room overlay; fall back to catalog JPG. */
+    doorOverlayUrl(product = this.selectedProduct()) {
+      if (!product) return '';
+      if (this.hasDoorCutout(product)) return this.cutoutUrl(product.code);
+      return product.image || '';
+    },
+
+    onDoorOverlayError(e) {
+      const p = this.selectedProduct();
+      const img = e?.target;
+      if (!img || !p?.image) return;
+      if (img.dataset.fallback === '1') return;
+      img.dataset.fallback = '1';
+      img.src = p.image;
     },
 
     selectedTyp() {

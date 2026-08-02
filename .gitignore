@@ -14,3 +14,6 @@ scripts/output/images/
 scripts/output/images_cropped/
 scripts/output/product_details.json
 scripts/__pycache__/
+
+# local rembg venv for door cutouts
+.venv-cutouts/
