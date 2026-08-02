@@ -165,8 +165,13 @@ function sklo_katalog(): array
             'title'       => 'Skleněné dveře na míru',
             'eyebrow'     => 'Katalog',
             'lead'        => 'Vyrábíme skleněné dveře přesně podle tvého otvoru. Posuvné, kyvné, otevírané i celoskleněné — vyber kategorii a doladíš detaily ve studiu.',
-            'seo_title'   => 'Skleněné dveře na míru — katalog | Sklospeciál',
-            'seo_desc'    => 'Posuvné, kyvné, otevírané i celoskleněné dveře. Orientační ceny od, finální nabídka podle rozměrů. Navrhni si dveře online.',
+            'seo_title'   => 'Skleněné dveře na míru — posuvné, kyvné, otevírané | Sklospeciál',
+            'seo_desc'    => 'Skleněné dveře na míru: posuvné, kyvné i otevírané. Pošli rozměry a fotky, navrhni si dveře online. Výroba a montáž po ČR.',
+            'seo_intro'   => [
+                'Skleněné dveře na míru vyrábíme podle tvého otvoru — ne podle katalogového „nějak to sedne“. Posuvné po stěně nebo do pouzdra, kyvné (otevírání oběma směry) i klasické otevírané na pantech. Vybereš typ, sklo a kování; ve studiu si návrh složíš online.',
+                'Stačí zaměřit šířku a výšku (ideálně tři měření) a poslat 2–3 fotky prostoru. Podle toho připravíme konkrétní nabídku — orientační ceny „od“ v katalogu jsou jen start. Finální číslo vždy podle rozměrů, typu skla a zvoleného kování.',
+                'Pracujeme remote po celé ČR: zaměříš sám podle návodu, nebo přijedeme zaměřit. Výroba probíhá na míru, montáž domluvíme podle lokality. Bez showroomu — rovnou k věci.',
+            ],
             'hub'         => true,
             'price_from'  => $od('posuvne', 10100),
             // Hub card images: Quba catalog product photos (not Realizace gallery webps).
@@ -541,8 +546,13 @@ function sklo_katalog(): array
             'title'      => 'Skleněné sprchové kouty',
             'eyebrow'    => 'Nabídka · Sprchy',
             'lead'       => 'Walk-in stěny, kouty s dveřmi i řešení na míru. Čiré, matné, grafika i laminát — kování chrom, černé nebo zlaté.',
-            'seo_title'  => 'Skleněné sprchové kouty | Sklospeciál',
-            'seo_desc'   => 'Skleněné sprchové kouty a walk-in stěny. Orientační ceny od, finální nabídka podle rozměrů.',
+            'seo_title'  => 'Skleněné sprchové kouty na míru | Walk-in, rohové | Sklospeciál',
+            'seo_desc'   => 'Skleněné sprchové kouty a walk-in stěny na míru. Pošli rozměry a fotky — nabídka podle koupelny. Montáž po celé ČR.',
+            'seo_intro'  => [
+                'Skleněné sprchové kouty a walk-in stěny vyrábíme na míru podle koupelny. Walk-in bez klasických dveří, rohové kouty i zástěny — čiré, matné, s grafikou nebo laminátem. Kování chrom, černé nebo zlaté podle toho, co sedí k obkladu a baterii.',
+                'Nejdřív pošli rozměry (šířka × výška, ideálně i hloubku vaničky) a fotky prostoru. Podle toho připravíme nabídku — orientační ceny v katalogu jsou „od“, finální číslo vždy podle skla, kování a přesného střihu. Nemusíš hádat z e-shopu; sklo střihneme na míru.',
+                'Pracujeme online a montujeme po celé ČR. Zaměříš sám podle návodu, nebo přijedeme zaměřit. Bez showroomu — rovnou výroba a termín montáže podle lokality.',
+            ],
             'price_from' => $od('sprchove-kouty', 4600),
             'show_products' => true,
             'hero_image' => $img('sprchove-kouty'),
@@ -561,8 +571,12 @@ function sklo_katalog(): array
             'title'      => 'Francouzské balkony',
             'eyebrow'    => 'Nabídka · Balkony',
             'lead'       => 'Skleněné francouzské balkony — bezpečné, vzdušné a na míru otvoru. Od čirého skla po matné a dekorativní vzory.',
-            'seo_title'  => 'Francouzské balkony ze skla | Sklospeciál',
-            'seo_desc'   => 'Skleněné francouzské balkony. Orientační ceny od, nabídka podle rozměrů a skla.',
+            'seo_title'  => 'Francouzské balkony ze skla na míru | Sklospeciál',
+            'seo_desc'   => 'Skleněné francouzské balkony na míru. Pošli rozměry a fotky otvoru — nabídka podle skla a kotvení. Montáž po ČR.',
+            'seo_intro'  => [
+                'Francouzské balkony ze skla drží bezpečnost u francouzského okna a nechají světlo projít. Vyrábíme je na míru otvoru — čiré, matné i dekorativní sklo, kotvení podle stavby.',
+                'Pošli šířku, výšku a fotky otvoru (ideálně i detail parapetu). Připravíme nabídku podle typu skla a kotvení; montáž domluvíme po ČR. Bez showroomu — online podklady stačí ke startu.',
+            ],
             'price_from' => $od('francouzske-balkony', 7100),
             'show_products' => true,
             'hero_image' => $img('francouzske-balkony'),
@@ -581,8 +595,12 @@ function sklo_katalog(): array
             'title'      => 'Skleněné příčky na míru',
             'eyebrow'    => 'Nabídka · Příčky',
             'lead'       => 'Odděl místnosti bez těžké stěny. Skleněné příčky a zabudování pustí světlo dál — zaměříš sám, my vyrobíme.',
-            'seo_title'  => 'Skleněné příčky na míru | Sklospeciál',
-            'seo_desc'   => 'Skleněné příčky a zabudování na míru. Online zaměření, výroba, montáž. Rodinná firma, 30 let.',
+            'seo_title'  => 'Skleněné příčky na míru — odděl prostor světlem | Sklospeciál',
+            'seo_desc'   => 'Skleněné příčky a zabudování na míru. Pošli rozměry a fotky — online zaměření, výroba, montáž po ČR.',
+            'seo_intro'  => [
+                'Skleněné příčky oddělí místnosti bez těžké zděné stěny. Pevné výplně i sestavy s dveřním křídlem — světlo jde dál, prostor zůstane vzdušný. Hodí se do open-space, pracovny i bytu.',
+                'Zaměříš šířku a výšku (nebo pošleš fotky a domluvíme zaměření). My připravíme nabídku a vyrobíme na míru. Montáž po celé ČR, bez showroomu — pracujeme online.',
+            ],
             'price_from' => $od('pricky-a-zabudovani'),
             'show_products' => true,
             'hero_image' => $img('pricky-a-zabudovani'),
@@ -602,8 +620,13 @@ function sklo_katalog(): array
             'title'      => 'Skleněné zábradlí',
             'eyebrow'    => 'Nabídka · Zábradlí',
             'lead'       => 'Zábradlí DIY, sestavy s montáží i profily. Sklo drží výhled a světlo — ty zvolíš systém a výšku.',
-            'seo_title'  => 'Skleněné zábradlí | Sklospeciál',
-            'seo_desc'   => 'Skleněné zábradlí DIY, s montáží a profily. Orientační ceny od.',
+            'seo_title'  => 'Skleněné zábradlí na míru — DIY i s montáží | Sklospeciál',
+            'seo_desc'   => 'Skleněné zábradlí na míru: DIY sestavy i s montáží, profily a kotvení. Pošli rozměry a fotky — nabídka podle projektu.',
+            'seo_intro'  => [
+                'Skleněné zábradlí nechá schodiště i galerii otevřené a zároveň drží bezpečnostní funkci. Můžeš zvolit DIY sestavu k montáži svépomocí, nebo komplet včetně montáže. Profily, kotvení a výšku skla doladíme podle stavby.',
+                'Pošli rozměry (délka, výška, typ kotvení) a fotky místa. Připravíme nabídku podle systému — orientační ceny „od“ v katalogu jsou start, finální číslo podle skla a délky. Montáž po ČR domluvíme individuálně.',
+                'Pracujeme online: zaměření podle návodu nebo na místě, výroba na míru, doprava a montáž podle lokality. Bez showroomu — rovnou k projektu.',
+            ],
             'price_from' => $od('zabradli', 2800),
             'show_products' => true,
             'hero_image' => $img('zabradli'),
@@ -640,8 +663,12 @@ function sklo_katalog(): array
             'title'      => 'Skleněné stříšky',
             'eyebrow'    => 'Nabídka · Stříšky',
             'lead'       => 'Stříšky skladem, systémové, s okapem, s černým kováním, na táhlech i konzolách. Chrání vstup a nechá světlo projít.',
-            'seo_title'  => 'Skleněné stříšky | Sklospeciál',
-            'seo_desc'   => 'Skleněné stříšky na konzolách, táhlech, s okapem i skladem. Orientační ceny od.',
+            'seo_title'  => 'Skleněné stříšky na míru — konzoly, táhla, okap | Sklospeciál',
+            'seo_desc'   => 'Skleněné stříšky na konzolách, táhlech, s okapem i skladem. Pošli rozměry vstupu — nabídka a montáž po ČR.',
+            'seo_intro'  => [
+                'Skleněné stříšky chrání vstup a nechají světlo projít. Konzoly, táhla, systémové sestavy, varianty s okapem i černým kováním — podle fasády a šířky vstupu. Část rozměrů skladem, zbytek na míru.',
+                'Pošli šířku, hloubku a fotky vstupu. Připravíme nabídku včetně kotvení; dopravu a montáž domluvíme po ČR. Online proces bez showroomu.',
+            ],
             'price_from' => $od('strisky', 7100),
             'show_products' => true,
             'hero_image' => $img('strisky'),
@@ -734,4 +761,69 @@ function sklo_katalog_parent_url(array $cat): string
         return home_url('/' . $parent . '/');
     }
     return home_url('/');
+}
+
+/**
+ * SEO intro paragraphs for catalogue hubs (above product / category grids).
+ *
+ * @param array<string, mixed> $cat
+ */
+function sklo_render_katalog_seo_intro(array $cat): void
+{
+    $paras = $cat['seo_intro'] ?? null;
+    if (!is_array($paras) || $paras === []) {
+        return;
+    }
+    echo '<section class="sklo-section sklo-katalog-seo-intro" aria-label="Úvod kategorie">';
+    echo '<div class="sklo-wrap sklo-katalog-seo-intro__inner">';
+    foreach ($paras as $para) {
+        $para = trim((string) $para);
+        if ($para === '') {
+            continue;
+        }
+        echo '<p>' . esc_html($para) . '</p>';
+    }
+    echo '</div></section>';
+}
+
+/**
+ * Internal links between product pillars on category hubs.
+ */
+function sklo_render_related_pillars(string $slug): void
+{
+    if (!function_exists('sklo_seo_category_by_slug')) {
+        return;
+    }
+    $cat = sklo_seo_category_by_slug($slug);
+    if (!$cat) {
+        return;
+    }
+    $related = is_array($cat['related'] ?? null) ? $cat['related'] : [];
+    if ($related === []) {
+        return;
+    }
+    echo '<section class="sklo-section sklo-related-pillars" aria-label="Související kategorie">';
+    echo '<div class="sklo-wrap">';
+    echo '<header class="sklo-section__head sklo-section__head--center">';
+    echo '<p class="sklo-eyebrow">Tip</p>';
+    echo '<h2>Mohlo by tě zajímat</h2>';
+    echo '<p>Další sklo na míru ze stejné dílny — stejný online proces, montáž po ČR.</p>';
+    echo '</header>';
+    echo '<ul class="sklo-related-pillars__list">';
+    foreach ($related as $rel) {
+        if (!is_array($rel) || count($rel) < 2) {
+            continue;
+        }
+        $path  = (string) $rel[0];
+        $label = (string) $rel[1];
+        if ($path === '' || $label === '') {
+            continue;
+        }
+        printf(
+            '<li><a class="sklo-related-pillars__link" href="%s">%s</a></li>',
+            esc_url(home_url($path)),
+            esc_html($label)
+        );
+    }
+    echo '</ul></div></section>';
 }

@@ -59,6 +59,26 @@ body {
   letter-spacing: 0.04em;
   color: var(--ink);
 }
+.brand-link {
+  color: inherit;
+  text-decoration: none;
+}
+.brand-link:hover { color: var(--accent); }
+.studio-back {
+  margin: -0.25rem 0 0.85rem;
+  font-size: 0.88rem;
+  color: var(--muted, #666);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+.studio-back a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.studio-back a:hover { color: var(--accent); }
 .hero h1 {
   margin: 0 0 0.5rem;
   font-family: var(--display);

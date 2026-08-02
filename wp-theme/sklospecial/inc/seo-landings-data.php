@@ -550,9 +550,10 @@ function sklo_seo_city_copy(array $category, array $city): array
             $loc
         ),
         sprintf(
-            '%s do %s dodáváme jako zakázkovou výrobu. Nemáme pobočku %s %s — jezdíme za tebou. Online zaměření, výroba na míru, doprava i montáž.',
+            '%s %s %s dodáváme jako zakázkovou výrobu. Nemáme pobočku %s %s — jezdíme za tebou. Online zaměření, výroba na míru, doprava i montáž.',
             $product,
-            $gen,
+            $v,
+            $loc,
             $v,
             $loc
         ),
@@ -561,6 +562,43 @@ function sklo_seo_city_copy(array $category, array $city): array
     $intro = $intros[$var];
     if ($kraj !== '') {
         $intro .= sprintf(' Působíme remote i v oblasti %s.', $kraj);
+    }
+
+    // Product-specific city sentence (keeps landings from reading as pure duplicates).
+    $city_extras = [
+        'sklenene-dvere' => sprintf(
+            ' U dveří %s %s často řešíme posuvné do pouzdra nebo kyvné — podle šířky otvoru a dispozice bytu.',
+            $v,
+            $loc
+        ),
+        'sprchove-kouty' => sprintf(
+            ' U sprch %s %s typicky ladíme walk-in stěny a kouty podle vaničky, výšky stropu a typu kování.',
+            $v,
+            $loc
+        ),
+        'zabradli' => sprintf(
+            ' U zábradlí %s %s počítáme s kotvením do stupňů nebo podlahy — pošli fotky schodiště nebo galerie.',
+            $v,
+            $loc
+        ),
+        'strisky' => sprintf(
+            ' U stříšek %s %s potřebujeme šířku vstupu a fotky fasády kvůli konzolám nebo táhlům.',
+            $v,
+            $loc
+        ),
+        'sklenene-pricky' => sprintf(
+            ' U příček %s %s často oddělujeme open-space nebo pracovnu — světlo zůstane, zeď ne.',
+            $v,
+            $loc
+        ),
+        'francouzske-balkony' => sprintf(
+            ' U francouzských balkonů %s %s řešíme hlavně výšku a kotvení u francouzského okna.',
+            $v,
+            $loc
+        ),
+    ];
+    if (isset($city_extras[$slug_cat])) {
+        $intro .= $city_extras[$slug_cat];
     }
 
     $bullet_sets = [

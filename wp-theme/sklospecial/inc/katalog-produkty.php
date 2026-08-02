@@ -668,7 +668,7 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
                     data-alt="<?php echo esc_attr($name); ?>"
                     aria-label="Foto <?php echo esc_attr((string) ($i + 1)); ?>"
                   >
-                    <img src="<?php echo esc_url($img); ?>" alt="" loading="lazy" decoding="async" width="120" height="120">
+                    <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($name); ?>" loading="lazy" decoding="async" width="120" height="120">
                   </button>
                 <?php endforeach; ?>
               </div>
@@ -865,6 +865,50 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
     </div>
   </section>
     <?php
+    // Product JSON-LD (no AggregateRating — reviews on site are not verified product reviews).
+    $schema_desc = $desc !== '' ? wp_strip_all_tags($desc) : ($name . ' — katalog Sklospeciál, výroba na míru.');
+    if (mb_strlen($schema_desc) > 300) {
+        $schema_desc = rtrim(mb_substr($schema_desc, 0, 297)) . '…';
+    }
+    $schema_url = $code !== '' && function_exists('sklo_produkt_detail_url')
+        ? sklo_produkt_detail_url($code, $back_url !== '' ? $back_url : (string) get_permalink())
+        : ($back_url !== '' ? $back_url : (string) get_permalink());
+    $schema = [
+        '@context' => 'https://schema.org',
+        '@type'    => 'Product',
+        'name'     => $name,
+        'sku'      => $code,
+        'brand'    => [
+            '@type' => 'Brand',
+            'name'  => 'Sklospeciál',
+        ],
+        'description' => $schema_desc,
+        'url'         => $schema_url,
+    ];
+    if ($images !== []) {
+        $schema['image'] = count($images) === 1 ? $images[0] : array_values($images);
+    }
+    if ($price > 0) {
+        $avail_url = 'https://schema.org/InStock';
+        $avail_l = mb_strtolower($avail);
+        if ($avail_l !== '' && (str_contains($avail_l, 'nedostup') || str_contains($avail_l, 'vyprod'))) {
+            $avail_url = 'https://schema.org/OutOfStock';
+        } elseif ($avail_l !== '' && (str_contains($avail_l, 'na objedn') || str_contains($avail_l, 'vyrob'))) {
+            $avail_url = 'https://schema.org/PreOrder';
+        }
+        $schema['offers'] = [
+            '@type'         => 'Offer',
+            'url'           => $schema_url,
+            'priceCurrency' => 'CZK',
+            'price'         => number_format($price, 2, '.', ''),
+            'availability'  => $avail_url,
+            'seller'        => [
+                '@type' => 'Organization',
+                'name'  => 'Sklospeciál',
+            ],
+        ];
+    }
+    echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . '</script>' . "\n";
 }
 
 /**
@@ -926,9 +970,9 @@ function sklo_render_produkty_grid(string $slug, ?string $section = null, int $i
                 ?>
               <span class="sklo-produkty__media">
                 <?php if ($hidden) : ?>
-                  <img src="" data-src="<?php echo esc_url($thumb); ?>" alt="" loading="lazy" decoding="async" width="400" height="400">
+                  <img src="" data-src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($name); ?>" loading="lazy" decoding="async" width="400" height="400">
                 <?php else : ?>
-                  <img src="<?php echo esc_url($thumb); ?>" alt="" loading="lazy" decoding="async" width="400" height="400">
+                  <img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($name); ?>" loading="lazy" decoding="async" width="400" height="400">
                 <?php endif; ?>
               </span>
             <?php else : ?>

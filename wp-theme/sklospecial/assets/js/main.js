@@ -805,7 +805,9 @@
           const img = p.image
             ? '<span class="sklo-produkty__media"><img src="' +
               esc(p.image) +
-              '" alt="" loading="lazy" decoding="async" width="400" height="400"></span>'
+              '" alt="' +
+              esc(p.name || p.code || '') +
+              '" loading="lazy" decoding="async" width="400" height="400"></span>'
             : '<div class="sklo-produkty__media sklo-produkty__media--empty" aria-hidden="true"></div>';
           const price = formatKc(p.price);
           return (

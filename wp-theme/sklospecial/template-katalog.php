@@ -90,6 +90,8 @@ $back_url = (string) get_permalink();
     </div>
   </header>
 
+  <?php sklo_render_katalog_seo_intro($cat); ?>
+
   <?php if ($is_hub) : ?>
     <section class="sklo-section sklo-katalog-hub">
       <div class="sklo-wrap">
@@ -106,6 +108,7 @@ $back_url = (string) get_permalink();
               $cprice = $child['price'] ?? null;
               $craw   = (string) ($child['image'] ?? '');
               $cimg   = $craw === '' ? '' : (str_starts_with($craw, 'http') ? $craw : trailingslashit($uploads) . $craw);
+              $calt   = $ctitle !== '' ? $ctitle . ' — skleněné dveře Sklospeciál' : 'Skleněné dveře Sklospeciál';
               $curl   = $parent !== '' || $slug === 'sklenene-dvere'
                   ? home_url('/' . $slug . '/' . $cslug . '/')
                   : home_url('/' . $cslug . '/');
@@ -115,7 +118,7 @@ $back_url = (string) get_permalink();
               ?>
             <a class="sklo-katalog-card" href="<?php echo esc_url($curl); ?>">
               <?php if ($cimg) : ?>
-                <img class="sklo-katalog-card__image" src="<?php echo esc_url($cimg); ?>" alt="" width="626" height="417" loading="lazy" decoding="async">
+                <img class="sklo-katalog-card__image" src="<?php echo esc_url($cimg); ?>" alt="<?php echo esc_attr($calt); ?>" width="626" height="417" loading="lazy" decoding="async">
               <?php endif; ?>
               <div class="sklo-katalog-card__body">
                 <h3><?php echo esc_html($ctitle); ?></h3>
@@ -159,7 +162,7 @@ $back_url = (string) get_permalink();
                 <img
                   class="sklo-cat-card__image"
                   src="<?php echo esc_url($sec_img); ?>"
-                  alt=""
+                  alt="<?php echo esc_attr($st . ' — Sklospeciál'); ?>"
                   width="400"
                   height="160"
                   loading="eager"
@@ -362,6 +365,8 @@ $back_url = (string) get_permalink();
   if (!empty($cat['show_products'])) {
       sklo_render_produkty_grid($slug, null, 24);
   }
+
+  sklo_render_related_pillars($slug);
 
   if (sklo_seo_category_by_slug($slug)) {
       sklo_render_city_cloud($slug);

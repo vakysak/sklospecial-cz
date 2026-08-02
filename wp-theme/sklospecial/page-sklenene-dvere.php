@@ -60,13 +60,14 @@ $children = is_array($cat['children'] ?? null) ? $cat['children'] : [];
             $raw   = (string) ($child['image'] ?? '');
             $img   = $raw === '' ? '' : (str_starts_with($raw, 'http') ? $raw : trailingslashit($uploads) . $raw);
             $url   = home_url('/sklenene-dvere/' . $slug . '/');
+            $alt   = $title !== '' ? $title . ' — skleněné dveře Sklospeciál' : 'Skleněné dveře Sklospeciál';
             ?>
           <a class="sklo-katalog-card" href="<?php echo esc_url($url); ?>">
             <?php if ($img) : ?>
               <img
                 class="sklo-katalog-card__image"
                 src="<?php echo esc_url($img); ?>"
-                alt=""
+                alt="<?php echo esc_attr($alt); ?>"
                 width="626"
                 height="417"
                 loading="lazy"

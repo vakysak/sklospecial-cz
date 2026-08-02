@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.17.6');
+define('SKLO_THEME_VER', '1.18.0');
 
 /** Default konfigurátor/API host. Override via option sklo_api_base or env SKLO_API_BASE. */
 define(
@@ -647,6 +647,45 @@ add_filter('document_title_parts', function (array $parts): array {
         unset($parts['tagline'], $parts['site']);
     }
     return $parts;
+}, 20);
+
+/**
+ * Keep Rank Math titles/descriptions aligned with theme SEO (katalog hubs + landings).
+ */
+add_filter('rank_math/frontend/title', static function ($title) {
+    $parts = apply_filters('document_title_parts', [
+        'title' => is_string($title) ? $title : '',
+        'site'  => get_bloginfo('name'),
+    ]);
+    if (!empty($parts['title']) && is_string($parts['title'])) {
+        return $parts['title'];
+    }
+    return $title;
+}, 20);
+
+add_filter('rank_math/frontend/description', static function ($description) {
+    if (!is_page() || sklo_request_produkt() !== null) {
+        return $description;
+    }
+    $landing = sklo_seo_resolve_landing();
+    if ($landing && ($landing['kind'] ?? '') === 'city') {
+        $copy = sklo_seo_city_copy($landing['category'], $landing['city']);
+        return $copy['seo_desc'] !== '' ? $copy['seo_desc'] : $description;
+    }
+    if ($landing && ($landing['kind'] ?? '') === 'type') {
+        $desc = (string) ($landing['type']['seo_desc'] ?? '');
+        return $desc !== '' ? $desc : $description;
+    }
+    $slug = get_post_field('post_name', get_queried_object_id()) ?: '';
+    $cat  = sklo_katalog_for_slug($slug);
+    if ($cat && !empty($cat['seo_desc'])) {
+        return (string) $cat['seo_desc'];
+    }
+    $guide = sklo_pruvodce_for_page();
+    if ($guide && !empty($guide['seo_desc'])) {
+        return (string) $guide['seo_desc'];
+    }
+    return $description;
 }, 20);
 
 add_action('wp_head', function (): void {
