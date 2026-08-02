@@ -970,17 +970,15 @@ function sklo_render_produkty_grid(string $slug, ?string $section = null, int $i
               <a class="sklo-produkty__link" href="<?php echo esc_url($detail); ?>">
             <?php endif; ?>
             <?php if ($img !== '') :
+                // Always set src (never empty). Collapsed cards stay hidden; lazy loading
+                // defers offscreen bytes. Empty src + data-src broke crawlers / audits.
                 $thumb = sklo_quba_thumb($img, '400_400');
                 ?>
               <span class="sklo-produkty__media">
-                <?php if ($hidden) : ?>
-                  <img src="" data-src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($name); ?>" loading="lazy" decoding="async" width="400" height="400">
-                <?php else : ?>
-                  <img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($name); ?>" loading="lazy" decoding="async" width="400" height="400">
-                <?php endif; ?>
+                <img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($name); ?>" loading="lazy" decoding="async" width="400" height="400">
               </span>
             <?php else : ?>
-              <div class="sklo-produkty__media sklo-produkty__media--empty" aria-hidden="true"></div>
+              <div class="sklo-produkty__media sklo-produkty__media--empty" role="img" aria-label="Fotografie není k dispozici"></div>
             <?php endif; ?>
             <div class="sklo-produkty__body">
               <h3 class="sklo-produkty__name"><?php echo esc_html($name); ?></h3>

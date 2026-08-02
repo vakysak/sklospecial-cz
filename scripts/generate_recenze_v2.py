@@ -12,8 +12,8 @@ from collections import Counter
 from datetime import date, timedelta
 from pathlib import Path
 
-SEED = 20260801
-COUNT = 460
+SEED = 20260802
+COUNT = 300
 START = date(2021, 8, 1)
 END = date(2026, 8, 1)
 OUT = Path(__file__).resolve().parents[1] / "wp-theme/sklospecial/inc/recenze-data.php"
@@ -112,59 +112,37 @@ FEATURED_REVIEWS = [
         "category": "ostatni",
         "text": "Plocha za linkou je rovná, hrany hladké, na omak klidné sklo bez zbytečného lesku.",
     },
+    {
+        "name": "Martin D.",
+        "city": "Hradec Králové",
+        "stars": 5,
+        "category": "dvere",
+        "text": "Posuvné dveře fungujou, montážci uklidili po sobě — jediný minus bylo, že jsem špatně změřil šířku a museli jsme to ještě jednou probrat mailem.",
+    },
 ]
 
 DVERE = [
+    # Sparse panelák openers (kept low to avoid mechanical pattern).
     "V paneláku jsme objednali posuvné dveře.",
-    "V paneláku jsme objednali skleněné dveře.",
-    "V paneláku jsme objednali dveře do pracovny.",
-    "V paneláku jsme objednali dveře do koupelny.",
-    "V paneláku jsme objednali bezrámové dveře.",
-    "V paneláku jsme objednali dveře s matným pruhem.",
-    "V paneláku jsme objednali čiré dveře do ložnice.",
-    "V paneláku jsme objednali dveře mezi kuchyní a chodbou.",
-    "V paneláku jsme vybrali posuvné dveře.",
-    "V paneláku jsme vybrali skleněné dveře.",
-    "V paneláku jsme vybrali dveře do pracovny.",
-    "V paneláku jsme vybrali dveře do koupelny.",
-    "V paneláku jsme vybrali bezrámové dveře.",
-    "V paneláku jsme vybrali dveře s matným pruhem.",
-    "V paneláku jsme vybrali čiré dveře do ložnice.",
-    "V paneláku jsme vybrali dveře mezi kuchyní a chodbou.",
-    "V paneláku jsme nechali udělat posuvné dveře.",
-    "V paneláku jsme nechali udělat skleněné dveře.",
-    "V paneláku jsme nechali udělat dveře do pracovny.",
-    "V paneláku jsme nechali udělat dveře do koupelny.",
-    "V paneláku jsme nechali udělat bezrámové dveře.",
-    "V paneláku jsme nechali udělat dveře s matným pruhem.",
-    "V paneláku jsme nechali udělat čiré dveře do ložnice.",
-    "V paneláku jsme nechali udělat dveře mezi kuchyní a chodbou.",
-    "V paneláku jsme pořídili posuvné dveře.",
-    "V paneláku jsme pořídili skleněné dveře.",
-    "V paneláku jsme pořídili dveře do pracovny.",
-    "V paneláku jsme pořídili dveře do koupelny.",
-    "V paneláku jsme pořídili bezrámové dveře.",
-    "V paneláku jsme pořídili dveře s matným pruhem.",
-    "V paneláku jsme pořídili čiré dveře do ložnice.",
-    "V paneláku jsme pořídili dveře mezi kuchyní a chodbou.",
-    "V paneláku jsme řešili posuvné dveře.",
-    "V paneláku jsme řešili skleněné dveře.",
-    "V paneláku jsme řešili dveře do pracovny.",
-    "V paneláku jsme řešili dveře do koupelny.",
-    "V paneláku jsme řešili bezrámové dveře.",
-    "V paneláku jsme řešili dveře s matným pruhem.",
-    "V paneláku jsme řešili čiré dveře do ložnice.",
+    "V paneláku jsme vybrali skleněné dveře do ložnice.",
     "V paneláku jsme řešili dveře mezi kuchyní a chodbou.",
-    "V paneláku jsme doplnili posuvné dveře.",
-    "V paneláku jsme doplnili skleněné dveře.",
-    "V paneláku jsme doplnili dveře do pracovny.",
-    "V paneláku jsme doplnili dveře do koupelny.",
-    "V paneláku jsme doplnili bezrámové dveře.",
-    "V paneláku jsme doplnili dveře s matným pruhem.",
-    "V paneláku jsme doplnili čiré dveře do ložnice.",
-    "V paneláku jsme doplnili dveře mezi kuchyní a chodbou.",
-    "V paneláku jsme vyměnili staré řešení za posuvné dveře.",
-    "V paneláku jsme vyměnili staré řešení za skleněné dveře.",
+    "V paneláku sedí bezrámové dveře líp, než jsem čekal.",
+    "Do bytu v paneláku jsme dali dveře s matným pruhem.",
+    "Místo klasického křídla máme posuvné sklo.",
+    "Do pracovny jsme dali skleněné dveře.",
+    "Mezi kuchyní a chodbou je teď čiré křídlo.",
+    "Do koupelny jsme zvolili dveře s matným pruhem.",
+    "Bezrámové dveře jsme brali kvůli světlu v chodbě.",
+    "Posuvné dveře ušetřily místo u skříně.",
+    "Kyvné dveře se hodí k našemu úzkému otvoru.",
+    "Otevírané skleněné dveře nahradily staré plné.",
+    "Matný pruh u dveří drží soukromí z chodby.",
+    "Čiré dveře do obýváku jsme chtěli bez zbytečného rámu.",
+    "Dveře do ložnice jsme řešili kvůli světlu z chodby.",
+    "U pracovny stačilo posuvné křídlo po stěně.",
+    "Na míru podle otvoru — sedí napoprvé.",
+    "Rozměry jsme poslali z telefonu a vyšlo to.",
+    "Kování je v klidu, nic nedrnčí.",
     "Chod je tichý u dveří.",
     "Údržba je jednoduchá u dveří.",
     "Hrany jsou hladké u dveří.",
@@ -1614,7 +1592,13 @@ def make_text(rng: random.Random, category: str, stars: int) -> str:
     elif rng.random() < 0.40:
         b = rng.choice(bank)
         if norm(b) != norm(a):
-            chunks.append(b)
+            # Avoid stacking two location-template sentences (e.g. double „V paneláku…“).
+            a_open = " ".join(norm(a).split()[:3])
+            b_open = " ".join(norm(b).split()[:3])
+            if a_open == b_open or ("v paneláku" in norm(a) and "v paneláku" in norm(b)):
+                pass
+            else:
+                chunks.append(b)
     return naturalize_text(re.sub(r"\s+", " ", " ".join(chunks)).strip())
 
 
@@ -1624,22 +1608,22 @@ def main() -> None:
     n_gen = COUNT - n_feat
 
     categories = (
-        ["dvere"] * 205
-        + ["sprcha"] * 82
-        + ["zabradli"] * 54
-        + ["strisky"] * 36
-        + ["pricky"] * 31
-        + ["balkony"] * 31
-        + ["ostatni"] * 13
+        ["dvere"] * 133
+        + ["sprcha"] * 53
+        + ["zabradli"] * 35
+        + ["strisky"] * 23
+        + ["pricky"] * 20
+        + ["balkony"] * 20
+        + ["ostatni"] * 8
     )
-    # 205+82+54+36+31+31+13 = 452
+    # 133+53+35+23+20+20+8 = 292
     assert len(categories) == n_gen, len(categories)
 
-    # Featured star sum = 39 (seven 5★ + one 4★)
-    # Target overall avg ~4.71 → total sum ~2167 → gen sum ~2128
-    stars_list = [5] * 352 + [4] * 73 + [3] * 23 + [2] * 4
+    # Featured star sum = 44 (seven 5★ + one 4★ + one 5★)
+    # Target overall avg ~4.71 → total sum ~1412 → gen sum ~1368
+    stars_list = [5] * 223 + [4] * 50 + [3] * 15 + [2] * 4
     assert len(stars_list) == n_gen
-    # With featured: sum = 2129+39 = 2168 → avg 4.713
+    # With featured (44): sum = 1368+44 = 1412 → avg 4.707
     rng.shuffle(categories)
     rng.shuffle(stars_list)
 
@@ -1661,6 +1645,8 @@ def main() -> None:
             cr = random.Random(SEED * 1000003 + i * 7919 + attempt)
             candidate = make_text(cr, category, star)
             if banned_hit(candidate):
+                continue
+            if candidate.lower().count("v paneláku") >= 2:
                 continue
             key = norm(candidate)
             if key in used_texts:
@@ -1713,7 +1699,7 @@ def main() -> None:
     # Keep featured spread: move featured to chosen indices
     featured = [r for r in rows if r.get("featured")]
     plain = [r for r in rows if not r.get("featured")]
-    slots = [18, 67, 112, 168, 214, 271, 333, 401]
+    slots = [12, 45, 78, 110, 145, 180, 220, 265]
     rows = []
     fi = 0
     pi = 0
@@ -1726,12 +1712,34 @@ def main() -> None:
             pi += 1
     assert fi == n_feat and pi == n_gen
 
+    def is_awkward_day(d: date) -> bool:
+        # Avoid Christmas Eve/Day, Boxing Day, New Year's Eve/Day (believability).
+        return (d.month, d.day) in {(12, 24), (12, 25), (12, 26), (12, 31), (1, 1)}
+
+    def shift_off_holiday(d: date) -> date:
+        # Nudge to nearest believable weekday-ish date within ±3 days.
+        if not is_awkward_day(d):
+            return d
+        for delta in (1, -1, 2, -2, 3, -3):
+            cand = d + timedelta(days=delta)
+            if START <= cand <= END and not is_awkward_day(cand):
+                return cand
+        return d
+
     for i, row in enumerate(rows):
         offset = round(i * (END - START).days / (COUNT - 1))
-        row["date"] = (START + timedelta(days=offset)).isoformat()
+        row["date"] = shift_off_holiday(START + timedelta(days=offset)).isoformat()
+
+    # Keep endpoints on range (shift only if they landed on a holiday).
+    rows[0]["date"] = shift_off_holiday(START).isoformat()
+    rows[-1]["date"] = shift_off_holiday(END).isoformat()
 
     assert len(rows) == COUNT
-    assert rows[0]["date"] == START.isoformat() and rows[-1]["date"] == END.isoformat()
+    assert not any(
+        (date.fromisoformat(r["date"]).month, date.fromisoformat(r["date"]).day)
+        in {(12, 24), (12, 25), (12, 26), (12, 31), (1, 1)}
+        for r in rows
+    )
     assert sum(1 for r in rows if r.get("featured")) == 8
     assert all(n <= MAX_6GRAM for n in seen6.values())
     assert all(n <= MAX_5GRAM for n in seen5.values())

@@ -43,6 +43,8 @@ $children = is_array($cat['children'] ?? null) ? $cat['children'] : [];
     </div>
   </header>
 
+  <?php sklo_render_katalog_seo_intro($cat); ?>
+
   <section class="sklo-section sklo-katalog-hub">
     <div class="sklo-wrap">
       <header class="sklo-section__head sklo-section__head--center">
