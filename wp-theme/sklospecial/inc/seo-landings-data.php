@@ -166,7 +166,7 @@ function sklo_seo_cities(): array
             'locative' => 'Ostravě',
             'v' => 'v',
             'kraj' => 'Moravskoslezský kraj',
-            'note' => 'Ostrava a okolí (včetně Havířova) máme blízko provozovny v Horních Bludovicích — kratší dojezd na montáž i volitelné zaměření.',
+            'note' => 'Ostrava a okolí (včetně Havířova) máme blízko provozovny v Prostředních Bludovicích (obec Horní Bludovice) — kratší dojezd na montáž i volitelné zaměření.',
         ],
         [
             'slug' => 'plzen',
@@ -238,7 +238,7 @@ function sklo_seo_cities(): array
             'locative' => 'Havířově',
             'v' => 'v',
             'kraj' => 'Moravskoslezský kraj',
-            'note' => 'Havířov je blízko naší provozovny v Horních Bludovicích — kratší logistika montáže i volitelného zaměření v regionu.',
+            'note' => 'Havířov je blízko naší provozovny v Prostředních Bludovicích (obec Horní Bludovice) — kratší logistika montáže i volitelného zaměření v regionu.',
         ],
         [
             'slug' => 'kladno',

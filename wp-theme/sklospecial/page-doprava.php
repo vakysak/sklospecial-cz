@@ -26,7 +26,7 @@ $realizace = home_url('/doba-realizace/');
 
       <h2>Možnosti dopravy</h2>
       <ul>
-        <li><strong>Vlastní doprava (klient)</strong> — vyzvednutí po domluvě na provozovně (Prostřední Bludovice). Termín potvrdíme po dokončení výroby.</li>
+        <li><strong>Vlastní doprava (klient)</strong> — vyzvednutí po domluvě na adrese Prostřední Bludovice 193, 739 37 Horní Bludovice. Termín potvrdíme po dokončení výroby.</li>
         <li><strong>Naše doprava firemním autem</strong> — podle kapacity a trasy; vhodné zejména v dostupném regionu. Cena dle vzdálenosti a rozsahu zakázky.</li>
         <li><strong>Přepravní služba</strong> — paletová / specializovaná přeprava skla. Dopravce vybíráme my podle typu zásilky; nelze vždy volit konkrétní kurýrní značku.</li>
       </ul>
@@ -45,7 +45,7 @@ $realizace = home_url('/doba-realizace/');
           </thead>
           <tbody>
             <tr>
-              <td>Osobní odběr — Prostřední Bludovice</td>
+              <td>Osobní odběr — Prostřední Bludovice 193, 739 37 Horní Bludovice</td>
               <td><strong>0&nbsp;Kč</strong></td>
             </tr>
             <tr>

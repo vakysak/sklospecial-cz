@@ -59,8 +59,8 @@ $has_about = is_readable($about_img);
         <?php endif; ?>
 
         <div class="sklo-o-nas__card">
-          <h2>Provozovna / kontakt</h2>
-          <p>Prostřední Bludovice 193<br>739 37 Horní Bludovice</p>
+          <h2>Adresa / kontakt</h2>
+          <p>Prostřední Bludovice 193, 739 37 Horní Bludovice</p>
           <p><a href="tel:+420736134604">+420 736 134 604</a><br>
           <a href="mailto:info@sklospecial.eu">info@sklospecial.eu</a></p>
         </div>
@@ -69,8 +69,7 @@ $has_about = is_readable($about_img);
           <h2>Firma</h2>
           <p>
             Stolařství Aleš s.r.o.<br>
-            Sídlo: Horní Bludovice 193<br>
-            739 37 Horní Bludovice<br>
+            Prostřední Bludovice 193, 739 37 Horní Bludovice<br>
             IČO: 29457335<br>
             DIČ: CZ29457335
           </p>
