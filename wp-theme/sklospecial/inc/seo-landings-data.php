@@ -941,7 +941,12 @@ function sklo_seo_city_copy(array $category, array $city): array
     }
     if ($product_angle !== '' && $why !== '') {
         // Keep product mention inside why block without repeating full intro
-        $why_local .= ' ' . sprintf('Konkrétně u %s platí: zaměříš sám podle návodu, nebo přijedeme zaměřit — pak vyrobíme a domluvíme termín %s %s.', $in, $v, $loc);
+        $why_local .= ' ' . sprintf(
+            'Konkrétně u %s platí: zaměříš sám podle návodu, nebo přijedeme zaměřit — pak vyrobíme a domluvíme termín %s %s.',
+            (string) $category['genitive'],
+            $v,
+            $loc
+        );
     }
 
     // Bullets: mix city profile + product benefits (unique per city×product seed)
