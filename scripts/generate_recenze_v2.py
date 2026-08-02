@@ -1590,6 +1590,26 @@ def commit_grams(text: str, seen5: Counter[str], seen6: Counter[str]) -> None:
     seen6.update(ngrams(text, 6))
 
 
+def naturalize_text(text: str) -> str:
+    """Remove repeated generic product-location fillers from review copy."""
+    # These suffixes made unrelated reviews sound mechanically templated.
+    for term in ("dveří", "sprchy", "stříšky", "příčky", "zábradlí", "skla", "balkonu"):
+        text = text.replace(f" u {term}", "")
+    rewrites = {
+        "Světlo zůstalo.": "Místnost neztratila světlo.",
+        "V létě to nepřehřívá dramaticky.": "V létě se prostor nepřehřívá.",
+        "Pro naše rozměry napoprvé.": "Pro naše rozměry to vyšlo napoprvé.",
+        "V provozu nenápadné.": "V provozu působí nenápadně.",
+        "Architektka byla v pohodě.": "Architektka s návrhem souhlasila.",
+        "Rozhodnutí jsme nespěchali.": "S rozhodnutím jsme nespěchali.",
+        "Místo se neušetřilo zbytečně.": "Prostor jsme nešetřili zbytečnými prvky.",
+        "Stačí mi že to neřešíme.": "Stačí mi, že funguje bez řešení.",
+    }
+    for old, new in rewrites.items():
+        text = text.replace(old, new)
+    return re.sub(r"\s+", " ", text).strip()
+
+
 def make_text(rng: random.Random, category: str, stars: int) -> str:
     bank = SENTENCES[category]
     a = rng.choice(bank)
@@ -1602,7 +1622,7 @@ def make_text(rng: random.Random, category: str, stars: int) -> str:
         b = rng.choice(bank)
         if norm(b) != norm(a):
             chunks.append(b)
-    return re.sub(r"\s+", " ", " ".join(chunks)).strip()
+    return naturalize_text(re.sub(r"\s+", " ", " ".join(chunks)).strip())
 
 
 def main() -> None:
@@ -1654,7 +1674,7 @@ def main() -> None:
                 continue
             # Limit reuse of identical bank sentences across corpus
             pieces = [norm(p) for p in re.split(r"(?<=[.!?])\s+", candidate) if p.strip()]
-            if any(sent_use[p] >= 2 for p in pieces):
+            if any(sent_use[p] >= 3 for p in pieces):
                 continue
             if not ok_grams(candidate, seen5, seen6):
                 continue
