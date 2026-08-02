@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.22.0');
+define('SKLO_THEME_VER', '1.23.0');
 
 /** Default konfigurátor/API host. Override via option sklo_api_base or env SKLO_API_BASE. */
 define(
@@ -497,12 +497,74 @@ add_action('after_setup_theme', function (): void {
         'flex-height' => true,
         'flex-width'  => true,
     ]);
+    add_theme_support('site-icon');
 
     register_nav_menus([
         'primary' => 'Hlavní menu',
         'footer'  => 'Patička',
     ]);
 });
+
+/**
+ * Brand favicons (glass-pane mark, #1A1A1A / #C9A96E) — theme assets, not WP default.
+ */
+function sklo_favicon_uri(string $file): string
+{
+    return get_template_directory_uri() . '/assets/favicon/' . ltrim($file, '/');
+}
+
+add_action('wp_head', static function (): void {
+    $ver = SKLO_THEME_VER;
+    $svg = sklo_favicon_uri('favicon.svg');
+    $ico = sklo_favicon_uri('favicon.ico');
+    $png32 = sklo_favicon_uri('favicon-32x32.png');
+    $png16 = sklo_favicon_uri('favicon-16x16.png');
+    $apple = sklo_favicon_uri('apple-touch-icon.png');
+    $manifest = sklo_favicon_uri('site.webmanifest');
+
+    echo '<link rel="icon" href="' . esc_url($svg) . '?v=' . esc_attr($ver) . '" type="image/svg+xml">' . "\n";
+    echo '<link rel="icon" href="' . esc_url($png32) . '?v=' . esc_attr($ver) . '" type="image/png" sizes="32x32">' . "\n";
+    echo '<link rel="icon" href="' . esc_url($png16) . '?v=' . esc_attr($ver) . '" type="image/png" sizes="16x16">' . "\n";
+    echo '<link rel="shortcut icon" href="' . esc_url($ico) . '?v=' . esc_attr($ver) . '">' . "\n";
+    echo '<link rel="apple-touch-icon" href="' . esc_url($apple) . '?v=' . esc_attr($ver) . '" sizes="180x180">' . "\n";
+    echo '<link rel="manifest" href="' . esc_url($manifest) . '?v=' . esc_attr($ver) . '">' . "\n";
+    echo '<meta name="theme-color" content="#1A1A1A">' . "\n";
+}, 1);
+
+/** Prefer theme favicons over empty / default WP site icon. */
+add_filter('get_site_icon_url', static function ($url, $size) {
+    $size = (int) $size;
+    if ($size >= 512) {
+        $file = 'android-chrome-512x512.png';
+    } elseif ($size >= 192) {
+        $file = 'android-chrome-192x192.png';
+    } elseif ($size >= 180) {
+        $file = 'apple-touch-icon.png';
+    } elseif ($size <= 16) {
+        $file = 'favicon-16x16.png';
+    } else {
+        $file = 'favicon-32x32.png';
+    }
+    $path = get_template_directory() . '/assets/favicon/' . $file;
+    if (!is_readable($path)) {
+        return $url;
+    }
+    return sklo_favicon_uri($file) . '?v=' . rawurlencode(SKLO_THEME_VER);
+}, 10, 2);
+
+/** Serve theme favicon at /favicon.ico instead of WP blue W. */
+add_action('do_faviconico', static function (): void {
+    $path = get_template_directory() . '/assets/favicon/favicon.ico';
+    if (!is_readable($path)) {
+        return;
+    }
+    header('Content-Type: image/x-icon');
+    header('Content-Length: ' . (string) filesize($path));
+    header('Cache-Control: public, max-age=604800');
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- binary icon
+    readfile($path);
+    exit;
+}, 1);
 
 add_action('wp_enqueue_scripts', function (): void {
     wp_enqueue_style(

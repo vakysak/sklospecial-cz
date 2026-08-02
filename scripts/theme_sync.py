@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Push local wp-theme/sklospecial to staging via Code Snippet #9 theme-sync."""
+"""Push local wp-theme/sklospecial to WordPress via Code Snippet #9 theme-sync."""
 
 from __future__ import annotations
 
 import base64
 import json
+import mimetypes
 import os
 import ssl
 import sys
@@ -15,7 +16,7 @@ from pathlib import Path
 
 WP = os.environ.get(
     "SKLO_WP_URL",
-    "https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io",
+    "https://sklospecial.eu",
 ).rstrip("/")
 USER = os.environ.get("SKLO_WP_USER", "vakysak")
 PASS = os.environ.get("SKLO_WP_APP_PASSWORD", "")
@@ -25,6 +26,22 @@ AUTH = base64.b64encode(f"{USER}:{PASS}".encode()).decode()
 CTX = ssl.create_default_context()
 THEME = Path(__file__).resolve().parents[1] / "wp-theme" / "sklospecial"
 SNIPPET_NAME = "Sklospecial theme sync"
+
+BINARY_SUFFIXES = {
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".webp",
+    ".ico",
+    ".woff",
+    ".woff2",
+    ".ttf",
+    ".otf",
+    ".eot",
+    ".pdf",
+    ".zip",
+}
 
 
 def req(method: str, path: str, data=None, timeout: int = 180):
@@ -66,29 +83,52 @@ def set_snippet_active(active: bool):
     return sync["id"]
 
 
-def collect_files() -> dict[str, str]:
-    files: dict[str, str] = {}
+def collect_files() -> dict:
+    """Text files as strings; binaries as {encoding: base64, data: ...}."""
+    files: dict = {}
     for p in THEME.rglob("*"):
         if not p.is_file() or p.name == ".DS_Store":
             continue
-        # Skip huge binary-ish if any; json text ok
         rel = str(p.relative_to(THEME)).replace("\\", "/")
-        try:
-            files[rel] = p.read_text(encoding="utf-8")
-        except UnicodeDecodeError:
-            print("skip binary", rel)
+        suffix = p.suffix.lower()
+        raw = p.read_bytes()
+        if suffix in BINARY_SUFFIXES:
+            files[rel] = {
+                "encoding": "base64",
+                "data": base64.b64encode(raw).decode("ascii"),
+                "mime": mimetypes.guess_type(p.name)[0] or "application/octet-stream",
+            }
+            print("binary", rel, len(raw))
+        else:
+            try:
+                files[rel] = raw.decode("utf-8")
+            except UnicodeDecodeError:
+                files[rel] = {
+                    "encoding": "base64",
+                    "data": base64.b64encode(raw).decode("ascii"),
+                    "mime": "application/octet-stream",
+                }
+                print("binary(fallback)", rel, len(raw))
     return files
 
 
 def main():
     files = collect_files()
-    print(f"files={len(files)}")
+    print(f"files={len(files)} target={WP}")
     set_snippet_active(True)
     time.sleep(0.5)
     try:
-        out = req("POST", "/wp-json/sklo/v1/theme-sync", {"files": files, "activate": True}, timeout=300)
+        out = req(
+            "POST",
+            "/wp-json/sklo/v1/theme-sync",
+            {"files": files, "activate": True},
+            timeout=300,
+        )
         written = out.get("written") or []
-        print(f"written={len(written)} stylesheet={out.get('stylesheet')} template={out.get('template')}")
+        print(
+            f"written={len(written)} stylesheet={out.get('stylesheet')} "
+            f"template={out.get('template')}"
+        )
         if not out.get("ok"):
             print(json.dumps(out, ensure_ascii=False)[:2000])
             sys.exit(1)
