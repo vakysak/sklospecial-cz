@@ -867,6 +867,10 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
     <?php
     // Product JSON-LD (no AggregateRating — reviews on site are not verified product reviews).
     $schema_desc = $desc !== '' ? wp_strip_all_tags($desc) : ($name . ' — katalog Sklospeciál, výroba na míru.');
+    // Avoid shipping leftover Polish supplier copy into structured data.
+    if (preg_match('/\b(lodow|tluczon|szkla|polaczone|trzy|srodkowa|zewnetrzne|uszkodzeni|folii|kabina|szklan)\b/iu', $schema_desc)) {
+        $schema_desc = $name . ' — výroba na míru z katalogu Sklospeciál. Orientační cena podle rozměrů a provedení; finální nabídka po zaměření.';
+    }
     if (mb_strlen($schema_desc) > 300) {
         $schema_desc = rtrim(mb_substr($schema_desc, 0, 297)) . '…';
     }
