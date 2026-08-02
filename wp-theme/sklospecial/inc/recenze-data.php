@@ -1485,7 +1485,7 @@ function sklo_recenze_all(): array
             'city' => 'Třebíč',
             'stars' => 5,
             'date' => '2023-07-30',
-            'text' => 'Věcná spokojenost mi u dveří stačí.',
+            'text' => 'Dveře slouží spolehlivě a v interiéru působí lehce.',
             'category' => 'dvere',
         ],
         [
@@ -2463,7 +2463,7 @@ function sklo_recenze_all(): array
             'city' => 'Mladá Boleslav',
             'stars' => 4,
             'date' => '2024-11-26',
-            'text' => 'Věcná spokojenost stačí u sprchy. Po rekonstrukci to byl poslední díl koupelny.',
+            'text' => 'Sprchový kout dobře navázal na rekonstrukci a koupelna je konečně hotová.',
             'category' => 'sprcha',
         ],
         [
@@ -3714,7 +3714,7 @@ function sklo_recenze_stats(): array
     return [
         'count' => $count,
         'sum' => $sum,
-        'average' => $count > 0 ? round($sum / $count, 2) : 0.0,
+        'avg' => $count > 0 ? round($sum / $count, 2) : 0.0,
     ];
 }
 
