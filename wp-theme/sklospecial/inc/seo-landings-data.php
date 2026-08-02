@@ -783,7 +783,7 @@ function sklo_seo_city_product_housing(array $category, array $city): string
     $name = (string) $city['name'];
     $areas = trim((string) ($city['areas'] ?? ''));
     $housing = trim((string) ($city['housing'] ?? ''));
-    $var = sklo_seo_variation($slug_cat, (string) $city['slug'], 3);
+    $var = sklo_seo_variation($slug_cat . '|housing', (string) $city['slug'], 3);
     $area_bit = $areas !== '' ? ' (' . $areas . ')' : '';
 
     $by_cat = [
@@ -799,35 +799,35 @@ function sklo_seo_city_product_housing(array $category, array $city): string
             $housing !== ''
                 ? $housing . ' U sprch počítáme s nerovnými stěnami, atypickou vaničkou a kováním, které drží v reálném prostoru.'
                 : sprintf('Sprchové kouty %s %s vyrábíme podle koupelny, ne podle katalogové „univerzální“ sestavy.', $v, $loc),
-            sprintf('V koupelnách %s %s rozhoduje rozměr na místě: walk-in stěna, rohový kout nebo zástěna — podle odtoku a dispozice.', $v, $loc),
+            sprintf('Koupelny %s %s po rekonstrukci málokdy sedí na hotový set — sprchové sklo ladíme podle vaničky a stěn.', $v, $loc),
         ],
         'zabradli' => [
             sprintf('Skleněné zábradlí %s %s%s ladíme podle schodiště, galerie nebo terasy — kotvení a výška stupňů jsou vždy jiné.', $v, $loc, $area_bit),
             $housing !== ''
                 ? $housing . ' U zábradlí navíc řešíme kotvení do stupňů, bočnice nebo podlahy a bezpečný přístup při montáži.'
                 : sprintf('Zábradlí %s %s navrhujeme podle stavby — ne jako katalogový „bm od oka“.', $v, $loc),
-            sprintf('%s %s u skleněného zábradlí často řešíme otevřená schodiště v domech i mezonety — stačí fotky z více úhlů.', sklo_seo_ucfirst_v($v), $loc),
+            sprintf('Schodiště a galerie %s %s málokdy sedí na katalogové bm — u zábradlí rozhoduje kotvení a výška stupňů na místě.', $v, $loc),
         ],
         'strisky' => [
             sprintf('Skleněná stříška %s %s%s chrání vstup — šířka dveří, fasáda a typ kotvení (konzoly / táhla) rozhodují o návrhu.', $v, $loc, $area_bit),
             $housing !== ''
                 ? $housing . ' U stříšek potřebujeme fotky fasády a šířku vstupu, ať sedí nosnost i vzhled.'
                 : sprintf('Stříšky %s %s vyrábíme podle fasády a rozměrů vstupu — ne jako hotový „univerzální“ dílec.', $v, $loc),
-            sprintf('%s %s u stříšek řešíme i odtok vody a přístup k fasádě při montáži — pošli fotky vchodu.', sklo_seo_ucfirst_v($v), $loc),
+            sprintf('Vstup %s %s potřebuje stříšku podle fasády a šířky dveří — konzoly nebo táhla doladíme až z fotek.', $v, $loc),
         ],
         'sklenene-pricky' => [
             sprintf('Skleněná příčka %s %s%s oddělí pracovnu, open-space nebo chodbu a nechá projít světlo — bez těžké zděné stěny.', $v, $loc, $area_bit),
             $housing !== ''
                 ? $housing . ' U příček ladíme výšku podhledu, kotvení do stropu/podlahy a typ skla (čiré, matné).'
                 : sprintf('Příčky %s %s navrhujeme podle dispozice — pevná výplň i kombinace s dveřním křídlem.', $v, $loc),
-            sprintf('%s %s u skleněných příček často řešíme atypickou výšku a napojení na stávající podhled — pošli půdorys nebo fotky.', sklo_seo_ucfirst_v($v), $loc),
+            sprintf('Dispozice %s %s často žádá oddělení bez ztráty světla — skleněná příčka sedí tam, kde plná zeď překáží.', $v, $loc),
         ],
         'francouzske-balkony' => [
             sprintf('Francouzský balkon %s %s%s je skleněná výplň u francouzského okna — výška, šířka a kotvení k fasádě musí sedět na míru.', $v, $loc, $area_bit),
             $housing !== ''
                 ? $housing . ' U francouzských balkonů navíc řešíme parapet, fasádu a přístup při montáži z bytu nebo zvenku.'
                 : sprintf('Francouzské balkony %s %s vyrábíme podle otvoru — fotky zvenku i zevnitř urychlí nabídku.', $v, $loc),
-            sprintf('%s %s u francouzských balkonů počítáme s bezpečným kotvením a domluvou přístupu před výjezdem.', sklo_seo_ucfirst_v($v), $loc),
+            sprintf('Francouzská okna %s %s potřebují výplň na míru — parapet a fasáda určují kotvení i výšku skla.', $v, $loc),
         ],
     ];
 
