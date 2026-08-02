@@ -4,10 +4,13 @@
   <div class="sklo-wrap sklo-footer__inner">
     <div class="sklo-footer__brand">
       <p class="sklo-footer__name">Sklospeciál</p>
-      <p class="sklo-footer__tag">Už 30 let nás najdete na jedné adrese — pokračuje třetí generace. Rodinná firma Sklospeciál: stabilita a jistota. Pracujeme na dálku — zaměříš sám, pošleš fotky a ve studiu si složíš dveře.</p>
+      <p class="sklo-footer__tag">Už 30 let nás najdete na jedné adrese — pokračuje třetí generace. Rodinná firma Sklospeciál: stabilita a jistota. Pracujeme na dálku — zaměříš sám, pošleš fotky a ozvi se přes WhatsApp nebo poptávku.</p>
       <div class="sklo-footer__cta">
-        <a class="sklo-btn" href="<?php echo esc_url(sklo_konfigurator_url()); ?>">Navrhni si dveře</a>
-        <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
+        <?php if (function_exists('sklo_render_studio_coming_actions')) : ?>
+          <?php sklo_render_studio_coming_actions('sklo-footer__var-c'); ?>
+        <?php else : ?>
+          <a class="sklo-btn" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Poptávka</a>
+        <?php endif; ?>
         <?php if (function_exists('sklo_render_cta_sla')) : ?>
           <?php sklo_render_cta_sla('sklo-cta-sla--footer', false, false); ?>
         <?php endif; ?>
@@ -35,7 +38,8 @@
           <li><a href="<?php echo esc_url(home_url('/platba/')); ?>">Platba</a></li>
           <li><a href="<?php echo esc_url(home_url('/doba-realizace/')); ?>">Doba realizace</a></li>
           <li><a href="<?php echo esc_url(home_url('/zaruka/')); ?>">Záruka a servis</a></li>
-          <li><a href="<?php echo esc_url(sklo_konfigurator_url()); ?>">Studio — navrhni dveře</a></li>
+          <li><a href="<?php echo esc_url(home_url('/poptavka/')); ?>">Poptávka</a></li>
+          <li><a href="<?php echo esc_url(function_exists('sklo_whatsapp_url') ? sklo_whatsapp_url() : 'https://wa.me/420736134604'); ?>" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
         </ul>
       </div>
       <div class="sklo-footer__col">

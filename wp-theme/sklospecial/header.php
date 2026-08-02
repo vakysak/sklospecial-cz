@@ -12,7 +12,11 @@
 
 <div class="sklo-topbar">
   <div class="sklo-wrap sklo-topbar__inner">
-    <p class="sklo-topbar__msg">Skleněné dveře na míru — pošli rozměry a fotky</p>
+    <?php if (function_exists('sklo_render_studio_coming_sticky')) : ?>
+      <?php sklo_render_studio_coming_sticky('sklo-topbar__msg'); ?>
+    <?php else : ?>
+      <p class="sklo-topbar__msg">Skleněné dveře na míru — pošli rozměry a fotky</p>
+    <?php endif; ?>
     <div class="sklo-topbar__links">
       <a href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">Návod na zaměření</a>
       <a href="<?php echo esc_url(home_url('/kontakt/')); ?>">Kontakt</a>
@@ -42,7 +46,11 @@
           'depth'          => 2,
       ]);
       ?>
-      <a class="sklo-btn sklo-btn--sm" href="<?php echo esc_url(sklo_konfigurator_url()); ?>">Navrhni si dveře</a>
+      <?php if (function_exists('sklo_render_studio_coming_actions')) : ?>
+        <?php sklo_render_studio_coming_actions('sklo-header__cta', true, false); ?>
+      <?php else : ?>
+        <a class="sklo-btn sklo-btn--sm" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Poptávka</a>
+      <?php endif; ?>
     </nav>
   </div>
 </header>

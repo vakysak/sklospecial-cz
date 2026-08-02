@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 get_header();
 
-$cfg = sklo_konfigurator_url();
 $is_hub = is_page('pruvodce');
 $current_slug = get_post_field('post_name', get_queried_object_id()) ?: '';
 
@@ -91,17 +90,18 @@ foreach (sklo_pruvodce_hub_list() as $g) {
 
   <section class="sklo-section sklo-cta-band">
     <div class="sklo-wrap sklo-cta-band__inner sklo-cta-band__inner--wide">
-      <div>
-        <h2>Máš rozměry? Pošli je a připravíme nabídku.</h2>
-        <p>Ve studiu si složíš návrh, nebo napiš rovnou poptávku. Zaměření zvládneš sám — nebo přijedeme.</p>
-      </div>
-      <div class="sklo-cta-band__actions">
-        <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Otevřít studio</a>
-        <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
-        <?php if (function_exists('sklo_render_cta_sla')) : ?>
-          <?php sklo_render_cta_sla(); ?>
-        <?php endif; ?>
-      </div>
+      <?php if (function_exists('sklo_render_studio_coming_block')) : ?>
+        <?php sklo_render_studio_coming_block('sklo-var-c--band'); ?>
+      <?php else : ?>
+        <div>
+          <h2>Konfigurátor připravujeme.</h2>
+          <p>Teď nejjednodušší cesta: WhatsApp, nebo nezávazná poptávka s rozměry a fotkami.</p>
+        </div>
+        <div class="sklo-cta-band__actions">
+          <a class="sklo-btn" href="https://wa.me/420736134604" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a class="sklo-btn sklo-btn--ghost" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Poptávka</a>
+        </div>
+      <?php endif; ?>
     </div>
   </section>
 </article>

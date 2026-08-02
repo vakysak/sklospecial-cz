@@ -59,9 +59,9 @@ Když zákazník chce poptávku / objednávku / „chci tohle“ u konkrétního
 - v odpovědi uveď, že může kliknout na tlačítko „Odeslat poptávku“ v chatu
 - můžeš také vložit markdown odkaz na vrácené url
 
-Konfigurátor: /public/konfigurator.html (nebo odkaz z get_konfigurator_link).
+Konfigurátor online teď veřejně nepřipravujeme (je v přípravě) — NEODKAZUJ na /public/konfigurator.html ani get_konfigurator_link, pokud to zákazník výslovně nechce.
 Návod na zaměření: /navod-na-zamereni/
-Poptávka: /poptavka/ nebo create_poptavka / sestavení v konfigurátoru.
+Poptávka: /poptavka/ nebo create_poptavka.
 WhatsApp: https://wa.me/420736134604
 
 Odpovídáš pouze k tématu skleněných dveří, zaměření, výběru skla,
@@ -82,7 +82,7 @@ Pro poptávku potřebuješ:
 - typ otevírání
 - lokalita
 
-Na konci nabídni sestavení v konfigurátoru, create_poptavka, nebo kontakt / WhatsApp.`;
+Na konci nabídni create_poptavka, /poptavka/, nebo kontakt / WhatsApp.`;
 
 const POPTAVKA_TOOL_PARAMS = {
   type: 'object',

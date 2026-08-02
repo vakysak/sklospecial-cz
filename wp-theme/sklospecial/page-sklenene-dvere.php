@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 get_header();
 
-$cfg = sklo_konfigurator_url();
 $cat = sklo_katalog_for_slug('sklenene-dvere');
 $uploads = (string) ($cat['uploads'] ?? content_url('uploads/2026/07'));
 $children = is_array($cat['children'] ?? null) ? $cat['children'] : [];
@@ -37,7 +36,9 @@ $children = is_array($cat['children'] ?? null) ? $cat['children'] : [];
         </div>
       <?php endif; ?>
       <div class="sklo-katalog__hero-actions">
-        <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Navrhni si dveře</a>
+        <?php if (function_exists('sklo_render_studio_coming_actions')) : ?>
+          <?php sklo_render_studio_coming_actions('sklo-katalog__var-c', false, true); ?>
+        <?php endif; ?>
         <a class="sklo-btn sklo-btn--ghost-light" href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">Jak zaměřit</a>
       </div>
     </div>
@@ -100,17 +101,18 @@ $children = is_array($cat['children'] ?? null) ? $cat['children'] : [];
 
   <section class="sklo-section sklo-cta-band">
     <div class="sklo-wrap sklo-cta-band__inner sklo-cta-band__inner--wide">
-      <div>
-        <h2>Nejsi si jistý typem?</h2>
-        <p>Pošli fotku otvoru nebo rovnou otevři studio. Poradíme, co sedí do prostoru — a připravíme nabídku.</p>
-      </div>
-      <div class="sklo-cta-band__actions">
-        <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Otevřít studio</a>
-        <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
-        <?php if (function_exists('sklo_render_cta_sla')) : ?>
-          <?php sklo_render_cta_sla(); ?>
-        <?php endif; ?>
-      </div>
+      <?php if (function_exists('sklo_render_studio_coming_block')) : ?>
+        <?php sklo_render_studio_coming_block('sklo-var-c--band'); ?>
+      <?php else : ?>
+        <div>
+          <h2>Konfigurátor připravujeme.</h2>
+          <p>Teď nejjednodušší cesta: WhatsApp, nebo nezávazná poptávka s rozměry a fotkami.</p>
+        </div>
+        <div class="sklo-cta-band__actions">
+          <a class="sklo-btn" href="https://wa.me/420736134604" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <a class="sklo-btn sklo-btn--ghost" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Poptávka</a>
+        </div>
+      <?php endif; ?>
     </div>
   </section>
 </article>

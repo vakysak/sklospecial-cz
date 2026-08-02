@@ -4,7 +4,6 @@
  */
 get_header();
 
-$cfg = sklo_konfigurator_url();
 ?>
 
 <section class="sklo-hero sklo-hero--photo">
@@ -16,7 +15,9 @@ $cfg = sklo_konfigurator_url();
     <h1 class="sklo-hero__title">Skleněné dveře a sklo na míru — online, bez showroomu</h1>
     <p class="sklo-hero__lead">Posuvné dveře, sprchové kouty, zábradlí a stříšky. Zaměříš sám, my vyrobíme — nabídku připravíme podle tvých rozměrů a fotek. Bez showroomu, bez zbytečných kol.</p>
     <div class="sklo-hero__actions">
-      <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Navrhni si dveře</a>
+      <?php if (function_exists('sklo_render_studio_coming_actions')) : ?>
+        <?php sklo_render_studio_coming_actions('sklo-hero__var-c', false, true); ?>
+      <?php endif; ?>
       <a class="sklo-btn sklo-btn--ghost-light" href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">Jak zaměřit</a>
     </div>
     <p class="sklo-hero__proof">Pošli rozměry a fotky → dostaneš nabídku od nás</p>
@@ -30,8 +31,8 @@ $cfg = sklo_konfigurator_url();
       <span>Zaměření a fotky z telefonu stačí. Celý proces od výběru po nabídku proběhne online.</span>
     </div>
     <div>
-      <strong>Studio online — složíš si dveře sám</strong>
-      <span>Vlož fotku prostoru, nastav rozměry a vyber sklo se lištou. Vidíš výsledek ještě před objednávkou.</span>
+      <strong>Konfigurátor připravujeme</strong>
+      <span>Teď nejjednodušší cesta: WhatsApp, nebo nezávazná poptávka s rozměry a fotkami.</span>
     </div>
     <div>
       <strong>Nabídka na míru — podle tvých rozměrů</strong>
@@ -45,12 +46,13 @@ $cfg = sklo_konfigurator_url();
     <div class="sklo-about__copy">
       <p class="sklo-eyebrow">O nás</p>
       <h2>Už 30&nbsp;let nás najdete na jedné adrese. Pokračuje třetí generace.</h2>
-      <p>Rodinná firma Sklospeciál. Stavíme na stabilitě a jistotě — od zaměření po montáž víš, s kým jednáš. Skleněné dveře na míru vyřídíš na dálku: zaměříš sám, pošleš fotky a ve studiu si složíš dveře.</p>
+      <p>Rodinná firma Sklospeciál. Stavíme na stabilitě a jistotě — od zaměření po montáž víš, s kým jednáš. Skleněné dveře na míru vyřídíš na dálku: zaměříš sám, pošleš fotky a ozvi se přes WhatsApp nebo poptávku.</p>
       <div class="sklo-about__actions">
-        <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>" rel="noopener">Otevřít studio</a>
+        <?php if (function_exists('sklo_render_studio_coming_actions')) : ?>
+          <?php sklo_render_studio_coming_actions('sklo-about__var-c'); ?>
+        <?php endif; ?>
         <a class="sklo-link" href="<?php echo esc_url(home_url('/o-nas/')); ?>">Víc o nás</a>
       </div>
-      <p class="sklo-studio-note">Studio běží na <code>api.sklospecial.eu</code> (samostatná doména) — při prvním otevření může prohlížeč žádat cookies třetí strany.</p>
     </div>
     <div class="sklo-about__panel" aria-hidden="true">
       <div class="sklo-about__glass"></div>
@@ -118,8 +120,8 @@ $proof_items = [
       </li>
       <li>
         <span class="sklo-steps__n">3</span>
-        <h3>Navrhni dveře ve studiu</h3>
-        <p>Typ, vzor skla, kování, lišta. Vidíš výsledek ještě před tím, než cokoliv objednáš.</p>
+        <h3>Pošli poptávku</h3>
+        <p>Typ, vzor skla, kování, lišta — napiš to do WhatsAppu nebo poptávky. Nabídku připravíme podle tvých podkladů.</p>
       </li>
       <li>
         <span class="sklo-steps__n">4</span>
@@ -281,7 +283,7 @@ $home_types = [
     <header class="sklo-section__head sklo-section__head--center">
       <p class="sklo-eyebrow">Nabídka</p>
       <h2>Sklo do domu — od dveří po stříšky</h2>
-      <p>Hlavní směry nabídky. Orientační ceny „od“ — finální nabídka podle rozměrů. U dveří doladíš detaily ve <a href="<?php echo esc_url($cfg); ?>">studiu</a>.</p>
+      <p>Hlavní směry nabídky. Orientační ceny „od“ — finální nabídka podle rozměrů. Detaily doladíme přes WhatsApp nebo poptávku.</p>
     </header>
     <div class="sklo-type-grid sklo-type-grid--6">
       <?php foreach ($home_types as $type) :
@@ -319,7 +321,7 @@ $home_types = [
       </details>
       <details class="sklo-faq__item">
         <summary>Stačí fotky z telefonu?</summary>
-        <p>Ano. Potřebujeme celý otvor, detail stěny a podlahy. Čím více fotek, tím přesnější nabídka. Do studia můžeš vložit i fotku místnosti.</p>
+        <p>Ano. Potřebujeme celý otvor, detail stěny a podlahy. Čím více fotek, tím přesnější nabídka. Fotku místnosti můžeš poslat přes WhatsApp nebo poptávku.</p>
       </details>
       <details class="sklo-faq__item">
         <summary>Děláte i montáž?</summary>
@@ -331,11 +333,11 @@ $home_types = [
       </details>
       <details class="sklo-faq__item">
         <summary>Mohu si dveře nejdřív prohlédnout naživo?</summary>
-        <p>Nemáme showroom — pracujeme na dálku. Studio na webu ti ukáže, jak dveře budou vypadat ve tvém prostoru. S výběrem skla poradíme přes chat nebo e-mail.</p>
+        <p>Nemáme showroom — pracujeme na dálku. S výběrem skla a typu poradíme přes WhatsApp, chat nebo e-mail. Konfigurátor připravujeme.</p>
       </details>
       <details class="sklo-faq__item">
         <summary>Jaká je minimální a maximální velikost dveří?</summary>
-        <p>Pracujeme s nestandardními rozměry — to je náš základ. Limity závisí na typu dveří a skle. Zadej rozměry do studia a uvidíš, co je možné.</p>
+        <p>Pracujeme s nestandardními rozměry — to je náš základ. Limity závisí na typu dveří a skle. Pošli rozměry přes WhatsApp nebo poptávku a ověříme, co je možné.</p>
       </details>
     </div>
   </div>
@@ -343,18 +345,18 @@ $home_types = [
 
 <section class="sklo-section sklo-cta-band">
   <div class="sklo-wrap sklo-cta-band__inner sklo-cta-band__inner--wide">
-    <div>
-      <h2>Máš rozměry? Pojď rovnou do studia.</h2>
-      <p>Vlož fotku prostoru, nastav otvor a skládej sklo se lištou. Nabídku připravíme podle toho, co si složíš.</p>
-      <p class="sklo-studio-note">Otevře se na <code>api.sklospecial.eu</code> — cookies studia jsou na této doméně (známý GDPR dluh vůči hlavnímu webu).</p>
-    </div>
-    <div class="sklo-cta-band__actions">
-      <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>" rel="noopener">Otevřít studio</a>
-      <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
-      <?php if (function_exists('sklo_render_cta_sla')) : ?>
-        <?php sklo_render_cta_sla(); ?>
-      <?php endif; ?>
-    </div>
+    <?php if (function_exists('sklo_render_studio_coming_block')) : ?>
+      <?php sklo_render_studio_coming_block('sklo-var-c--band'); ?>
+    <?php else : ?>
+      <div>
+        <h2>Konfigurátor připravujeme.</h2>
+        <p>Teď nejjednodušší cesta: WhatsApp, nebo nezávazná poptávka s rozměry a fotkami.</p>
+      </div>
+      <div class="sklo-cta-band__actions">
+        <a class="sklo-btn" href="https://wa.me/420736134604" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        <a class="sklo-btn sklo-btn--ghost" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Poptávka</a>
+      </div>
+    <?php endif; ?>
   </div>
 </section>
 

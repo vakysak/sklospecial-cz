@@ -257,3 +257,112 @@ function sklo_render_poptavka_next_steps(): void
   </div>
     <?php
 }
+
+/**
+ * Public poptávka URL.
+ */
+function sklo_poptavka_url(): string
+{
+    return home_url('/poptavka/');
+}
+
+/**
+ * Varianta C — studio/configurator not linked publicly.
+ * Headline + body for CTA bands / former studio blocks.
+ */
+function sklo_studio_coming_headline(): string
+{
+    return 'Konfigurátor připravujeme.';
+}
+
+/**
+ * Supporting sentence for Varianta C.
+ */
+function sklo_studio_coming_lead(): string
+{
+    return 'Teď nejjednodušší cesta: WhatsApp, nebo nezávazná poptávka s rozměry a fotkami.';
+}
+
+/**
+ * Compact one-liner (sticky header / topbar).
+ */
+function sklo_studio_coming_sticky(): string
+{
+    return 'Konfigurátor připravujeme — WhatsApp nebo poptávka';
+}
+
+/**
+ * WhatsApp + Poptávka action pair (replaces studio/configurator CTAs).
+ *
+ * @param string $class Extra classes on the actions wrapper.
+ * @param bool   $sm    Compact buttons (header).
+ * @param bool   $ghost_second Use ghost style on Poptávka (hero/katalog).
+ */
+function sklo_render_studio_coming_actions(string $class = '', bool $sm = false, bool $ghost_second = false): void
+{
+    $classes = trim('sklo-var-c-actions ' . $class);
+    $btn = $sm ? 'sklo-btn sklo-btn--sm' : 'sklo-btn';
+    $second = $ghost_second
+        ? ($sm ? 'sklo-btn sklo-btn--ghost-light sklo-btn--sm' : 'sklo-btn sklo-btn--ghost-light')
+        : ($sm ? 'sklo-btn sklo-btn--ghost sklo-btn--sm' : 'sklo-btn sklo-btn--ghost');
+    $wa = function_exists('sklo_whatsapp_url') ? sklo_whatsapp_url() : 'https://wa.me/420736134604';
+    $poptavka = sklo_poptavka_url();
+    echo '<div class="' . esc_attr($classes) . '">';
+    echo '<a class="' . esc_attr($btn) . '" href="' . esc_url($wa) . '" target="_blank" rel="noopener noreferrer">WhatsApp</a>';
+    echo '<a class="' . esc_attr($second) . '" href="' . esc_url($poptavka) . '">Poptávka</a>';
+    echo '</div>';
+}
+
+/**
+ * Full Varianta C block: headline, lead, buttons (optional SLA).
+ *
+ * @param string $class Extra classes on outer block.
+ * @param bool   $sla   Render CTA SLA under buttons.
+ * @param string $tag   Headline tag (h2|p|strong).
+ */
+function sklo_render_studio_coming_block(string $class = '', bool $sla = true, string $tag = 'h2'): void
+{
+    $allowed = ['h2', 'h3', 'p', 'strong'];
+    if (!in_array($tag, $allowed, true)) {
+        $tag = 'h2';
+    }
+    $is_band = str_contains($class, 'sklo-var-c--band');
+    $classes = trim('sklo-var-c ' . $class);
+    if ($is_band) {
+        echo '<div class="sklo-var-c__copy">';
+        echo '<' . $tag . ' class="sklo-var-c__title">' . esc_html(sklo_studio_coming_headline()) . '</' . $tag . '>';
+        echo '<p class="sklo-var-c__lead">' . esc_html(sklo_studio_coming_lead()) . '</p>';
+        echo '</div>';
+        echo '<div class="sklo-cta-band__actions sklo-var-c__actions-wrap">';
+        sklo_render_studio_coming_actions('sklo-var-c__actions');
+        if ($sla && function_exists('sklo_render_cta_sla')) {
+            sklo_render_cta_sla('sklo-cta-sla--var-c', false, false);
+        }
+        echo '</div>';
+        return;
+    }
+    echo '<div class="' . esc_attr($classes) . '">';
+    echo '<' . $tag . ' class="sklo-var-c__title">' . esc_html(sklo_studio_coming_headline()) . '</' . $tag . '>';
+    echo '<p class="sklo-var-c__lead">' . esc_html(sklo_studio_coming_lead()) . '</p>';
+    sklo_render_studio_coming_actions('sklo-var-c__actions');
+    if ($sla && function_exists('sklo_render_cta_sla')) {
+        sklo_render_cta_sla('sklo-cta-sla--var-c', false, false);
+    }
+    echo '</div>';
+}
+
+/**
+ * Sticky/topbar one-liner with inline WhatsApp + poptávka links.
+ */
+function sklo_render_studio_coming_sticky(string $class = ''): void
+{
+    $classes = trim('sklo-var-c-sticky ' . $class);
+    $wa = function_exists('sklo_whatsapp_url') ? sklo_whatsapp_url() : 'https://wa.me/420736134604';
+    $poptavka = sklo_poptavka_url();
+    echo '<p class="' . esc_attr($classes) . '">';
+    echo esc_html('Konfigurátor připravujeme — ');
+    echo '<a href="' . esc_url($wa) . '" target="_blank" rel="noopener noreferrer">WhatsApp</a>';
+    echo esc_html(' nebo ');
+    echo '<a href="' . esc_url($poptavka) . '">poptávka</a>';
+    echo '</p>';
+}

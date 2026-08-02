@@ -9,7 +9,6 @@ declare(strict_types=1);
 get_header();
 
 $poptavka = home_url('/poptavka/');
-$cfg = sklo_konfigurator_url();
 $about_img = get_template_directory() . '/assets/images/about.jpg';
 $about_uri = get_template_directory_uri() . '/assets/images/about.jpg';
 $has_about = is_readable($about_img);
@@ -27,7 +26,7 @@ $has_about = is_readable($about_img);
       <div class="sklo-prose">
         <h2>Kdo jsme</h2>
         <p>Sklospeciál je rodinná značka pro skleněné dveře, sprchy, zábradlí, stříšky a příčky na míru. Pracujeme na dálku — zaměříš sám, pošleš fotky a nabídku připravíme podle konkrétního otvoru.</p>
-        <p>Nemáme showroom. Studio na webu ukáže typ, sklo a lištu ještě před objednávkou. Montáž je volitelná; výrobek můžeš převzít i sám.</p>
+        <p>Nemáme showroom. Typ, sklo a lištu doladíme přes WhatsApp nebo poptávku ještě před objednávkou. Montáž je volitelná; výrobek můžeš převzít i sám.</p>
 
         <h2>Jak to u nás probíhá</h2>
         <ol>
@@ -87,13 +86,16 @@ $has_about = is_readable($about_img);
       </aside>
     </div>
 
-    <p class="sklo-o-nas__cta">
-      <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Otevřít studio</a>
-      <a class="sklo-link" href="<?php echo esc_url($poptavka); ?>">Nebo napsat poptávku</a>
+    <div class="sklo-o-nas__cta">
+      <?php if (function_exists('sklo_render_studio_coming_actions')) : ?>
+        <?php sklo_render_studio_coming_actions(); ?>
+      <?php else : ?>
+        <a class="sklo-btn" href="<?php echo esc_url($poptavka); ?>">Poptávka</a>
+      <?php endif; ?>
       <?php if (function_exists('sklo_render_cta_sla')) : ?>
         <?php sklo_render_cta_sla(); ?>
       <?php endif; ?>
-    </p>
+    </div>
   </div>
 </article>
 

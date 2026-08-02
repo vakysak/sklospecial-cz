@@ -166,7 +166,7 @@ function sklo_katalog(): array
             'eyebrow'     => 'Katalog',
             'lead'        => 'Vyrábíme skleněné dveře přesně podle tvého otvoru. Posuvné, kyvné, otevírané i celoskleněné — vyber kategorii a doladíš detaily ve studiu.',
             'seo_title'   => 'Skleněné dveře na míru — posuvné, kyvné, otevírané | Sklospeciál',
-            'seo_desc'    => 'Skleněné dveře na míru: posuvné, kyvné i otevírané. Pošli rozměry a fotky, navrhni si dveře online. Výroba a montáž po ČR.',
+            'seo_desc'    => 'Skleněné dveře na míru: posuvné, kyvné i otevírané. Pošli rozměry a fotky přes WhatsApp nebo poptávku. Výroba a montáž po ČR.',
             'seo_intro'   => [
                 'Skleněné dveře na míru vyrábíme podle tvého otvoru — ne podle katalogového „nějak to sedne“. Posuvné po stěně nebo do pouzdra, kyvné (otevírání oběma směry) i klasické otevírané na pantech. Vybereš typ, sklo a kování; ve studiu si návrh složíš online.',
                 'Stačí zaměřit šířku a výšku (ideálně tři měření) a poslat 2–3 fotky prostoru. Podle toho připravíme konkrétní nabídku — orientační ceny „od“ v katalogu jsou jen start. Finální číslo vždy podle rozměrů, typu skla a zvoleného kování.',
@@ -235,7 +235,7 @@ function sklo_katalog(): array
                 [
                     'slug'  => 'vzory-skla',
                     'title' => 'Vzory skla',
-                    'text'  => 'Čiré, matné, barevné i dekorativní vzory — přehledný výběr pro studio.',
+                    'text'  => 'Čiré, matné, barevné i dekorativní vzory — přehledný výběr skel.',
                     // SklS-0335 — Design-Lux vzor proužky 1.2
                     'image' => sklo_katalog_img_url('SklS-0335'),
                     'price' => $od('vzory-skla', 2100),
@@ -527,7 +527,7 @@ function sklo_katalog(): array
             'eyebrow'   => 'Katalog · Celoskleněné',
             'lead'      => 'Maximální průchod světla, minimální rám. Celoskleněné dveře opticky propojí místnosti — od čirého po matné a dekorativní sklo.',
             'seo_title' => 'Celoskleněné dveře na míru | Sklospeciál',
-            'seo_desc'  => 'Celoskleněné dveře s minimálním rámem. Navrhni provedení online podle svého otvoru.',
+            'seo_desc'  => 'Celoskleněné dveře s minimálním rámem. Pošli rozměry a fotky — připravíme nabídku podle otvoru.',
             'parent'    => 'sklenene-dvere',
             'sections'  => [
                 [

@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.21.0');
+define('SKLO_THEME_VER', '1.22.0');
 
 /** Default konfigurátor/API host. Override via option sklo_api_base or env SKLO_API_BASE. */
 define(
@@ -314,7 +314,7 @@ add_action('wp_head', function (): void {
         return;
     }
     if (is_front_page()) {
-        $desc = 'Skleněné dveře, sprchové kouty, zábradlí, příčky a stříšky na míru. Zaměř otvor, pošli fotky a navrhni řešení online — nabídku připravíme podle tvých rozměrů.';
+        $desc = 'Skleněné dveře, sprchové kouty, zábradlí, příčky a stříšky na míru. Zaměř otvor, pošli fotky přes WhatsApp nebo poptávku — nabídku připravíme podle tvých rozměrů.';
     } elseif (is_page('realizace')) {
         $desc = 'Ilustrační fotografie skleněných dveří, zábradlí a příček jako inspirace. Nejde o katalog konkrétních zakázek — typ a sklo složíš ve studiu podle svých rozměrů.';
     } elseif (is_page('recenze')) {
@@ -370,7 +370,7 @@ add_action('wp_head', static function (): void {
     } elseif (is_front_page()) {
         $emit = true;
         $url = home_url('/');
-        $desc = 'Skleněné dveře, sprchové kouty, zábradlí, příčky a stříšky na míru. Zaměř otvor, pošli fotky a navrhni řešení online.';
+        $desc = 'Skleněné dveře, sprchové kouty, zábradlí, příčky a stříšky na míru. Zaměř otvor, pošli fotky přes WhatsApp nebo poptávku.';
     } elseif (is_page()) {
         $landing = sklo_seo_resolve_landing();
         if ($landing && ($landing['kind'] ?? '') === 'city') {
@@ -532,7 +532,7 @@ add_action('wp_enqueue_scripts', function (): void {
         'sklo-chat-widget',
         $api . '/public/chat-widget.js',
         [],
-        '1.9.0',
+        '1.9.1',
         true
     );
     wp_add_inline_script(

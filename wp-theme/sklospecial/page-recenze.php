@@ -6,7 +6,6 @@ get_header();
 
 $stats = sklo_recenze_stats();
 $all = sklo_recenze_all();
-$cfg = sklo_konfigurator_url();
 
 $fmt_date = static function (string $ymd): string {
     $ts = strtotime($ymd . ' 12:00:00');
@@ -72,9 +71,10 @@ $stars_html = static function (int $n): string {
     </div>
 
     <div class="sklo-recenze-page__cta">
-      <p>Chceš podobný výsledek u sebe?</p>
-      <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Navrhni si dveře</a>
-      <a class="sklo-link" href="<?php echo esc_url(home_url('/poptavka/')); ?>">Nebo napiš</a>
+      <p>Konfigurátor připravujeme. Teď nejjednodušší cesta: WhatsApp, nebo nezávazná poptávka s rozměry a fotkami.</p>
+      <?php if (function_exists('sklo_render_studio_coming_actions')) : ?>
+        <?php sklo_render_studio_coming_actions(); ?>
+      <?php endif; ?>
       <?php if (function_exists('sklo_render_cta_sla')) : ?>
         <?php sklo_render_cta_sla(); ?>
       <?php endif; ?>

@@ -606,7 +606,7 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
 
     $kontakt = home_url('/kontakt/');
     $poptavka = home_url('/poptavka/');
-    $cfg_url = function_exists('sklo_konfigurator_url') ? sklo_konfigurator_url() : home_url('/');
+    $wa_url = function_exists('sklo_whatsapp_url') ? sklo_whatsapp_url() : 'https://wa.me/420736134604';
     $thumb = $images[0] ?? '';
     $ship_from = isset($p['shipping_from_czk']) ? (int) $p['shipping_from_czk'] : 0;
     $options_json = wp_json_encode($options, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -857,7 +857,7 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
       <div class="sklo-pdetail__cta sklo-pdetail__cta--bottom sklo-pdetail__cta--triple">
         <button type="button" class="sklo-btn" data-sklo-order-selected>Odeslat poptávku</button>
         <a class="sklo-btn sklo-btn--ghost" href="<?php echo esc_url($poptavka); ?>">Nenašel jsi co hledáš? Pošli nezávaznou poptávku</a>
-        <a class="sklo-link" href="<?php echo esc_url($cfg_url); ?>" target="_blank" rel="noopener">Konfigurátor</a>
+        <a class="sklo-link" href="<?php echo esc_url($wa_url); ?>" target="_blank" rel="noopener noreferrer">WhatsApp</a>
         <?php if (function_exists('sklo_render_cta_sla')) : ?>
           <?php sklo_render_cta_sla('sklo-cta-sla--pdetail'); ?>
         <?php endif; ?>

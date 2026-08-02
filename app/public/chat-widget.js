@@ -1,4 +1,4 @@
-/* sklo chat-widget v1.8.6 */
+/* sklo chat-widget v1.8.7 */
 (() => {
   const API = window.SKLO_API_BASE || '';
   const CONFIG_URL = window.SKLO_CONFIGURATOR_URL || `${API}/public/konfigurator.html`;
@@ -117,7 +117,7 @@
     <header>
       <strong>Sklo asistent</strong>
       <span>
-        <button type="button" data-act="config">Sestavit dveře</button>
+        <button type="button" data-act="poptavka-page">Poptávka</button>
         <button type="button" data-act="reset">Reset</button>
         <button type="button" data-act="close" aria-label="Zavřít chat">Zavřít</button>
       </span>
@@ -567,8 +567,13 @@
       setOpen(false);
       return;
     }
+    if (act === 'poptavka-page') {
+      window.location.href = '/poptavka/';
+      return;
+    }
     if (act === 'config') {
-      window.open(CONFIG_URL, '_blank');
+      // Studio not linked publicly (Varianta C); keep hook for owner/debug.
+      window.location.href = '/poptavka/';
       return;
     }
     if (act === 'photo') {

@@ -3941,3 +3941,46 @@ a:hover { color: var(--accent-hover); }
     height: 14rem;
   }
 }
+
+
+/* —— Varianta C: konfigurátor připravujeme —— */
+.sklo-var-c-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 0.85rem;
+}
+.sklo-header__cta {
+  margin-left: 0.35rem;
+}
+.sklo-var-c-sticky {
+  margin: 0;
+  font-weight: 400;
+  color: var(--muted);
+}
+.sklo-var-c-sticky a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.sklo-var-c-sticky a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+.sklo-var-c__title {
+  margin: 0 0 0.35rem;
+}
+.sklo-var-c__lead {
+  margin: 0 0 0.85rem;
+  color: var(--muted);
+}
+.sklo-hero__actions .sklo-var-c-actions,
+.sklo-katalog__hero-actions .sklo-var-c-actions,
+.sklo-about__actions .sklo-var-c-actions,
+.sklo-o-nas__cta .sklo-var-c-actions,
+.sklo-footer__cta .sklo-var-c-actions,
+.sklo-recenze-page__cta .sklo-var-c-actions {
+  display: inline-flex;
+}
+.sklo-cta-band__actions .sklo-var-c-actions {
+  flex-direction: row;
+}

@@ -611,7 +611,7 @@ function sklo_seo_city_copy(array $category, array $city): array
         [
             '30 let zkušeností, třetí generace rodinné firmy',
             sprintf('Servisní oblast zahrnuje i %s — i okolí', $name),
-            'CTA přes studio nebo poptávku — bez zbytečných kol',
+            'CTA přes WhatsApp nebo poptávku — bez zbytečných kol',
         ],
     ];
 
