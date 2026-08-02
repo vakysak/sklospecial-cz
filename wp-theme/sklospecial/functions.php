@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.17.0');
+define('SKLO_THEME_VER', '1.17.1');
 
 /** Default konfigurátor/API host while api.sklospecial.* is not live. Override via option/env. */
 define(

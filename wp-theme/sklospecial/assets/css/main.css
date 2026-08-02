@@ -401,7 +401,7 @@ a:hover { color: var(--accent-hover); }
   position: absolute;
   inset: 0;
   background:
-    url("https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/hero.jpg")
+    url("/wp-content/uploads/2026/07/hero.jpg")
     center / cover no-repeat;
   transform: scale(1.02);
   animation: sklo-ken 18s ease-in-out infinite alternate;
@@ -607,7 +607,7 @@ a:hover { color: var(--accent-hover); }
   border-radius: 4px;
   background:
     linear-gradient(125deg, rgba(245, 240, 235, 0.12) 0%, transparent 42%),
-    url("https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/zeny-za-sklenenymi-dvermi-v-interieru.webp")
+    url("/wp-content/uploads/2026/07/zeny-za-sklenenymi-dvermi-v-interieru.webp")
     center / cover no-repeat;
 }
 
