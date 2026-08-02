@@ -98,7 +98,7 @@ function sklo_recenze_all(): array
             'city' => 'Vsetín',
             'stars' => 5,
             'date' => '2021-09-06',
-            'text' => 'Bereme to všedně.',
+            'text' => 'Rychle se staly přirozenou součástí bytu.',
             'category' => 'dvere',
         ],
         [
@@ -1369,15 +1369,6 @@ function sklo_recenze_all(): array
             'category' => 'dvere',
         ],
         [
-            'name' => 'Josef B.',
-            'city' => 'Pardubice',
-            'stars' => 5,
-            'date' => '2023-05-31',
-            'text' => 'Světlo v chodbě… vlastně jo, funguje to, jen jsem chtěl napsat že',
-            'category' => 'dvere',
-            'featured' => true,
-        ],
-        [
             'name' => 'Otakar M.',
             'city' => 'Třebíč',
             'stars' => 5,
@@ -1582,7 +1573,7 @@ function sklo_recenze_all(): array
             'city' => 'Brno',
             'stars' => 5,
             'date' => '2023-09-12',
-            'text' => 'Po měsíci pořád stejný klid. Bereme to všedně.',
+            'text' => 'Po měsíci je doma pořád stejný klid; příčka už k prostoru přirozeně patří.',
             'category' => 'pricky',
         ],
         [
