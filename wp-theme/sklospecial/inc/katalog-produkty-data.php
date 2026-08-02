@@ -511,10 +511,10 @@ return [
             'pricky' => 21000,
         ],
         'products' => [
-            ['code' => 'SklS-0329', 'name' => 'Skleněné zabudování pevná příčka + dveře kyvné', 'price' => 21025, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0329.jpg', 'section' => 'pricky', 'partNumber' => '1771', 'has_detail' => true],
-            ['code' => 'SklS-0325', 'name' => 'Skleněné zabudování dveře kyvné + 2x pevná příčka', 'price' => 27753, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0325.jpg', 'section' => 'pricky', 'partNumber' => '1772', 'has_detail' => true],
-            ['code' => 'SklS-0326', 'name' => 'Skleněné zabudování dveře kyvné s pevnými příčkami', 'price' => 51301, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0326.jpg', 'section' => 'pricky', 'partNumber' => '1774', 'has_detail' => true],
-            ['code' => 'SklS-0327', 'name' => 'Skleněné zabudování dveře kyvné s pevnými příčkami', 'price' => 73167, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0327.jpg', 'section' => 'pricky', 'partNumber' => '1775', 'has_detail' => true],
+            ['code' => 'SklS-0329', 'name' => 'Skleněné zabudování pevná skleněná stěna + dveře kyvné', 'price' => 21025, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0329.jpg', 'section' => 'pricky', 'partNumber' => '1771', 'has_detail' => true],
+            ['code' => 'SklS-0325', 'name' => 'Skleněné zabudování dveře kyvné + 2x pevná skleněná stěna', 'price' => 27753, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0325.jpg', 'section' => 'pricky', 'partNumber' => '1772', 'has_detail' => true],
+            ['code' => 'SklS-0326', 'name' => 'Skleněné zabudování dveře kyvné s pevnými skleněnými stěnami', 'price' => 51301, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0326.jpg', 'section' => 'pricky', 'partNumber' => '1774', 'has_detail' => true],
+            ['code' => 'SklS-0327', 'name' => 'Skleněné zabudování dveře kyvné s pevnými skleněnými stěnami', 'price' => 73167, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0327.jpg', 'section' => 'pricky', 'partNumber' => '1775', 'has_detail' => true],
         ],
     ],
     'rock-glass' => [

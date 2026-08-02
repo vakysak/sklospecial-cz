@@ -25,7 +25,7 @@ $has_about = is_readable($about_img);
     <div class="sklo-o-nas__grid">
       <div class="sklo-prose">
         <h2>Kdo jsme</h2>
-        <p>Sklospeciál je rodinná značka pro skleněné dveře, sprchy, zábradlí, stříšky a příčky na míru. Pracujeme na dálku — zaměříš sám, pošleš fotky a nabídku připravíme podle konkrétního otvoru.</p>
+        <p>Sklospeciál je rodinná značka pro skleněné dveře, sprchy, zábradlí, stříšky a skleněné stěny na míru. Pracujeme na dálku — zaměříš sám, pošleš fotky a nabídku připravíme podle konkrétního otvoru.</p>
         <p>Nemáme showroom. Typ, sklo a lištu doladíme přes WhatsApp nebo poptávku ještě před objednávkou. Montáž je volitelná; výrobek můžeš převzít i sám.</p>
 
         <h2>Jak to u nás probíhá</h2>

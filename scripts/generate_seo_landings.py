@@ -34,7 +34,7 @@ CATEGORIES = {
     "sprchove-kouty": {"name": "Sprchové kouty", "h1": "Sprchové kouty", "parent_id": None},
     "zabradli": {"name": "Skleněné zábradlí", "h1": "Skleněné zábradlí", "parent_id": None},
     "strisky": {"name": "Skleněné stříšky", "h1": "Skleněné stříšky", "parent_id": None},
-    "sklenene-pricky": {"name": "Skleněné příčky", "h1": "Skleněné příčky", "parent_id": None},
+    "sklenene-steny": {"name": "Skleněné stěny", "h1": "Skleněné stěny", "parent_id": None},
     "francouzske-balkony": {"name": "Francouzské balkony", "h1": "Francouzské balkony", "parent_id": None},
 }
 
@@ -239,15 +239,15 @@ def main():
     parent_ids: dict[str, int] = {}
     for slug, meta in CATEGORIES.items():
         page = get_page_by_path(slug)
-        if slug == "sklenene-pricky" and not page:
+        if slug == "sklenene-steny" and not page:
             action, page = upsert_page(
-                title="Skleněné příčky na míru",
-                slug="sklenene-pricky",
+                title="Skleněné stěny na míru",
+                slug="sklenene-steny",
                 parent=0,
                 template=KATALOG_TEMPLATE,
-                seo_title="Skleněné příčky na míru | Sklospeciál",
-                seo_desc="Skleněné příčky a zabudování na míru. Online zaměření, výroba, montáž. Rodinná firma, 30 let.",
-                content="<!-- pillar: sklenene-pricky -->",
+                seo_title="Skleněné stěny na míru | Sklospeciál",
+                seo_desc="Skleněné stěny a zabudování na míru. Online zaměření, výroba, montáž. Rodinná firma, 30 let.",
+                content="<!-- pillar: sklenene-steny -->",
             )
             stats[action if action in stats else "created"] += 1
             print(action, page.get("link"))
@@ -328,27 +328,29 @@ def main():
         stats["errors"] += 1
         print("ERROR mapa", e)
 
-    # Add sklenene-pricky to menu if missing (no city dump)
+    # Add sklenene-steny to menu if missing (no city dump)
     try:
         items = req("GET", "/wp-json/wp/v2/menu-items?menus=3&per_page=100")
-        pricky = get_page_by_path("sklenene-pricky")
-        has = any("sklenene-pricky" in (i.get("url") or "") for i in items)
-        if pricky and not has:
-            # insert after strisky-ish: position near other pillars
+        steny = get_page_by_path("sklenene-steny")
+        has = any(
+            ("sklenene-steny" in (i.get("url") or "")) or ("sklenene-pricky" in (i.get("url") or ""))
+            for i in items
+        )
+        if steny and not has:
             req(
                 "POST",
                 "/wp-json/wp/v2/menu-items",
                 {
-                    "title": "Příčky",
+                    "title": "Skleněné stěny",
                     "status": "publish",
                     "menus": 3,
                     "object": "page",
-                    "object_id": int(pricky["id"]),
+                    "object_id": int(steny["id"]),
                     "type": "post_type",
                     "menu_order": 25,
                 },
             )
-            print("menu: added Příčky")
+            print("menu: added Skleněné stěny")
     except Exception as e:
         print("warn menu", e)
 

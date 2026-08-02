@@ -45,14 +45,15 @@ function sklo_cena_priklad(?string $slug = null): ?array
         'sprchove-kouty' => 'Příklad: Walk-In stěna 90×200 cm, chromové kování — od 4 600 Kč',
         'zabradli'       => 'Příklad: zábradlí s montáží na spigotech, běžný úsek — od 7 600 Kč',
         'strisky'        => 'Příklad: stříška ECO skladem 120×100 cm — od 7 100 Kč',
-        'sklenene-pricky' => 'Příklad: pevná příčka + kyvné dveře ~150×220 cm — od 21 000 Kč',
-        'pricky-a-zabudovani' => 'Příklad: pevná příčka + kyvné dveře ~150×220 cm — od 21 000 Kč',
+        'sklenene-steny' => 'Příklad: pevná skleněná stěna + kyvné dveře ~150×220 cm — od 21 000 Kč',
+        'pricky-a-zabudovani' => 'Příklad: pevná skleněná stěna + kyvné dveře ~150×220 cm — od 21 000 Kč',
         'francouzske-balkony' => 'Příklad: francouzský balkon 120×100 cm, čiré sklo — od 7 100 Kč',
     ];
 
     // Map child/alias slugs.
     $aliases = [
-        'pricky' => 'sklenene-pricky',
+        'pricky' => 'sklenene-steny',
+        'sklenene-pricky' => 'sklenene-steny',
         'balkony' => 'francouzske-balkony',
         'sprchy' => 'sprchove-kouty',
         'dvere' => 'sklenene-dvere',
@@ -226,9 +227,9 @@ function sklo_katalog(): array
                 ],
                 [
                     'slug'  => 'pricky-a-zabudovani',
-                    'title' => 'Příčky a zabudování',
-                    'text'  => 'Skleněné příčky, pevné výplně a zabudování do stěny nebo pouzdra.',
-                    // SklS-0326 — zabudování kyvné s pevnými příčkami
+                    'title' => 'Skleněné stěny a zabudování',
+                    'text'  => 'Skleněné stěny, pevné výplně a zabudování do stěny nebo pouzdra.',
+                    // SklS-0326 — zabudování kyvné s pevnými skleněnými stěnami
                     'image' => sklo_katalog_img_url('SklS-0326'),
                     'price' => $od('pricky-a-zabudovani'),
                 ],
@@ -434,18 +435,18 @@ function sklo_katalog(): array
         ],
 
         'pricky-a-zabudovani' => [
-            'title'      => 'Skleněné příčky a zabudování',
-            'eyebrow'    => 'Katalog · Příčky',
-            'lead'       => 'Odděl místnosti bez těžké stěny. Skleněné příčky a zabudování pustí světlo dál.',
-            'seo_title'  => 'Skleněné příčky a zabudování | Sklospeciál',
-            'seo_desc'   => 'Skleněné příčky, pevné výplně a zabudování. Nabídka podle rozměrů.',
+            'title'      => 'Skleněné stěny a zabudování',
+            'eyebrow'    => 'Katalog · Skleněné stěny',
+            'lead'       => 'Odděl místnosti bez těžké stěny. Skleněné stěny a zabudování pustí světlo dál.',
+            'seo_title'  => 'Skleněné stěny a zabudování | Sklospeciál',
+            'seo_desc'   => 'Skleněné stěny, pevné výplně a zabudování. Nabídka podle rozměrů.',
             'parent'     => 'sklenene-dvere',
             'price_from' => $od('pricky-a-zabudovani'),
             'show_products' => true,
             'sections'   => [
                 [
                     'id'    => 'pricky',
-                    'title' => 'Skleněné příčky',
+                    'title' => 'Skleněné stěny',
                     'lead'  => 'Pevné nebo s dveřním křídlem. Hodí se do open-space, pracovny i bytu.',
                     'price' => $od('pricky-a-zabudovani'),
                     'image' => 'moderni-interier-sklene-prcky-dreveny-stolek.webp',
@@ -591,14 +592,14 @@ function sklo_katalog(): array
             'uploads' => $uploads,
         ],
 
-        'sklenene-pricky' => [
-            'title'      => 'Skleněné příčky na míru',
-            'eyebrow'    => 'Nabídka · Příčky',
-            'lead'       => 'Odděl místnosti bez těžké stěny. Skleněné příčky a zabudování pustí světlo dál — zaměříš sám, my vyrobíme.',
-            'seo_title'  => 'Skleněné příčky na míru — odděl prostor světlem | Sklospeciál',
-            'seo_desc'   => 'Skleněné příčky a zabudování na míru. Pošli rozměry a fotky — online zaměření, výroba, montáž po ČR.',
+        'sklenene-steny' => [
+            'title'      => 'Skleněné stěny na míru',
+            'eyebrow'    => 'Nabídka · Skleněné stěny',
+            'lead'       => 'Odděl místnosti bez těžké stěny. Skleněné stěny a zabudování pustí světlo dál — zaměříš sám, my vyrobíme.',
+            'seo_title'  => 'Skleněné stěny na míru — odděl prostor světlem | Sklospeciál',
+            'seo_desc'   => 'Skleněné stěny a zabudování na míru. Pošli rozměry a fotky — online zaměření, výroba, montáž po ČR.',
             'seo_intro'  => [
-                'Skleněné příčky oddělí místnosti bez těžké zděné stěny. Pevné výplně i sestavy s dveřním křídlem — světlo jde dál, prostor zůstane vzdušný. Hodí se do open-space, pracovny i bytu.',
+                'Skleněné stěny oddělí místnosti bez těžké zděné stěny. Pevné výplně i sestavy s dveřním křídlem — světlo jde dál, prostor zůstane vzdušný. Hodí se do open-space, pracovny i bytu.',
                 'Zaměříš šířku a výšku (nebo pošleš fotky a domluvíme zaměření). My připravíme nabídku a vyrobíme na míru. Montáž po celé ČR, bez showroomu — pracujeme online.',
             ],
             'price_from' => $od('pricky-a-zabudovani'),
@@ -607,7 +608,7 @@ function sklo_katalog(): array
             'sections'   => [
                 [
                     'id'    => 'pricky',
-                    'title' => 'Skleněné příčky',
+                    'title' => 'Skleněné stěny',
                     'lead'  => 'Pevné nebo s dveřním křídlem. Hodí se do open-space, pracovny i bytu.',
                     'price' => $od('pricky-a-zabudovani'),
                     'image' => sklo_katalog_img_url('SklS-0326'),
@@ -744,6 +745,9 @@ function sklo_katalog(): array
  */
 function sklo_katalog_for_slug(string $slug): ?array
 {
+    if ($slug === 'sklenene-pricky') {
+        $slug = 'sklenene-steny';
+    }
     $all = sklo_katalog();
     return $all[$slug] ?? null;
 }

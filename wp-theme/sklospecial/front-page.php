@@ -66,7 +66,7 @@ $proof_items = [
     ['file' => 'posuvne-sklenene-dvere-matne-sklo.webp', 'caption' => 'Posuvné dveře — matné sklo', 'w' => 507, 'h' => 626],
     ['file' => 'sklene-zabradli-s-masivnim-drevem.webp', 'caption' => 'Zábradlí se dřevěným madlem', 'w' => 626, 'h' => 417],
     ['file' => 'sklenene-dvere-v-interieru.webp', 'caption' => 'Skleněné dveře v interiéru', 'w' => 626, 'h' => 470],
-    ['file' => 'moderni-interier-sklene-prcky-dreveny-stolek.webp', 'caption' => 'Skleněné příčky', 'w' => 626, 'h' => 417],
+    ['file' => 'moderni-interier-sklene-prcky-dreveny-stolek.webp', 'caption' => 'Skleněné stěny', 'w' => 626, 'h' => 417],
     ['file' => 'sklenene-zabradli-na-zakazku.webp', 'caption' => 'Celoskleněné zábradlí', 'w' => 352, 'h' => 626],
     ['file' => 'sklenene-dvere-s-matnym-sklem.webp', 'caption' => 'Posuvné dveře s matným sklem', 'w' => 626, 'h' => 417],
 ];
@@ -255,14 +255,14 @@ $home_types = [
         'fallback_price' => 7100,
     ],
     [
-        'slug' => 'sklenene-pricky',
-        'href' => home_url('/sklenene-pricky/'),
+        'slug' => 'sklenene-steny',
+        'href' => home_url('/sklenene-steny/'),
         'img'  => sklo_katalog_img_url('SklS-0326'),
-        'alt'  => 'Skleněné příčky',
+        'alt'  => 'Skleněné stěny',
         'w'    => 400,
         'h'    => 400,
-        'title'=> 'Příčky',
-        'text' => 'Skleněné příčky a zabudování.',
+        'title'=> 'Skleněné stěny',
+        'text' => 'Skleněné stěny a zabudování.',
         'fallback_price' => 21000,
     ],
     [

@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.25.1');
+define('SKLO_THEME_VER', '1.26.0');
 
 /** Default konfigurátor/API host. Override via option sklo_api_base or env SKLO_API_BASE. */
 define(
@@ -322,9 +322,9 @@ add_action('wp_head', function (): void {
         return;
     }
     if (is_front_page()) {
-        $desc = 'Skleněné dveře, sprchové kouty, zábradlí, příčky a stříšky na míru. Zaměř otvor, pošli fotky přes WhatsApp nebo poptávku — nabídku připravíme podle tvých rozměrů.';
+        $desc = 'Skleněné dveře, sprchové kouty, zábradlí, skleněné stěny a stříšky na míru. Zaměř otvor, pošli fotky přes WhatsApp nebo poptávku — nabídku připravíme podle tvých rozměrů.';
     } elseif (is_page('realizace')) {
-        $desc = 'Ilustrační fotografie skleněných dveří, zábradlí a příček jako inspirace. Nejde o katalog konkrétních zakázek — typ a sklo složíš ve studiu podle svých rozměrů.';
+        $desc = 'Ilustrační fotografie skleněných dveří, zábradlí a skleněných stěn jako inspirace. Nejde o katalog konkrétních zakázek — typ a sklo složíš ve studiu podle svých rozměrů.';
     } elseif (is_page('recenze')) {
         $stats = function_exists('sklo_recenze_stats') ? sklo_recenze_stats() : ['avg' => 0, 'count' => 0];
         $desc = 'Recenze zákazníků Sklospeciál — průměr '
@@ -378,7 +378,7 @@ add_action('wp_head', static function (): void {
     } elseif (is_front_page()) {
         $emit = true;
         $url = home_url('/');
-        $desc = 'Skleněné dveře, sprchové kouty, zábradlí, příčky a stříšky na míru. Zaměř otvor, pošli fotky přes WhatsApp nebo poptávku.';
+        $desc = 'Skleněné dveře, sprchové kouty, zábradlí, skleněné stěny a stříšky na míru. Zaměř otvor, pošli fotky přes WhatsApp nebo poptávku.';
     } elseif (is_page()) {
         $landing = sklo_seo_resolve_landing();
         if ($landing && ($landing['kind'] ?? '') === 'city') {
@@ -561,6 +561,28 @@ add_filter('get_site_icon_url', static function ($url, $size) {
 }, 10, 2);
 
 /**
+ * 301: sklenene-pricky → sklenene-steny (hub + city landings).
+ */
+add_action('template_redirect', static function (): void {
+    $uri = (string) ($_SERVER['REQUEST_URI'] ?? '');
+    $path = (string) (parse_url($uri, PHP_URL_PATH) ?: '');
+    if (!preg_match('#^/sklenene-pricky(/.*)?$#', $path, $m)) {
+        return;
+    }
+    $tail = isset($m[1]) ? (string) $m[1] : '/';
+    if ($tail === '') {
+        $tail = '/';
+    }
+    $target = home_url('/sklenene-steny' . $tail);
+    $query = (string) (parse_url($uri, PHP_URL_QUERY) ?: '');
+    if ($query !== '') {
+        $target .= (str_contains($target, '?') ? '&' : '?') . $query;
+    }
+    wp_safe_redirect($target, 301);
+    exit;
+}, 0);
+
+/**
  * Seznam Webmaster Tools verification file (plain text at exact path).
  */
 add_action('template_redirect', static function (): void {
@@ -657,7 +679,7 @@ function sklo_nav_fallback(): void
         ['/sprchove-kouty/', 'Sprchové kouty'],
         ['/zabradli/', 'Zábradlí'],
         ['/strisky/', 'Stříšky'],
-        ['/sklenene-pricky/', 'Příčky'],
+        ['/sklenene-steny/', 'Skleněné stěny'],
         ['/francouzske-balkony/', 'Balkony'],
         ['/realizace/', 'Realizace'],
         ['/recenze/', 'Recenze'],

@@ -61,7 +61,7 @@ $gallery = [
   <div class="sklo-wrap sklo-realizace__intro">
     <header class="sklo-page__head">
       <h1>Ukázky skleněných řešení</h1>
-      <p class="sklo-realizace__lead">Inspirace — jak může sklo vypadat v interiéru: dveře, zábradlí, příčky. Fotografie jsou ilustrační (stock / náladové snímky), ne dokumentace konkrétních zakázek zákazníků.</p>
+      <p class="sklo-realizace__lead">Inspirace — jak může sklo vypadat v interiéru: dveře, zábradlí, skleněné stěny. Fotografie jsou ilustrační (stock / náladové snímky), ne dokumentace konkrétních zakázek zákazníků.</p>
       <p class="sklo-realizace__note">Vlastní fotodokumentaci doplníme, až budeme mít vhodné snímky z montáží. Mezitím si typ a sklo složíš ve studiu podle svých rozměrů a fotek prostoru.</p>
     </header>
 

@@ -34,7 +34,7 @@ function sklo_seo_categories(): array
             ],
             'related'       => [
                 ['/sprchove-kouty/', 'Sprchové kouty'],
-                ['/sklenene-pricky/', 'Skleněné příčky'],
+                ['/sklenene-steny/', 'Skleněné stěny'],
                 ['/francouzske-balkony/', 'Francouzské balkony'],
             ],
         ],
@@ -95,14 +95,14 @@ function sklo_seo_categories(): array
                 ['/sklenene-dvere/', 'Skleněné dveře'],
             ],
         ],
-        'sklenene-pricky' => [
-            'name'          => 'Skleněné příčky',
-            'h1_product'    => 'Skleněné příčky',
-            'in_phrase'     => 'skleněné příčky',
-            'genitive'      => 'skleněných příček',
+        'sklenene-steny' => [
+            'name'          => 'Skleněné stěny',
+            'h1_product'    => 'Skleněné stěny',
+            'in_phrase'     => 'skleněné stěny',
+            'genitive'      => 'skleněných stěn',
             'katalog_slug'  => 'pricky-a-zabudovani',
-            'pillar_path'   => '/sklenene-pricky/',
-            'short'         => 'příčky',
+            'pillar_path'   => '/sklenene-steny/',
+            'short'         => 'stěny',
             'benefits'      => [
                 'Oddělíš místnosti a necháš projít světlo',
                 'Pevné výplně i kombinace s dveřním křídlem',
@@ -556,7 +556,7 @@ function sklo_seo_type_landings(): array
             'related'   => [
                 ['/sklenene-dvere/posuvne/', 'Posuvné dveře'],
                 ['/sklenene-dvere/', 'Skleněné dveře'],
-                ['/sklenene-pricky/', 'Skleněné příčky'],
+                ['/sklenene-steny/', 'Skleněné stěny'],
             ],
         ],
         'walk-in' => [
@@ -703,6 +703,9 @@ function sklo_seo_city_by_slug(string $slug): ?array
  */
 function sklo_seo_category_by_slug(string $slug): ?array
 {
+    if ($slug === 'sklenene-pricky') {
+        $slug = 'sklenene-steny';
+    }
     $all = sklo_seo_categories();
     return $all[$slug] ?? null;
 }
@@ -815,12 +818,12 @@ function sklo_seo_city_product_housing(array $category, array $city): string
                 : sprintf('Stříšky %s %s vyrábíme podle fasády a rozměrů vstupu — ne jako hotový „univerzální“ dílec.', $v, $loc),
             sprintf('Vstup %s %s potřebuje stříšku podle fasády a šířky dveří — konzoly nebo táhla doladíme až z fotek.', $v, $loc),
         ],
-        'sklenene-pricky' => [
-            sprintf('Skleněná příčka %s %s%s oddělí pracovnu, open-space nebo chodbu a nechá projít světlo — bez těžké zděné stěny.', $v, $loc, $area_bit),
+        'sklenene-steny' => [
+            sprintf('Skleněná stěna %s %s%s oddělí pracovnu, open-space nebo chodbu a nechá projít světlo — bez těžké zděné stěny.', $v, $loc, $area_bit),
             $housing !== ''
-                ? $housing . ' U příček ladíme výšku podhledu, kotvení do stropu/podlahy a typ skla (čiré, matné).'
-                : sprintf('Příčky %s %s navrhujeme podle dispozice — pevná výplň i kombinace s dveřním křídlem.', $v, $loc),
-            sprintf('Dispozice %s %s často žádá oddělení bez ztráty světla — skleněná příčka sedí tam, kde plná zeď překáží.', $v, $loc),
+                ? $housing . ' U skleněných stěn ladíme výšku podhledu, kotvení do stropu/podlahy a typ skla (čiré, matné).'
+                : sprintf('Skleněné stěny %s %s navrhujeme podle dispozice — pevná výplň i kombinace s dveřním křídlem.', $v, $loc),
+            sprintf('Dispozice %s %s často žádá oddělení bez ztráty světla — skleněná stěna sedí tam, kde plná zeď překáží.', $v, $loc),
         ],
         'francouzske-balkony' => [
             sprintf('Francouzský balkon %s %s%s je skleněná výplň u francouzského okna — výška, šířka a kotvení k fasádě musí sedět na míru.', $v, $loc, $area_bit),
@@ -922,19 +925,19 @@ function sklo_seo_city_product_angle(array $category, array $city): string
                 $loc
             ),
         ],
-        'sklenene-pricky' => [
+        'sklenene-steny' => [
             sprintf(
-                'U příček %s %s často oddělujeme open-space, pracovnu nebo chodbu — světlo zůstane, plná zeď ne.',
+                'U skleněných stěn %s %s často oddělujeme open-space, pracovnu nebo chodbu — světlo zůstane, plná zeď ne.',
                 $v,
                 $loc
             ),
             sprintf(
-                'Skleněná příčka %s %s může být pevná výplň i kombinace s dveřním křídlem. Zaměření podle dispozice; výroba na míru u nás v Havířově / okolí.',
+                'Skleněná stěna %s %s může být pevná výplň i kombinace s dveřním křídlem. Zaměření podle dispozice; výroba na míru u nás v Havířově / okolí.',
                 $v,
                 $loc
             ),
             sprintf(
-                '%s %s u příček ladíme výšku podhledu, kotvení do stropu/podlahy a typ skla (čiré, matné). Pošli půdorys nebo fotky.',
+                '%s %s u skleněných stěn ladíme výšku podhledu, kotvení do stropu/podlahy a typ skla (čiré, matné). Pošli půdorys nebo fotky.',
                 sklo_seo_ucfirst_v($v),
                 $loc
             ),
@@ -999,10 +1002,10 @@ function sklo_seo_city_product_why(array $category, array $city): string
             sprintf('U skleněných stříšek %s %s řešíme nosnost a odtok vody ještě před výrobou. Pošli fotky vchodu; termín výjezdu potvrdíme po nabídce.', $v, $loc),
             sprintf('Stříšky %s %s dodáváme remote modelem z Havířova — online podklady, výroba na míru, montáž u fasády v domluveném okně.', $v, $loc),
         ],
-        'sklenene-pricky' => [
-            sprintf('Konkrétně u příček %s %s: výška podhledu, kotvení a typ skla — vyrobíme na míru z Havířova a usadíme podle dispozice.', $v, $loc),
-            sprintf('U skleněných příček %s %s často kombinujeme pevnou výplň s dveřním křídlem. Stačí půdorys nebo fotky — nabídku připravíme online.', $v, $loc),
-            sprintf('Příčky %s %s řešíme bez showroomu ve městě: jsme z Havířova, sklo vyrobíme a dovezeme hotové k montáži.', $v, $loc),
+        'sklenene-steny' => [
+            sprintf('Konkrétně u skleněných stěn %s %s: výška podhledu, kotvení a typ skla — vyrobíme na míru z Havířova a usadíme podle dispozice.', $v, $loc),
+            sprintf('U skleněných stěn %s %s často kombinujeme pevnou výplň s dveřním křídlem. Stačí půdorys nebo fotky — nabídku připravíme online.', $v, $loc),
+            sprintf('Skleněné stěny %s %s řešíme bez showroomu ve městě: jsme z Havířova, sklo vyrobíme a dovezeme hotové k montáži.', $v, $loc),
         ],
         'francouzske-balkony' => [
             sprintf('Konkrétně u francouzských balkonů %s %s: míry otvoru + fotky fasády — kotvení a sklo doladíme, vyrobíme z Havířova a namontujeme u tebe.', $v, $loc),
@@ -1074,13 +1077,13 @@ function sklo_seo_city_product_faq(array $category, array $city): array
                 'a' => 'Šířka je základ, ale potřebujeme i fotky fasády a výšku nad vstupem. Bez toho nejde doladit konzoly/táhla férově.',
             ],
         ],
-        'sklenene-pricky' => [
+        'sklenene-steny' => [
             [
-                'q' => sprintf('Umíte skleněnou příčku %s %s i s dveřním křídlem?', $v, $loc),
+                'q' => sprintf('Umíte skleněnou stěnu %s %s i s dveřním křídlem?', $v, $loc),
                 'a' => sprintf('Ano — pevná výplň, nebo kombinace s posuvnými/kyvnými dveřmi. Pošli půdorys nebo fotky; výroba z Havířova, montáž %s %s.', $v, $loc),
             ],
             [
-                'q' => sprintf('Jak řešíte kotvení příčky %s %s do stropu s podhledem?', $v, $loc),
+                'q' => sprintf('Jak řešíte kotvení skleněné stěny %s %s do stropu s podhledem?', $v, $loc),
                 'a' => 'Potřebujeme výšku a typ podhledu (sádrokarton / beton). Doladíme v nabídce — proto fotky a míry ještě před výrobou.',
             ],
         ],

@@ -25,7 +25,7 @@ $stars_html = static function (int $n): string {
   <div class="sklo-wrap">
     <header class="sklo-page__head sklo-recenze-page__head">
       <h1>Recenze</h1>
-      <p class="sklo-recenze-page__lead">Hodnocení od zákazníků — dveře, sprchy, zábradlí, stříšky, příčky i balkony. Pracujeme na dálku: zaměření, fotky a nabídka online.</p>
+      <p class="sklo-recenze-page__lead">Hodnocení od zákazníků — dveře, sprchy, zábradlí, stříšky, skleněné stěny i balkony. Pracujeme na dálku: zaměření, fotky a nabídka online.</p>
       <p class="sklo-recenze-page__agg" aria-label="Souhrn hodnocení">
         <span class="sklo-recenze-stars" aria-hidden="true"><?php echo esc_html($stars_html(5)); ?></span>
         průměr <strong><?php echo esc_html(number_format_i18n($stats['avg'], 1)); ?></strong> z 5
@@ -40,7 +40,7 @@ $stars_html = static function (int $n): string {
       <button type="button" class="sklo-recenze-chip" data-filter="sprcha">Sprcha</button>
       <button type="button" class="sklo-recenze-chip" data-filter="zabradli">Zábradlí</button>
       <button type="button" class="sklo-recenze-chip" data-filter="strisky">Stříšky</button>
-      <button type="button" class="sklo-recenze-chip" data-filter="pricky">Příčky</button>
+      <button type="button" class="sklo-recenze-chip" data-filter="pricky">Skleněné stěny</button>
       <button type="button" class="sklo-recenze-chip" data-filter="balkony">Balkony</button>
     </div>
 

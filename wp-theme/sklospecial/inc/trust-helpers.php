@@ -203,7 +203,7 @@ function sklo_montaz_orientacni_ceny(): array
             'from'  => 'od 3 500 Kč / sestava',
         ],
         [
-            'label' => 'Zábradlí a příčky',
+            'label' => 'Zábradlí a skleněné stěny',
             'from'  => 'od 1 500 Kč / bm',
         ],
     ];

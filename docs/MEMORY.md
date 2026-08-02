@@ -15,7 +15,7 @@
 
 - WP theme: `wp-theme/sklospecial` (glass UI, front-page) **1.13.0**
 - Prodloužená záruka (+1 rok): zákaznicky **10 %** ceny výrobku (bez dopravy/montáže). Interně může kalkulace kolísat cca 8–12 % podle typu — na webu neuvádět.
-- Orientační montáž (web): dveře od 2 500 Kč/ks · sprcha od 3 500 Kč/sestava · zábradlí/příčky od 1 500 Kč/bm — finální v nabídce.
+- Orientační montáž (web): dveře od 2 500 Kč/ks · sprcha od 3 500 Kč/sestava · zábradlí/skleněné stěny od 1 500 Kč/bm — finální v nabídce.
 - WordPress (CMS, obsah, realizace)
 - Node.js / Express (API, konfigurátor, chat)
 - MariaDB (WP + `sklo_leads`)
