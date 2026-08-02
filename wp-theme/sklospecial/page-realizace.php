@@ -13,7 +13,7 @@ $gallery = [
     ['file' => 'sklene-zabradli-s-masivnim-drevem.webp', 'alt' => 'Ukázka skleněného zábradlí s dřevěným madlem na schodišti.', 'w' => 626, 'h' => 417],
     ['file' => 'sklenene-dvere-s-masivnim-zarubnim.webp', 'alt' => 'Detail skleněných dveří s madlem a zárubní.', 'w' => 417, 'h' => 626],
     ['file' => 'zenova-zena-u-sklenenych-dveri-v-interieru.webp', 'alt' => 'Prosklené dveře v interiéru s výhledem do zahrady.', 'w' => 626, 'h' => 417],
-    ['file' => 'sklenene-zabradli-na-zakazku.webp', 'alt' => 'Ukázka celoskleněného zábradlí na schodišti.', 'w' => 352, 'h' => 626],
+    ['file' => 'sklenene-zabradli-na-zakazku.webp', 'alt' => 'Ilustrační fotografie celoskleněného zábradlí (inspirace).', 'w' => 352, 'h' => 626],
     ['file' => 'sklenene-dvere-s-modernim-madlem.webp', 'alt' => 'Detail skleněných dveří s černým madlem.', 'w' => 626, 'h' => 418],
     ['file' => 'sklenene-dvere-moderny-interier.webp', 'alt' => 'Ukázka prosklených dveří v obývacím interiéru.', 'w' => 626, 'h' => 391],
     ['file' => 'sklene-zabradli-s-nerezovym-madlem.webp', 'alt' => 'Ukázka skleněného zábradlí s nerezovým madlem.', 'w' => 626, 'h' => 417],
@@ -62,15 +62,15 @@ $gallery = [
   <div class="sklo-wrap sklo-realizace__intro">
     <header class="sklo-page__head">
       <h1>Ukázky skleněných řešení</h1>
-      <p class="sklo-realizace__lead">Inspirace — jak může sklo vypadat v interiéru: dveře, zábradlí, příčky. Jde o ilustrační fotografie, ne o katalog našich konkrétních zakázek.</p>
-      <p class="sklo-realizace__note">Fotodokumentaci vlastních realizací doplníme. Mezitím si typ a sklo složíš ve studiu podle svých rozměrů.</p>
+      <p class="sklo-realizace__lead">Inspirace — jak může sklo vypadat v interiéru: dveře, zábradlí, příčky. Fotografie jsou ilustrační (stock / náladové snímky), ne dokumentace konkrétních zakázek zákazníků.</p>
+      <p class="sklo-realizace__note">Vlastní fotodokumentaci doplníme, až budeme mít vhodné snímky z montáží. Mezitím si typ a sklo složíš ve studiu podle svých rozměrů a fotek prostoru.</p>
     </header>
 
     <section class="sklo-cases" aria-labelledby="cases-heading">
       <header class="sklo-cases__head">
         <p class="sklo-eyebrow">Jak to řešíme</p>
         <h2 id="cases-heading">Typické scénáře</h2>
-        <p class="sklo-cases__lead">Nejsou to pojmenované zakázky — jde o běžný postup, který u podobných zadání opakujeme.</p>
+        <p class="sklo-cases__lead">Nejsou to příběhy konkrétních zákazníků — jen typický postup, který u podobných zadání opakujeme.</p>
       </header>
       <div class="sklo-cases__grid">
         <article class="sklo-case">
@@ -150,7 +150,7 @@ $gallery = [
     <div class="sklo-wrap sklo-cta-band__inner sklo-cta-band__inner--wide">
       <div>
         <h2>Líbí se ti směr? Slož si vlastní.</h2>
-        <p>Ve studiu vybereš typ, sklo i lištu. Nabídku připravíme podle tvých rozměrů a fotek — ne podle stock fotek nahoře.</p>
+        <p>Ve studiu vybereš typ, sklo i lištu. Nabídku připravíme podle tvých rozměrů a fotek prostoru — ilustrační snímky nahoře slouží jen jako inspirace.</p>
       </div>
       <div class="sklo-cta-band__actions">
         <a class="sklo-btn" href="<?php echo esc_url($cfg); ?>">Navrhni si dveře</a>

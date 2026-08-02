@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.19.0');
+define('SKLO_THEME_VER', '1.20.0');
 
 /** Default konfigurátor/API host. Override via option sklo_api_base or env SKLO_API_BASE. */
 define(
@@ -275,10 +275,10 @@ add_filter('document_title_parts', function (array $parts): array {
         }
     }
     if (is_front_page()) {
-        $parts['title'] = 'Sklospeciál — Skleněné dveře na míru bez showroomu';
+        $parts['title'] = 'Sklospeciál — skleněné dveře, sprchy a zábradlí na míru';
         unset($parts['tagline'], $parts['site']);
     } elseif (is_page('realizace')) {
-        $parts['title'] = 'Realizace — skleněné dveře v interiérech';
+        $parts['title'] = 'Ukázky skleněných řešení — inspirace | Sklospeciál';
         unset($parts['tagline']);
     } elseif (is_page('recenze')) {
         $stats = function_exists('sklo_recenze_stats') ? sklo_recenze_stats() : ['avg' => 0, 'count' => 0];
@@ -314,9 +314,9 @@ add_action('wp_head', function (): void {
         return;
     }
     if (is_front_page()) {
-        $desc = 'Zaměř otvor, pošli fotky a navrhni si dveře online. Kyvné, posuvné i celoskleněné. Nabídku připravíme podle tvých rozměrů.';
+        $desc = 'Skleněné dveře, sprchové kouty, zábradlí, příčky a stříšky na míru. Zaměř otvor, pošli fotky a navrhni řešení online — nabídku připravíme podle tvých rozměrů.';
     } elseif (is_page('realizace')) {
-        $desc = 'Galerie hotových skleněných dveří — kyvné, posuvné i celoskleněné v bytech a kancelářích. Podívej se na realizace a navrhni si vlastní.';
+        $desc = 'Ilustrační fotografie skleněných dveří, zábradlí a příček jako inspirace. Nejde o katalog konkrétních zakázek — typ a sklo složíš ve studiu podle svých rozměrů.';
     } elseif (is_page('recenze')) {
         $stats = function_exists('sklo_recenze_stats') ? sklo_recenze_stats() : ['avg' => 0, 'count' => 0];
         $desc = 'Recenze zákazníků Sklospeciál — průměr '
@@ -370,7 +370,7 @@ add_action('wp_head', static function (): void {
     } elseif (is_front_page()) {
         $emit = true;
         $url = home_url('/');
-        $desc = 'Zaměř otvor, pošli fotky a navrhni si dveře online. Kyvné, posuvné i celoskleněné.';
+        $desc = 'Skleněné dveře, sprchové kouty, zábradlí, příčky a stříšky na míru. Zaměř otvor, pošli fotky a navrhni řešení online.';
     } elseif (is_page()) {
         $landing = sklo_seo_resolve_landing();
         if ($landing && ($landing['kind'] ?? '') === 'city') {

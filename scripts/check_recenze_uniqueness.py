@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fail if any 6+ word phrase appears more than twice across recenze texts."""
+"""Fail if any 5+ word phrase is shared by 2+ reviews across recenze texts."""
 
 from __future__ import annotations
 
@@ -10,8 +10,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PHP = ROOT / "wp-theme" / "sklospecial" / "inc" / "recenze-data.php"
-MIN_WORDS = 6
-MAX_OCCURRENCES = 2
+MIN_WORDS = 5
+MAX_OCCURRENCES = 1
 
 
 def parse_texts(path: Path) -> list[str]:
@@ -39,7 +39,7 @@ def phrases(text: str, n: int = MIN_WORDS) -> list[str]:
 
 def main() -> int:
     texts = parse_texts(PHP)
-    if len(texts) < 50:
+    if len(texts) < 30:
         print(f"ERROR: too few texts parsed: {len(texts)}", file=sys.stderr)
         return 2
 
@@ -52,7 +52,7 @@ def main() -> int:
     bad.sort(key=lambda x: (-x[1], x[0]))
 
     print(f"reviews={len(texts)}")
-    print(f"unique_6grams={len(c)}")
+    print(f"unique_5grams={len(c)}")
     print(f"phrases_over_{MAX_OCCURRENCES}={len(bad)}")
     if bad:
         print("TOP_REPEATED:")

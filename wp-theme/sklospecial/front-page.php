@@ -74,7 +74,7 @@ $proof_items = [
     <header class="sklo-section__head sklo-section__head--center">
       <p class="sklo-eyebrow">Ukázky</p>
       <h2 id="proof-heading">Ukázky skleněných řešení</h2>
-      <p>Ilustrační fotografie typů řešení — ne pojmenované zakázky konkrétních zákazníků. Další inspirace na stránce Realizace.</p>
+      <p>Ilustrační fotografie typů řešení (inspirace) — nejde o dokumentaci konkrétních zakázek. Další ukázky na stránce Realizace.</p>
     </header>
     <div class="sklo-proof__grid">
       <?php foreach ($proof_items as $i => $item) :
