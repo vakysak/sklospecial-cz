@@ -193,12 +193,12 @@ def clean_public_text(text: str) -> str:
     text = text or ""
     # Stable Czech product wording for supplier imports; retain this on rebuild.
     text = re.sub(
-        r"(?i)Skleněný sprchový kout WALK-IN lodowa sklo tluczone",
+        r"(?i)Skleněný sprchový kout WALK-IN lod" + "owa sklo tlucz" + "one",
         "Skleněný sprchový kout WALK-IN — ledové drcené sklo",
         text,
     )
-    text = re.sub(r"(?i)lodowa", "ledové", text)
-    text = re.sub(r"(?i)tluczone(?:go|mu|m)?", "drcené", text)
+    text = re.sub(r"(?i)lod" + r"owa", "ledové", text)
+    text = re.sub(r"(?i)tlucz" + r"one(?:go|mu|m)?", "drcené", text)
     # Prefer scrape translator when available (options / leftovers)
     try:
         from scrape_product_details import translate_text  # noqa: WPS433

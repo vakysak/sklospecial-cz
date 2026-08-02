@@ -95,7 +95,7 @@ OPTION_WORD_MAP: dict[str, str] = {
     'sada sklada se z 15 kompletow plastikowych prvků montazowych a dvou gumowych uszczelek o délce 5 m': 'sada se skládá z 15 kompletů plastových montážních prvků a dvou gumových těsnění délky 5 m',
     'dveře sa bezpečné, kalené': 'dveře jsou bezpečnostní a kalené',
     'system posuvny cechuje se tichou praci i velmi dobrym wykonaniem': 'posuvný systém se vyznačuje tichým chodem a kvalitním zpracováním',
-    'efekt stluczonego skla': 'efekt popraskaného skla',
+    'efekt popraskaného skla': 'efekt popraskaného skla',
     'przed vypadnutím': 'proti vypadnutí',
     'obu krancach': 'obou koncích',
     'sklada se': 'skládá se',

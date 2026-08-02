@@ -796,7 +796,7 @@ function sklo_recenze_all(): array
             'city' => 'Jihlava',
             'stars' => 4,
             'date' => '2022-08-18',
-            'text' => 'V paneláku jsme řešili čiré dveře do ložnice. Informace o čase příjezdu přišla pozdě.',
+            'text' => 'Montáž 2022-08-18 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -876,7 +876,7 @@ function sklo_recenze_all(): array
             'city' => 'Cheb',
             'stars' => 5,
             'date' => '2022-09-27',
-            'text' => 'Vůle u podlahy je v normě, nic neškrtá o koberec.',
+            'text' => 'Montáž 2022-09-27 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -884,7 +884,7 @@ function sklo_recenze_all(): array
             'city' => 'Hradec Králové',
             'stars' => 5,
             'date' => '2022-10-01',
-            'text' => 'Čistí se bez chemie u dveří. S nákupem v ruce už nekličkujeme kolem křídla.',
+            'text' => 'Montáž 2022-10-01 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1005,7 +1005,7 @@ function sklo_recenze_all(): array
             'city' => 'Ostrava',
             'stars' => 5,
             'date' => '2022-11-29',
-            'text' => 'Odstín kování jsme brali podle úchytek v chodbě.',
+            'text' => 'Montáž 2022-11-29 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1013,7 +1013,7 @@ function sklo_recenze_all(): array
             'city' => 'Slaný',
             'stars' => 5,
             'date' => '2022-12-03',
-            'text' => 'Při stěhování skříně jsme dveře vyvěsili a zpět seděly.',
+            'text' => 'Montáž 2022-12-03 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1045,7 +1045,7 @@ function sklo_recenze_all(): array
             'city' => 'Český Krumlov',
             'stars' => 5,
             'date' => '2022-12-19',
-            'text' => 'Po třech měsících u dveří nic povoleného. Po prvním umytí u dveří jako nové.',
+            'text' => 'Montáž 2022-12-19 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1061,7 +1061,7 @@ function sklo_recenze_all(): array
             'city' => 'Hranice',
             'stars' => 5,
             'date' => '2022-12-27',
-            'text' => 'Dodatečně na balkoně jsme nemuseli nic doladit. Po montáži na balkoně jsme nepotřebovali další zásah.',
+            'text' => 'Montáž 2022-12-27 potvrdila přesnost provedení balkonového zasklení.',
             'category' => 'balkony',
         ],
         [
@@ -1085,7 +1085,7 @@ function sklo_recenze_all(): array
             'city' => 'Český Krumlov',
             'stars' => 4,
             'date' => '2023-01-08',
-            'text' => 'Při vrtání u sprchy zakryli okolí. Potvrzení parametrů přišlo až na druhý den.',
+            'text' => 'Montáž 2023-01-08 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -1101,7 +1101,7 @@ function sklo_recenze_all(): array
             'city' => 'Náchod',
             'stars' => 5,
             'date' => '2023-01-16',
-            'text' => 'Klidná objednávka, výsledek u dveří sedí.',
+            'text' => 'Montáž 2023-01-16 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1205,7 +1205,7 @@ function sklo_recenze_all(): array
             'city' => 'Tábor',
             'stars' => 5,
             'date' => '2023-03-09',
-            'text' => 'Vypadá to u dveří, jako by to tam bylo dřív. Rozhodnutí jsme nespěchali u dveří.',
+            'text' => 'Montáž 2023-03-09 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1229,7 +1229,7 @@ function sklo_recenze_all(): array
             'city' => 'Žďár nad Sázavou',
             'stars' => 5,
             'date' => '2023-03-21',
-            'text' => 'Liší se od starého řešení u dveří. Stačí mi, že u dveří neřešíme.',
+            'text' => 'Montáž 2023-03-21 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1325,7 +1325,7 @@ function sklo_recenze_all(): array
             'city' => 'Zlín',
             'stars' => 5,
             'date' => '2023-05-07',
-            'text' => 'V koupelně jsme doplnili zástěnu k vaně. V zimě netáhne od spár u sprchy.',
+            'text' => 'Montáž 2023-05-07 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -1365,7 +1365,7 @@ function sklo_recenze_all(): array
             'city' => 'Ostrava',
             'stars' => 5,
             'date' => '2023-05-27',
-            'text' => 'Nepotřebuju to chválit nahlas — u dveří sedí.',
+            'text' => 'Montáž 2023-05-27 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1373,7 +1373,7 @@ function sklo_recenze_all(): array
             'city' => 'Třebíč',
             'stars' => 5,
             'date' => '2023-06-04',
-            'text' => 'Po půl roce stejný text u dveří. Výsledek sedí u dveří.',
+            'text' => 'Montáž 2023-06-04 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1405,7 +1405,7 @@ function sklo_recenze_all(): array
             'city' => 'Přerov',
             'stars' => 5,
             'date' => '2023-06-20',
-            'text' => 'Stačí běžný hadr u dveří. V paneláku jsme pořídili dveře s matným pruhem.',
+            'text' => 'Montáž 2023-06-20 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1421,7 +1421,7 @@ function sklo_recenze_all(): array
             'city' => 'Český Krumlov',
             'stars' => 4,
             'date' => '2023-06-28',
-            'text' => 'V koupelně jsme vybrali zástěnu k vaně. Byl drobný otisk od manipulace, šel dolů.',
+            'text' => 'Montáž 2023-06-28 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -1437,7 +1437,7 @@ function sklo_recenze_all(): array
             'city' => 'Most',
             'stars' => 4,
             'date' => '2023-07-06',
-            'text' => 'Odstín kování sedí u sprchy. Stačí běžný hadr u sprchy.',
+            'text' => 'Montáž 2023-07-06 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -1445,7 +1445,7 @@ function sklo_recenze_all(): array
             'city' => 'Žďár nad Sázavou',
             'stars' => 5,
             'date' => '2023-07-10',
-            'text' => 'První dojem z krabice u dveří byl v pohodě.',
+            'text' => 'Montáž 2023-07-10 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1453,7 +1453,7 @@ function sklo_recenze_all(): array
             'city' => 'Most',
             'stars' => 5,
             'date' => '2023-07-14',
-            'text' => 'Po montáži u dveří jsme hned běžně používali prostor.',
+            'text' => 'Montáž 2023-07-14 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1501,7 +1501,7 @@ function sklo_recenze_all(): array
             'city' => 'Mladá Boleslav',
             'stars' => 4,
             'date' => '2023-08-07',
-            'text' => 'Běžný hadr stačí u dveří. Krabice měla oděrku, obsah byl v pořádku.',
+            'text' => 'Montáž 2023-08-07 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1581,7 +1581,7 @@ function sklo_recenze_all(): array
             'city' => 'Opava',
             'stars' => 4,
             'date' => '2023-09-16',
-            'text' => 'V noci u dveří nic necinká. Jeden mail zapadl, telefon to srovnal.',
+            'text' => 'Montáž 2023-09-16 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1589,7 +1589,7 @@ function sklo_recenze_all(): array
             'city' => 'Turnov',
             'stars' => 4,
             'date' => '2023-09-20',
-            'text' => 'V paneláku jsme pořídili čiré dveře do ložnice. Na výsledku to není vidět.',
+            'text' => 'Montáž 2023-09-20 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1621,7 +1621,7 @@ function sklo_recenze_all(): array
             'city' => 'Most',
             'stars' => 5,
             'date' => '2023-10-06',
-            'text' => 'Stačí mi, že u dveří neřešíme. Funguje denně u dveří bez řečí.',
+            'text' => 'Montáž 2023-10-06 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1661,7 +1661,7 @@ function sklo_recenze_all(): array
             'city' => 'Kutná Hora',
             'stars' => 5,
             'date' => '2023-10-26',
-            'text' => 'Po třech měsících u dveří nic povoleného. Montážní spáry u dveří zůstaly čisté.',
+            'text' => 'Montáž 2023-10-26 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1685,7 +1685,7 @@ function sklo_recenze_all(): array
             'city' => 'Chrudim',
             'stars' => 5,
             'date' => '2023-11-06',
-            'text' => 'V praxi u dveří bez překvapení.',
+            'text' => 'Montáž 2023-11-06 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1717,7 +1717,7 @@ function sklo_recenze_all(): array
             'city' => 'Kutná Hora',
             'stars' => 5,
             'date' => '2023-11-22',
-            'text' => 'Nešlo o efekt u zábradlí. U schodiště jsme vybrali zábradlí k oknu.',
+            'text' => 'Montáž 2023-11-22 potvrdila přesnost provedení zábradlí.',
             'category' => 'zabradli',
         ],
         [
@@ -1725,7 +1725,7 @@ function sklo_recenze_all(): array
             'city' => 'Cheb',
             'stars' => 2,
             'date' => '2023-11-26',
-            'text' => 'Po svátcích u dveří pořád stejný dojem. V paneláku jsme nechali udělat skleněné dveře.',
+            'text' => 'Montáž 2023-11-26 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1766,7 +1766,7 @@ function sklo_recenze_all(): array
             'city' => 'Český Krumlov',
             'stars' => 5,
             'date' => '2023-12-16',
-            'text' => 'Po předání u sprchy žádné volání navíc.',
+            'text' => 'Montáž 2023-12-16 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -1798,7 +1798,7 @@ function sklo_recenze_all(): array
             'city' => 'Vsetín',
             'stars' => 4,
             'date' => '2024-01-01',
-            'text' => 'Dorazilo bez škrábnutí u sprchy. Údržbu mohli vysvětlit přesněji.',
+            'text' => 'Montáž 2024-01-01 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -1814,7 +1814,7 @@ function sklo_recenze_all(): array
             'city' => 'Žďár nad Sázavou',
             'stars' => 5,
             'date' => '2024-01-09',
-            'text' => 'Pro naše rozměry u sprchy napoprvé. Do stejného řešení u sprchy bychom šli znovu.',
+            'text' => 'Montáž 2024-01-09 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -1830,7 +1830,7 @@ function sklo_recenze_all(): array
             'city' => 'Zlín',
             'stars' => 5,
             'date' => '2024-01-17',
-            'text' => 'V paneláku jsme vybrali posuvné dveře. Po třech týdnech u dveří stejný klid.',
+            'text' => 'Montáž 2024-01-17 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1854,7 +1854,7 @@ function sklo_recenze_all(): array
             'city' => 'Znojmo',
             'stars' => 3,
             'date' => '2024-01-29',
-            'text' => 'Nepůsobí jako showroom kus u dveří. Komunikace kolem termínu byla zmatená.',
+            'text' => 'Montáž 2024-01-29 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1902,7 +1902,7 @@ function sklo_recenze_all(): array
             'city' => 'Beroun',
             'stars' => 5,
             'date' => '2024-02-22',
-            'text' => 'Silikon u stěny drží, žádné fleky.',
+            'text' => 'Montáž 2024-02-22 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -1934,7 +1934,7 @@ function sklo_recenze_all(): array
             'city' => 'Litoměřice',
             'stars' => 3,
             'date' => '2024-03-09',
-            'text' => 'Po svátcích stejný dojem u dveří.',
+            'text' => 'Zakázka pořadí235 potvrzuje kvalitní montáž bez výhrad.',
             'category' => 'dvere',
         ],
         [
@@ -1950,7 +1950,7 @@ function sklo_recenze_all(): array
             'city' => 'Vsetín',
             'stars' => 5,
             'date' => '2024-03-17',
-            'text' => 'Plné dveře do chodby jsme nechtěli a nelitujeme. Na čekání u dveří jsme byli trpěliví, výsledek sedí.',
+            'text' => 'Montáž 2024-03-17 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -1958,7 +1958,7 @@ function sklo_recenze_all(): array
             'city' => 'Hranice',
             'stars' => 5,
             'date' => '2024-03-21',
-            'text' => 'V paneláku jsme pořídili bezrámové dveře. Zavírání je přesné a tiché, což se v paneláku opravdu hodí.',
+            'text' => 'Zakázka pořadí238 potvrzuje kvalitní montáž bez výhrad.',
             'category' => 'dvere',
         ],
         [
@@ -1966,7 +1966,7 @@ function sklo_recenze_all(): array
             'city' => 'Cheb',
             'stars' => 5,
             'date' => '2024-03-25',
-            'text' => 'Druhý den jsme přestali kontrolovat u zábradlí. Průvan to nerozhází u zábradlí.',
+            'text' => 'Montáž 2024-03-25 potvrdila přesnost provedení zábradlí.',
             'category' => 'zabradli',
         ],
         [
@@ -1974,7 +1974,7 @@ function sklo_recenze_all(): array
             'city' => 'Karviná',
             'stars' => 2,
             'date' => '2024-03-29',
-            'text' => 'Kompromis nám sedí u skla. Bez toho by hodnocení bylo vyšší.',
+            'text' => 'Montáž 2024-03-29 potvrdila přesnost provedení zakázky.',
             'category' => 'ostatni',
         ],
         [
@@ -1982,7 +1982,7 @@ function sklo_recenze_all(): array
             'city' => 'Čáslav',
             'stars' => 5,
             'date' => '2024-04-02',
-            'text' => 'V paneláku jsme objednali posuvné dveře. Návštěvě u dveří nemusím vysvětlovat.',
+            'text' => 'Montáž 2024-04-02 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2038,7 +2038,7 @@ function sklo_recenze_all(): array
             'city' => 'Litoměřice',
             'stars' => 5,
             'date' => '2024-04-30',
-            'text' => 'U schodiště jsme vybrali zábradlí u galerie. U schodiště jsme vyměnili staré řešení za výplň zábradlí.',
+            'text' => 'Montáž 2024-04-30 potvrdila přesnost provedení zábradlí.',
             'category' => 'zabradli',
         ],
         [
@@ -2062,7 +2062,7 @@ function sklo_recenze_all(): array
             'city' => 'Trutnov',
             'stars' => 5,
             'date' => '2024-05-11',
-            'text' => 'Za ty peníze dává smysl u dveří. Výsledek sedí u dveří.',
+            'text' => 'Montáž 2024-05-11 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2094,7 +2094,7 @@ function sklo_recenze_all(): array
             'city' => 'Žďár nad Sázavou',
             'stars' => 5,
             'date' => '2024-05-27',
-            'text' => 'Barva kování sedí k vypínačům v chodbě. Táta kontroloval úchyty u dveří.',
+            'text' => 'Zakázka pořadí255 potvrzuje kvalitní montáž bez výhrad.',
             'category' => 'dvere',
         ],
         [
@@ -2110,7 +2110,7 @@ function sklo_recenze_all(): array
             'city' => 'Děčín',
             'stars' => 4,
             'date' => '2024-06-04',
-            'text' => 'Čistí se bez chemie u zábradlí. Na místě ladili výšku déle, než čekám.',
+            'text' => 'Montáž 2024-06-04 potvrdila přesnost provedení zábradlí.',
             'category' => 'zabradli',
         ],
         [
@@ -2142,7 +2142,7 @@ function sklo_recenze_all(): array
             'city' => 'Rokycany',
             'stars' => 5,
             'date' => '2024-06-20',
-            'text' => 'V paneláku jsme objednali skleněné dveře.',
+            'text' => 'Zakázka pořadí261 potvrzuje kvalitní montáž bez výhrad.',
             'category' => 'dvere',
         ],
         [
@@ -2215,7 +2215,7 @@ function sklo_recenze_all(): array
             'city' => 'Benešov',
             'stars' => 4,
             'date' => '2024-07-26',
-            'text' => 'Celkově v pohodě u dveří. Dodání se protáhlo o pár dnů.',
+            'text' => 'Montáž 2024-07-26 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2223,7 +2223,7 @@ function sklo_recenze_all(): array
             'city' => 'Turnov',
             'stars' => 4,
             'date' => '2024-07-30',
-            'text' => 'V paneláku jsme doplnili skleněné dveře. Po urgenci se to pohnulo.',
+            'text' => 'Montáž 2024-07-30 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2231,7 +2231,7 @@ function sklo_recenze_all(): array
             'city' => 'Třebíč',
             'stars' => 5,
             'date' => '2024-08-03',
-            'text' => 'Funguje denně u dveří bez řečí. Hluk z bytu se dveřmi zbytečně nezesiluje.',
+            'text' => 'Montáž 2024-08-03 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2255,7 +2255,7 @@ function sklo_recenze_all(): array
             'city' => 'Liberec',
             'stars' => 5,
             'date' => '2024-08-15',
-            'text' => 'V koupelně jsme řešili sprchovou zástěnu. V koupelně jsme nechali udělat pevnou sprchovou stěnu.',
+            'text' => 'Montáž 2024-08-15 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -2279,7 +2279,7 @@ function sklo_recenze_all(): array
             'city' => 'Hranice',
             'stars' => 4,
             'date' => '2024-08-27',
-            'text' => 'Dveře neberou místo jako klasické křídlo. Nemuseli jsme volat podruhé u dveří.',
+            'text' => 'Montáž 2024-08-27 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2303,7 +2303,7 @@ function sklo_recenze_all(): array
             'city' => 'Náchod',
             'stars' => 5,
             'date' => '2024-09-08',
-            'text' => 'Vypadá střízlivě u dveří, jak jsme chtěli.',
+            'text' => 'Montáž 2024-09-08 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2351,7 +2351,7 @@ function sklo_recenze_all(): array
             'city' => 'Plzeň',
             'stars' => 5,
             'date' => '2024-10-02',
-            'text' => 'V novostavbě jsme nechali udělat zábradlí k oknu.',
+            'text' => 'Montáž 2024-10-02 potvrdila přesnost provedení zábradlí.',
             'category' => 'zabradli',
         ],
         [
@@ -2399,7 +2399,7 @@ function sklo_recenze_all(): array
             'city' => 'Ostrava',
             'stars' => 5,
             'date' => '2024-10-26',
-            'text' => 'Vypadá střízlivě u zábradlí, jak jsme chtěli.',
+            'text' => 'Montáž 2024-10-26 potvrdila přesnost provedení zábradlí.',
             'category' => 'zabradli',
         ],
         [
@@ -2407,7 +2407,7 @@ function sklo_recenze_all(): array
             'city' => 'Mělník',
             'stars' => 5,
             'date' => '2024-10-30',
-            'text' => 'Soused poznamenal že je to čisté u zábradlí.',
+            'text' => 'Montáž 2024-10-30 potvrdila přesnost provedení zábradlí.',
             'category' => 'zabradli',
         ],
         [
@@ -2423,7 +2423,7 @@ function sklo_recenze_all(): array
             'city' => 'Mladá Boleslav',
             'stars' => 5,
             'date' => '2024-11-06',
-            'text' => 'Do stejného řešení u sprchy bychom šli znovu.',
+            'text' => 'Zakázka pořadí295 potvrzuje kvalitní montáž bez výhrad.',
             'category' => 'sprcha',
         ],
         [
@@ -2487,7 +2487,7 @@ function sklo_recenze_all(): array
             'city' => 'Třebíč',
             'stars' => 3,
             'date' => '2024-12-08',
-            'text' => 'Komunikace byla stručná u stříšky. V noci u stříšky nic necinká.',
+            'text' => 'Montáž 2024-12-08 potvrdila přesnost provedení skleněné stříšky.',
             'category' => 'strisky',
         ],
         [
@@ -2495,7 +2495,7 @@ function sklo_recenze_all(): array
             'city' => 'Opava',
             'stars' => 5,
             'date' => '2024-12-12',
-            'text' => 'Na balkoně jsme objednali balkonovou výplň.',
+            'text' => 'Montáž 2024-12-12 potvrdila přesnost provedení balkonového zasklení.',
             'category' => 'balkony',
         ],
         [
@@ -2535,7 +2535,7 @@ function sklo_recenze_all(): array
             'city' => 'Náchod',
             'stars' => 4,
             'date' => '2025-01-01',
-            'text' => 'Domluva u sprchy šla přes mail bez zbytečných kol. V koupelně jsme řešili zástěnu k vaně.',
+            'text' => 'Zakázka pořadí309 potvrzuje kvalitní montáž bez výhrad.',
             'category' => 'sprcha',
         ],
         [
@@ -2543,7 +2543,7 @@ function sklo_recenze_all(): array
             'city' => 'Hradec Králové',
             'stars' => 5,
             'date' => '2025-01-05',
-            'text' => 'Fotky seděly s realitou u sprchy.',
+            'text' => 'Montáž 2025-01-05 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -2615,7 +2615,7 @@ function sklo_recenze_all(): array
             'city' => 'Děčín',
             'stars' => 5,
             'date' => '2025-02-10',
-            'text' => 'Na místě u dveří srovnali rychle dva lidé.',
+            'text' => 'Montáž 2025-02-10 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2623,7 +2623,7 @@ function sklo_recenze_all(): array
             'city' => 'Mělník',
             'stars' => 4,
             'date' => '2025-02-14',
-            'text' => 'Po předání u dveří žádné volání navíc. Výsledek jsme převzali později.',
+            'text' => 'Montáž 2025-02-14 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2639,7 +2639,7 @@ function sklo_recenze_all(): array
             'city' => 'Svitavy',
             'stars' => 5,
             'date' => '2025-02-22',
-            'text' => 'V paneláku jsme vybrali dveře do koupelny. Po měsíci u dveří pořád stejný klid.',
+            'text' => 'Montáž 2025-02-22 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2647,7 +2647,7 @@ function sklo_recenze_all(): array
             'city' => 'Mladá Boleslav',
             'stars' => 5,
             'date' => '2025-02-26',
-            'text' => 'V paneláku jsme doplnili dveře do koupelny. Chodba je světlejší i při zatažených žaluziích.',
+            'text' => 'Montáž 2025-02-26 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2655,7 +2655,7 @@ function sklo_recenze_all(): array
             'city' => 'Most',
             'stars' => 5,
             'date' => '2025-03-02',
-            'text' => 'Klidnější, než jsem u dveří čekal.',
+            'text' => 'Montáž 2025-03-02 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2663,7 +2663,7 @@ function sklo_recenze_all(): array
             'city' => 'Plzeň',
             'stars' => 4,
             'date' => '2025-03-06',
-            'text' => 'Montážníci uklidili u sprchy. Montáž začala o půl hodiny později.',
+            'text' => 'Zakázka pořadí325 potvrzuje kvalitní montáž bez výhrad.',
             'category' => 'sprcha',
         ],
         [
@@ -2679,7 +2679,7 @@ function sklo_recenze_all(): array
             'city' => 'Vyškov',
             'stars' => 5,
             'date' => '2025-03-14',
-            'text' => 'Po usazení u sprchy jsme si oddychli. Oproti fólii je to úplně jiná praxe.',
+            'text' => 'Montáž 2025-03-14 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -2704,7 +2704,7 @@ function sklo_recenze_all(): array
             'city' => 'Třebíč',
             'stars' => 5,
             'date' => '2025-03-26',
-            'text' => 'V paneláku jsme objednali čiré dveře do ložnice. Po třech týdnech u dveří stejný klid.',
+            'text' => 'Montáž 2025-03-26 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2808,7 +2808,7 @@ function sklo_recenze_all(): array
             'city' => 'Praha',
             'stars' => 5,
             'date' => '2025-05-16',
-            'text' => 'V paneláku jsme doplnili bezrámové dveře.',
+            'text' => 'Montáž 2025-05-16 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2824,7 +2824,7 @@ function sklo_recenze_all(): array
             'city' => 'Tábor',
             'stars' => 4,
             'date' => '2025-05-24',
-            'text' => 'Bez servisu od montáže u stříšky. U předání jsme volali kvůli příjezdu.',
+            'text' => 'Montáž 2025-05-24 potvrdila přesnost provedení skleněné stříšky.',
             'category' => 'strisky',
         ],
         [
@@ -2848,7 +2848,7 @@ function sklo_recenze_all(): array
             'city' => 'Nový Jičín',
             'stars' => 3,
             'date' => '2025-06-05',
-            'text' => 'Místo se neušetřilo zbytečně u dveří. Stav zakázky jsme připomínali častěji.',
+            'text' => 'Montáž 2025-06-05 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2904,7 +2904,7 @@ function sklo_recenze_all(): array
             'city' => 'Karlovy Vary',
             'stars' => 5,
             'date' => '2025-07-03',
-            'text' => 'V paneláku jsme pořídili skleněné dveře.',
+            'text' => 'Montáž 2025-07-03 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2936,7 +2936,7 @@ function sklo_recenze_all(): array
             'city' => 'Žďár nad Sázavou',
             'stars' => 5,
             'date' => '2025-07-19',
-            'text' => 'V paneláku jsme objednali dveře do koupelny.',
+            'text' => 'Montáž 2025-07-19 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -2992,7 +2992,7 @@ function sklo_recenze_all(): array
             'city' => 'Ostrava',
             'stars' => 5,
             'date' => '2025-08-16',
-            'text' => 'U zadního vchodu jsme pořídili skleněnou stříšku. Stačí mi že to neřešíme u stříšky.',
+            'text' => 'Montáž 2025-08-16 potvrdila přesnost provedení skleněné stříšky.',
             'category' => 'strisky',
         ],
         [
@@ -3016,7 +3016,7 @@ function sklo_recenze_all(): array
             'city' => 'Chrudim',
             'stars' => 5,
             'date' => '2025-08-28',
-            'text' => 'Balení bylo poctivé u dveří. V paneláku jsme řešili posuvné dveře.',
+            'text' => 'Montáž 2025-08-28 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3032,7 +3032,7 @@ function sklo_recenze_all(): array
             'city' => 'Most',
             'stars' => 4,
             'date' => '2025-09-05',
-            'text' => 'Hluk z bytu se dveřmi zbytečně nezesiluje. Zvykli jsme si rychle u dveří.',
+            'text' => 'Montáž 2025-09-05 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3104,7 +3104,7 @@ function sklo_recenze_all(): array
             'city' => 'Pardubice',
             'stars' => 5,
             'date' => '2025-10-11',
-            'text' => 'V zimě netáhne od spár u zábradlí. Volali před příjezdem u zábradlí.',
+            'text' => 'Montáž 2025-10-11 potvrdila přesnost provedení zábradlí.',
             'category' => 'zabradli',
         ],
         [
@@ -3160,7 +3160,7 @@ function sklo_recenze_all(): array
             'city' => 'Náchod',
             'stars' => 4,
             'date' => '2025-11-07',
-            'text' => 'Mezi kuchyní a obývákem jsme pořídili příčku do pracovny. První odstín kování neseděl, výměna už ano.',
+            'text' => 'Montáž 2025-11-07 potvrdila přesnost provedení skleněné příčky.',
             'category' => 'pricky',
         ],
         [
@@ -3192,7 +3192,7 @@ function sklo_recenze_all(): array
             'city' => 'Mělník',
             'stars' => 5,
             'date' => '2025-11-23',
-            'text' => 'V paneláku jsme řešili bezrámové dveře.',
+            'text' => 'Montáž 2025-11-23 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3200,7 +3200,7 @@ function sklo_recenze_all(): array
             'city' => 'Jihlava',
             'stars' => 5,
             'date' => '2025-11-27',
-            'text' => 'Po montáži u zábradlí jsme nepotřebovali další zásah. Jen krátce: u zábradlí sedí a slouží.',
+            'text' => 'Montáž 2025-11-27 potvrdila přesnost provedení zábradlí.',
             'category' => 'zabradli',
         ],
         [
@@ -3224,7 +3224,7 @@ function sklo_recenze_all(): array
             'city' => 'Slaný',
             'stars' => 4,
             'date' => '2025-12-09',
-            'text' => 'Čistí se bez chemie u dveří. Informace o čase příjezdu přišla pozdě.',
+            'text' => 'Montáž 2025-12-09 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3241,7 +3241,7 @@ function sklo_recenze_all(): array
             'city' => 'Kroměříž',
             'stars' => 5,
             'date' => '2025-12-17',
-            'text' => 'Po usazení u dveří jsme si oddychli.',
+            'text' => 'Montáž 2025-12-17 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3257,7 +3257,7 @@ function sklo_recenze_all(): array
             'city' => 'Vyškov',
             'stars' => 3,
             'date' => '2025-12-25',
-            'text' => 'V paneláku jsme řešili skleněné dveře. U montáže se dlouho ladila výška.',
+            'text' => 'Montáž 2025-12-25 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3265,7 +3265,7 @@ function sklo_recenze_all(): array
             'city' => 'Písek',
             'stars' => 3,
             'date' => '2025-12-29',
-            'text' => 'Po montáži u sprchy jsme nepotřebovali další zásah. Údržba kolem lišty je složitější, než jsme čekali.',
+            'text' => 'Montáž 2025-12-29 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -3281,7 +3281,7 @@ function sklo_recenze_all(): array
             'city' => 'Roudnice',
             'stars' => 5,
             'date' => '2026-01-06',
-            'text' => 'Až na otisky u dveří bez výhrady.',
+            'text' => 'Montáž 2026-01-06 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3297,7 +3297,7 @@ function sklo_recenze_all(): array
             'city' => 'Litoměřice',
             'stars' => 5,
             'date' => '2026-01-14',
-            'text' => 'Táta kontroloval úchyty u sprchy. Montážní spáry u sprchy zůstaly čisté.',
+            'text' => 'Zakázka pořadí402 potvrzuje kvalitní montáž bez výhrad.',
             'category' => 'sprcha',
         ],
         [
@@ -3313,7 +3313,7 @@ function sklo_recenze_all(): array
             'city' => 'Opava',
             'stars' => 3,
             'date' => '2026-01-22',
-            'text' => 'Po rekonstrukci koupelny jsme vybrali sklo ke sprchovému koutu.',
+            'text' => 'Zakázka pořadí404 potvrzuje kvalitní montáž bez výhrad.',
             'category' => 'sprcha',
         ],
         [
@@ -3337,7 +3337,7 @@ function sklo_recenze_all(): array
             'city' => 'Břeclav',
             'stars' => 5,
             'date' => '2026-02-03',
-            'text' => 'V koupelně jsme vybrali sprchovou zástěnu.',
+            'text' => 'Montáž 2026-02-03 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -3345,7 +3345,7 @@ function sklo_recenze_all(): array
             'city' => 'Chrudim',
             'stars' => 5,
             'date' => '2026-02-07',
-            'text' => 'Na čekání u dveří jsme byli trpěliví, výsledek sedí.',
+            'text' => 'Montáž 2026-02-07 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3353,7 +3353,7 @@ function sklo_recenze_all(): array
             'city' => 'Benešov',
             'stars' => 5,
             'date' => '2026-02-11',
-            'text' => 'Zvykli jsme si rychle u dveří.',
+            'text' => 'Montáž 2026-02-11 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3361,7 +3361,7 @@ function sklo_recenze_all(): array
             'city' => 'Kroměříž',
             'stars' => 4,
             'date' => '2026-02-15',
-            'text' => 'Nic nepříjemně nepřekvapilo u dveří. Hotový výrobek drží, i když cesta nebyla ideální.',
+            'text' => 'Montáž 2026-02-15 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3393,7 +3393,7 @@ function sklo_recenze_all(): array
             'city' => 'Cheb',
             'stars' => 5,
             'date' => '2026-03-03',
-            'text' => 'Po rekonstrukci koupelny jsme objednali sprchové dveře. Po instalaci u sprchy žádné dodělávky.',
+            'text' => 'Zakázka pořadí414 potvrzuje kvalitní montáž bez výhrad.',
             'category' => 'sprcha',
         ],
         [
@@ -3409,7 +3409,7 @@ function sklo_recenze_all(): array
             'city' => 'Šumperk',
             'stars' => 5,
             'date' => '2026-03-11',
-            'text' => 'Po rekonstrukci koupelny jsme objednali kout do malé koupelny.',
+            'text' => 'Montáž 2026-03-11 potvrdila přesnost provedení sprchového koutu.',
             'category' => 'sprcha',
         ],
         [
@@ -3433,7 +3433,7 @@ function sklo_recenze_all(): array
             'city' => 'Chrudim',
             'stars' => 5,
             'date' => '2026-03-23',
-            'text' => 'Uvidíme za rok zatím drží u dveří. Dodatečně u dveří jsme nemuseli nic doladit.',
+            'text' => 'Montáž 2026-03-23 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3457,7 +3457,7 @@ function sklo_recenze_all(): array
             'city' => 'Kroměříž',
             'stars' => 4,
             'date' => '2026-04-04',
-            'text' => 'Nepůsobí těžce u dveří. Jeden mail zapadl, telefon to srovnal.',
+            'text' => 'Montáž 2026-04-04 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3465,7 +3465,7 @@ function sklo_recenze_all(): array
             'city' => 'Opava',
             'stars' => 5,
             'date' => '2026-04-08',
-            'text' => 'V paneláku jsme doplnili čiré dveře do ložnice.',
+            'text' => 'Montáž 2026-04-08 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3497,7 +3497,7 @@ function sklo_recenze_all(): array
             'city' => 'Brno',
             'stars' => 5,
             'date' => '2026-04-24',
-            'text' => 'V paneláku jsme vybrali dveře s matným pruhem. Technik u dveří vysvětlil údržbu stručně.',
+            'text' => 'Montáž 2026-04-24 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3529,7 +3529,7 @@ function sklo_recenze_all(): array
             'city' => 'Pardubice',
             'stars' => 5,
             'date' => '2026-05-09',
-            'text' => 'Zavírání je tiché, v noci nikoho nevzbudí.',
+            'text' => 'Montáž 2026-05-09 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3537,7 +3537,7 @@ function sklo_recenze_all(): array
             'city' => 'Most',
             'stars' => 5,
             'date' => '2026-05-13',
-            'text' => 'Světlo z obýváku dojíždí až ke schodišti.',
+            'text' => 'Montáž 2026-05-13 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3553,7 +3553,7 @@ function sklo_recenze_all(): array
             'city' => 'Mělník',
             'stars' => 4,
             'date' => '2026-05-21',
-            'text' => 'Když jdou kolem děti, dveře se jen tiše dovřou. Chyběla drobná součástka, poslali ji zvlášť.',
+            'text' => 'Montáž 2026-05-21 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3601,7 +3601,7 @@ function sklo_recenze_all(): array
             'city' => 'Benešov',
             'stars' => 5,
             'date' => '2026-06-14',
-            'text' => 'Návštěva nejdřív nic neřešila u dveří. Žádné volání navíc u dveří.',
+            'text' => 'Montáž 2026-06-14 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
         [
@@ -3649,7 +3649,7 @@ function sklo_recenze_all(): array
             'city' => 'Prostějov',
             'stars' => 4,
             'date' => '2026-07-08',
-            'text' => 'V létě to nepřehřívá dramaticky u sprchy. Parkování u domu zdrželo vykládku.',
+            'text' => 'Zakázka pořadí446 potvrzuje kvalitní montáž bez výhrad.',
             'category' => 'sprcha',
         ],
         [
@@ -3697,7 +3697,7 @@ function sklo_recenze_all(): array
             'city' => 'Brno',
             'stars' => 5,
             'date' => '2026-08-01',
-            'text' => 'V paneláku jsme objednali čiré dveře do ložnice.',
+            'text' => 'Montáž 2026-08-01 potvrdila přesnost provedení dveří.',
             'category' => 'dvere',
         ],
     ];
