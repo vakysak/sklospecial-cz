@@ -213,32 +213,32 @@ $recenze_stars = static function (int $n): string {
     </header>
     <div class="sklo-type-grid sklo-type-grid--6">
       <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-dvere/')); ?>">
-        <img class="sklo-type__image" src="https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io/wp-content/uploads/2026/07/posuvne-sklenene-dvere-matne-sklo.webp" alt="Skleněné dveře" width="507" height="626" loading="lazy" decoding="async">
+        <img class="sklo-type__image" src="<?php echo esc_url(content_url('uploads/2026/07/posuvne-sklenene-dvere-matne-sklo.webp')); ?>" alt="Skleněné dveře" width="507" height="626" loading="lazy" decoding="async">
         <h3>Dveře</h3>
         <p>Posuvné, kyvné, otevírané i vzory skla.</p>
       </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/sprchove-kouty/')); ?>">
-        <img class="sklo-type__image" src="https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0608.jpg" alt="Skleněné sprchové kouty" width="400" height="400" loading="lazy" decoding="async">
+        <img class="sklo-type__image" src="<?php echo esc_url(sklo_katalog_img_url('SklS-0608')); ?>" alt="Skleněné sprchové kouty" width="400" height="400" loading="lazy" decoding="async">
         <h3>Sprchy</h3>
         <p>Walk-in stěny a kouty na míru.</p>
       </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/zabradli/')); ?>">
-        <img class="sklo-type__image" src="https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0734.jpg" alt="Skleněné zábradlí" width="400" height="400" loading="lazy" decoding="async">
+        <img class="sklo-type__image" src="<?php echo esc_url(sklo_katalog_img_url('SklS-0734')); ?>" alt="Skleněné zábradlí" width="400" height="400" loading="lazy" decoding="async">
         <h3>Zábradlí</h3>
         <p>DIY, s montáží i profily.</p>
       </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/strisky/')); ?>">
-        <img class="sklo-type__image" src="https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0832.jpg" alt="Skleněné stříšky" width="400" height="400" loading="lazy" decoding="async">
+        <img class="sklo-type__image" src="<?php echo esc_url(sklo_katalog_img_url('SklS-0832')); ?>" alt="Skleněné stříšky" width="400" height="400" loading="lazy" decoding="async">
         <h3>Stříšky</h3>
         <p>Na konzolách, táhlech i skladem.</p>
       </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/sklenene-pricky/')); ?>">
-        <img class="sklo-type__image" src="https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0326.jpg" alt="Skleněné příčky" width="400" height="400" loading="lazy" decoding="async">
+        <img class="sklo-type__image" src="<?php echo esc_url(sklo_katalog_img_url('SklS-0326')); ?>" alt="Skleněné příčky" width="400" height="400" loading="lazy" decoding="async">
         <h3>Příčky</h3>
         <p>Skleněné příčky a zabudování.</p>
       </a>
       <a class="sklo-type" href="<?php echo esc_url(home_url('/francouzske-balkony/')); ?>">
-        <img class="sklo-type__image" src="https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0645.jpg" alt="Francouzské balkony" width="400" height="400" loading="lazy" decoding="async">
+        <img class="sklo-type__image" src="<?php echo esc_url(sklo_katalog_img_url('SklS-0645')); ?>" alt="Francouzské balkony" width="400" height="400" loading="lazy" decoding="async">
         <h3>Balkony</h3>
         <p>Francouzské balkony ze skla.</p>
       </a>

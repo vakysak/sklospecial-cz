@@ -9,7 +9,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.16.0');
+define('SKLO_THEME_VER', '1.17.0');
+
+/** Default konfigurátor/API host while api.sklospecial.* is not live. Override via option/env. */
+define(
+    'SKLO_API_BASE_DEFAULT',
+    'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io'
+);
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
@@ -19,17 +25,18 @@ require_once get_template_directory() . '/inc/recenze-data.php';
 require_once get_template_directory() . '/inc/trust-helpers.php';
 
 /**
- * Production host? (sklospecial.cz / www) — not sslip staging.
+ * Production host? sklospecial.eu / sklospecial.cz (with or without www).
  */
 function sklo_is_production(): bool
 {
     $host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
     $host = preg_replace('/:\d+$/', '', $host) ?: '';
-    return str_contains($host, 'sklospecial.cz');
+    $host = preg_replace('/^www\./', '', $host) ?: '';
+    return $host === 'sklospecial.eu' || $host === 'sklospecial.cz';
 }
 
 /**
- * Staging host? (not production sklospecial.cz).
+ * Staging host? (not production .eu / .cz).
  */
 function sklo_is_staging_host(): bool
 {
@@ -44,7 +51,7 @@ function sklo_is_production_host(): bool
 
 /**
  * Theme pojistka: noindex on non-production hosts.
- * When DNS flips to sklospecial.cz, indexing auto-enables here.
+ * When host is sklospecial.eu or sklospecial.cz, indexing auto-enables here.
  * Still turn off WP Reading “Discourage” + Rank Math noindex on go-live day.
  */
 function sklo_staging_robots_noindex(): void
@@ -204,15 +211,54 @@ function sklo_request_produkt(): ?array
 
 function sklo_api_base(): string
 {
-    return (string) apply_filters(
-        'sklo_api_base',
-        'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io'
-    );
+    $from_env = (string) (getenv('SKLO_API_BASE') ?: '');
+    $from_opt = (string) get_option('sklo_api_base', '');
+    $base = $from_opt !== '' ? $from_opt : ($from_env !== '' ? $from_env : SKLO_API_BASE_DEFAULT);
+    $base = rtrim($base, '/');
+    return (string) apply_filters('sklo_api_base', $base);
 }
 
 function sklo_konfigurator_url(): string
 {
     return rtrim(sklo_api_base(), '/') . '/public/konfigurator.html';
+}
+
+/**
+ * Absolute URL for API-hosted katalog product image.
+ */
+function sklo_katalog_img_url(string $code): string
+{
+    $code = trim($code);
+    if ($code === '') {
+        return '';
+    }
+    if (!str_ends_with(strtolower($code), '.jpg') && !str_ends_with(strtolower($code), '.webp')) {
+        $code .= '.jpg';
+    }
+    return rtrim(sklo_api_base(), '/') . '/public/katalog-img/' . ltrim($code, '/');
+}
+
+/**
+ * Rewrite legacy staging hosts (WP sslip / old API sslip) to current home / API base.
+ * Leaves non-staging URLs untouched. Safe for chat/API assets still served from sslip.
+ */
+function sklo_public_asset_url(string $url): string
+{
+    $url = trim($url);
+    if ($url === '') {
+        return '';
+    }
+    $wp_staging = 'https://wordpress-jzxqv0aq7w5lf4f12nkwgj00.46.225.122.108.sslip.io';
+    $api_staging = 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io';
+    if (str_starts_with($url, $wp_staging)) {
+        $path = substr($url, strlen($wp_staging));
+        return home_url($path === '' ? '/' : $path);
+    }
+    if (str_starts_with($url, $api_staging)) {
+        $path = substr($url, strlen($api_staging));
+        return rtrim(sklo_api_base(), '/') . ($path === '' ? '' : $path);
+    }
+    return $url;
 }
 
 add_filter('document_title_parts', function (array $parts): array {
@@ -318,7 +364,7 @@ add_action('wp_head', static function (): void {
         }
         $img = (string) ($produkt['image'] ?? $produkt['img'] ?? $produkt['thumb'] ?? '');
         if ($img !== '') {
-            $image = $img;
+            $image = sklo_public_asset_url($img);
         }
         $type = 'product';
     } elseif (is_front_page()) {

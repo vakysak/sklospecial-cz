@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import re
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -31,8 +32,14 @@ APP_JSON_OUT = APP_DATA_DIR / "produkty.json"
 APP_KONFIG_OUT = APP_DATA_DIR / "katalog-konfigurator.json"
 CROPPED_DIR = ROOT / "scripts/output/images_cropped"
 PUBLIC_IMG_DIR = ROOT / "app/public/katalog-img"
+# API still hosts katalog-img on sslip until api.sklospecial.* is live.
+# Override: SKLO_API_BASE=https://api.example/public/katalog-img  (or full API origin)
 CROPPED_BASE_URL = (
-    "https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img"
+    os.environ.get("SKLO_KATALOG_IMG_BASE")
+    or (
+        os.environ.get("SKLO_API_BASE", "https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io").rstrip("/")
+        + "/public/katalog-img"
+    )
 )
 
 # Door-focused typy for konfigurátor (section → typ slug).

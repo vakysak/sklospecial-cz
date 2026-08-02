@@ -100,11 +100,12 @@ function sklo_katalog_sample_image(string $slug, string $fallback = ''): string
     if ($bundle && !empty($bundle['products'])) {
         foreach ($bundle['products'] as $p) {
             if (!empty($p['image'])) {
-                return (string) $p['image'];
+                $url = (string) $p['image'];
+                return function_exists('sklo_public_asset_url') ? sklo_public_asset_url($url) : $url;
             }
         }
     }
-    return $fallback;
+    return function_exists('sklo_public_asset_url') ? sklo_public_asset_url($fallback) : $fallback;
 }
 
 /**
@@ -113,17 +114,18 @@ function sklo_katalog_sample_image(string $slug, string $fallback = ''): string
 function sklo_katalog_section_image(string $slug, string $section, string $fallback = ''): string
 {
     if ($section === '') {
-        return $fallback;
+        return function_exists('sklo_public_asset_url') ? sklo_public_asset_url($fallback) : $fallback;
     }
     $bundle = function_exists('sklo_produkty_for_slug') ? sklo_produkty_for_slug($slug) : null;
     if ($bundle && !empty($bundle['products'])) {
         foreach ($bundle['products'] as $p) {
             if ((string) ($p['section'] ?? '') === $section && !empty($p['image'])) {
-                return (string) $p['image'];
+                $url = (string) $p['image'];
+                return function_exists('sklo_public_asset_url') ? sklo_public_asset_url($url) : $url;
             }
         }
     }
-    return $fallback;
+    return function_exists('sklo_public_asset_url') ? sklo_public_asset_url($fallback) : $fallback;
 }
 
 /**
@@ -174,7 +176,7 @@ function sklo_katalog(): array
                     'title' => 'Posuvné',
                     'text'  => 'Po stěně nebo do pouzdra. Ideální tam, kde každý centimetr hraje roli.',
                     // SklS-0004 — Design-Lux matné na kolejnici
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0004.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0004'),
                     'price' => $od('posuvne', 10100),
                 ],
                 [
@@ -182,7 +184,7 @@ function sklo_katalog(): array
                     'title' => 'Kyvné',
                     'text'  => 'Otevírání oběma směry — pivot nebo samozavírač, ne obyčejné křídlo na pantech.',
                     // SklS-0194 — kyvné se samozavíračem, čiré
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0194.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0194'),
                     'price' => $od('otocne', 9800),
                 ],
                 [
@@ -190,7 +192,7 @@ function sklo_katalog(): array
                     'title' => 'Otevírané',
                     'text'  => 'Křídlo na pantech — jasný pohyb, známé ovládání, široký výběr skel.',
                     // SklS-0240 — otevírané na pantech, matné, viditelné panty
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0240.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0240'),
                     'price' => $od('otevirane', 9700),
                 ],
                 [
@@ -198,7 +200,7 @@ function sklo_katalog(): array
                     'title' => 'Dveře se zárubní',
                     'text'  => 'Pevná, nastavitelná nebo hliníková zárubeň — podle stavby a požadovaného vzhledu.',
                     // SklS-0303 — hliníková zárubeň čiré, černý rám
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0303.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0303'),
                     'price' => $od('dvere-se-zarubni', 10900),
                 ],
                 [
@@ -206,7 +208,7 @@ function sklo_katalog(): array
                     'title' => 'Linie Luxe',
                     'text'  => 'Nejvyšší třída v nabídce — jemnější detaily, větší prostor pro individuální návrh.',
                     // SklS-0315 — LUXE trubkové zrcadlo fénické
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0315.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0315'),
                     'price' => $od('linie-luxe'),
                 ],
                 [
@@ -214,7 +216,7 @@ function sklo_katalog(): array
                     'title' => 'Rock Glass',
                     'text'  => 'Sklo s výraznou strukturou — světlo hraje, pohled zůstává soukromý.',
                     // SklS-0317 — ROCK GLASS laminované černé
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0317.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0317'),
                     'price' => $od('rock-glass', 11500),
                 ],
                 [
@@ -222,7 +224,7 @@ function sklo_katalog(): array
                     'title' => 'Příčky a zabudování',
                     'text'  => 'Skleněné příčky, pevné výplně a zabudování do stěny nebo pouzdra.',
                     // SklS-0326 — zabudování kyvné s pevnými příčkami
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0326.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0326'),
                     'price' => $od('pricky-a-zabudovani'),
                 ],
                 [
@@ -230,7 +232,7 @@ function sklo_katalog(): array
                     'title' => 'Vzory skla',
                     'text'  => 'Čiré, matné, barevné i dekorativní vzory — přehledný výběr pro studio.',
                     // SklS-0335 — Design-Lux vzor proužky 1.2
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0335.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0335'),
                     'price' => $od('vzory-skla', 2100),
                 ],
                 [
@@ -238,7 +240,7 @@ function sklo_katalog(): array
                     'title' => 'Laminované',
                     'text'  => 'Vrstvené sklo pro vyšší bezpečnost a klidnější akustiku.',
                     // SklS-0202 — laminované černé (lesk)
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0202.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0202'),
                     'price' => $od('laminovane', 11700),
                 ],
                 [
@@ -246,7 +248,7 @@ function sklo_katalog(): array
                     'title' => 'Skladem',
                     'text'  => 'Vybrané provedení s rychlou expedicí — když nechceš čekat na výrobu na míru.',
                     // SklS-0338 — Design-Lux bílý systém matné skladem
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0338.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0338'),
                     'price' => $od('skladem', 7600),
                 ],
                 [
@@ -254,7 +256,7 @@ function sklo_katalog(): array
                     'title' => 'Celoskleněné',
                     'text'  => 'Maximální průchod světla, minimální rám. Opticky propojí místnosti.',
                     // SklS-0229 — celoskleněné čiré, kotvené nahoře a dole
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0229.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0229'),
                     'price' => null,
                 ],
             ],
@@ -276,35 +278,35 @@ function sklo_katalog(): array
                     'title' => 'Design-Lux',
                     'lead'  => 'Nejoblíbenější posuvný systém v nabídce. Čistá linie, spolehlivý posuv po stěně.',
                     'price' => $sec_od('posuvne', 'design-lux'),
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0333.jpg',  // SklS-0333
+                    'image' => sklo_katalog_img_url('SklS-0333'),  // SklS-0333
                 ],
                 [
                     'id'    => 'ultra-slim',
                     'title' => 'Ultra Slim',
                     'lead'  => 'Tenký profil, který ustoupí sklu — lehčí vzhled, méně kovu v pohledu.',
                     'price' => $sec_od('posuvne', 'ultra-slim'),
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0085.jpg',  // SklS-0085
+                    'image' => sklo_katalog_img_url('SklS-0085'),  // SklS-0085
                 ],
                 [
                     'id'    => 'loft',
                     'title' => 'Loft',
                     'lead'  => 'Výraznější průmyslový charakter — černé prvky, pevnější linie.',
                     'price' => $sec_od('posuvne', 'loft'),
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0101.jpg',  // SklS-0101
+                    'image' => sklo_katalog_img_url('SklS-0101'),  // SklS-0101
                 ],
                 [
                     'id'    => 'trubkovy-system',
                     'title' => 'Trubkový systém',
                     'lead'  => 'Posuv s trubkovým madlem a robustnějším hardwarem.',
                     'price' => $sec_od('posuvne', 'trubkovy-system'),
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0144.jpg',  // SklS-0144
+                    'image' => sklo_katalog_img_url('SklS-0144'),  // SklS-0144
                 ],
                 [
                     'id'    => 'do-pouzdra',
                     'title' => 'Do pouzdra',
                     'lead'  => 'Křídlo zajíždí do stavebního pouzdra — když jsou dveře otevřené, zůstane čistý průchod.',
                     'price' => $sec_od('posuvne', 'do-pouzdra'),
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0153.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0153'),
                 ],
             ],
             'uploads' => $uploads,
@@ -325,7 +327,7 @@ function sklo_katalog(): array
                     'title' => 'Kyvné dveře',
                     'lead'  => 'Systém s pohybem oběma směry (často samozavírač). Vhodné do průchodů, kde potřebuješ volný průchod z obou stran.',
                     'price' => $od('otocne', 9800),
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0194.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0194'),
                 ],
             ],
             'uploads' => $uploads,
@@ -346,7 +348,7 @@ function sklo_katalog(): array
                     'title' => 'Otevírané dveře',
                     'lead'  => 'Křídlo se otevírá do prostoru. Dobře sedí k zárubním i k celoskleněným řešením.',
                     'price' => $od('otevirane', 9700),
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0240.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0240'),
                 ],
             ],
             'uploads' => $uploads,
@@ -590,7 +592,7 @@ function sklo_katalog(): array
                     'title' => 'Skleněné příčky',
                     'lead'  => 'Pevné nebo s dveřním křídlem. Hodí se do open-space, pracovny i bytu.',
                     'price' => $od('pricky-a-zabudovani'),
-                    'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0326.jpg',
+                    'image' => sklo_katalog_img_url('SklS-0326'),
                 ],
             ],
             'uploads' => $uploads,

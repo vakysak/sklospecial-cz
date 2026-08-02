@@ -127,6 +127,9 @@ function sklo_format_doplatek(int $kc): string
  */
 function sklo_quba_thumb(string $url, string $size = '400_400'): string
 {
+    if (function_exists('sklo_public_asset_url')) {
+        $url = sklo_public_asset_url($url);
+    }
     if ($url === '' || !str_contains($url, 'qubaglass.pl')) {
         return $url;
     }
@@ -535,12 +538,13 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
         foreach ($p['images'] as $img) {
             $img = (string) $img;
             if ($img !== '') {
-                $images[] = $img;
+                $images[] = function_exists('sklo_public_asset_url') ? sklo_public_asset_url($img) : $img;
             }
         }
     }
     if ($images === [] && !empty($p['image'])) {
-        $images[] = (string) $p['image'];
+        $img = (string) $p['image'];
+        $images[] = function_exists('sklo_public_asset_url') ? sklo_public_asset_url($img) : $img;
     }
 
     $includes = [];
