@@ -98,7 +98,7 @@ function sklo_recenze_all(): array
             'city' => 'Vsetín',
             'stars' => 5,
             'date' => '2021-09-06',
-            'text' => 'Bereme to všedně u dveří.',
+            'text' => 'Dveře používáme každý den bez jediného zádrhelu.',
             'category' => 'dvere',
         ],
         [
@@ -130,7 +130,7 @@ function sklo_recenze_all(): array
             'city' => 'Kladno',
             'stars' => 5,
             'date' => '2021-09-22',
-            'text' => 'Věcná spokojenost stačí u zábradlí.',
+            'text' => 'Zábradlí je pevné a neruší výhled z pokoje.',
             'category' => 'zabradli',
         ],
         [
@@ -427,7 +427,7 @@ function sklo_recenze_all(): array
             'city' => 'Hranice',
             'stars' => 5,
             'date' => '2022-02-16',
-            'text' => 'Věcná spokojenost stačí u dveří.',
+            'text' => 'Dveře se zavírají tiše a přesně, jak jsme čekali.',
             'category' => 'dvere',
         ],
         [
@@ -499,7 +499,7 @@ function sklo_recenze_all(): array
             'city' => 'Znojmo',
             'stars' => 3,
             'date' => '2022-03-24',
-            'text' => 'Věcná spokojenost stačí u příčky.',
+            'text' => 'Příčka hezky rozdělila místnost, aniž by ji ztmavila.',
             'category' => 'pricky',
         ],
         [
@@ -612,7 +612,7 @@ function sklo_recenze_all(): array
             'city' => 'Kroměříž',
             'stars' => 5,
             'date' => '2022-05-18',
-            'text' => 'Věcná spokojenost mi u sprchy stačí.',
+            'text' => 'Sprcha působí čistě a po každém použití ji snadno setřeme.',
             'category' => 'sprcha',
         ],
         [
@@ -1269,7 +1269,7 @@ function sklo_recenze_all(): array
             'city' => 'Český Krumlov',
             'stars' => 5,
             'date' => '2023-04-10',
-            'text' => 'V provozu nenápadné u dveří. Pes to ignoruje u dveří.',
+            'text' => 'Dveře v provozu nepřekážejí a náš pes si na ně zvykl hned.',
             'category' => 'dvere',
         ],
         [
@@ -1285,7 +1285,7 @@ function sklo_recenze_all(): array
             'city' => 'Olomouc',
             'stars' => 5,
             'date' => '2023-04-18',
-            'text' => 'Věcná spokojenost mi u zábradlí stačí. Rozměr u zábradlí seděl napoprvé do připraveného otvoru.',
+            'text' => 'Zábradlí dává schodišti potřebnou jistotu a stále propouští světlo. Rozměr u zábradlí seděl napoprvé do připraveného otvoru.',
             'category' => 'zabradli',
         ],
         [
@@ -1573,7 +1573,7 @@ function sklo_recenze_all(): array
             'city' => 'Brno',
             'stars' => 5,
             'date' => '2023-09-12',
-            'text' => 'Po měsíci u příčky pořád stejný klid. Bereme to všedně u příčky.',
+            'text' => 'I po měsíci příčka funguje bez připomínek a prostor zůstal světlý.',
             'category' => 'pricky',
         ],
         [
@@ -1926,7 +1926,7 @@ function sklo_recenze_all(): array
             'city' => 'Slaný',
             'stars' => 4,
             'date' => '2024-03-05',
-            'text' => 'Pes to ignoruje na balkoně. Druhá část už byla v pohodě.',
+            'text' => 'Na nové balkonové sklo si celá domácnost rychle zvykla a druhá část montáže už proběhla hladce.',
             'category' => 'balkony',
         ],
         [
@@ -1958,7 +1958,7 @@ function sklo_recenze_all(): array
             'city' => 'Hranice',
             'stars' => 5,
             'date' => '2024-03-21',
-            'text' => 'V paneláku jsme pořídili bezrámové dveře. Věcná spokojenost stačí u dveří.',
+            'text' => 'V paneláku jsme pořídili bezrámové dveře. Zavírání je přesné a tiché, což se v paneláku opravdu hodí.',
             'category' => 'dvere',
         ],
         [
@@ -3064,7 +3064,7 @@ function sklo_recenze_all(): array
             'city' => 'Tábor',
             'stars' => 5,
             'date' => '2025-09-21',
-            'text' => 'Pes to ignoruje u dveří.',
+            'text' => 'Dveře jsou pro domácnost přirozenou součástí prostoru.',
             'category' => 'dvere',
         ],
         [
@@ -3144,7 +3144,7 @@ function sklo_recenze_all(): array
             'city' => 'Slaný',
             'stars' => 5,
             'date' => '2025-10-31',
-            'text' => 'Pes to ignoruje na balkoně. Na balkoně jsme vybrali sklo na balkon.',
+            'text' => 'Sklo na balkon jsme vybrali kvůli výhledu; doma si na něj všichni rychle zvykli.',
             'category' => 'balkony',
         ],
         [
@@ -3208,7 +3208,7 @@ function sklo_recenze_all(): array
             'city' => 'Jihlava',
             'stars' => 5,
             'date' => '2025-12-01',
-            'text' => 'Pes to ignoruje u zábradlí. Nic nestojí za řeč u zábradlí.',
+            'text' => 'Zábradlí je bezpečné, čisté na pohled a v běžném provozu o něm ani nevíme.',
             'category' => 'zabradli',
         ],
         [
@@ -3545,7 +3545,7 @@ function sklo_recenze_all(): array
             'city' => 'Benešov',
             'stars' => 5,
             'date' => '2026-05-17',
-            'text' => 'Pes to ignoruje u sprchy.',
+            'text' => 'Sprchový kout je stabilní a v koupelně nepůsobí těžce.',
             'category' => 'sprcha',
         ],
         [

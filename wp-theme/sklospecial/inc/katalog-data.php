@@ -257,7 +257,7 @@ function sklo_katalog(): array
                     'text'  => 'Maximální průchod světla, minimální rám. Opticky propojí místnosti.',
                     // SklS-0229 — celoskleněné čiré, kotvené nahoře a dole
                     'image' => sklo_katalog_img_url('SklS-0229'),
-                    'price' => null,
+                    'price' => sklo_format_cena_od(14289),
                 ],
             ],
             'uploads' => $uploads,

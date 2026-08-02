@@ -1,7 +1,7 @@
 <?php
 /**
  * Auto-generated product catalog from shoptet_import.csv + product_details.json.
- * Generated: 2026-08-01 17:52:21 UTC
+ * Generated: 2026-08-02 10:43:29 UTC
  * Products: 1020 (incl. laminovane overlap)
  * Details matched: 1004
  * Embed mode: lean+json
@@ -271,7 +271,7 @@ return [
             ['code' => 'SklS-0207', 'name' => 'Skleněné kyvné dveře otevírané na míru grafika KOL/133', 'price' => 12363, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0207.jpg', 'section' => 'otocne', 'partNumber' => '1341', 'has_detail' => true],
             ['code' => 'SklS-0208', 'name' => 'Skleněné kyvné dveře otevírané na míru grafika KOL/134', 'price' => 12363, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0208.jpg', 'section' => 'otocne', 'partNumber' => '1342', 'has_detail' => true],
             ['code' => 'SklS-0209', 'name' => 'Skleněné kyvné dveře otevírané na míru grafika KOL/140', 'price' => 12363, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0209.jpg', 'section' => 'otocne', 'partNumber' => '1343', 'has_detail' => true],
-            ['code' => 'SklS-0225', 'name' => 'Skleněné kyvné dveře s hydraulickými závěsy s regulací zavírání čiré', 'price' => 12447, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0225.jpg', 'section' => 'otocne', 'partNumber' => '1825', 'has_detail' => true],
+            ['code' => 'SklS-0225', 'name' => 'Skleněné kyvné dveře z zawiasami hydraulicznymi z regulacja zamykania čiré', 'price' => 12447, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0225.jpg', 'section' => 'otocne', 'partNumber' => '1825', 'has_detail' => true],
             ['code' => 'SklS-0202', 'name' => 'Skleněné kyvné dveře otevírané laminované černé', 'price' => 13456, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0202.jpg', 'section' => 'otocne', 'partNumber' => '1370', 'has_detail' => true],
             ['code' => 'SklS-0204', 'name' => 'Skleněné kyvné dveře otevírané loft potisk příčky rámeček černá', 'price' => 14297, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0204.jpg', 'section' => 'otocne', 'partNumber' => '1299', 'has_detail' => true],
             ['code' => 'SklS-0210', 'name' => 'Skleněné kyvné dveře otevírané na míru grafitové čiré', 'price' => 14297, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0210.jpg', 'section' => 'otocne', 'partNumber' => '1347', 'has_detail' => true],
@@ -600,7 +600,7 @@ return [
             ['code' => 'SklS-0619', 'name' => 'Skleněný sprchový kout WALK-IN grafika KOL/135 + černé kování 110,120', 'price' => 13120, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0619.jpg', 'section' => 'sprchy', 'partNumber' => '1285', 'has_detail' => true],
             ['code' => 'SklS-0610', 'name' => 'Skleněný sprchový kout dveře + pevná příčka nr.2', 'price' => 17661, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0610.jpg', 'section' => 'sprchy', 'partNumber' => '1568', 'has_detail' => true],
             ['code' => 'SklS-0611', 'name' => 'Skleněný sprchový kout dveře + pevná příčka nr.3', 'price' => 20184, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0611.jpg', 'section' => 'sprchy', 'partNumber' => '1569', 'has_detail' => true],
-            ['code' => 'SklS-0629', 'name' => 'Skleněný sprchový kout WALK-IN lodowa sklo tluczone', 'price' => 23548, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0629.jpg', 'section' => 'sprchy', 'partNumber' => '1776', 'has_detail' => true],
+            ['code' => 'SklS-0629', 'name' => 'Skleněný sprchový kout WALK-IN — ledové drcené sklo', 'price' => 23548, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0629.jpg', 'section' => 'sprchy', 'partNumber' => '1776', 'has_detail' => true],
         ],
     ],
     'strisky' => [
@@ -1075,8 +1075,8 @@ return [
             's-montazi' => 7600,
         ],
         'products' => [
-            ['code' => 'SklS-0755', 'name' => 'Profil odtokový do A/0004-ECO-Drain', 'price' => 294, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0755.jpg', 'section' => 'profily', 'partNumber' => '1549', 'has_detail' => true],
-            ['code' => 'SklS-0823', 'name' => 'Profil odtokový do AL/0004-UnoXL', 'price' => 294, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0823.jpg', 'section' => 'profily-fix', 'partNumber' => '1791', 'has_detail' => true],
+            ['code' => 'SklS-0755', 'name' => 'Profil odplywowy do A/0004-ECO-Drain', 'price' => 294, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0755.jpg', 'section' => 'profily', 'partNumber' => '1549', 'has_detail' => true],
+            ['code' => 'SklS-0823', 'name' => 'Profil odplywowy do AL/0004-UnoXL', 'price' => 294, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0823.jpg', 'section' => 'profily-fix', 'partNumber' => '1791', 'has_detail' => true],
             ['code' => 'SklS-0781', 'name' => 'Záslepka bočního profilu AL/0034-005-D-S-E', 'price' => 420, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0781.jpg', 'section' => 'profily', 'partNumber' => '1722', 'has_detail' => true],
             ['code' => 'SklS-0825', 'name' => 'Záslepka profilu AL/0005-UNO-S-E', 'price' => 420, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0825.jpg', 'section' => 'profily-fix', 'partNumber' => '1819', 'has_detail' => true],
             ['code' => 'SklS-0831', 'name' => 'Záslepka profilu AL/0034-004-PRO-S-E', 'price' => 463, 'image' => 'https://c93wrq6ujvo02103pn26bxbr.46.225.122.108.sslip.io/public/katalog-img/SklS-0831.jpg', 'section' => 'profily-fix', 'partNumber' => '1780', 'has_detail' => true],
