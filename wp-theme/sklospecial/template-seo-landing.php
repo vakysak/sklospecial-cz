@@ -220,13 +220,23 @@ if ($kind === 'city') {
     </div>
   </section>
 
+  <?php if ($kind === 'city' && function_exists('sklo_render_seo_city_photos')) : ?>
+    <?php sklo_render_seo_city_photos($category); ?>
+  <?php endif; ?>
+
+  <?php if ($kind === 'city' && function_exists('sklo_render_seo_city_category_showcases')) : ?>
+    <?php sklo_render_seo_city_category_showcases($category); ?>
+  <?php endif; ?>
+
   <?php if ($kind === 'city' && $link_blocks) : ?>
   <section class="sklo-section sklo-seo-landing__links" aria-label="Související stránky">
     <div class="sklo-wrap sklo-seo-landing__links-inner">
       <header class="sklo-section__head">
         <p class="sklo-eyebrow">Orientace na webu</p>
         <h2>Co ještě řeší lidé u stejné zakázky</h2>
+        <p class="sklo-seo-landing__links-lead">Rychlé odkazy na varianty, montáž a další města — ať nemusíš hledat v menu.</p>
       </header>
+      <div class="sklo-seo-landing__link-grid">
       <?php foreach ($link_blocks as $block) :
           $btitle = (string) ($block['title'] ?? '');
           $paras = (array) ($block['paragraphs'] ?? []);
@@ -248,6 +258,7 @@ if ($kind === 'city') {
           <?php endforeach; ?>
         </div>
       <?php endforeach; ?>
+      </div>
     </div>
   </section>
   <?php endif; ?>
@@ -256,7 +267,7 @@ if ($kind === 'city') {
   <section class="sklo-section sklo-seo-landing__why">
     <div class="sklo-wrap sklo-seo-landing__why-inner">
       <header class="sklo-section__head">
-        <p class="sklo-eyebrow">Lokálně a férově</p>
+        <p class="sklo-eyebrow">Lokálně a férově · z Havířova</p>
         <h2><?php echo esc_html($why_title !== '' ? $why_title : 'Jak to u vás řešíme'); ?></h2>
       </header>
       <p class="sklo-seo-landing__why-text"><?php echo esc_html($why_local); ?></p>

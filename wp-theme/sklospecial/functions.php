@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.27.0');
+define('SKLO_THEME_VER', '1.28.0');
 
 /** Default konfigurátor/API host. Override via option sklo_api_base or env SKLO_API_BASE. */
 define(
@@ -71,6 +71,22 @@ add_action('wp_head', 'sklo_staging_robots_noindex', 0);
 add_filter('wp_sitemaps_stylesheet_url', '__return_false');
 add_filter('wp_sitemaps_stylesheet_index_url', '__return_false');
 
+/**
+ * Physical robots.txt in ABSPATH bypasses WP filters (Apache serves the file).
+ * Remove stale copies that still advertise Rank Math's /sitemap_index.xml.
+ */
+add_action('init', static function (): void {
+    $path = ABSPATH . 'robots.txt';
+    if (!is_file($path) || !is_writable($path)) {
+        return;
+    }
+    $body = (string) @file_get_contents($path);
+    if ($body === '' || !preg_match('/Sitemap:\s*.*sitemap_index\.xml/i', $body)) {
+        return;
+    }
+    @unlink($path);
+}, 0);
+
 add_filter('robots_txt', static function ($output, $public) {
     if (!sklo_is_production()) {
         return "User-agent: *\nDisallow: /\n";
@@ -79,12 +95,12 @@ add_filter('robots_txt', static function ($output, $public) {
     if ($out === '' || !str_contains($out, 'User-agent:')) {
         $out = "User-agent: *\nAllow: /\n";
     }
-    // Canonical WP core sitemap (Rank Math not installed — do not advertise sitemap_index.xml).
+    // Canonical WP core sitemap (do not advertise Rank Math /sitemap_index.xml — 404).
     $sitemap = home_url('/wp-sitemap.xml');
     $out = preg_replace('/^Sitemap:\s*.*$/mi', '', $out) ?? $out;
     $out = rtrim($out) . "\n\nSitemap: {$sitemap}\n";
     return $out;
-}, 10, 2);
+}, PHP_INT_MAX, 2);
 
 /**
  * P1 security headers. HSTS only on production host (not sslip).

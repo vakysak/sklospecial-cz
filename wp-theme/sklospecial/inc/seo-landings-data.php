@@ -1632,3 +1632,379 @@ function sklo_render_city_cloud(string $category_slug): void
     echo '<p class="sklo-city-cloud__note"><a class="sklo-link" href="' . esc_url(home_url('/mapa-stranek/')) . '">Kompletní mapa stránek</a></p>';
     echo '</div></section>';
 }
+
+/**
+ * Product / inspiration photos for a city landing (honest captions — not city-specific projects).
+ *
+ * @param array<string, mixed> $category
+ * @return list<array{src:string,alt:string,caption:string,w:int,h:int}>
+ */
+function sklo_seo_city_photos(array $category): array
+{
+    $slug = (string) ($category['slug'] ?? '');
+    $uploads = content_url('uploads/2026/07');
+    $img = static function (string $code) {
+        return function_exists('sklo_katalog_img_url') ? sklo_katalog_img_url($code) : '';
+    };
+
+    $by_cat = [
+        'sklenene-dvere' => [
+            [
+                'src' => $uploads . '/posuvne-sklenene-dvere-matne-sklo.webp',
+                'alt' => 'Ukázka posuvných skleněných dveří s matným sklem',
+                'caption' => 'Posuvné dveře — inspirace, ne konkrétní zakázka ve městě',
+                'w' => 507,
+                'h' => 626,
+            ],
+            [
+                'src' => $uploads . '/sklenene-dvere-v-interieru.webp',
+                'alt' => 'Ukázka skleněných dveří v interiéru',
+                'caption' => 'Celoskleněné dveře v obytném interiéru',
+                'w' => 626,
+                'h' => 470,
+            ],
+            [
+                'src' => $uploads . '/sklenene-dvere-s-modernim-madlem.webp',
+                'alt' => 'Detail skleněných dveří s madlem',
+                'caption' => 'Detail kování a madla',
+                'w' => 626,
+                'h' => 418,
+            ],
+            [
+                'src' => $uploads . '/moderni-bydleni-sklenene-dvere.webp',
+                'alt' => 'Ukázka prosklených dveří v moderním bydlení',
+                'caption' => 'Prosklené dveře — ilustrační foto',
+                'w' => 626,
+                'h' => 501,
+            ],
+        ],
+        'sprchove-kouty' => [
+            [
+                'src' => $img('SklS-0608'),
+                'alt' => 'Ukázka skleněného sprchového koutu',
+                'caption' => 'Sprchový kout — produktová ukázka z katalogu',
+                'w' => 400,
+                'h' => 400,
+            ],
+            [
+                'src' => $img('SklS-0615'),
+                'alt' => 'Ukázka walk-in sprchové stěny',
+                'caption' => 'Walk-in stěna — typické řešení do koupelny',
+                'w' => 400,
+                'h' => 400,
+            ],
+            [
+                'src' => $img('SklS-0620'),
+                'alt' => 'Ukázka sprchové zástěny',
+                'caption' => 'Sprchová zástěna — katalogová inspirace',
+                'w' => 400,
+                'h' => 400,
+            ],
+            [
+                'src' => $uploads . '/sklenene-dvere-s-matnym-sklem.webp',
+                'alt' => 'Ukázka matného skla v interiéru',
+                'caption' => 'Matné sklo — ilustrační náladovka',
+                'w' => 626,
+                'h' => 417,
+            ],
+        ],
+        'zabradli' => [
+            [
+                'src' => $uploads . '/sklene-zabradli-s-masivnim-drevem.webp',
+                'alt' => 'Ukázka skleněného zábradlí s dřevěným madlem',
+                'caption' => 'Zábradlí se dřevem — inspirace, ne dokumentace zakázky',
+                'w' => 626,
+                'h' => 417,
+            ],
+            [
+                'src' => $uploads . '/sklenene-zabradli-schodiste.webp',
+                'alt' => 'Ukázka skleněného zábradlí na schodišti',
+                'caption' => 'Schodišťové zábradlí — ilustrační foto',
+                'w' => 626,
+                'h' => 417,
+            ],
+            [
+                'src' => $img('SklS-0734'),
+                'alt' => 'Ukázka skleněného zábradlí z katalogu',
+                'caption' => 'Produktová ukázka zábradlí',
+                'w' => 400,
+                'h' => 400,
+            ],
+            [
+                'src' => $uploads . '/sklene-zabradli-s-nerezovym-madlem.webp',
+                'alt' => 'Ukázka skleněného zábradlí s nerezovým madlem',
+                'caption' => 'Nerezové madlo — ilustrace typu',
+                'w' => 626,
+                'h' => 417,
+            ],
+        ],
+        'strisky' => [
+            [
+                'src' => $img('SklS-0832'),
+                'alt' => 'Ukázka skleněné stříšky',
+                'caption' => 'Skleněná stříška — produktová ukázka',
+                'w' => 400,
+                'h' => 400,
+            ],
+            [
+                'src' => $img('SklS-0835'),
+                'alt' => 'Ukázka skleněné stříšky na konzolách',
+                'caption' => 'Stříška na konzolách — katalog',
+                'w' => 400,
+                'h' => 400,
+            ],
+            [
+                'src' => $img('SklS-0840'),
+                'alt' => 'Ukázka skleněné stříšky na táhlech',
+                'caption' => 'Stříška na táhlech — typické kotvení',
+                'w' => 400,
+                'h' => 400,
+            ],
+            [
+                'src' => $uploads . '/sklenene-dvere-detail.webp',
+                'alt' => 'Detail skla a kování',
+                'caption' => 'Detail skla — ilustrační foto',
+                'w' => 626,
+                'h' => 418,
+            ],
+        ],
+        'sklenene-steny' => [
+            [
+                'src' => $img('SklS-0326'),
+                'alt' => 'Ukázka skleněné stěny',
+                'caption' => 'Skleněná stěna — produktová ukázka',
+                'w' => 400,
+                'h' => 400,
+            ],
+            [
+                'src' => $uploads . '/moderni-interier-sklene-prcky-dreveny-stolek.webp',
+                'alt' => 'Ukázka skleněných příček v interiéru',
+                'caption' => 'Skleněné příčky — inspirace do dispozice',
+                'w' => 626,
+                'h' => 417,
+            ],
+            [
+                'src' => $uploads . '/sklenene-dvere-na-miru-2.webp',
+                'alt' => 'Ukázka prosklené stěny v architektuře',
+                'caption' => 'Prosklená stěna — ilustrační foto',
+                'w' => 626,
+                'h' => 351,
+            ],
+            [
+                'src' => $uploads . '/moderni-interier-se-sklenem-a-sochami.webp',
+                'alt' => 'Ukázka velkých skleněných ploch',
+                'caption' => 'Velké skleněné plochy — náladovka',
+                'w' => 626,
+                'h' => 262,
+            ],
+        ],
+        'francouzske-balkony' => [
+            [
+                'src' => $img('SklS-0645'),
+                'alt' => 'Ukázka francouzského balkonu ze skla',
+                'caption' => 'Francouzský balkon — produktová ukázka',
+                'w' => 400,
+                'h' => 400,
+            ],
+            [
+                'src' => $img('SklS-0650'),
+                'alt' => 'Ukázka skleněné výplně francouzského balkonu',
+                'caption' => 'Výplň u francouzského okna — katalog',
+                'w' => 400,
+                'h' => 400,
+            ],
+            [
+                'src' => $uploads . '/sklenene-zabradli-s-vyhledem-do-zahrady.webp',
+                'alt' => 'Ukázka skla s výhledem do zahrady',
+                'caption' => 'Sklo u výhledu — ilustrační foto',
+                'w' => 626,
+                'h' => 358,
+            ],
+            [
+                'src' => $uploads . '/sklene-zabradli-s-nerezovym-madlem-3.webp',
+                'alt' => 'Ukázka skleněného zábradlí na terase',
+                'caption' => 'Exteriérové sklo — inspirace typu',
+                'w' => 626,
+                'h' => 430,
+            ],
+        ],
+    ];
+
+    $list = $by_cat[$slug] ?? [];
+    return array_values(array_filter($list, static fn(array $row): bool => ($row['src'] ?? '') !== ''));
+}
+
+/**
+ * Visual category showcases for city landings (links to other pillars).
+ *
+ * @return list<array{href:string,img:string,alt:string,title:string,text:string,w:int,h:int}>
+ */
+function sklo_seo_city_category_showcases(?string $exclude_slug = null): array
+{
+    $uploads = content_url('uploads/2026/07');
+    $img = static function (string $code) {
+        return function_exists('sklo_katalog_img_url') ? sklo_katalog_img_url($code) : '';
+    };
+
+    $all = [
+        [
+            'slug' => 'sklenene-dvere',
+            'href' => '/sklenene-dvere/',
+            'img' => $uploads . '/posuvne-sklenene-dvere-matne-sklo.webp',
+            'alt' => 'Skleněné dveře',
+            'title' => 'Dveře',
+            'text' => 'Posuvné, kyvné i otevírané',
+            'w' => 507,
+            'h' => 626,
+        ],
+        [
+            'slug' => 'sprchove-kouty',
+            'href' => '/sprchove-kouty/',
+            'img' => $img('SklS-0608'),
+            'alt' => 'Sprchové kouty',
+            'title' => 'Sprchy',
+            'text' => 'Walk-in stěny a kouty na míru',
+            'w' => 400,
+            'h' => 400,
+        ],
+        [
+            'slug' => 'zabradli',
+            'href' => '/zabradli/',
+            'img' => $img('SklS-0734'),
+            'alt' => 'Skleněné zábradlí',
+            'title' => 'Zábradlí',
+            'text' => 'Schodiště, terasa, galerie',
+            'w' => 400,
+            'h' => 400,
+        ],
+        [
+            'slug' => 'sklenene-steny',
+            'href' => '/sklenene-steny/',
+            'img' => $img('SklS-0326'),
+            'alt' => 'Skleněné stěny',
+            'title' => 'Skleněné stěny',
+            'text' => 'Oddělení bez ztráty světla',
+            'w' => 400,
+            'h' => 400,
+        ],
+        [
+            'slug' => 'francouzske-balkony',
+            'href' => '/francouzske-balkony/',
+            'img' => $img('SklS-0645'),
+            'alt' => 'Francouzské balkony',
+            'title' => 'Balkony',
+            'text' => 'Výplně francouzských oken',
+            'w' => 400,
+            'h' => 400,
+        ],
+        [
+            'slug' => 'strisky',
+            'href' => '/strisky/',
+            'img' => $img('SklS-0832'),
+            'alt' => 'Skleněné stříšky',
+            'title' => 'Stříšky',
+            'text' => 'Na konzolách i táhlech',
+            'w' => 400,
+            'h' => 400,
+        ],
+    ];
+
+    $out = [];
+    foreach ($all as $row) {
+        if ($exclude_slug !== null && $row['slug'] === $exclude_slug) {
+            continue;
+        }
+        if (($row['img'] ?? '') === '') {
+            continue;
+        }
+        $out[] = $row;
+    }
+    return $out;
+}
+
+/**
+ * Photo strip under city landing hero.
+ *
+ * @param array<string, mixed> $category
+ */
+function sklo_render_seo_city_photos(array $category): void
+{
+    $photos = sklo_seo_city_photos($category);
+    if ($photos === []) {
+        return;
+    }
+    $product = (string) ($category['h1_product'] ?? 'Sklo');
+    ?>
+  <section class="sklo-section sklo-seo-photos" aria-label="Ukázky řešení">
+    <div class="sklo-wrap">
+      <header class="sklo-section__head">
+        <p class="sklo-eyebrow">Jak to vypadá</p>
+        <h2><?php echo esc_html($product); ?> — inspirace</h2>
+        <p class="sklo-seo-photos__note">Ilustrační a katalogové fotografie (stock / produktové snímky). Nejsou to dokumentace konkrétních montáží ve městě — typ a sklo doladíme podle tvých rozměrů.</p>
+      </header>
+      <div class="sklo-seo-photos__grid">
+        <?php foreach ($photos as $i => $photo) : ?>
+          <figure class="sklo-seo-photos__item">
+            <img
+              src="<?php echo esc_url((string) $photo['src']); ?>"
+              alt="<?php echo esc_attr((string) $photo['alt']); ?>"
+              width="<?php echo esc_attr((string) ($photo['w'] ?? 600)); ?>"
+              height="<?php echo esc_attr((string) ($photo['h'] ?? 400)); ?>"
+              loading="<?php echo $i < 2 ? 'eager' : 'lazy'; ?>"
+              decoding="async"
+            >
+            <figcaption><?php echo esc_html((string) $photo['caption']); ?></figcaption>
+          </figure>
+        <?php endforeach; ?>
+      </div>
+      <p class="sklo-seo-photos__more">
+        <a class="sklo-link" href="<?php echo esc_url(home_url('/realizace/')); ?>">Víc ukázek řešení</a>
+        ·
+        <a class="sklo-link" href="<?php echo esc_url(home_url((string) ($category['pillar_path'] ?? '/'))); ?>">Celý katalog <?php echo esc_html(mb_strtolower($product)); ?></a>
+      </p>
+    </div>
+  </section>
+    <?php
+}
+
+/**
+ * Visual links to other product categories on city landings.
+ *
+ * @param array<string, mixed> $category
+ */
+function sklo_render_seo_city_category_showcases(array $category): void
+{
+    $exclude = (string) ($category['slug'] ?? '');
+    $items = sklo_seo_city_category_showcases($exclude !== '' ? $exclude : null);
+    if ($items === []) {
+        return;
+    }
+    ?>
+  <section class="sklo-section sklo-seo-cats" aria-label="Další kategorie">
+    <div class="sklo-wrap">
+      <header class="sklo-section__head sklo-section__head--center">
+        <p class="sklo-eyebrow">Stejná dílna</p>
+        <h2>Děláme i další sklo na míru</h2>
+        <p>Dveře, sprchy, zábradlí, stěny, balkony i stříšky — stejný online proces, výroba z Havířova, montáž po ČR.</p>
+      </header>
+      <div class="sklo-seo-cats__grid">
+        <?php foreach ($items as $item) : ?>
+          <a class="sklo-seo-cats__card" href="<?php echo esc_url(home_url((string) $item['href'])); ?>">
+            <img
+              class="sklo-seo-cats__image"
+              src="<?php echo esc_url((string) $item['img']); ?>"
+              alt="<?php echo esc_attr((string) $item['alt']); ?>"
+              width="<?php echo esc_attr((string) ($item['w'] ?? 400)); ?>"
+              height="<?php echo esc_attr((string) ($item['h'] ?? 400)); ?>"
+              loading="lazy"
+              decoding="async"
+            >
+            <h3><?php echo esc_html((string) $item['title']); ?></h3>
+            <p><?php echo esc_html((string) $item['text']); ?></p>
+          </a>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </section>
+    <?php
+}
