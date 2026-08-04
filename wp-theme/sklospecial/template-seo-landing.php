@@ -26,6 +26,9 @@ if ($landing === null) {
 $kind = (string) $landing['kind'];
 $faq = [];
 $related = [];
+$cross_sell = [];
+$process_links = [];
+$link_blocks = [];
 $bullets = [];
 $price_from = null;
 $katalog_slug = '';
@@ -58,7 +61,10 @@ if ($kind === 'city') {
     $faq = $copy['faq'];
     $price_from = $copy['price_from'];
     $katalog_slug = (string) ($category['katalog_slug'] ?? ($category['slug'] ?? ''));
-    $related = (array) ($category['related'] ?? []);
+    $related = (array) ($copy['related_extra'] ?? ($category['related'] ?? []));
+    $cross_sell = (array) ($copy['cross_sell'] ?? ($category['cross_sell'] ?? []));
+    $process_links = (array) ($copy['process_links'] ?? []);
+    $link_blocks = (array) ($copy['link_blocks'] ?? []);
     $parent_url = (string) ($category['pillar_path'] ?? '/');
     $parent_label = (string) ($category['name'] ?? 'Katalog');
     $eyebrow = 'Dodávka · ' . $city['name'];
@@ -168,6 +174,34 @@ if ($kind === 'city') {
             <li><a href="<?php echo esc_url(home_url($rurl)); ?>"><?php echo esc_html($rlabel); ?></a></li>
           <?php endforeach; ?>
         </ul>
+        <?php if ($kind === 'city' && $cross_sell) : ?>
+          <h2 class="sklo-seo-landing__aside-sub">Další sklo</h2>
+          <ul class="sklo-seo-landing__related">
+            <?php foreach ($cross_sell as $rel) :
+                $rurl = is_array($rel) ? (string) ($rel[0] ?? '') : '';
+                $rlabel = is_array($rel) ? (string) ($rel[1] ?? '') : '';
+                if ($rurl === '' || $rlabel === '') {
+                    continue;
+                }
+                ?>
+              <li><a href="<?php echo esc_url(home_url($rurl)); ?>"><?php echo esc_html($rlabel); ?></a></li>
+            <?php endforeach; ?>
+          </ul>
+        <?php endif; ?>
+        <?php if ($kind === 'city' && $process_links) : ?>
+          <h2 class="sklo-seo-landing__aside-sub">Postup</h2>
+          <ul class="sklo-seo-landing__related">
+            <?php foreach ($process_links as $rel) :
+                $rurl = is_array($rel) ? (string) ($rel[0] ?? '') : '';
+                $rlabel = is_array($rel) ? (string) ($rel[1] ?? '') : '';
+                if ($rurl === '' || $rlabel === '') {
+                    continue;
+                }
+                ?>
+              <li><a href="<?php echo esc_url(home_url($rurl)); ?>"><?php echo esc_html($rlabel); ?></a></li>
+            <?php endforeach; ?>
+          </ul>
+        <?php endif; ?>
         <?php if ($kind === 'city' && $sibling_cities) : ?>
           <h2 class="sklo-seo-landing__aside-sub">Další města</h2>
           <ul class="sklo-seo-landing__related">
@@ -185,6 +219,38 @@ if ($kind === 'city') {
       </aside>
     </div>
   </section>
+
+  <?php if ($kind === 'city' && $link_blocks) : ?>
+  <section class="sklo-section sklo-seo-landing__links" aria-label="Související stránky">
+    <div class="sklo-wrap sklo-seo-landing__links-inner">
+      <header class="sklo-section__head">
+        <p class="sklo-eyebrow">Orientace na webu</p>
+        <h2>Co ještě řeší lidé u stejné zakázky</h2>
+      </header>
+      <?php foreach ($link_blocks as $block) :
+          $btitle = (string) ($block['title'] ?? '');
+          $paras = (array) ($block['paragraphs'] ?? []);
+          if ($btitle === '' || $paras === []) {
+              continue;
+          }
+          ?>
+        <div class="sklo-seo-landing__link-block">
+          <h3><?php echo esc_html($btitle); ?></h3>
+          <?php foreach ($paras as $para) : ?>
+            <p><?php echo wp_kses((string) $para, [
+                'a' => [
+                    'href' => true,
+                    'class' => true,
+                    'rel' => true,
+                    'target' => true,
+                ],
+            ]); ?></p>
+          <?php endforeach; ?>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </section>
+  <?php endif; ?>
 
   <?php if ($kind === 'city' && $why_local !== '') : ?>
   <section class="sklo-section sklo-seo-landing__why">

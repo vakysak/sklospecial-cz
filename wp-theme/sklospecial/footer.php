@@ -46,6 +46,7 @@
         <h3>O firmě</h3>
         <ul class="sklo-footer__list">
           <li><a href="<?php echo esc_url(home_url('/o-nas/')); ?>">O nás</a></li>
+          <li><a href="https://stolarstviales.cz/" rel="noopener noreferrer">Stolařství Aleš</a></li>
           <li><a href="<?php echo esc_url(home_url('/realizace/')); ?>">Ukázky řešení</a></li>
           <li><a href="<?php echo esc_url(home_url('/recenze/')); ?>">Recenze</a></li>
           <li><a href="<?php echo esc_url(home_url('/kontakt/')); ?>">Kontakt</a></li>

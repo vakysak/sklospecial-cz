@@ -2960,6 +2960,30 @@ a:hover { color: var(--accent-hover); }
   font-size: 1.05rem;
 }
 
+.sklo-seo-landing__links-inner {
+  max-width: 46rem;
+}
+
+.sklo-seo-landing__link-block {
+  margin: 1.75rem 0 0;
+}
+
+.sklo-seo-landing__link-block h3 {
+  margin: 0 0 0.55rem;
+  font-size: 1.15rem;
+}
+
+.sklo-seo-landing__link-block p {
+  margin: 0;
+  line-height: 1.65;
+  color: var(--ink, #122837);
+}
+
+.sklo-seo-landing__link-block + .sklo-seo-landing__link-block {
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(18, 40, 55, 0.08);
+}
+
 @media (max-width: 720px) {
   .sklo-type-grid--6 {
     grid-template-columns: repeat(2, 1fr);

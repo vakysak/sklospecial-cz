@@ -33,9 +33,15 @@ function sklo_seo_categories(): array
                 'Výroba na míru a montáž po celé ČR',
             ],
             'related'       => [
-                ['/sprchove-kouty/', 'Sprchové kouty'],
+                ['/sklenene-dvere/posuvne/', 'Posuvné dveře'],
+                ['/sklenene-dvere/posuvne/do-pouzdra/', 'Dveře do pouzdra'],
                 ['/sklenene-steny/', 'Skleněné stěny'],
+                ['/sprchove-kouty/', 'Sprchové kouty'],
+            ],
+            'cross_sell'    => [
+                ['/zabradli/', 'Skleněné zábradlí'],
                 ['/francouzske-balkony/', 'Francouzské balkony'],
+                ['/strisky/', 'Skleněné stříšky'],
             ],
         ],
         'sprchove-kouty' => [
@@ -52,7 +58,12 @@ function sklo_seo_categories(): array
                 'Doprava a montáž domluvíme individuálně',
             ],
             'related'       => [
+                ['/sprchove-kouty/walk-in/', 'Walk-in sprchy'],
+                ['/sprchove-kouty/zastena/', 'Sprchové zástěny'],
                 ['/sklenene-dvere/', 'Skleněné dveře'],
+            ],
+            'cross_sell'    => [
+                ['/sklenene-steny/', 'Skleněné stěny'],
                 ['/zabradli/', 'Skleněné zábradlí'],
                 ['/strisky/', 'Skleněné stříšky'],
             ],
@@ -71,9 +82,14 @@ function sklo_seo_categories(): array
                 'Bezpečné sklo a profily podle projektu',
             ],
             'related'       => [
+                ['/zabradli/schodiste/', 'Zábradlí na schodiště'],
                 ['/francouzske-balkony/', 'Francouzské balkony'],
                 ['/strisky/', 'Skleněné stříšky'],
+            ],
+            'cross_sell'    => [
                 ['/sklenene-dvere/', 'Skleněné dveře'],
+                ['/sklenene-steny/', 'Skleněné stěny'],
+                ['/sprchove-kouty/', 'Sprchové kouty'],
             ],
         ],
         'strisky' => [
@@ -94,6 +110,11 @@ function sklo_seo_categories(): array
                 ['/francouzske-balkony/', 'Francouzské balkony'],
                 ['/sklenene-dvere/', 'Skleněné dveře'],
             ],
+            'cross_sell'    => [
+                ['/sprchove-kouty/', 'Sprchové kouty'],
+                ['/sklenene-steny/', 'Skleněné stěny'],
+                ['/zabradli/schodiste/', 'Zábradlí na schodiště'],
+            ],
         ],
         'sklenene-steny' => [
             'name'          => 'Skleněné stěny',
@@ -113,6 +134,11 @@ function sklo_seo_categories(): array
                 ['/sklenene-dvere/posuvne/', 'Posuvné dveře'],
                 ['/sprchove-kouty/', 'Sprchové kouty'],
             ],
+            'cross_sell'    => [
+                ['/zabradli/', 'Skleněné zábradlí'],
+                ['/francouzske-balkony/', 'Francouzské balkony'],
+                ['/strisky/', 'Skleněné stříšky'],
+            ],
         ],
         'francouzske-balkony' => [
             'name'          => 'Francouzské balkony',
@@ -131,6 +157,11 @@ function sklo_seo_categories(): array
                 ['/zabradli/', 'Skleněné zábradlí'],
                 ['/strisky/', 'Skleněné stříšky'],
                 ['/sklenene-dvere/', 'Skleněné dveře'],
+            ],
+            'cross_sell'    => [
+                ['/sprchove-kouty/', 'Sprchové kouty'],
+                ['/sklenene-steny/', 'Skleněné stěny'],
+                ['/zabradli/schodiste/', 'Zábradlí na schodiště'],
             ],
         ],
     ];
@@ -1288,14 +1319,21 @@ function sklo_seo_city_copy(array $category, array $city): array
         $name
     );
 
-    // Internal links: pillar types + sibling cities
+    // Internal links: pillar subtypes + cross-sell + process + sibling cities (2–3)
     $related = (array) ($category['related'] ?? []);
+    $cross_sell = (array) ($category['cross_sell'] ?? []);
+    $process_links = [
+        ['/navod-na-zamereni/', 'Návod na zaměření'],
+        ['/doprava/', 'Doprava a montáž'],
+        ['/poptavka/', 'Poptávka'],
+        ['/o-nas/', 'O nás'],
+    ];
     $sibling_cities = [];
     $all_cities = sklo_seo_cities();
     $city_count = count($all_cities);
     if ($city_count > 1) {
         $start = (int) (crc32($slug_cat . '|' . $slug_city) % $city_count);
-        for ($i = 0; $i < $city_count && count($sibling_cities) < 4; $i++) {
+        for ($i = 0; $i < $city_count && count($sibling_cities) < 3; $i++) {
             $c = $all_cities[($start + $i) % $city_count];
             if (($c['slug'] ?? '') === $slug_city) {
                 continue;
@@ -1306,6 +1344,8 @@ function sklo_seo_city_copy(array $category, array $city): array
             ];
         }
     }
+
+    $link_blocks = sklo_seo_city_link_blocks($category, $city, $related, $cross_sell, $sibling_cities);
 
     $seo_title = sprintf('%s %s na míru | Sklospeciál', $product, $name);
     $seo_desc_bits = [
@@ -1345,9 +1385,219 @@ function sklo_seo_city_copy(array $category, array $city): array
         'price_from'     => $price,
         'sibling_cities' => $sibling_cities,
         'related_extra'  => $related,
+        'cross_sell'     => $cross_sell,
+        'process_links'  => $process_links,
+        'link_blocks'    => $link_blocks,
         'distance'       => $distance,
         'areas'          => $areas,
     ];
+}
+
+/**
+ * Natural internal-link prose blocks for a city×pillar landing (not a link farm).
+ *
+ * Each block is {title, paragraphs: list of HTML-safe strings with <a> already escaped}.
+ *
+ * @param array<string, mixed> $category
+ * @param array<string, mixed> $city
+ * @param list<array{0:string,1:string}> $related
+ * @param list<array{0:string,1:string}> $cross_sell
+ * @param list<array{0:string,1:string}> $sibling_cities
+ * @return list<array{title:string,paragraphs:list<string>}>
+ */
+function sklo_seo_city_link_blocks(
+    array $category,
+    array $city,
+    array $related,
+    array $cross_sell,
+    array $sibling_cities
+): array {
+    $product = (string) ($category['h1_product'] ?? '');
+    $in = (string) ($category['in_phrase'] ?? mb_strtolower($product));
+    $name = (string) ($city['name'] ?? '');
+    $loc = (string) ($city['locative'] ?? $name);
+    $v = (string) ($city['v'] ?? 'v');
+    $slug_cat = (string) ($category['slug'] ?? '');
+    $pillar = (string) ($category['pillar_path'] ?? '/');
+    $var = sklo_seo_variation($slug_cat . '|links', (string) ($city['slug'] ?? ''), 3);
+
+    $a = static function (string $url, string $label): string {
+        return '<a class="sklo-link" href="' . esc_url(home_url($url)) . '">' . esc_html($label) . '</a>';
+    };
+
+    $rel_bits = [];
+    foreach (array_slice($related, 0, 3) as $rel) {
+        if (!is_array($rel) || count($rel) < 2) {
+            continue;
+        }
+        $rel_bits[] = $a((string) $rel[0], (string) $rel[1]);
+    }
+    $rel_join = '';
+    if (count($rel_bits) === 1) {
+        $rel_join = $rel_bits[0];
+    } elseif (count($rel_bits) === 2) {
+        $rel_join = $rel_bits[0] . ' nebo ' . $rel_bits[1];
+    } elseif (count($rel_bits) >= 3) {
+        $rel_join = $rel_bits[0] . ', ' . $rel_bits[1] . ' i ' . $rel_bits[2];
+    }
+
+    $xs_bits = [];
+    foreach (array_slice($cross_sell, 0, 3) as $rel) {
+        if (!is_array($rel) || count($rel) < 2) {
+            continue;
+        }
+        $xs_bits[] = $a((string) $rel[0], (string) $rel[1]);
+    }
+    $xs_join = '';
+    if (count($xs_bits) === 1) {
+        $xs_join = $xs_bits[0];
+    } elseif (count($xs_bits) === 2) {
+        $xs_join = $xs_bits[0] . ' a ' . $xs_bits[1];
+    } elseif (count($xs_bits) >= 3) {
+        $xs_join = $xs_bits[0] . ', ' . $xs_bits[1] . ' nebo ' . $xs_bits[2];
+    }
+
+    $sib_bits = [];
+    foreach (array_slice($sibling_cities, 0, 3) as $rel) {
+        if (!is_array($rel) || count($rel) < 2) {
+            continue;
+        }
+        $sib_bits[] = $a((string) $rel[0], (string) $rel[1]);
+    }
+    $sib_join = '';
+    if (count($sib_bits) === 1) {
+        $sib_join = $sib_bits[0];
+    } elseif (count($sib_bits) === 2) {
+        $sib_join = $sib_bits[0] . ' a ' . $sib_bits[1];
+    } elseif (count($sib_bits) >= 3) {
+        $sib_join = $sib_bits[0] . ', ' . $sib_bits[1] . ' nebo ' . $sib_bits[2];
+    }
+
+    $pillar_link = $a($pillar, $product);
+    $navod = $a('/navod-na-zamereni/', 'návodu na zaměření');
+    $doprava = $a('/doprava/', 'dopravě a montáži');
+    $poptavka = $a('/poptavka/', 'poptávku');
+    $onas = $a('/o-nas/', 'O nás');
+
+    $related_openers = [
+        sprintf(
+            'Když řešíš %s %s %s, často ladíš i konkrétní variantu — u nás najdeš %s. Kompletní přehled je v kategorii %s.',
+            $in,
+            $v,
+            $loc,
+            $rel_join !== '' ? $rel_join : $pillar_link,
+            $pillar_link
+        ),
+        sprintf(
+            '%s %s %s není jedna sestava do všech bytů. Podívej se na %s — nebo rovnou na celý katalog %s.',
+            sklo_seo_ucfirst_v($v),
+            $loc,
+            $in,
+            $rel_join !== '' ? $rel_join : $pillar_link,
+            $pillar_link
+        ),
+        sprintf(
+            'U %s %s %s doporučujeme nejdřív vybrat typ (např. %s) a teprve pak poslat míry. Přehled máš v %s.',
+            $in,
+            $v,
+            $loc,
+            $rel_join !== '' ? $rel_join : 'souvisejících variantách',
+            $pillar_link
+        ),
+    ];
+
+    $cross_openers = [
+        sprintf(
+            'Stejná dílna z Havířova dělá i další sklo na míru — třeba %s. Hodí se, když chceš sjednotit materiál a montáž v jednom výjezdu.',
+            $xs_join !== '' ? $xs_join : $a('/sklenene-dvere/', 'skleněné dveře')
+        ),
+        sprintf(
+            'K rekonstrukci %s %s často patří i jiné skleněné prvky: %s. Nabídku připravíme ze stejných podkladů.',
+            $v,
+            $loc,
+            $xs_join !== '' ? $xs_join : $a('/zabradli/', 'zábradlí')
+        ),
+        sprintf(
+            'Když už plánuješ výjezd %s %s, dává smysl domluvit i %s — jeden termín, jedna doprava skla.',
+            $v,
+            $loc,
+            $xs_join !== '' ? $xs_join : $a('/sprchove-kouty/', 'sprchové kouty')
+        ),
+    ];
+
+    $process_openers = [
+        sprintf(
+            'Postup je vždy stejný: míry podle %s (nebo přijedeme), nabídka online, výroba v Havířově / okolí a termín podle %s. Stačí poslat %s — ozveme se nejpozději do 1 pracovního dne. Více o firmě: %s.',
+            $navod,
+            $doprava,
+            $poptavka,
+            $onas
+        ),
+        sprintf(
+            'Nejdřív %s s rozměry a fotkami, pak nabídka. DIY zaměření podle %s ušetří výjezd; volitelné zaměření i %s naceníme dopředu. Kdo jsme a jak pracujeme: %s.',
+            $poptavka,
+            $navod,
+            $doprava,
+            $onas
+        ),
+        sprintf(
+            'Pracujeme remote modelem z Havířova — bez showroomu %s %s. Podklady pošli přes %s, míry podle %s, montáž a dojezd řešíme v %s. Krátce o nás: %s.',
+            $v,
+            $loc,
+            $poptavka,
+            $navod,
+            $doprava,
+            $onas
+        ),
+    ];
+
+    $blocks = [
+        [
+            'title' => 'Související typy a kategorie',
+            'paragraphs' => [
+                $related_openers[$var] ?? $related_openers[0],
+            ],
+        ],
+        [
+            'title' => 'Další sklo ze stejné dílny',
+            'paragraphs' => [
+                $cross_openers[$var] ?? $cross_openers[0],
+            ],
+        ],
+        [
+            'title' => 'Jak to řešíme prakticky',
+            'paragraphs' => [
+                $process_openers[$var] ?? $process_openers[0],
+            ],
+        ],
+    ];
+
+    if ($sib_join !== '') {
+        $sib_paragraphs = [
+            sprintf(
+                'Stejným modelem dodáváme %s i jinde — např. %s. Pořád platí: jsme z Havířova, žádná fiktivní pobočka ve městě.',
+                mb_strtolower($product),
+                $sib_join
+            ),
+            sprintf(
+                'Hledáš stejné %s v jiném městě? Podívej se třeba na %s. Výroba jde vždy z naší dílny u Havířova.',
+                $in,
+                $sib_join
+            ),
+            sprintf(
+                'Montáž plánujeme i do okolních lokalit — %s. Termín potvrdíme po nabídce podle kapacity výjezdu.',
+                $sib_join
+            ),
+        ];
+        $blocks[] = [
+            'title' => 'Další města',
+            'paragraphs' => [
+                $sib_paragraphs[$var] ?? $sib_paragraphs[0],
+            ],
+        ];
+    }
+
+    return $blocks;
 }
 
 /**

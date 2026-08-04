@@ -27,6 +27,7 @@ $has_about = is_readable($about_img);
         <h2>Kdo jsme</h2>
         <p>Sklospeciál je rodinná značka pro skleněné dveře, sprchy, zábradlí, stříšky a skleněné stěny na míru. Pracujeme na dálku — zaměříš sám, pošleš fotky a nabídku připravíme podle konkrétního otvoru.</p>
         <p>Nemáme showroom. Typ, sklo a lištu doladíme přes WhatsApp nebo poptávku ještě před objednávkou. Montáž je volitelná; výrobek můžeš převzít i sám.</p>
+        <p>Provozovatel je <strong>Stolařství Aleš s.r.o.</strong> — stejná rodinná firma. Vedle skla na míru děláme i zakázkové dřevěné interiéry pod značkou <a class="sklo-link" href="https://stolarstviales.cz/" rel="noopener noreferrer">Stolařství Aleš</a>.</p>
 
         <h2>Jak to u nás probíhá</h2>
         <ol>
