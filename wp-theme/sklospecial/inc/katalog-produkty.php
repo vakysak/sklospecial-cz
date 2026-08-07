@@ -940,6 +940,22 @@ function sklo_render_produkty_grid(string $slug, ?string $section = null, int $i
     $note = sklo_cena_note();
     $grid_id = 'sklo-prod-' . preg_replace('/[^a-z0-9\-]+/', '-', $slug . ($section ? '-' . $section : ''));
     $base = (string) get_permalink();
+    $section_labels = [];
+    $cat_meta = function_exists('sklo_katalog_for_slug') ? sklo_katalog_for_slug($slug) : null;
+    if (is_array($cat_meta) && !empty($cat_meta['sections']) && is_array($cat_meta['sections'])) {
+        foreach ($cat_meta['sections'] as $sec) {
+            if (!is_array($sec)) {
+                continue;
+            }
+            $sid = (string) ($sec['id'] ?? '');
+            if ($sid === '') {
+                continue;
+            }
+            $section_labels[$sid] = (string) ($sec['title'] ?? $sid);
+        }
+    }
+    $cat_title = is_array($cat_meta) ? (string) ($cat_meta['title'] ?? '') : '';
+    $has_poptavka_btn = shortcode_exists('poptavka_tlacitko');
     ?>
   <section class="sklo-section sklo-produkty" id="<?php echo esc_attr($grid_id); ?>" data-sklo-produkty data-initial="<?php echo esc_attr((string) $initial); ?>">
     <div class="sklo-wrap">
@@ -960,6 +976,7 @@ function sklo_render_produkty_grid(string $slug, ?string $section = null, int $i
             $hidden = $i >= $initial;
             $detail = $code !== '' ? sklo_produkt_detail_url($code, $base) : '';
             $psec = (string) ($p['section'] ?? '');
+            $kat = $section_labels[$psec] ?? ($psec !== '' ? $psec : $cat_title);
             ?>
           <article
             class="sklo-produkty__item<?php echo $hidden ? ' is-collapsed' : ''; ?>"
@@ -993,6 +1010,24 @@ function sklo_render_produkty_grid(string $slug, ?string $section = null, int $i
             <?php if ($detail !== '') : ?>
               </a>
             <?php endif; ?>
+            <?php
+            if ($has_poptavka_btn && $code !== '' && $name !== '') {
+                $cena_txt = $price > 0 ? sklo_format_cena($price) : '';
+                $img_url = $img;
+                if ($img_url !== '' && function_exists('sklo_public_asset_url')) {
+                    $img_url = sklo_public_asset_url($img_url);
+                }
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- shortcode attrs escaped; markup from shortcode.
+                echo do_shortcode(sprintf(
+                    '[poptavka_tlacitko id="%s" nazev="%s" kategorie="%s" cena="%s" fotka="%s"]',
+                    esc_attr($code),
+                    esc_attr($name),
+                    esc_attr($kat),
+                    esc_attr($cena_txt),
+                    esc_attr($img_url)
+                ));
+            }
+            ?>
           </article>
         <?php endforeach; ?>
       </div>

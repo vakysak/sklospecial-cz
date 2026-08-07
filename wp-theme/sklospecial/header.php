@@ -46,6 +46,9 @@
           'depth'          => 2,
       ]);
       ?>
+      <?php if (shortcode_exists('poptavka_ikona')) : ?>
+        <span class="sklo-header__poptavka"><?php echo do_shortcode('[poptavka_ikona]'); ?></span>
+      <?php endif; ?>
       <?php if (function_exists('sklo_render_studio_coming_actions')) : ?>
         <?php sklo_render_studio_coming_actions('sklo-header__cta', true, false); ?>
       <?php else : ?>
