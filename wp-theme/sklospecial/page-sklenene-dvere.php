@@ -46,6 +46,32 @@ $children = is_array($cat['children'] ?? null) ? $cat['children'] : [];
 
   <?php sklo_render_katalog_seo_intro($cat); ?>
 
+  <section class="sklo-section sklo-kovani-cross" aria-label="Kování pro posuvné skleněné dveře">
+    <div class="sklo-wrap">
+      <div class="sklo-kovani-cross__inner">
+        <div class="sklo-kovani-cross__copy">
+          <p class="sklo-eyebrow">Samostatná kategorie</p>
+          <h2>Kování pro posuvné skleněné dveře</h2>
+          <p>Posuvy, mušle, úchytky a zámky pro skleněné posuvné dveře. Oddělená nabídka od hotových dveřních sestav.</p>
+        </div>
+        <a class="sklo-btn" href="<?php echo esc_url(home_url('/kovani-posuvne/')); ?>">Prohlédnout kování</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sklo-section sklo-kovani-cross" aria-label="Kování pro otevírané skleněné dveře">
+    <div class="sklo-wrap">
+      <div class="sklo-kovani-cross__inner">
+        <div class="sklo-kovani-cross__copy">
+          <p class="sklo-eyebrow">Samostatná kategorie</p>
+          <h2>Kování pro otevírané skleněné dveře</h2>
+          <p>Kliky, panty, madla, závěsy a doplňky pro otevírané skleněné dveře. Oddělená nabídka od hotových dveřních sestav.</p>
+        </div>
+        <a class="sklo-btn" href="<?php echo esc_url(home_url('/kovani-otevirane/')); ?>">Prohlédnout kování</a>
+      </div>
+    </div>
+  </section>
+
   <section class="sklo-section sklo-katalog-hub">
     <div class="sklo-wrap">
       <header class="sklo-section__head sklo-section__head--center">

@@ -73,7 +73,7 @@ function sklo_produkty_for_slug(string $slug): ?array
 }
 
 /**
- * Kování JSON map keyed by code (stříšky + zábradlí + sprchy).
+ * Kování JSON map keyed by code (stříšky + zábradlí + sprchy + posuvné + otevírané).
  *
  * @return array<string, array<string, mixed>>
  */
@@ -88,6 +88,8 @@ function sklo_kovani_json_map(): array
         get_template_directory() . '/assets/data/kovani-strisky.json',
         get_template_directory() . '/assets/data/kovani-zabradli.json',
         get_template_directory() . '/assets/data/kovani-sprchy.json',
+        get_template_directory() . '/assets/data/kovani-posuvne.json',
+        get_template_directory() . '/assets/data/kovani-otevirane.json',
     ];
     foreach ($files as $path) {
         if (!is_readable($path)) {
@@ -691,11 +693,15 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
             }
         }
     }
-    $is_kovani = in_array($psec, ['kovani-strisky', 'kovani-zabradli', 'kovani-sprchy'], true) || str_starts_with($code, 'KOV-');
+    $is_kovani = in_array($psec, ['kovani-strisky', 'kovani-zabradli', 'kovani-sprchy', 'kovani-posuvne', 'kovani-otevirane'], true) || str_starts_with($code, 'KOV-');
     if ($psec === 'kovani-zabradli' || str_starts_with($code, 'KOV-ZAB-')) {
         $kat = 'Kování pro zábradlí';
     } elseif ($psec === 'kovani-sprchy' || str_starts_with($code, 'KOV-SPR-')) {
         $kat = 'Kování pro sprchové kouty';
+    } elseif ($psec === 'kovani-posuvne' || str_starts_with($code, 'KOV-POS-')) {
+        $kat = 'Kování pro posuvné skleněné dveře';
+    } elseif ($psec === 'kovani-otevirane' || str_starts_with($code, 'KOV-OTE-')) {
+        $kat = 'Kování pro otevírané skleněné dveře';
     } elseif ($is_kovani) {
         $kat = 'Kování pro skleněné stříšky';
     } else {
@@ -706,6 +712,17 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
     $cena_txt = $price > 0 ? sklo_format_cena($price) : '';
     $show_poptavka_btn = $code !== '' && $name !== '';
     $eyebrow = $is_kovani && $manufacturer !== '' ? $manufacturer : 'Sklospeciál';
+    $kovani_hub = ($is_kovani && function_exists('sklo_kovani_hub_for_product'))
+        ? sklo_kovani_hub_for_product($p)
+        : null;
+    $img_alt = $name;
+    if ($is_kovani && function_exists('sklo_kovani_img_alt')) {
+        $kw = is_array($kovani_hub) ? (string) ($kovani_hub['keyword'] ?? '') : '';
+        if ($kw === '') {
+            $kw = $kat;
+        }
+        $img_alt = sklo_kovani_img_alt($name, $kw);
+    }
 
     if ($back_url === '') {
         $back_url = (string) get_permalink();
@@ -737,11 +754,11 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
               class="sklo-pdetail__main"
               data-lightbox-open
               data-src="<?php echo esc_url($images[0]); ?>"
-              data-alt="<?php echo esc_attr($name); ?>"
+              data-alt="<?php echo esc_attr($img_alt); ?>"
             >
               <img
                 src="<?php echo esc_url($images[0]); ?>"
-                alt="<?php echo esc_attr($name); ?>"
+                alt="<?php echo esc_attr($img_alt); ?>"
                 width="800"
                 height="800"
                 loading="eager"
@@ -758,10 +775,10 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
                     data-sklo-pdetail-thumb
                     data-src="<?php echo esc_url($img); ?>"
                     data-lightbox-open
-                    data-alt="<?php echo esc_attr($name); ?>"
+                    data-alt="<?php echo esc_attr($img_alt); ?>"
                     aria-label="Foto <?php echo esc_attr((string) ($i + 1)); ?>"
                   >
-                    <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($name); ?>" loading="lazy" decoding="async" width="120" height="120">
+                    <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($img_alt); ?>" loading="lazy" decoding="async" width="120" height="120">
                   </button>
                 <?php endforeach; ?>
               </div>
@@ -818,6 +835,20 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
           <?php elseif ($page_slug === 'sprchove-kouty') : ?>
             <p class="sklo-pdetail__related-cat">
               <a class="sklo-link" href="<?php echo esc_url(home_url('/kovani-sprchy/')); ?>">Kování pro sprchové kouty →</a>
+            </p>
+          <?php elseif ($page_slug === 'posuvne') : ?>
+            <p class="sklo-pdetail__related-cat">
+              <a class="sklo-link" href="<?php echo esc_url(home_url('/kovani-posuvne/')); ?>">Kování pro posuvné skleněné dveře →</a>
+            </p>
+          <?php elseif ($page_slug === 'otevirane') : ?>
+            <p class="sklo-pdetail__related-cat">
+              <a class="sklo-link" href="<?php echo esc_url(home_url('/kovani-otevirane/')); ?>">Kování pro otevírané skleněné dveře →</a>
+            </p>
+          <?php elseif ($page_slug === 'sklenene-dvere') : ?>
+            <p class="sklo-pdetail__related-cat">
+              <a class="sklo-link" href="<?php echo esc_url(home_url('/kovani-posuvne/')); ?>">Kování pro posuvné skleněné dveře →</a>
+              ·
+              <a class="sklo-link" href="<?php echo esc_url(home_url('/kovani-otevirane/')); ?>">Kování pro otevírané skleněné dveře →</a>
             </p>
           <?php endif; ?>
         </div>

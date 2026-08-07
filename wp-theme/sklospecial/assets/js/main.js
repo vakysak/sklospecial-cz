@@ -39,7 +39,7 @@
     index = (i + items.length) % items.length;
     const el = items[index];
     img.src = el.getAttribute('data-src') || '';
-    img.alt = el.getAttribute('data-alt') || '';
+    img.alt = el.getAttribute('data-alt') || 'Náhled produktu';
   };
 
   const open = (i) => {

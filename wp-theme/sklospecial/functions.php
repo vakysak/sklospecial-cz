@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.32.0');
+define('SKLO_THEME_VER', '1.35.0');
 
 /** Default konfigurátor/API host. Override via option sklo_api_base or env SKLO_API_BASE. */
 define(
@@ -19,6 +19,7 @@ define(
 
 require_once get_template_directory() . '/inc/katalog-data.php';
 require_once get_template_directory() . '/inc/katalog-produkty.php';
+require_once get_template_directory() . '/inc/kovani-seo.php';
 require_once get_template_directory() . '/inc/seo-landings-data.php';
 require_once get_template_directory() . '/inc/pruvodce-data.php';
 require_once get_template_directory() . '/inc/recenze-data.php';
@@ -324,7 +325,14 @@ add_filter('document_title_parts', function (array $parts): array {
             : (string) ($produkt['name'] ?? '');
         $code = (string) ($produkt['code'] ?? '');
         if ($name !== '') {
-            $parts['title'] = $name . ($code !== '' ? ' (' . $code . ')' : '') . ' | ' . sklo_brand_name();
+            $hub = function_exists('sklo_kovani_hub_for_product')
+                ? sklo_kovani_hub_for_product($produkt)
+                : null;
+            if ($hub && !empty($hub['short_title'])) {
+                $parts['title'] = $name . ' | ' . (string) $hub['short_title'] . ' | ' . sklo_brand_name();
+            } else {
+                $parts['title'] = $name . ($code !== '' ? ' (' . $code . ')' : '') . ' | ' . sklo_brand_name();
+            }
             unset($parts['tagline'], $parts['site']);
             return $parts;
         }
@@ -351,15 +359,12 @@ add_filter('document_title_parts', function (array $parts): array {
     } elseif (is_page('obchodni-podminky')) {
         $parts['title'] = 'Obchodní podmínky | ' . sklo_brand_name();
         unset($parts['tagline'], $parts['site']);
-    } elseif (is_page('kovani-strisky')) {
-        $parts['title'] = 'Kování pro skleněné stříšky | ' . sklo_brand_name();
-        unset($parts['tagline'], $parts['site']);
-    } elseif (is_page('kovani-zabradli')) {
-        $parts['title'] = 'Kování pro zábradlí | ' . sklo_brand_name();
-        unset($parts['tagline'], $parts['site']);
-    } elseif (is_page('kovani-sprchy')) {
-        $parts['title'] = 'Kování pro sprchové kouty | ' . sklo_brand_name();
-        unset($parts['tagline'], $parts['site']);
+    } else {
+        $hub = function_exists('sklo_kovani_hub') ? sklo_kovani_hub() : null;
+        if ($hub && !empty($hub['seo_title'])) {
+            $parts['title'] = (string) $hub['seo_title'];
+            unset($parts['tagline'], $parts['site']);
+        }
     }
     return $parts;
 });
@@ -380,8 +385,17 @@ add_action('wp_head', function (): void {
             $desc = rtrim(mb_substr($desc, 0, 157)) . '…';
         }
         if ($desc === '') {
-            $desc = ($name !== '' ? $name . ' — ' : '')
-                . 'orientační cena a volby v katalogu Sklospeciál. Zaměření online, výroba na míru.';
+            $hub = function_exists('sklo_kovani_hub_for_product')
+                ? sklo_kovani_hub_for_product($produkt)
+                : null;
+            if ($hub && !empty($hub['keyword'])) {
+                $desc = ($name !== '' ? $name . ' — ' : '')
+                    . (string) $hub['keyword']
+                    . ' u Sklospeciál. Orientační cena a volby v katalogu; finální nabídka podle sestavy.';
+            } else {
+                $desc = ($name !== '' ? $name . ' — ' : '')
+                    . 'orientační cena a volby v katalogu Sklospeciál. Zaměření online, výroba na míru.';
+            }
             if ($code !== '') {
                 $desc = $code . ': ' . $desc;
             }
@@ -399,13 +413,8 @@ add_action('wp_head', function (): void {
         $desc = 'Jak Sklospeciál (sklospecial.eu) používá cookies — nezbytné vždy, analytické jen se souhlasem.';
     } elseif (is_page('mapa-stranek')) {
         $desc = 'Mapa stránek webu Sklospeciál — katalog, průvodci, města a užitečné odkazy.';
-    } elseif (is_page('kovani-strisky')) {
-        $desc = 'Kování Süd-Metall pro montáž skleněných stříšek – MOTIVO, SEASONS, SWORD, CANO a další. Přidejte do nezávazné poptávky.';
-    } elseif (is_page('kovani-zabradli')) {
-        $desc = 'Kování a prvky pro výrobu zábradlí – držáky, sloupky, trubky, spojky. Přidejte do nezávazné poptávky u Sklospeciál.';
-    } elseif (is_page('kovani-sprchy')) {
-        $desc = 'Kování pro sprchové kouty – panty, úchyty, posuvné systémy, madla a těsnění. Přidejte do nezávazné poptávky u Sklospeciál.';
     } else {
+        // Kování hubs: description emitted once in the katalog/landing wp_head below.
         return;
     }
     echo '<meta name="description" content="' . esc_attr($desc) . '" />' . "\n";
@@ -484,22 +493,14 @@ add_action('wp_head', static function (): void {
                     if (!empty($guide['seo_title'])) {
                         $title = (string) $guide['seo_title'];
                     }
-                } elseif (is_page('kovani-strisky')) {
-                    $emit = true;
-                    $url = (string) get_permalink();
-                    $desc = 'Kování Süd-Metall pro montáž skleněných stříšek – MOTIVO, SEASONS, SWORD, CANO a další. Přidejte do nezávazné poptávky.';
-                    $title = 'Kování pro skleněné stříšky | ' . sklo_brand_name();
-                } elseif (is_page('kovani-zabradli')) {
-                    $emit = true;
-                    $url = (string) get_permalink();
-                    $desc = 'Kování a prvky pro výrobu zábradlí – držáky, sloupky, trubky, spojky. Přidejte do nezávazné poptávky u Sklospeciál.';
-                    $title = 'Kování pro zábradlí | ' . sklo_brand_name();
-                } elseif (is_page('kovani-sprchy')) {
-                    $emit = true;
-                    $url = (string) get_permalink();
-                    $desc = 'Kování pro sprchové kouty – panty, úchyty, posuvné systémy, madla a těsnění. Přidejte do nezávazné poptávky u Sklospeciál.';
-                    $title = 'Kování pro sprchové kouty | ' . sklo_brand_name();
-                } elseif (is_page(['realizace', 'recenze', 'mapa-stranek', 'cookies', 'ochrana-osobnich-udaju', 'obchodni-podminky', 'zaruka', 'doprava', 'platba', 'doba-realizace', 'o-nas', 'kontakt', 'poptavka', 'navod-na-zamereni'])) {
+                } else {
+                    $hub = function_exists('sklo_kovani_hub') ? sklo_kovani_hub($slug) : null;
+                    if ($hub) {
+                        $emit = true;
+                        $url = (string) get_permalink();
+                        $desc = (string) ($hub['seo_desc'] ?? '');
+                        $title = (string) ($hub['seo_title'] ?? $title);
+                    } elseif (is_page(['realizace', 'recenze', 'mapa-stranek', 'cookies', 'ochrana-osobnich-udaju', 'obchodni-podminky', 'zaruka', 'doprava', 'platba', 'doba-realizace', 'o-nas', 'kontakt', 'poptavka', 'navod-na-zamereni'])) {
                     // Utility / trust pages — canonical + OG even without Rank Math.
                     $emit = true;
                     $url = (string) get_permalink();
@@ -781,6 +782,8 @@ function sklo_nav_fallback(): void
         ],
         ['/sprchove-kouty/', 'Sprchové kouty'],
         ['/kovani-sprchy/', 'Kování sprchy'],
+        ['/kovani-posuvne/', 'Kování posuvné'],
+        ['/kovani-otevirane/', 'Kování otevírané'],
         ['/zabradli/', 'Zábradlí'],
         ['/kovani-zabradli/', 'Kování zábradlí'],
         ['/strisky/', 'Stříšky'],
@@ -861,14 +864,9 @@ add_filter('document_title_parts', function (array $parts): array {
         unset($parts['tagline'], $parts['site']);
         return $parts;
     }
-    if (is_page('kovani-strisky')) {
-        $parts['title'] = 'Kování pro skleněné stříšky | ' . sklo_brand_name();
-        unset($parts['tagline'], $parts['site']);
-    } elseif (is_page('kovani-zabradli')) {
-        $parts['title'] = 'Kování pro zábradlí | ' . sklo_brand_name();
-        unset($parts['tagline'], $parts['site']);
-    } elseif (is_page('kovani-sprchy')) {
-        $parts['title'] = 'Kování pro sprchové kouty | ' . sklo_brand_name();
+    $hub = function_exists('sklo_kovani_hub') ? sklo_kovani_hub($slug) : null;
+    if ($hub && !empty($hub['seo_title'])) {
+        $parts['title'] = (string) $hub['seo_title'];
         unset($parts['tagline'], $parts['site']);
     }
     return $parts;
@@ -910,14 +908,9 @@ add_filter('rank_math/frontend/description', static function ($description) {
     if ($guide && !empty($guide['seo_desc'])) {
         return (string) $guide['seo_desc'];
     }
-    if (is_page('kovani-strisky')) {
-        return 'Kování Süd-Metall pro montáž skleněných stříšek – MOTIVO, SEASONS, SWORD, CANO a další. Přidejte do nezávazné poptávky.';
-    }
-    if (is_page('kovani-zabradli')) {
-        return 'Kování a prvky pro výrobu zábradlí – držáky, sloupky, trubky, spojky. Přidejte do nezávazné poptávky u Sklospeciál.';
-    }
-    if (is_page('kovani-sprchy')) {
-        return 'Kování pro sprchové kouty – panty, úchyty, posuvné systémy, madla a těsnění. Přidejte do nezávazné poptávky u Sklospeciál.';
+    $hub = function_exists('sklo_kovani_hub') ? sklo_kovani_hub($slug) : null;
+    if ($hub && !empty($hub['seo_desc'])) {
+        return (string) $hub['seo_desc'];
     }
     return $description;
 }, 20);
@@ -942,12 +935,11 @@ add_action('wp_head', function (): void {
             $guide = sklo_pruvodce_for_page();
             if ($guide && !empty($guide['seo_desc'])) {
                 $desc = (string) $guide['seo_desc'];
-            } elseif (is_page('kovani-strisky')) {
-                $desc = 'Kování Süd-Metall pro montáž skleněných stříšek – MOTIVO, SEASONS, SWORD, CANO a další. Přidejte do nezávazné poptávky.';
-            } elseif (is_page('kovani-zabradli')) {
-                $desc = 'Kování a prvky pro výrobu zábradlí – držáky, sloupky, trubky, spojky. Přidejte do nezávazné poptávky u Sklospeciál.';
-            } elseif (is_page('kovani-sprchy')) {
-                $desc = 'Kování pro sprchové kouty – panty, úchyty, posuvné systémy, madla a těsnění. Přidejte do nezávazné poptávky u Sklospeciál.';
+            } else {
+                $hub = function_exists('sklo_kovani_hub') ? sklo_kovani_hub($slug) : null;
+                if ($hub && !empty($hub['seo_desc'])) {
+                    $desc = (string) $hub['seo_desc'];
+                }
             }
         }
     }

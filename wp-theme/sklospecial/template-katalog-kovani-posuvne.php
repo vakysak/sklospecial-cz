@@ -1,14 +1,14 @@
 <?php
 /**
- * Template Name: Katalog kování zábradlí
- * Description: Listing + detail prvků / kování pro výrobu zábradlí (JSON), v podkategoriích.
+ * Template Name: Katalog kování posuvné
+ * Description: Listing + detail kování pro posuvné skleněné dveře (JSON), v podkategoriích.
  */
 
 declare(strict_types=1);
 
 get_header();
 
-$path = get_template_directory() . '/assets/data/kovani-zabradli.json';
+$path = get_template_directory() . '/assets/data/kovani-posuvne.json';
 $kovani = [];
 if (is_readable($path)) {
     $raw = file_get_contents($path);
@@ -20,18 +20,9 @@ if (is_readable($path)) {
 
 /** @var array<string, string> $subcat_order slug → Czech label (supplier order) */
 $subcat_order = [
-    'trubky-a-profily'               => 'Nerezové trubky, profily, tyče',
-    'spojky-a-klouby-pro-trubky'      => 'Spojky a klouby pro trubky',
-    'koncovky-k-trubkam'              => 'Koncovky na trubky s držákem zábradlí',
-    'drzaky-zabradli'                 => 'Držáky zábradlí',
-    'lankovy-system-pro-zabradli'     => 'Lankový systém pro zábradlí',
-    'vyplne-zabradli-2'               => 'Výplně zábradlí',
-    'montazni-material'               => 'Upevnění zábradlí na zeď a podlahu',
-    'drzaky-skla'                     => 'Držáky skla',
-    'sloupky-zabradli'                => 'Sloupky zábradlí',
-    'koncovky-na-trubky'              => 'Koncovky na trubky a tyče',
-    'rezane-polotovary-pro-zabradli'  => 'Řezané polotovary pro zábradlí',
-    'drzay-tyce-pro-zabradli'         => 'Držáky tyčí pro zábradlí',
+    'pojezdy-pro-sklenene-posuvne-dvere'          => 'Posuvy pro skleněné posuvné dveře',
+    'musle-a-uchytky-pro-sklenene-posuvne-dvere'  => 'Mušle a úchytky pro skleněné posuvné dveře',
+    'zamky-pro-posuvne-sklenene-dvere'            => 'Zámky pro posuvné skleněné dveře',
 ];
 
 /** @var array<string, list<array<string, mixed>>> $by_sub */
@@ -85,12 +76,12 @@ foreach ($by_sub as $slug => $items) {
     ];
 }
 
-$kategorie = 'Kování pro zábradlí';
+$kategorie = 'Kování pro posuvné skleněné dveře';
 $total = count($kovani);
 $back_url = (string) get_permalink();
 $initial = 24;
-$hub = function_exists('sklo_kovani_hub') ? sklo_kovani_hub('kovani-zabradli') : null;
-$img_kw = is_array($hub) ? (string) ($hub['keyword'] ?? 'kování zábradlí') : 'kování zábradlí';
+$hub = function_exists('sklo_kovani_hub') ? sklo_kovani_hub('kovani-posuvne') : null;
+$img_kw = is_array($hub) ? (string) ($hub['keyword'] ?? 'kování posuvné skleněné dveře') : 'kování posuvné skleněné dveře';
 
 $kod = isset($_GET['kod']) ? sanitize_text_field(wp_unslash((string) $_GET['kod'])) : '';
 $detail_product = null;
@@ -114,11 +105,11 @@ $kod_missing = $kod !== '' && $detail_product === null;
       <p class="sklo-eyebrow">Příslušenství</p>
       <h1><?php echo esc_html(is_array($hub) ? (string) ($hub['h1'] ?? $kategorie) : $kategorie); ?></h1>
       <p class="sklo-katalog__lead">
-        Prvky pro výrobu zábradlí v podkategoriích — trubky, spojky, držáky, sloupky a další.
+        Kování pro posuvné skleněné dveře v podkategoriích — posuvy, mušle a úchytky, zámky.
         Otevři detail, zvol variantu a přidej do nezávazné poptávky.
       </p>
       <p class="sklo-katalog__back">
-        <a class="sklo-link" href="<?php echo esc_url(home_url('/zabradli/')); ?>">← Zpět na zábradlí</a>
+        <a class="sklo-link" href="<?php echo esc_url(home_url('/sklenene-dvere/posuvne/')); ?>">← Zpět na posuvné dveře</a>
       </p>
     </div>
   </header>
@@ -185,14 +176,14 @@ $kod_missing = $kod !== '' && $detail_product === null;
 
   <section
     class="sklo-section sklo-produkty"
-    aria-label="Kování pro zábradlí"
+    aria-label="Kování pro posuvné skleněné dveře"
     data-sklo-produkty
     data-initial="<?php echo esc_attr((string) $initial); ?>"
   >
     <div class="sklo-wrap">
       <header class="sklo-section__head sklo-section__head--center">
         <p class="sklo-eyebrow">Produkty</p>
-        <h2>Nabídka kování a prvků</h2>
+        <h2>Nabídka kování pro posuvné dveře</h2>
         <p><span data-sklo-produkty-count><?php echo esc_html((string) $total); ?></span> položek · ceny orientační, finální nabídka podle konkrétní sestavy</p>
       </header>
 
@@ -300,7 +291,7 @@ $kod_missing = $kod !== '' && $detail_product === null;
     </div>
   </section>
   <?php if (function_exists('sklo_render_kovani_related')) : ?>
-    <?php sklo_render_kovani_related('kovani-zabradli'); ?>
+    <?php sklo_render_kovani_related('kovani-posuvne'); ?>
   <?php endif; ?>
   <?php endif; ?>
 </article>

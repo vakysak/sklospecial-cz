@@ -83,6 +83,8 @@ $kategorie = 'Kování pro sprchové kouty';
 $total = count($kovani);
 $back_url = (string) get_permalink();
 $initial = 24;
+$hub = function_exists('sklo_kovani_hub') ? sklo_kovani_hub('kovani-sprchy') : null;
+$img_kw = is_array($hub) ? (string) ($hub['keyword'] ?? 'kování sprchy') : 'kování sprchy';
 
 $kod = isset($_GET['kod']) ? sanitize_text_field(wp_unslash((string) $_GET['kod'])) : '';
 $detail_product = null;
@@ -104,7 +106,7 @@ $kod_missing = $kod !== '' && $detail_product === null;
         </div>
       <?php endif; ?>
       <p class="sklo-eyebrow">Příslušenství</p>
-      <h1>Kování pro sprchové kouty</h1>
+      <h1><?php echo esc_html(is_array($hub) ? (string) ($hub['h1'] ?? $kategorie) : $kategorie); ?></h1>
       <p class="sklo-katalog__lead">
         Kování pro sprchové kouty v podkategoriích — panty, úchyty, posuvné systémy, madla a těsnění.
         Otevři detail, zvol variantu a přidej do nezávazné poptávky.
@@ -114,6 +116,10 @@ $kod_missing = $kod !== '' && $detail_product === null;
       </p>
     </div>
   </header>
+
+  <?php if (is_array($hub) && function_exists('sklo_render_katalog_seo_intro')) : ?>
+    <?php sklo_render_katalog_seo_intro($hub); ?>
+  <?php endif; ?>
 
   <?php if ($subcats !== []) : ?>
     <section class="sklo-cat-cards-wrap" aria-label="Podkategorie kování">
@@ -130,7 +136,7 @@ $kod_missing = $kod !== '' && $detail_product === null;
                 <img
                   class="sklo-cat-card__image"
                   src="<?php echo esc_url($sc['image']); ?>"
-                  alt="<?php echo esc_attr($sc['label']); ?>"
+                  alt="<?php echo esc_attr(function_exists('sklo_kovani_img_alt') ? sklo_kovani_img_alt((string) $sc['label'], $img_kw) : (string) $sc['label']); ?>" 
                   width="400"
                   height="160"
                   loading="lazy"
@@ -222,6 +228,9 @@ $kod_missing = $kod !== '' && $detail_product === null;
                       : '';
                   $collapsed = $shown >= $initial;
                   $shown++;
+                  $alt = function_exists('sklo_kovani_img_alt')
+                      ? sklo_kovani_img_alt($name, $img_kw)
+                      : $name;
                   ?>
                 <article
                   class="sklo-produkty__item<?php echo $collapsed ? ' is-collapsed' : ''; ?>"
@@ -233,7 +242,7 @@ $kod_missing = $kod !== '' && $detail_product === null;
                       <span class="sklo-produkty__media sklo-produkty__media--ext">
                         <img
                           src="<?php echo esc_url($image); ?>"
-                          alt="<?php echo esc_attr($name); ?>"
+                          alt="<?php echo esc_attr($alt); ?>"
                           loading="lazy"
                           decoding="async"
                           width="300"
@@ -284,6 +293,9 @@ $kod_missing = $kod !== '' && $detail_product === null;
       <?php endif; ?>
     </div>
   </section>
+  <?php if (function_exists('sklo_render_kovani_related')) : ?>
+    <?php sklo_render_kovani_related('kovani-sprchy'); ?>
+  <?php endif; ?>
   <?php endif; ?>
 </article>
 
@@ -291,7 +303,7 @@ $kod_missing = $kod !== '' && $detail_product === null;
   <button type="button" class="sklo-lightbox__close" data-lightbox-close aria-label="Zavřít">×</button>
   <button type="button" class="sklo-lightbox__nav sklo-lightbox__nav--prev" data-lightbox-prev aria-label="Předchozí">‹</button>
   <figure class="sklo-lightbox__figure">
-    <img src="" alt="" data-lightbox-img>
+    <img src="" alt="Náhled produktu" data-lightbox-img>
   </figure>
   <button type="button" class="sklo-lightbox__nav sklo-lightbox__nav--next" data-lightbox-next aria-label="Další">›</button>
 </div>

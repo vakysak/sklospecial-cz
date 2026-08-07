@@ -21,6 +21,8 @@ if (is_readable($path)) {
 $kategorie = 'Kování pro skleněné stříšky';
 $total = count($kovani);
 $back_url = (string) get_permalink();
+$hub = function_exists('sklo_kovani_hub') ? sklo_kovani_hub('kovani-strisky') : null;
+$img_kw = is_array($hub) ? (string) ($hub['keyword'] ?? 'kování stříšky') : 'kování stříšky';
 
 $kod = isset($_GET['kod']) ? sanitize_text_field(wp_unslash((string) $_GET['kod'])) : '';
 $detail_product = null;
@@ -42,7 +44,7 @@ $kod_missing = $kod !== '' && $detail_product === null;
         </div>
       <?php endif; ?>
       <p class="sklo-eyebrow">Příslušenství</p>
-      <h1>Kování pro skleněné stříšky</h1>
+      <h1><?php echo esc_html(is_array($hub) ? (string) ($hub['h1'] ?? $kategorie) : $kategorie); ?></h1>
       <p class="sklo-katalog__lead">
         Kování Süd-Metall pro montáž skleněných stříšek.
         Otevři detail, zvol variantu a přidej do nezávazné poptávky.
@@ -52,6 +54,10 @@ $kod_missing = $kod !== '' && $detail_product === null;
       </p>
     </div>
   </header>
+
+  <?php if (is_array($hub) && function_exists('sklo_render_katalog_seo_intro')) : ?>
+    <?php sklo_render_katalog_seo_intro($hub); ?>
+  <?php endif; ?>
 
   <section class="sklo-section sklo-produkty" aria-label="Kování pro stříšky">
     <div class="sklo-wrap">
@@ -89,6 +95,9 @@ $kod_missing = $kod !== '' && $detail_product === null;
               $cena_txt = $price_int > 0 && function_exists('sklo_format_cena')
                   ? sklo_format_cena($price_int)
                   : '';
+              $alt = function_exists('sklo_kovani_img_alt')
+                  ? sklo_kovani_img_alt($name, $img_kw)
+                  : $name;
               ?>
             <article class="sklo-produkty__item">
               <a class="sklo-produkty__link" href="<?php echo esc_url($detail_url); ?>">
@@ -96,7 +105,7 @@ $kod_missing = $kod !== '' && $detail_product === null;
                   <span class="sklo-produkty__media sklo-produkty__media--ext">
                     <img
                       src="<?php echo esc_url($image); ?>"
-                      alt="<?php echo esc_attr($name); ?>"
+                      alt="<?php echo esc_attr($alt); ?>"
                       loading="lazy"
                       decoding="async"
                       width="300"
@@ -136,6 +145,9 @@ $kod_missing = $kod !== '' && $detail_product === null;
       <?php endif; ?>
     </div>
   </section>
+  <?php if (function_exists('sklo_render_kovani_related')) : ?>
+    <?php sklo_render_kovani_related('kovani-strisky'); ?>
+  <?php endif; ?>
   <?php endif; ?>
 </article>
 
@@ -143,7 +155,7 @@ $kod_missing = $kod !== '' && $detail_product === null;
   <button type="button" class="sklo-lightbox__close" data-lightbox-close aria-label="Zavřít">×</button>
   <button type="button" class="sklo-lightbox__nav sklo-lightbox__nav--prev" data-lightbox-prev aria-label="Předchozí">‹</button>
   <figure class="sklo-lightbox__figure">
-    <img src="" alt="" data-lightbox-img>
+    <img src="" alt="Náhled produktu" data-lightbox-img>
   </figure>
   <button type="button" class="sklo-lightbox__nav sklo-lightbox__nav--next" data-lightbox-next aria-label="Další">›</button>
 </div>

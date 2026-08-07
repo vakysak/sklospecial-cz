@@ -22,6 +22,8 @@
         <h3>Produkty</h3>
         <ul class="sklo-footer__list">
           <li><a href="<?php echo esc_url(home_url('/sklenene-dvere/')); ?>">Skleněné dveře</a></li>
+          <li><a href="<?php echo esc_url(home_url('/kovani-posuvne/')); ?>">Kování posuvné</a></li>
+          <li><a href="<?php echo esc_url(home_url('/kovani-otevirane/')); ?>">Kování otevírané</a></li>
           <li><a href="<?php echo esc_url(home_url('/sprchove-kouty/')); ?>">Sprchové kouty</a></li>
           <li><a href="<?php echo esc_url(home_url('/kovani-sprchy/')); ?>">Kování sprchy</a></li>
           <li><a href="<?php echo esc_url(home_url('/zabradli/')); ?>">Zábradlí</a></li>

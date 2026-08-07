@@ -35,6 +35,8 @@ function sklo_seo_categories(): array
             'related'       => [
                 ['/sklenene-dvere/posuvne/', 'Posuvné dveře'],
                 ['/sklenene-dvere/posuvne/do-pouzdra/', 'Dveře do pouzdra'],
+                ['/kovani-posuvne/', 'Kování pro posuvné dveře'],
+                ['/kovani-otevirane/', 'Kování pro otevírané dveře'],
                 ['/sklenene-steny/', 'Skleněné stěny'],
                 ['/sprchove-kouty/', 'Sprchové kouty'],
             ],

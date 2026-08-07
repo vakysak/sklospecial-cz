@@ -29,6 +29,10 @@ $types = sklo_seo_type_landings();
           <?php if ($slug === 'sprchove-kouty') : ?>
             <li><a href="<?php echo esc_url(home_url('/kovani-sprchy/')); ?>">Kování sprchy</a></li>
           <?php endif; ?>
+          <?php if ($slug === 'sklenene-dvere') : ?>
+            <li><a href="<?php echo esc_url(home_url('/kovani-posuvne/')); ?>">Kování posuvné</a></li>
+            <li><a href="<?php echo esc_url(home_url('/kovani-otevirane/')); ?>">Kování otevírané</a></li>
+          <?php endif; ?>
           <?php if ($slug === 'zabradli') : ?>
             <li><a href="<?php echo esc_url(home_url('/kovani-zabradli/')); ?>">Kování zábradlí</a></li>
           <?php endif; ?>

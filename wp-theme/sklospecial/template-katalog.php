@@ -136,6 +136,63 @@ $back_url = (string) get_permalink();
     </section>
   <?php endif; ?>
 
+  <?php if ($slug === 'posuvne') : ?>
+    <section class="sklo-section sklo-kovani-cross" aria-label="Kování pro posuvné skleněné dveře">
+      <div class="sklo-wrap">
+        <div class="sklo-kovani-cross__inner">
+          <div class="sklo-kovani-cross__copy">
+            <p class="sklo-eyebrow">Samostatná kategorie</p>
+            <h2>Kování pro posuvné skleněné dveře</h2>
+            <p>Posuvy, mušle, úchytky a zámky pro skleněné posuvné dveře. Oddělená nabídka od hotových dveřních sestav.</p>
+          </div>
+          <a class="sklo-btn" href="<?php echo esc_url(home_url('/kovani-posuvne/')); ?>">Prohlédnout kování</a>
+        </div>
+      </div>
+    </section>
+  <?php endif; ?>
+
+  <?php if ($slug === 'otevirane') : ?>
+    <section class="sklo-section sklo-kovani-cross" aria-label="Kování pro otevírané skleněné dveře">
+      <div class="sklo-wrap">
+        <div class="sklo-kovani-cross__inner">
+          <div class="sklo-kovani-cross__copy">
+            <p class="sklo-eyebrow">Samostatná kategorie</p>
+            <h2>Kování pro otevírané skleněné dveře</h2>
+            <p>Kliky, panty, madla, závěsy a doplňky pro otevírané skleněné dveře. Oddělená nabídka od hotových dveřních sestav.</p>
+          </div>
+          <a class="sklo-btn" href="<?php echo esc_url(home_url('/kovani-otevirane/')); ?>">Prohlédnout kování</a>
+        </div>
+      </div>
+    </section>
+  <?php endif; ?>
+
+  <?php if ($slug === 'sklenene-dvere') : ?>
+    <section class="sklo-section sklo-kovani-cross" aria-label="Kování pro posuvné skleněné dveře">
+      <div class="sklo-wrap">
+        <div class="sklo-kovani-cross__inner">
+          <div class="sklo-kovani-cross__copy">
+            <p class="sklo-eyebrow">Samostatná kategorie</p>
+            <h2>Kování pro posuvné skleněné dveře</h2>
+            <p>Posuvy, mušle, úchytky a zámky pro skleněné posuvné dveře. Oddělená nabídka od hotových dveřních sestav.</p>
+          </div>
+          <a class="sklo-btn" href="<?php echo esc_url(home_url('/kovani-posuvne/')); ?>">Prohlédnout kování</a>
+        </div>
+      </div>
+    </section>
+    <section class="sklo-section sklo-kovani-cross" aria-label="Kování pro otevírané skleněné dveře">
+      <div class="sklo-wrap">
+        <div class="sklo-kovani-cross__inner">
+          <div class="sklo-kovani-cross__copy">
+            <p class="sklo-eyebrow">Samostatná kategorie</p>
+            <h2>Kování pro otevírané skleněné dveře</h2>
+            <p>Kliky, panty, madla, závěsy a doplňky pro otevírané skleněné dveře. Oddělená nabídka od hotových dveřních sestav.</p>
+          </div>
+          <a class="sklo-btn" href="<?php echo esc_url(home_url('/kovani-otevirane/')); ?>">Prohlédnout kování</a>
+        </div>
+      </div>
+    </section>
+  <?php endif; ?>
+
   <?php if ($is_hub) : ?>
     <section class="sklo-section sklo-katalog-hub">
       <div class="sklo-wrap">
