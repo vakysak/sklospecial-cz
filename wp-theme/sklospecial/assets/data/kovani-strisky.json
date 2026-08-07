@@ -3,128 +3,483 @@
     "code": "KOV-MOTIVO",
     "name": "MOTIVO - skryté upevnění pro skleněnou stříšku",
     "section": "kovani-strisky",
-    "price": "od 26 330 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/motivo-upevneni-pro-sklenenou-strisku",
+    "url": "https://www.luxusnikovani.cz/motivo-upevneni-pro-sklenenou-strisku",
+    "price": 23595,
+    "options": [
+      {
+        "label": "Tloušťka skla",
+        "type": "select",
+        "key": "tloustka_skla",
+        "choices": [
+          {
+            "name": "17,52 mm",
+            "surcharge_czk": 0
+          },
+          {
+            "name": "21,52 mm",
+            "surcharge_czk": 0
+          }
+        ]
+      },
+      {
+        "label": "Délka lišty",
+        "type": "select",
+        "key": "delka_listy",
+        "choices": [
+          {
+            "name": "2000 mm",
+            "surcharge_czk": 0
+          },
+          {
+            "name": "3000 mm",
+            "surcharge_czk": 11798
+          }
+        ]
+      }
+    ],
+    "description": "Hliníkový držák MOTIVO pro skleněnou stříšku se skrytým uchycením. Pro vrstvené sklo PVB nebo SentryGlass s tloušťkou 17,52 a 21,52 mm Šířka skla max 3000 mm.\nHloubka vyložení až do 1100 mm dle typu použitého skla. Hliník EN AW 6063 T66 eloxovaný (povrch nerez vzhled) Vrtání pouze do spodní vrstvy skla z jedné strany.\nVysoká bezpečnost s možností zatížení až 4kN/m2 Uvedená cena je za kompletní sadu pro upevnění 1 ks skla. Cena neobsahuje sklo.",
     "image": "https://www.luxusnikovani.cz/temp/img/ac/7a/61/motivo-skryte-upevneni-pro-sklenenou-strisku-w300-h200-e-ac7a6123b3d24e2f34e3f8ff64dd026e.jpg",
-    "url": "https://www.luxusnikovani.cz/motivo-upevneni-pro-sklenenou-strisku"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/ac/7a/61/motivo-skryte-upevneni-pro-sklenenou-strisku-w300-h200-e-ac7a6123b3d24e2f34e3f8ff64dd026e.jpg"
+    ]
   },
   {
     "code": "KOV-SEASONS-BP",
     "name": "SEASONS - kování pro skleněné stříšky, bez podložky",
     "section": "kovani-strisky",
-    "price": "od 10 890 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/seasons-kovani-pro-sklenene-strisky-bez-podlozky",
+    "url": "https://www.luxusnikovani.cz/seasons-kovani-pro-sklenene-strisky-bez-podlozky",
+    "price": 9756,
+    "options": [
+      {
+        "label": "Šířka skla",
+        "type": "select",
+        "key": "sirka_skla",
+        "choices": [
+          {
+            "name": "1000 mm",
+            "surcharge_czk": 0
+          },
+          {
+            "name": "1250 mm",
+            "surcharge_czk": 454
+          },
+          {
+            "name": "1500 mm",
+            "surcharge_czk": 545
+          }
+        ]
+      }
+    ],
+    "description": "Kompletní sada kování pro skleněnou stříšku série SEASONS Uvedená cena je za kování pro jednu osu (1x upevnění na zeď + 1x napínací tyč + 1x bodový úchyt do skla) Provedení bez podložky na zeď Pro tloušťku skla 17,52-25,52 mm Maximální vyložení skla 1500 mm Nerez A2",
     "image": "https://www.luxusnikovani.cz/temp/img/06/3a/76/seasons-kovani-pro-sklenene-strisky-bez-podlozky-w300-h200-e-063a76f76a562d0b7762c6caf9944cea.jpg",
-    "url": "https://www.luxusnikovani.cz/seasons-kovani-pro-sklenene-strisky-bez-podlozky"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/06/3a/76/seasons-kovani-pro-sklenene-strisky-bez-podlozky-w300-h200-e-063a76f76a562d0b7762c6caf9944cea.jpg"
+    ]
   },
   {
     "code": "KOV-SWORD",
     "name": "SWORD - sada pro skleněné stříšky",
     "section": "kovani-strisky",
-    "price": "od 9 280 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/sword-sada-pro-sklenene-strisky",
+    "url": "https://www.luxusnikovani.cz/sword-sada-pro-sklenene-strisky",
+    "price": 8319,
+    "options": [
+      {
+        "label": "Provedení",
+        "type": "select",
+        "key": "provedeni",
+        "choices": [
+          {
+            "name": "1 osa",
+            "surcharge_czk": 0
+          },
+          {
+            "name": "2 osy",
+            "surcharge_czk": 4749
+          }
+        ]
+      }
+    ],
+    "description": "Sestava nerezových držáků pro skleněnou stříšku.\nSklon stříšky 3° Sestava je vhodná pro maximální rozměr skla 1000 x 1700 mm Typ skla: VSG, 2 x 8 mm TVG s 1,52 mm folií PVB Set obsahuje: 2 ks držáků, 4 kusy bodových úchytů pro sklo s průměrem 70 mm, 4 kusy úchytů na zeď s přípravou pro závit M12 Nerez A2",
     "image": "https://www.luxusnikovani.cz/temp/img/b4/82/c9/sword-sada-pro-sklenene-strisky-w300-h200-e-b482c906f07f15c89b55796d0e8f9f7d.jpg",
-    "url": "https://www.luxusnikovani.cz/sword-sada-pro-sklenene-strisky"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/b4/82/c9/sword-sada-pro-sklenene-strisky-w300-h200-e-b482c906f07f15c89b55796d0e8f9f7d.jpg"
+    ]
   },
   {
     "code": "KOV-TWISTER",
     "name": "Twister - upevnění pro skleněné stříšky",
     "section": "kovani-strisky",
-    "price": "od 16 880 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/twister-sada-pro-sklenene-strisky",
+    "url": "https://www.luxusnikovani.cz/twister-sada-pro-sklenene-strisky",
+    "price": 16880,
+    "options": [],
+    "description": "Nerezový držák Twister pro skleněnou stříšku Při osazení dvou prvků Twister je možná velikost skla VSG z TVG (17,52 mm ) 2000 x 1115 mm.\nMaximální rozpětí dvou os je 1200 mm. Vhodné pro sklo o tloušťce 13,52 - 25,52 mm. Vrtání do skla průměr 24 mm. Nerez 1.4301 Uvedená cena je za 1 osu.",
     "image": "https://www.luxusnikovani.cz/temp/img/c3/9e/02/twister-upevneni-pro-sklenene-strisky-w300-h200-e-c39e02bf8b814b80ce735cb0f013169a.jpg",
-    "url": "https://www.luxusnikovani.cz/twister-sada-pro-sklenene-strisky"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/c3/9e/02/twister-upevneni-pro-sklenene-strisky-w300-h200-e-c39e02bf8b814b80ce735cb0f013169a.jpg"
+    ]
   },
   {
     "code": "KOV-CANO-DRZAK",
     "name": "CANO - držák skleněné stříšky",
     "section": "kovani-strisky",
-    "price": "od 2 430 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/cano-drzak-sklenene-strisky",
+    "url": "https://www.luxusnikovani.cz/cano-drzak-sklenene-strisky",
+    "price": 2430,
+    "options": [],
+    "description": "Držák skleněné stříšky pro spojení se závitovou tyčí CANO Tloušťka skla 16 - 21,52 mm Průměr podložky na sklo 60 mm Průměr spojovacího šroubu 12 mm Nerez A2",
     "image": "https://www.luxusnikovani.cz/temp/img/99/b3/c7/cano-drzak-sklenene-strisky-w300-h200-e-99b3c772e162248a28fdffba3b6bdc7e.jpg",
-    "url": "https://www.luxusnikovani.cz/cano-drzak-sklenene-strisky"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/99/b3/c7/cano-drzak-sklenene-strisky-w300-h200-e-99b3c772e162248a28fdffba3b6bdc7e.jpg"
+    ]
   },
   {
     "code": "KOV-CANO-TYC",
     "name": "CANO - spojovací tyč",
     "section": "kovani-strisky",
-    "price": "od 920 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/cano-spojovaci-tyc",
+    "url": "https://www.luxusnikovani.cz/cano-spojovaci-tyc",
+    "price": 822,
+    "options": [
+      {
+        "label": "Šířka skla",
+        "type": "select",
+        "key": "sirka_skla",
+        "choices": [
+          {
+            "name": "1000 mm",
+            "surcharge_czk": 0
+          },
+          {
+            "name": "1250 mm",
+            "surcharge_czk": 82
+          },
+          {
+            "name": "1500 mm",
+            "surcharge_czk": 290
+          }
+        ]
+      }
+    ],
+    "description": "Spojovací nerezová tyč pro elementy systému Cano Závit na koncích tyče M12 Možnost seřízení do 20 mm Nerez A2",
     "image": "https://www.luxusnikovani.cz/temp/img/01/5c/8f/cano-spojovaci-tyc-w300-h200-e-015c8f18b14919a8cb684b086e73e660.jpg",
-    "url": "https://www.luxusnikovani.cz/cano-spojovaci-tyc"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/01/5c/8f/cano-spojovaci-tyc-w300-h200-e-015c8f18b14919a8cb684b086e73e660.jpg"
+    ]
   },
   {
     "code": "KOV-CANO-ZED1",
     "name": "CANO - upevnění na zeď 1",
     "section": "kovani-strisky",
-    "price": "od 2 690 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed",
+    "url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed",
+    "price": 2690,
+    "options": [],
+    "description": "Nerezové upevnění skleněné stříšky na zeď se závitovou tyčí M12 Průměr krycí rozety 80 mm Vnitřní závit M12 Vnější závitová tyč M12 x 200 mm Průměr spojovacího šroubu 12 mm Nerez A2",
     "image": "https://www.luxusnikovani.cz/temp/img/35/87/e9/cano-upevneni-na-zed-w300-h200-e-3587e94c9dd67ab6c69975f681338b96.jpg",
-    "url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/35/87/e9/cano-upevneni-na-zed-w300-h200-e-3587e94c9dd67ab6c69975f681338b96.jpg"
+    ]
   },
   {
     "code": "KOV-CANO-ZED2",
     "name": "CANO - upevnění na zeď 2",
     "section": "kovani-strisky",
-    "price": "od 3 240 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-2",
+    "url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-2",
+    "price": 3240,
+    "options": [],
+    "description": "Nerezové upevnění skleněné stříšky na zeď s otvory pro upevnění Vnitřní závit M12 Oválná krytka 220 x 80 mm, rozteč otvorů 140 mm Průměr spojovacího šroubu 12 mm Nerez A2",
     "image": "https://www.luxusnikovani.cz/temp/img/b8/a1/35/cano-upevneni-na-zed-2-w300-h200-e-b8a135ea1b47272728b9cad430e98e05.jpg",
-    "url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-2"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/b8/a1/35/cano-upevneni-na-zed-2-w300-h200-e-b8a135ea1b47272728b9cad430e98e05.jpg"
+    ]
   },
   {
     "code": "KOV-CANO-ZED3",
     "name": "CANO - upevnění na zeď 3",
     "section": "kovani-strisky",
-    "price": "od 3 140 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-3",
+    "url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-3",
+    "price": 3140,
+    "options": [],
+    "description": "Upevnění skleněné stříšky na zeď se skrytou montáží Průměr krycí rozety 80 mm Závitová tyč M12 x 200 mm Tloušťka skla 16 - 21,52 mm Průměr podložky pro sklo 60 mm Nerez A2",
     "image": "https://www.luxusnikovani.cz/temp/img/eb/15/e4/cano-upevneni-na-zed-3-w300-h200-e-eb15e49b73c6117bb7d7071a8cba4b21.jpg",
-    "url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-3"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/eb/15/e4/cano-upevneni-na-zed-3-w300-h200-e-eb15e49b73c6117bb7d7071a8cba4b21.jpg"
+    ]
   },
   {
     "code": "KOV-CANO-ZED4",
     "name": "CANO - upevnění na zeď 4",
     "section": "kovani-strisky",
-    "price": "od 4 050 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-4",
+    "url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-4",
+    "price": 4050,
+    "options": [],
+    "description": "Upevnění skleněné stříšky na zeď s viditelnou instalací Oválný štít 220 x 80 mm, rozteč otvorů 140 mm Tloušťka skla 16 - 21,52 mm Průměr podložky na sklo 60 mm Průměr spojovacího šroubu 12 mm Nerez A2",
     "image": "https://www.luxusnikovani.cz/temp/img/c8/81/8b/cano-upevneni-na-zed-4-w300-h200-e-c8818bb15d55c09c1308d44e5e533839.jpg",
-    "url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-4"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/c8/81/8b/cano-upevneni-na-zed-4-w300-h200-e-c8818bb15d55c09c1308d44e5e533839.jpg"
+    ]
   },
   {
     "code": "KOV-CANO-ZED5",
     "name": "CANO - upevnění na zeď 5",
     "section": "kovani-strisky",
-    "price": "od 3 750 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-5",
+    "url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-5",
+    "price": 3750,
+    "options": [],
+    "description": "Nerezové upevnění skleněné stříšky na zeď se 4 viditelnými šrouby Vnitřní závit M12 Krycí plech, čtverec 150 x 150 mm Vrtání, rám 100 x 100 mm Průměr spojovacího šroubu 12 mm Nerez A2",
     "image": "https://www.luxusnikovani.cz/temp/img/5d/0a/e4/cano-upevneni-na-zed-5-w300-h200-e-5d0ae45db2cb86772342b9e51aea3c17.jpg",
-    "url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-5"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/5d/0a/e4/cano-upevneni-na-zed-5-w300-h200-e-5d0ae45db2cb86772342b9e51aea3c17.jpg"
+    ]
   },
   {
     "code": "KOV-CANO-ZED6",
     "name": "CANO - upevnění na zeď 6",
     "section": "kovani-strisky",
-    "price": "od 4 710 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-6",
+    "url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-6",
+    "price": 4710,
+    "options": [],
+    "description": "Upevnění skleněné stříšky na zeď s viditelnými šrouby Čtvercový štít 150 x 150 mm s vrtáním 100 x 100 mm Tloušťka skla 16 - 21,52 mm Průměr podložky na sklo 60 mm Průměr spojovacího šroubu 12 mm Nerez A2",
     "image": "https://www.luxusnikovani.cz/temp/img/ec/2f/02/cano-upevneni-na-zed-6-w300-h200-e-ec2f02d83d50a7aca8bd12577c85dd83.jpg",
-    "url": "https://www.luxusnikovani.cz/cano-upevneni-na-zed-6"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/ec/2f/02/cano-upevneni-na-zed-6-w300-h200-e-ec2f02d83d50a7aca8bd12577c85dd83.jpg"
+    ]
   },
   {
     "code": "KOV-SEASONS-KP",
     "name": "SEASONS - kování pro skleněné stříšky, kulatá podložka",
     "section": "kovani-strisky",
-    "price": "od 18 360 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/seasons-kovani-pro-sklenene-strisky-kulata-podlozka",
+    "url": "https://www.luxusnikovani.cz/seasons-kovani-pro-sklenene-strisky-kulata-podlozka",
+    "price": 16456,
+    "options": [
+      {
+        "label": "Šířka skla",
+        "type": "select",
+        "key": "sirka_skla",
+        "choices": [
+          {
+            "name": "1000 mm",
+            "surcharge_czk": 0
+          },
+          {
+            "name": "1250 mm",
+            "surcharge_czk": 545
+          },
+          {
+            "name": "1500 mm",
+            "surcharge_czk": 726
+          }
+        ]
+      }
+    ],
+    "description": "Kompletní sada kování pro skleněnou stříšku série SEASONS Uvedená cena je za kování pro jednu osu (1x upevnění na zeď + 1x podložka kulatá + 1x napínací tyč + 1x bodový úchyt do skla) Provedení s kulatou podložkou na zeď 135 mm Tloušťka skla 17,52 - 25,52 mm Maximální vyložení skla 1500 mm Nerez A2",
     "image": "https://www.luxusnikovani.cz/temp/img/7d/63/fe/seasons-kovani-pro-sklenene-strisky-kulata-podlozka-w300-h200-e-7d63fe843f1eccb2e0648f67f3b985eb.jpg",
-    "url": "https://www.luxusnikovani.cz/seasons-kovani-pro-sklenene-strisky-kulata-podlozka"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/7d/63/fe/seasons-kovani-pro-sklenene-strisky-kulata-podlozka-w300-h200-e-7d63fe843f1eccb2e0648f67f3b985eb.jpg"
+    ]
   },
   {
     "code": "KOV-SEASONS-OP",
     "name": "SEASONS - kování pro skleněné stříšky, oválná podložka",
     "section": "kovani-strisky",
-    "price": "od 15 760 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/seasons-kovani-pro-sklenene-strisky-ovalna-podlozka",
+    "url": "https://www.luxusnikovani.cz/seasons-kovani-pro-sklenene-strisky-ovalna-podlozka",
+    "price": 14127,
+    "options": [
+      {
+        "label": "Šířka skla",
+        "type": "select",
+        "key": "sirka_skla",
+        "choices": [
+          {
+            "name": "1000 mm",
+            "surcharge_czk": 0
+          },
+          {
+            "name": "1250 mm",
+            "surcharge_czk": 726
+          },
+          {
+            "name": "1500 mm",
+            "surcharge_czk": 1391
+          }
+        ]
+      }
+    ],
+    "description": "Kompletní sada kování pro skleněnou stříšku série SEASONS Uvedená cena je za kování pro jednu osu (1x upevnění na zeď + 1x podložka oválná + 1x napínací tyč + 1x bodový úchyt do skla) Provedení pomocí oválné podložky na zeď 90 x 45 mm, otvory 90 mm Maximální vyložení skla 1500 mm Nerez A2",
     "image": "https://www.luxusnikovani.cz/temp/img/39/40/fa/seasons-kovani-pro-sklenene-strisky-ovalna-podlozka-w300-h200-e-3940faf2f907102fe663442414e765d7.jpg",
-    "url": "https://www.luxusnikovani.cz/seasons-kovani-pro-sklenene-strisky-ovalna-podlozka"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/39/40/fa/seasons-kovani-pro-sklenene-strisky-ovalna-podlozka-w300-h200-e-3940faf2f907102fe663442414e765d7.jpg"
+    ]
   },
   {
     "code": "KOV-PODLOZKA-HR",
     "name": "Univerzální montážní podložka pro stříšky",
     "section": "kovani-strisky",
-    "price": "od 5 690 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/univerzalni-montazni-podlozka-pro-strisky",
+    "url": "https://www.luxusnikovani.cz/univerzalni-montazni-podlozka-pro-strisky",
+    "price": 5098,
+    "options": [
+      {
+        "label": "Tloušťka materiálu",
+        "type": "select",
+        "key": "tloustka_materialu",
+        "choices": [
+          {
+            "name": "80 mm",
+            "surcharge_czk": 0
+          },
+          {
+            "name": "100 mm",
+            "surcharge_czk": 529
+          },
+          {
+            "name": "120 mm",
+            "surcharge_czk": 695
+          },
+          {
+            "name": "140 mm",
+            "surcharge_czk": 5324
+          },
+          {
+            "name": "160 mm",
+            "surcharge_czk": 1255
+          },
+          {
+            "name": "180 mm",
+            "surcharge_czk": 1666
+          },
+          {
+            "name": "200 mm",
+            "surcharge_czk": 1950
+          },
+          {
+            "name": "220 mm",
+            "surcharge_czk": 2235
+          },
+          {
+            "name": "240 mm",
+            "surcharge_czk": 2517
+          },
+          {
+            "name": "260 mm",
+            "surcharge_czk": 2801
+          },
+          {
+            "name": "280 mm",
+            "surcharge_czk": 2916
+          },
+          {
+            "name": "300 mm",
+            "surcharge_czk": 3372
+          }
+        ]
+      }
+    ],
+    "description": "Univerzální montážní destičky pro instalaci skleněných stříšek na fasádu s kompaktními zateplovacími systémy Destička je složena z tvrdé pryže se zapěněnými ocelovými konzolemi pro pevné přišroubování na podklad, z hliníkové destičky pro přišroubování při jiné montáži, jakož i z destičky z fenolové pryskyřice, která zajišťuje optimální rozložení tlaku na povrch.\nVýhody: Žádný tepelný most Přesně definovaný přenos tlaku (podle tabulek) Čistá optika, protože montážní destičky mohou být provedeny pod omítkou Díky velkému množství tlouštěk montážních destiček mohou být přemostěny izolační vrstvy od 60 mm do 300 mm",
     "image": "https://www.luxusnikovani.cz/temp/img/59/51/5c/univerzalni-montazni-podlozka-pro-strisky-w300-h200-e-59515c711f2625c2ea64a51d796162f6.jpg",
-    "url": "https://www.luxusnikovani.cz/univerzalni-montazni-podlozka-pro-strisky"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/59/51/5c/univerzalni-montazni-podlozka-pro-strisky-w300-h200-e-59515c711f2625c2ea64a51d796162f6.jpg"
+    ]
   },
   {
     "code": "KOV-PODLOZKA-KR",
     "name": "Univerzální montážní podložka pro stříšky, kulatá",
     "section": "kovani-strisky",
-    "price": "od 2 480 Kč",
+    "manufacturer": "Süd-Metall",
+    "source_url": "https://www.luxusnikovani.cz/univerzalni-montazni-podlozka-pro-strisky-kulata",
+    "url": "https://www.luxusnikovani.cz/univerzalni-montazni-podlozka-pro-strisky-kulata",
+    "price": 2218,
+    "options": [
+      {
+        "label": "Tloušťka materiálu",
+        "type": "select",
+        "key": "tloustka_materialu",
+        "choices": [
+          {
+            "name": "60 mm",
+            "surcharge_czk": 0
+          },
+          {
+            "name": "80 mm",
+            "surcharge_czk": 175
+          },
+          {
+            "name": "100 mm",
+            "surcharge_czk": 502
+          },
+          {
+            "name": "120 mm",
+            "surcharge_czk": 673
+          },
+          {
+            "name": "140 mm",
+            "surcharge_czk": 726
+          },
+          {
+            "name": "160 mm",
+            "surcharge_czk": 750
+          },
+          {
+            "name": "180 mm",
+            "surcharge_czk": 843
+          },
+          {
+            "name": "200 mm",
+            "surcharge_czk": 892
+          },
+          {
+            "name": "220 mm",
+            "surcharge_czk": 686
+          },
+          {
+            "name": "240 mm",
+            "surcharge_czk": 1164
+          },
+          {
+            "name": "260 mm",
+            "surcharge_czk": 877
+          },
+          {
+            "name": "280 mm",
+            "surcharge_czk": 974
+          },
+          {
+            "name": "300 mm",
+            "surcharge_czk": 1694
+          }
+        ]
+      }
+    ],
+    "description": "Univerzální montážní destičky pro instalaci skleněných stříšek na fasádu s kompaktními zateplovacími systémy Destička je složena z tvrdé pryže se zapěněnými ocelovými konzolemi pro pevné přišroubování na podklad, z hliníkové destičky pro přišroubování při jiné montáži, jakož i z destičky z fenolové pryskyřice, která zajišťuje optimální rozložení tlaku na povrch.\nVýhody: Žádný tepelný most Přesně definovaný přenos tlaku (podle tabulek) Čistá optika, protože montážní destičky mohou být provedeny pod omítkou Díky velkému množství tlouštěk montážních destiček mohou být přemostěny izolační vrstvy od 60 mm do 300 mm",
     "image": "https://www.luxusnikovani.cz/temp/img/87/1d/0e/univerzalni-montazni-podlozka-pro-strisky-kulata-w300-h200-e-871d0e753ef24f50b166d4dd7d2b7d91.jpg",
-    "url": "https://www.luxusnikovani.cz/univerzalni-montazni-podlozka-pro-strisky-kulata"
+    "images": [
+      "https://www.luxusnikovani.cz/temp/img/87/1d/0e/univerzalni-montazni-podlozka-pro-strisky-kulata-w300-h200-e-871d0e753ef24f50b166d4dd7d2b7d91.jpg"
+    ]
   }
 ]

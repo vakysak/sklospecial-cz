@@ -1,14 +1,14 @@
 <?php
 /**
- * Template Name: Katalog kování stříšky
- * Description: Listing + detail kování Süd-Metall pro skleněné stříšky (JSON).
+ * Template Name: Katalog kování zábradlí
+ * Description: Listing + detail prvků / kování pro výrobu zábradlí (JSON).
  */
 
 declare(strict_types=1);
 
 get_header();
 
-$path = get_template_directory() . '/assets/data/kovani-strisky.json';
+$path = get_template_directory() . '/assets/data/kovani-zabradli.json';
 $kovani = [];
 if (is_readable($path)) {
     $raw = file_get_contents($path);
@@ -18,7 +18,7 @@ if (is_readable($path)) {
     }
 }
 
-$kategorie = 'Kování pro skleněné stříšky';
+$kategorie = 'Kování pro zábradlí';
 $total = count($kovani);
 $back_url = (string) get_permalink();
 
@@ -42,22 +42,22 @@ $kod_missing = $kod !== '' && $detail_product === null;
         </div>
       <?php endif; ?>
       <p class="sklo-eyebrow">Příslušenství</p>
-      <h1>Kování pro skleněné stříšky</h1>
+      <h1>Kování pro zábradlí</h1>
       <p class="sklo-katalog__lead">
-        Kování Süd-Metall pro montáž skleněných stříšek.
+        Prvky pro výrobu zábradlí — držáky, sloupky, trubky, spojky a další.
         Otevři detail, zvol variantu a přidej do nezávazné poptávky.
       </p>
       <p class="sklo-katalog__back">
-        <a class="sklo-link" href="<?php echo esc_url(home_url('/strisky/')); ?>">← Zpět na stříšky</a>
+        <a class="sklo-link" href="<?php echo esc_url(home_url('/zabradli/')); ?>">← Zpět na zábradlí</a>
       </p>
     </div>
   </header>
 
-  <section class="sklo-section sklo-produkty" aria-label="Kování pro stříšky">
+  <section class="sklo-section sklo-produkty" aria-label="Kování pro zábradlí">
     <div class="sklo-wrap">
       <header class="sklo-section__head sklo-section__head--center">
         <p class="sklo-eyebrow">Produkty</p>
-        <h2>Nabídka kování</h2>
+        <h2>Nabídka kování a prvků</h2>
         <p><?php echo esc_html((string) $total); ?> položek · ceny orientační, finální nabídka podle konkrétní sestavy</p>
       </header>
 
@@ -131,7 +131,7 @@ $kod_missing = $kod !== '' && $detail_product === null;
           <?php endforeach; ?>
         </div>
         <p class="sklo-katalog__notice sklo-katalog__notice--muted">
-          Výrobce kování: Süd-Metall. Orientační ceny včetně DPH; doplatky za varianty uvidíš v detailu.
+          Orientační ceny včetně DPH; doplatky za varianty uvidíš v detailu.
         </p>
       <?php endif; ?>
     </div>

@@ -98,9 +98,24 @@ $back_url = (string) get_permalink();
           <div class="sklo-kovani-cross__copy">
             <p class="sklo-eyebrow">Samostatná kategorie</p>
             <h2>Kování pro skleněné stříšky</h2>
-            <p>Profesionální kování Süd-Metall pro montáž — MOTIVO, SEASONS, SWORD, CANO a další. Oddělená nabídka od hotových stříšek.</p>
+            <p>Kování Süd-Metall pro montáž — MOTIVO, SEASONS, SWORD, CANO a další. Oddělená nabídka od hotových stříšek.</p>
           </div>
           <a class="sklo-btn" href="<?php echo esc_url(home_url('/kovani-strisky/')); ?>">Prohlédnout kování</a>
+        </div>
+      </div>
+    </section>
+  <?php endif; ?>
+
+  <?php if ($slug === 'zabradli') : ?>
+    <section class="sklo-section sklo-kovani-cross" aria-label="Kování pro zábradlí">
+      <div class="sklo-wrap">
+        <div class="sklo-kovani-cross__inner">
+          <div class="sklo-kovani-cross__copy">
+            <p class="sklo-eyebrow">Samostatná kategorie</p>
+            <h2>Kování pro zábradlí</h2>
+            <p>Držáky, sloupky, trubky, spojky a další prvky pro výrobu zábradlí. Oddělená nabídka od hotových sestav.</p>
+          </div>
+          <a class="sklo-btn" href="<?php echo esc_url(home_url('/kovani-zabradli/')); ?>">Prohlédnout kování</a>
         </div>
       </div>
     </section>

@@ -73,14 +73,67 @@ function sklo_produkty_for_slug(string $slug): ?array
 }
 
 /**
- * Find product by SklS code (JSON first, then PHP index).
+ * Kování JSON map keyed by code (stříšky + zábradlí).
+ *
+ * @return array<string, array<string, mixed>>
+ */
+function sklo_kovani_json_map(): array
+{
+    static $map = null;
+    if ($map !== null) {
+        return $map;
+    }
+    $out = [];
+    $files = [
+        get_template_directory() . '/assets/data/kovani-strisky.json',
+        get_template_directory() . '/assets/data/kovani-zabradli.json',
+    ];
+    foreach ($files as $path) {
+        if (!is_readable($path)) {
+            continue;
+        }
+        $raw = file_get_contents($path);
+        if ($raw === false || $raw === '') {
+            continue;
+        }
+        $decoded = json_decode($raw, true);
+        if (!is_array($decoded)) {
+            continue;
+        }
+        foreach ($decoded as $p) {
+            if (!is_array($p)) {
+                continue;
+            }
+            $code = trim((string) ($p['code'] ?? ''));
+            if ($code === '') {
+                continue;
+            }
+            $out[$code] = $p;
+        }
+    }
+    $map = $out;
+    return $map;
+}
+
+/**
+ * Find product by SklS or KOV-* code (JSON first, then PHP index).
  *
  * @return array<string, mixed>|null
  */
 function sklo_produkt_by_code(string $code): ?array
 {
     $code = trim($code);
-    if ($code === '' || !preg_match('/^SklS-\d{4}$/', $code)) {
+    if ($code === '') {
+        return null;
+    }
+    if (preg_match('/^KOV-[A-Z0-9-]+$/', $code)) {
+        $kovani = sklo_kovani_json_map();
+        if (isset($kovani[$code]) && is_array($kovani[$code])) {
+            return $kovani[$code];
+        }
+        return null;
+    }
+    if (!preg_match('/^SklS-\d{4}$/', $code)) {
         return null;
     }
     $json = sklo_produkty_json_map();
@@ -637,9 +690,19 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
             }
         }
     }
-    $kat = $section_labels[$psec] ?? ($psec !== '' ? $psec : $cat_title);
+    $is_kovani = in_array($psec, ['kovani-strisky', 'kovani-zabradli'], true) || str_starts_with($code, 'KOV-');
+    if ($psec === 'kovani-zabradli' || str_starts_with($code, 'KOV-ZAB-')) {
+        $kat = 'Kování pro zábradlí';
+    } elseif ($is_kovani) {
+        $kat = 'Kování pro skleněné stříšky';
+    } else {
+        $kat = $section_labels[$psec] ?? ($psec !== '' ? $psec : $cat_title);
+    }
+    $manufacturer = trim((string) ($p['manufacturer'] ?? ''));
+    $source_url = trim((string) ($p['source_url'] ?? ($p['url'] ?? '')));
     $cena_txt = $price > 0 ? sklo_format_cena($price) : '';
     $show_poptavka_btn = $code !== '' && $name !== '';
+    $eyebrow = $is_kovani && $manufacturer !== '' ? $manufacturer : 'Sklospeciál';
 
     if ($back_url === '') {
         $back_url = (string) get_permalink();
@@ -706,7 +769,7 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
         </div>
 
         <div class="sklo-pdetail__info">
-          <p class="sklo-eyebrow">Sklospeciál</p>
+          <p class="sklo-eyebrow"><?php echo esc_html($eyebrow); ?></p>
           <h1 class="sklo-pdetail__title"><?php echo esc_html($name); ?></h1>
           <p class="sklo-pdetail__meta">
             <span class="sklo-pdetail__code"><?php echo esc_html($code); ?></span>
@@ -734,9 +797,20 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
           <?php endif; ?>
 
           <p class="sklo-pdetail__note">Finální nabídka podle rozměrů a dostupnosti. Volitelně prodloužená záruka +1&nbsp;rok — 10&nbsp;% ceny výrobku (bez dopravy a montáže); částku v&nbsp;Kč zvolíš ve volbách níže. <a href="<?php echo esc_url(home_url('/zaruka/')); ?>">Více o záruce</a>.</p>
+          <?php if ($is_kovani && $manufacturer !== '') : ?>
+            <p class="sklo-pdetail__manufacturer">Výrobce: <?php echo esc_html($manufacturer); ?><?php
+            if ($source_url !== '') :
+                ?> · <a class="sklo-link" href="<?php echo esc_url($source_url); ?>" target="_blank" rel="noopener noreferrer">Zdroj u výrobce / distributor</a><?php
+            endif;
+            ?></p>
+          <?php endif; ?>
           <?php if ($page_slug === 'strisky') : ?>
             <p class="sklo-pdetail__related-cat">
               <a class="sklo-link" href="<?php echo esc_url(home_url('/kovani-strisky/')); ?>">Kování a příslušenství →</a>
+            </p>
+          <?php elseif ($page_slug === 'zabradli') : ?>
+            <p class="sklo-pdetail__related-cat">
+              <a class="sklo-link" href="<?php echo esc_url(home_url('/kovani-zabradli/')); ?>">Kování a prvky pro zábradlí →</a>
             </p>
           <?php endif; ?>
         </div>
@@ -841,9 +915,14 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
           <div class="sklo-shipcard__col">
             <h3>Doprava</h3>
             <p>
-              Doprava po ČR — individuálně dle rozměrů a vzdálenosti.
-              U skla počítej s atypickou přepravou.
-              Do Prahy často jezdíme ve společných výjezdech (více montáží najednou).
+              <?php if ($is_kovani) : ?>
+                Doprava po ČR — individuálně dle balení a vzdálenosti.
+                Kování často posíláme kurýrem; u celých stříšek počítej s atypickou přepravou skla.
+              <?php else : ?>
+                Doprava po ČR — individuálně dle rozměrů a vzdálenosti.
+                U skla počítej s atypickou přepravou.
+                Do Prahy často jezdíme ve společných výjezdech (více montáží najednou).
+              <?php endif; ?>
               <?php if ($ship_from > 0) : ?>
                 Orientačně od <strong><?php echo esc_html(sklo_format_cena($ship_from)); ?></strong>.
               <?php endif; ?>
@@ -857,16 +936,22 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
           <div class="sklo-shipcard__col">
             <h3>Montáž</h3>
             <p>
-              Orientačně: dveře od 2&nbsp;500&nbsp;Kč/ks, sprcha od 3&nbsp;500&nbsp;Kč, zábradlí od 1&nbsp;500&nbsp;Kč/bm.
-              Finální cena včetně dojezdu je v nabídce po zaměření.
-              Můžeš objednat výrobek samostatně nebo s montáží.
-              Detaily: <a href="<?php echo esc_url(home_url('/doprava/#montaz')); ?>">doprava a montáž</a>.
+              <?php if ($is_kovani) : ?>
+                Montáž kování a skleněné stříšky řešíme individuálně podle sestavy a podkladu.
+                Můžeš poptat jen kování, nebo komplet včetně skla a montáže.
+                Detaily: <a href="<?php echo esc_url(home_url('/doprava/#montaz')); ?>">doprava a montáž</a>.
+              <?php else : ?>
+                Orientačně: dveře od 2&nbsp;500&nbsp;Kč/ks, sprcha od 3&nbsp;500&nbsp;Kč, zábradlí od 1&nbsp;500&nbsp;Kč/bm.
+                Finální cena včetně dojezdu je v nabídce po zaměření.
+                Můžeš objednat výrobek samostatně nebo s montáží.
+                Detaily: <a href="<?php echo esc_url(home_url('/doprava/#montaz')); ?>">doprava a montáž</a>.
+              <?php endif; ?>
             </p>
           </div>
         </div>
       </div>
 
-      <?php if ($code !== '') : ?>
+      <?php if ($code !== '' && !$is_kovani) : ?>
         <div
           class="sklo-pdetail__block sklo-pdetail__similar"
           data-sklo-similar
@@ -927,11 +1012,17 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
         'sku'      => $code,
         'brand'    => [
             '@type' => 'Brand',
-            'name'  => 'Sklospeciál',
+            'name'  => $is_kovani && $manufacturer !== '' ? $manufacturer : 'Sklospeciál',
         ],
         'description' => $schema_desc,
         'url'         => $schema_url,
     ];
+    if ($is_kovani && $manufacturer !== '') {
+        $schema['manufacturer'] = [
+            '@type' => 'Organization',
+            'name'  => $manufacturer,
+        ];
+    }
     if ($images !== []) {
         $schema['image'] = count($images) === 1 ? $images[0] : array_values($images);
     }

@@ -82,6 +82,7 @@ function sklo_seo_categories(): array
                 'Bezpečné sklo a profily podle projektu',
             ],
             'related'       => [
+                ['/kovani-zabradli/', 'Kování pro zábradlí'],
                 ['/zabradli/schodiste/', 'Zábradlí na schodiště'],
                 ['/francouzske-balkony/', 'Francouzské balkony'],
                 ['/strisky/', 'Skleněné stříšky'],
