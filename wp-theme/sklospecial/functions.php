@@ -501,19 +501,20 @@ add_action('wp_head', static function (): void {
                         $desc = (string) ($hub['seo_desc'] ?? '');
                         $title = (string) ($hub['seo_title'] ?? $title);
                     } elseif (is_page(['realizace', 'recenze', 'mapa-stranek', 'cookies', 'ochrana-osobnich-udaju', 'obchodni-podminky', 'zaruka', 'doprava', 'platba', 'doba-realizace', 'o-nas', 'kontakt', 'poptavka', 'navod-na-zamereni'])) {
-                    // Utility / trust pages — canonical + OG even without Rank Math.
-                    $emit = true;
-                    $url = (string) get_permalink();
-                    if (is_page('realizace')) {
-                        $desc = 'Ilustrační fotografie skleněných dveří, zábradlí a skleněných stěn jako inspirace. Fotky z montáží doplníme — startujeme.';
-                        $title = 'Ukázky skleněných řešení — inspirace | ' . sklo_brand_name();
-                    } elseif (is_page('recenze')) {
-                        $desc = 'Sbíráme první hodnocení zákazníků. Ukázky tónu komunikace — neověřené nákupy.';
-                        $title = 'Recenze — sbíráme první hodnocení | ' . sklo_brand_name();
-                    } elseif (is_page('cookies')) {
-                        $desc = 'Jak Sklospeciál používá cookies — nezbytné vždy, analytické jen se souhlasem.';
-                    } elseif (is_page('mapa-stranek')) {
-                        $desc = 'Mapa stránek webu Sklospeciál — katalog, průvodci a užitečné odkazy.';
+                        // Utility / trust pages — canonical + OG even without Rank Math.
+                        $emit = true;
+                        $url = (string) get_permalink();
+                        if (is_page('realizace')) {
+                            $desc = 'Ilustrační fotografie skleněných dveří, zábradlí a skleněných stěn jako inspirace. Fotky z montáží doplníme — startujeme.';
+                            $title = 'Ukázky skleněných řešení — inspirace | ' . sklo_brand_name();
+                        } elseif (is_page('recenze')) {
+                            $desc = 'Sbíráme první hodnocení zákazníků. Ukázky tónu komunikace — neověřené nákupy.';
+                            $title = 'Recenze — sbíráme první hodnocení | ' . sklo_brand_name();
+                        } elseif (is_page('cookies')) {
+                            $desc = 'Jak Sklospeciál používá cookies — nezbytné vždy, analytické jen se souhlasem.';
+                        } elseif (is_page('mapa-stranek')) {
+                            $desc = 'Mapa stránek webu Sklospeciál — katalog, průvodci a užitečné odkazy.';
+                        }
                     }
                 }
             }
