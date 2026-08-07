@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.28.2');
+define('SKLO_THEME_VER', '1.28.3');
 
 /** Default konfigurátor/API host. Override via option sklo_api_base or env SKLO_API_BASE. */
 define(
@@ -308,6 +308,9 @@ add_filter('document_title_parts', function (array $parts): array {
         $stats = function_exists('sklo_recenze_stats') ? sklo_recenze_stats() : ['avg' => 0, 'count' => 0];
         $parts['title'] = 'Recenze zákazníků — průměr ' . number_format_i18n((float) $stats['avg'], 1) . ' z 5';
         unset($parts['tagline']);
+    } elseif (is_page('kovani-strisky')) {
+        $parts['title'] = 'Kování pro skleněné stříšky | Sklospeciál';
+        unset($parts['tagline'], $parts['site']);
     }
     return $parts;
 });
@@ -348,6 +351,8 @@ add_action('wp_head', function (): void {
             . ' z 5 z '
             . (int) $stats['count']
             . ' hodnocení. Skleněné dveře, sprchy a zábradlí na míru.';
+    } elseif (is_page('kovani-strisky')) {
+        $desc = 'Kování Süd-Metall pro montáž skleněných stříšek – MOTIVO, SEASONS, SWORD, CANO a další. Přidejte do nezávazné poptávky.';
     } else {
         return;
     }
@@ -427,6 +432,11 @@ add_action('wp_head', static function (): void {
                     if (!empty($guide['seo_title'])) {
                         $title = (string) $guide['seo_title'];
                     }
+                } elseif (is_page('kovani-strisky')) {
+                    $emit = true;
+                    $url = (string) get_permalink();
+                    $desc = 'Kování Süd-Metall pro montáž skleněných stříšek – MOTIVO, SEASONS, SWORD, CANO a další. Přidejte do nezávazné poptávky.';
+                    $title = 'Kování pro skleněné stříšky | Sklospeciál';
                 }
             }
         }
@@ -769,6 +779,11 @@ add_filter('document_title_parts', function (array $parts): array {
     if ($guide && !empty($guide['seo_title'])) {
         $parts['title'] = (string) $guide['seo_title'];
         unset($parts['tagline'], $parts['site']);
+        return $parts;
+    }
+    if (is_page('kovani-strisky')) {
+        $parts['title'] = 'Kování pro skleněné stříšky | Sklospeciál';
+        unset($parts['tagline'], $parts['site']);
     }
     return $parts;
 }, 20);
@@ -809,6 +824,9 @@ add_filter('rank_math/frontend/description', static function ($description) {
     if ($guide && !empty($guide['seo_desc'])) {
         return (string) $guide['seo_desc'];
     }
+    if (is_page('kovani-strisky')) {
+        return 'Kování Süd-Metall pro montáž skleněných stříšek – MOTIVO, SEASONS, SWORD, CANO a další. Přidejte do nezávazné poptávky.';
+    }
     return $description;
 }, 20);
 
@@ -832,6 +850,8 @@ add_action('wp_head', function (): void {
             $guide = sklo_pruvodce_for_page();
             if ($guide && !empty($guide['seo_desc'])) {
                 $desc = (string) $guide['seo_desc'];
+            } elseif (is_page('kovani-strisky')) {
+                $desc = 'Kování Süd-Metall pro montáž skleněných stříšek – MOTIVO, SEASONS, SWORD, CANO a další. Přidejte do nezávazné poptávky.';
             }
         }
     }

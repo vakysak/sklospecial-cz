@@ -25,6 +25,7 @@
           <li><a href="<?php echo esc_url(home_url('/sprchove-kouty/')); ?>">Sprchové kouty</a></li>
           <li><a href="<?php echo esc_url(home_url('/zabradli/')); ?>">Zábradlí</a></li>
           <li><a href="<?php echo esc_url(home_url('/strisky/')); ?>">Stříšky</a></li>
+          <li><a href="<?php echo esc_url(home_url('/kovani-strisky/')); ?>">Kování pro stříšky</a></li>
           <li><a href="<?php echo esc_url(home_url('/sklenene-steny/')); ?>">Skleněné stěny</a></li>
           <li><a href="<?php echo esc_url(home_url('/francouzske-balkony/')); ?>">Francouzské balkony</a></li>
         </ul>

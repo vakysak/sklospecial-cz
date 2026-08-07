@@ -1804,6 +1804,16 @@ a:hover { color: var(--accent-hover); }
   transform: translateX(-50%) scale(1.04);
 }
 
+/* External supplier thumbs (landscape) — no Quba logo crop */
+.sklo-katalog--kovani .sklo-produkty__media--ext {
+  aspect-ratio: 3 / 2;
+}
+
+.sklo-katalog--kovani .sklo-produkty__media--ext img {
+  --sklo-quba-logo: 0;
+  object-position: center center;
+}
+
 .sklo-produkty__media--empty {
   aspect-ratio: 1;
   cursor: default;
