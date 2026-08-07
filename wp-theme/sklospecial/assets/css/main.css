@@ -2096,8 +2096,14 @@ a:hover { color: var(--accent-hover); }
 }
 
 .sklo-pdetail__cta--triple .sklo-btn,
-.sklo-pdetail__cta--triple .sklo-link {
+.sklo-pdetail__cta--triple .sklo-link,
+.sklo-pdetail__cta--triple .poptavka-btn {
   text-align: center;
+}
+
+.sklo-pdetail__cta--triple .poptavka-btn {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .sklo-pdetail__cta--triple .sklo-btn--ghost {

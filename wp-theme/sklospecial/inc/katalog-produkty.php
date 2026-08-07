@@ -614,6 +614,33 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
         $options_json = '[]';
     }
 
+    // Human section label for poptávkový košík (same logic as product grid).
+    $psec = (string) ($p['section'] ?? '');
+    $page_slug = (string) (get_post_field('post_name', get_queried_object_id()) ?: '');
+    $section_labels = [];
+    $cat_title = '';
+    if ($page_slug !== '' && function_exists('sklo_katalog_for_slug')) {
+        $cat_meta = sklo_katalog_for_slug($page_slug);
+        if (is_array($cat_meta)) {
+            $cat_title = (string) ($cat_meta['title'] ?? '');
+            if (!empty($cat_meta['sections']) && is_array($cat_meta['sections'])) {
+                foreach ($cat_meta['sections'] as $sec) {
+                    if (!is_array($sec)) {
+                        continue;
+                    }
+                    $sid = (string) ($sec['id'] ?? '');
+                    if ($sid === '') {
+                        continue;
+                    }
+                    $section_labels[$sid] = (string) ($sec['title'] ?? $sid);
+                }
+            }
+        }
+    }
+    $kat = $section_labels[$psec] ?? ($psec !== '' ? $psec : $cat_title);
+    $cena_txt = $price > 0 ? sklo_format_cena($price) : '';
+    $show_poptavka_btn = $code !== '' && $name !== '';
+
     if ($back_url === '') {
         $back_url = (string) get_permalink();
     }
@@ -856,6 +883,17 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
 
       <div class="sklo-pdetail__cta sklo-pdetail__cta--bottom sklo-pdetail__cta--triple">
         <button type="button" class="sklo-btn" data-sklo-order-selected>Odeslat poptávku</button>
+        <?php if ($show_poptavka_btn) : ?>
+          <button
+            type="button"
+            class="poptavka-btn"
+            data-id="<?php echo esc_attr($code); ?>"
+            data-nazev="<?php echo esc_attr($name); ?>"
+            data-kategorie="<?php echo esc_attr($kat); ?>"
+            data-cena="<?php echo esc_attr($cena_txt); ?>"
+            data-fotka="<?php echo esc_url($thumb); ?>"
+          >Přidat do poptávky</button>
+        <?php endif; ?>
         <a class="sklo-btn sklo-btn--ghost" href="<?php echo esc_url($poptavka); ?>">Nenašel jsi co hledáš? Pošli nezávaznou poptávku</a>
         <a class="sklo-link" href="<?php echo esc_url($wa_url); ?>" target="_blank" rel="noopener noreferrer">WhatsApp</a>
         <?php if (function_exists('sklo_render_cta_sla')) : ?>

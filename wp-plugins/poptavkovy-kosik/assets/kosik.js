@@ -419,6 +419,7 @@
   }
 
   // Public API for theme / other scripts
+  window.pridatDoKosiku = pridatDoKosiku;
   window.PoptavkaKosik = {
     pridatDoKosiku: pridatDoKosiku,
     odebratZKosiku: odebratZKosiku,

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Poptávkový košík
  * Description: Lehký poptávkový košík bez WooCommerce — localStorage + AJAX e-mail.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Sklospecial
  * Text Domain: poptavkovy-kosik
  * Requires at least: 5.8
@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('POPTAVKA_KOSIK_VERSION', '1.0.0');
+define('POPTAVKA_KOSIK_VERSION', '1.0.1');
 define('POPTAVKA_KOSIK_PATH', plugin_dir_path(__FILE__));
 define('POPTAVKA_KOSIK_URL', plugin_dir_url(__FILE__));
 
