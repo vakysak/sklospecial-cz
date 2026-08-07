@@ -165,49 +165,6 @@ $proof_items = [
 </section>
 
 <?php
-$recenze_stats = sklo_recenze_stats();
-$recenze_featured = sklo_recenze_featured(8);
-$recenze_stars = static function (int $n): string {
-    $n = max(1, min(5, $n));
-    return str_repeat('★', $n) . str_repeat('☆', 5 - $n);
-};
-?>
-<section class="sklo-section sklo-reviews" id="recenze" aria-labelledby="reviews-heading">
-  <div class="sklo-wrap">
-    <header class="sklo-section__head sklo-section__head--center">
-      <p class="sklo-eyebrow">Důvěra</p>
-      <h2 id="reviews-heading">Co říkají zákazníci</h2>
-      <p class="sklo-reviews__agg">
-        <span class="sklo-recenze-stars" aria-hidden="true"><?php echo esc_html($recenze_stars(5)); ?></span>
-        průměr <?php echo esc_html(number_format_i18n($recenze_stats['avg'], 1)); ?> z 5
-        · <?php echo esc_html((string) $recenze_stats['count']); ?> hodnocení
-      </p>
-    </header>
-    <div class="sklo-reviews__track" data-reviews-track>
-      <?php foreach ($recenze_featured as $i => $r) : ?>
-        <blockquote class="sklo-reviews__quote<?php echo $i === 0 ? ' is-active' : ''; ?>" data-reviews-slide<?php echo $i === 0 ? '' : ' hidden'; ?>>
-          <p class="sklo-recenze-stars" aria-label="<?php echo esc_attr((string) $r['stars'] . ' z 5'); ?>"><?php echo esc_html($recenze_stars((int) $r['stars'])); ?></p>
-          <p class="sklo-reviews__text">„<?php echo esc_html((string) $r['text']); ?>“</p>
-          <footer class="sklo-reviews__meta">
-            <cite><?php echo esc_html((string) $r['name']); ?></cite>
-            <span><?php echo esc_html((string) $r['city']); ?></span>
-          </footer>
-        </blockquote>
-      <?php endforeach; ?>
-    </div>
-    <div class="sklo-reviews__controls" data-reviews-controls>
-      <button type="button" class="sklo-reviews__dot is-active" data-reviews-goto="0" aria-label="Recenze 1"></button>
-      <?php for ($i = 1, $n = count($recenze_featured); $i < $n; $i++) : ?>
-        <button type="button" class="sklo-reviews__dot" data-reviews-goto="<?php echo esc_attr((string) $i); ?>" aria-label="Recenze <?php echo esc_attr((string) ($i + 1)); ?>"></button>
-      <?php endfor; ?>
-    </div>
-    <p class="sklo-reviews__more">
-      <a class="sklo-link" href="<?php echo esc_url(home_url('/recenze/')); ?>">Všechny recenze</a>
-    </p>
-  </div>
-</section>
-
-<?php
 $katalog = function_exists('sklo_katalog') ? sklo_katalog() : [];
 $home_types = [
     [
@@ -340,6 +297,47 @@ $home_types = [
         <p>Pracujeme s nestandardními rozměry — to je náš základ. Limity závisí na typu dveří a skle. Pošli rozměry přes WhatsApp nebo poptávku a ověříme, co je možné.</p>
       </details>
     </div>
+  </div>
+</section>
+
+<?php
+// Startup: de-emphasize reviews (after process/FAQ) + honest label; 3 samples only.
+$recenze_featured = sklo_recenze_featured(3);
+$recenze_stars = static function (int $n): string {
+    $n = max(1, min(5, $n));
+    return str_repeat('★', $n) . str_repeat('☆', 5 - $n);
+};
+?>
+<section class="sklo-section sklo-reviews sklo-reviews--startup" id="recenze" aria-labelledby="reviews-heading">
+  <div class="sklo-wrap">
+    <header class="sklo-section__head sklo-section__head--center">
+      <p class="sklo-eyebrow">Start webu</p>
+      <h2 id="reviews-heading">Ukázky hodnocení</h2>
+      <p class="sklo-reviews__notice" role="note">
+        Sbíráme první feedback od zákazníků. Níže jsou ukázky tónu komunikace — neověřené nákupy.
+      </p>
+    </header>
+    <div class="sklo-reviews__track" data-reviews-track>
+      <?php foreach ($recenze_featured as $i => $r) : ?>
+        <blockquote class="sklo-reviews__quote<?php echo $i === 0 ? ' is-active' : ''; ?>" data-reviews-slide<?php echo $i === 0 ? '' : ' hidden'; ?>>
+          <p class="sklo-recenze-stars" aria-label="<?php echo esc_attr((string) $r['stars'] . ' z 5'); ?>"><?php echo esc_html($recenze_stars((int) $r['stars'])); ?></p>
+          <p class="sklo-reviews__text">„<?php echo esc_html((string) $r['text']); ?>“</p>
+          <footer class="sklo-reviews__meta">
+            <cite><?php echo esc_html((string) $r['name']); ?></cite>
+            <span><?php echo esc_html((string) $r['city']); ?></span>
+          </footer>
+        </blockquote>
+      <?php endforeach; ?>
+    </div>
+    <div class="sklo-reviews__controls" data-reviews-controls>
+      <button type="button" class="sklo-reviews__dot is-active" data-reviews-goto="0" aria-label="Ukázka 1"></button>
+      <?php for ($i = 1, $n = count($recenze_featured); $i < $n; $i++) : ?>
+        <button type="button" class="sklo-reviews__dot" data-reviews-goto="<?php echo esc_attr((string) $i); ?>" aria-label="Ukázka <?php echo esc_attr((string) ($i + 1)); ?>"></button>
+      <?php endfor; ?>
+    </div>
+    <p class="sklo-reviews__more">
+      <a class="sklo-link" href="<?php echo esc_url(home_url('/recenze/')); ?>">Další ukázky na stránce Recenze</a>
+    </p>
   </div>
 </section>
 

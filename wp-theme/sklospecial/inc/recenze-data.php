@@ -11,6 +11,16 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Startup honesty mode: no verified customer reviews yet.
+ * Keep curated texts as illustrative tone samples; do not invent more.
+ * Flip to false when real reviews are published.
+ */
+function sklo_recenze_is_startup(): bool
+{
+    return true;
+}
+
+/**
  * @return list<array{name:string,city:string,stars:int,date:string,text:string,category:string,featured?:bool}>
  */
 function sklo_recenze_all(): array

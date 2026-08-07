@@ -46,10 +46,14 @@ function sklo_warranty_surcharge_czk(int $base_price_czk): int
 
 /**
  * Formatted aggregate rating label from sklo_recenze_stats().
- * Example: „4,8 ★ · 475 hodnocení“
+ * Startup mode: honest label without implying verified purchases.
+ * Example (startup): „Ukázky hodnocení (start webu)“
  */
 function sklo_recenze_rating_label(): string
 {
+    if (function_exists('sklo_recenze_is_startup') && sklo_recenze_is_startup()) {
+        return 'Ukázky hodnocení (start webu)';
+    }
     $stats = function_exists('sklo_recenze_stats')
         ? sklo_recenze_stats()
         : ['avg' => 0.0, 'count' => 0];
@@ -72,17 +76,22 @@ function sklo_render_recenze_rating_link(string $class = ''): void
     if ($count <= 0) {
         return;
     }
+    $startup = function_exists('sklo_recenze_is_startup') && sklo_recenze_is_startup();
     $label = sklo_recenze_rating_label();
-    $classes = trim('sklo-rating-link ' . $class);
+    $classes = trim('sklo-rating-link ' . ($startup ? 'sklo-rating-link--startup ' : '') . $class);
     $url = home_url('/recenze/');
-    $aria = sprintf(
-        'Průměrné hodnocení %s z 5 na základě %s hodnocení — zobrazit recenze',
-        number_format_i18n((float) ($stats['avg'] ?? 0), 1),
-        number_format_i18n($count, 0)
-    );
+    $aria = $startup
+        ? 'Ukázky hodnocení při startu webu — sbíráme první feedback zákazníků'
+        : sprintf(
+            'Průměrné hodnocení %s z 5 na základě %s hodnocení — zobrazit recenze',
+            number_format_i18n((float) ($stats['avg'] ?? 0), 1),
+            number_format_i18n($count, 0)
+        );
     ?>
   <a class="<?php echo esc_attr($classes); ?>" href="<?php echo esc_url($url); ?>" aria-label="<?php echo esc_attr($aria); ?>">
-    <span class="sklo-rating-link__stars" aria-hidden="true">★★★★★</span>
+    <?php if (!$startup) : ?>
+      <span class="sklo-rating-link__stars" aria-hidden="true">★★★★★</span>
+    <?php endif; ?>
     <span class="sklo-rating-link__label"><?php echo esc_html($label); ?></span>
   </a>
     <?php

@@ -4,7 +4,6 @@
  */
 get_header();
 
-$stats = sklo_recenze_stats();
 $all = sklo_recenze_all();
 
 $fmt_date = static function (string $ymd): string {
@@ -25,13 +24,12 @@ $stars_html = static function (int $n): string {
   <div class="sklo-wrap">
     <header class="sklo-page__head sklo-recenze-page__head">
       <h1>Recenze</h1>
-      <p class="sklo-recenze-page__lead">Hodnocení od zákazníků — dveře, sprchy, zábradlí, stříšky, skleněné stěny i balkony. Pracujeme na dálku: zaměření, fotky a nabídka online.</p>
-      <p class="sklo-recenze-page__agg" aria-label="Souhrn hodnocení">
-        <span class="sklo-recenze-stars" aria-hidden="true"><?php echo esc_html($stars_html(5)); ?></span>
-        průměr <strong><?php echo esc_html(number_format_i18n($stats['avg'], 1)); ?></strong> z 5
-        <span class="sklo-recenze-page__dot" aria-hidden="true">·</span>
-        <?php echo esc_html((string) $stats['count']); ?> hodnocení
+      <p class="sklo-recenze-page__notice" role="note">
+        <strong>Sbíráme první hodnocení od zákazníků.</strong>
+        Níže jsou ukázky tónu komunikace při startu webu — nejde o ověřené nákupy ani o oficiální průměr.
+        Až budeme mít reálnou zpětnou vazbu, stránku doplníme.
       </p>
+      <p class="sklo-recenze-page__lead">Pracujeme na dálku: zaměření, fotky a nabídka online. Skleněné dveře, sprchy, zábradlí, stříšky, skleněné stěny i balkony.</p>
     </header>
 
     <div class="sklo-recenze-filters" data-recenze-filters role="group" aria-label="Filtrovat podle typu">

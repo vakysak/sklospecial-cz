@@ -1,43 +1,45 @@
 # Go-live: noindex / sitemap / Search Console
 
-**Stav:** theme **1.7.1** — `sklo_is_production()` + robots filter. Ostrá indexace až PO DNS (host obsahuje `sklospecial.cz`).
+**Stav:** theme **1.29.0** — `sklo_is_production()` (+ `.eu` i `.cz`), brand titles bez `.cz`, canonicaly utility stránek, GA4 option. Ostrá indexace na živém hostu (teď `sklospecial.eu`). Až přijde `.cz`: `docs/DOMAIN-CZ.md`.
 
-## Staging (teď — sslip)
+## Staging (sslip / non-production)
 
 - WP Settings → Reading → „Discourage search engines“ = ON
 - Rank Math (pokud aktivní): site-wide noindex
 - Theme: `sklo_is_production()` = false → meta `noindex, nofollow`
 - `robots.txt` filtr: `Disallow: /` — staging NESMÍ být indexovatelný
 
-## Po DNS (ostrý sklospecial.cz)
+## Produkce (sklospecial.eu teď; sklospecial.cz později)
 
 Theme automaticky:
 
 - **ne** vypisuje staging noindex meta
-- `robots.txt` → Allow + `Sitemap: https://sklospecial.cz/sitemap_index.xml`
+- `robots.txt` → Allow + `Sitemap: {home}/wp-sitemap.xml`
 
 Stále ručně:
 
 1. Vypnout Discourage search engines (Reading)
-2. Rank Math: remove noindex; enable Sitemap
-3. Ověřit robots.txt + sitemap (`/sitemap_index.xml` nebo `/wp-sitemap.xml`)
+2. Rank Math: remove noindex (pokud používaný)
+3. Ověřit robots.txt + sitemap (`/wp-sitemap.xml`)
 4. Google Search Console — ověřit property, odeslat sitemap
 
-## SEO hardenings (1.7.1)
+## SEO hardenings (1.29.0)
 
+- Brand v titles: **Sklospeciál** (filtr `option_blogname` + document titles) — ne „Sklospeciál.cz“
 - Homepage canonical → `home_url('/')`
-- Open Graph + Twitter: home, pillars (katalog), SEO landings, produkt `?kod=`
+- Canonical + OG: home, pillars, SEO landings, produkt `?kod=`, **realizace / recenze / mapa-stranek / cookies / legal**
 - Produkt detail: title/description obsahují název produktu
-- City pages: `kraj` + `note` v `sklo_seo_cities()` — unikátní věty (remote model)
 - Footer: odkaz `/mapa-stranek/`
+- GA4: option `sklo_ga4_id` (prázdné = off), load až po cookie consent analytics
 
 ## Checklist
 
-- [ ] DNS live + HTTPS OK
-- [ ] Remove noindex (Reading + Rank Math)
+- [x] DNS live + HTTPS OK (`.eu`)
+- [ ] `.cz` DNS + Coolify host (až bude) — `docs/DOMAIN-CZ.md`
+- [ ] Remove noindex (Reading + Rank Math) na produkci
 - [ ] Sitemap enabled
 - [ ] Search Console sitemap submitted
 - [ ] Meta robots = index,follow on production (theme + Rank Math)
-- [ ] Canonical / OG smoke na home + 1 city + 1 `?kod=`
+- [ ] Canonical / OG smoke na home + utility + 1 city + 1 `?kod=`
 
 Celkový day-of seznam: `docs/GO-LIVE-CHECKLIST.md`.

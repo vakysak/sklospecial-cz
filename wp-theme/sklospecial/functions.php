@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.28.5');
+define('SKLO_THEME_VER', '1.29.0');
 
 /** Default konfigurátor/API host. Override via option sklo_api_base or env SKLO_API_BASE. */
 define(
@@ -26,6 +26,10 @@ require_once get_template_directory() . '/inc/trust-helpers.php';
 
 /**
  * Production host? sklospecial.eu / sklospecial.cz (with or without www).
+ *
+ * .cz DNS may arrive later — keep both hosts here so indexing/HSTS flip on
+ * without a theme change. Canonical/redirect strategy when both resolve:
+ * see docs/DOMAIN-CZ.md (prefer one primary host; redirect the other).
  */
 function sklo_is_production(): bool
 {
@@ -34,6 +38,28 @@ function sklo_is_production(): bool
     $host = preg_replace('/^www\./', '', $host) ?: '';
     return $host === 'sklospecial.eu' || $host === 'sklospecial.cz';
 }
+
+/**
+ * Public brand for titles / OG — never the residual „Sklospeciál.cz“ blogname.
+ */
+function sklo_brand_name(): string
+{
+    return 'Sklospeciál';
+}
+
+/**
+ * Normalize WP site title left over from .cz prep (e.g. „Sklospeciál.cz“).
+ */
+add_filter('option_blogname', static function ($name) {
+    if (!is_string($name) || $name === '') {
+        return $name;
+    }
+    $trimmed = trim($name);
+    if (preg_match('/^sklospeci[aá]l(\.cz|\.eu)?$/iu', $trimmed)) {
+        return sklo_brand_name();
+    }
+    return $name;
+});
 
 /**
  * Staging host? (not production .eu / .cz).
@@ -286,6 +312,11 @@ function sklo_public_asset_url(string $url): string
 }
 
 add_filter('document_title_parts', function (array $parts): array {
+    // Drop residual .cz / .eu from the site suffix everywhere.
+    if (!empty($parts['site']) && is_string($parts['site'])) {
+        $parts['site'] = sklo_brand_name();
+    }
+
     $produkt = sklo_request_produkt();
     if ($produkt !== null) {
         $name = function_exists('sklo_public_product_text')
@@ -293,23 +324,35 @@ add_filter('document_title_parts', function (array $parts): array {
             : (string) ($produkt['name'] ?? '');
         $code = (string) ($produkt['code'] ?? '');
         if ($name !== '') {
-            $parts['title'] = $name . ($code !== '' ? ' (' . $code . ')' : '') . ' | Sklospeciál';
+            $parts['title'] = $name . ($code !== '' ? ' (' . $code . ')' : '') . ' | ' . sklo_brand_name();
             unset($parts['tagline'], $parts['site']);
             return $parts;
         }
     }
     if (is_front_page()) {
-        $parts['title'] = 'Sklospeciál — skleněné dveře, sprchy a zábradlí na míru';
+        $parts['title'] = sklo_brand_name() . ' — skleněné dveře, sprchy a zábradlí na míru';
         unset($parts['tagline'], $parts['site']);
     } elseif (is_page('realizace')) {
-        $parts['title'] = 'Ukázky skleněných řešení — inspirace | Sklospeciál';
-        unset($parts['tagline']);
+        $parts['title'] = 'Ukázky skleněných řešení — inspirace | ' . sklo_brand_name();
+        unset($parts['tagline'], $parts['site']);
     } elseif (is_page('recenze')) {
-        $stats = function_exists('sklo_recenze_stats') ? sklo_recenze_stats() : ['avg' => 0, 'count' => 0];
-        $parts['title'] = 'Recenze zákazníků — průměr ' . number_format_i18n((float) $stats['avg'], 1) . ' z 5';
-        unset($parts['tagline']);
+        // Startup: no verified aggregate in the title.
+        $parts['title'] = 'Recenze — sbíráme první hodnocení | ' . sklo_brand_name();
+        unset($parts['tagline'], $parts['site']);
+    } elseif (is_page('cookies')) {
+        $parts['title'] = 'Informace o cookies | ' . sklo_brand_name();
+        unset($parts['tagline'], $parts['site']);
+    } elseif (is_page('mapa-stranek')) {
+        $parts['title'] = 'Mapa stránek | ' . sklo_brand_name();
+        unset($parts['tagline'], $parts['site']);
+    } elseif (is_page('ochrana-osobnich-udaju')) {
+        $parts['title'] = 'Ochrana osobních údajů | ' . sklo_brand_name();
+        unset($parts['tagline'], $parts['site']);
+    } elseif (is_page('obchodni-podminky')) {
+        $parts['title'] = 'Obchodní podmínky | ' . sklo_brand_name();
+        unset($parts['tagline'], $parts['site']);
     } elseif (is_page('kovani-strisky')) {
-        $parts['title'] = 'Kování pro skleněné stříšky | Sklospeciál';
+        $parts['title'] = 'Kování pro skleněné stříšky | ' . sklo_brand_name();
         unset($parts['tagline'], $parts['site']);
     }
     return $parts;
@@ -343,14 +386,13 @@ add_action('wp_head', function (): void {
     if (is_front_page()) {
         $desc = 'Skleněné dveře, sprchové kouty, zábradlí, skleněné stěny a stříšky na míru. Zaměř otvor, pošli fotky přes WhatsApp nebo poptávku — nabídku připravíme podle tvých rozměrů.';
     } elseif (is_page('realizace')) {
-        $desc = 'Ilustrační fotografie skleněných dveří, zábradlí a skleněných stěn jako inspirace. Nejde o katalog konkrétních zakázek — typ a sklo složíš ve studiu podle svých rozměrů.';
+        $desc = 'Ilustrační fotografie skleněných dveří, zábradlí a skleněných stěn jako inspirace. Fotky z našich montáží doplníme — startujeme. Typ a sklo složíš podle svých rozměrů.';
     } elseif (is_page('recenze')) {
-        $stats = function_exists('sklo_recenze_stats') ? sklo_recenze_stats() : ['avg' => 0, 'count' => 0];
-        $desc = 'Recenze zákazníků Sklospeciál — průměr '
-            . number_format_i18n((float) $stats['avg'], 1)
-            . ' z 5 z '
-            . (int) $stats['count']
-            . ' hodnocení. Skleněné dveře, sprchy a zábradlí na míru.';
+        $desc = 'Sbíráme první hodnocení zákazníků Sklospeciál. Mezitím ukázky tónu komunikace — neověřené nákupy. Skleněné dveře, sprchy a zábradlí na míru.';
+    } elseif (is_page('cookies')) {
+        $desc = 'Jak Sklospeciál (sklospecial.eu) používá cookies — nezbytné vždy, analytické jen se souhlasem.';
+    } elseif (is_page('mapa-stranek')) {
+        $desc = 'Mapa stránek webu Sklospeciál — katalog, průvodci, města a užitečné odkazy.';
     } elseif (is_page('kovani-strisky')) {
         $desc = 'Kování Süd-Metall pro montáž skleněných stříšek – MOTIVO, SEASONS, SWORD, CANO a další. Přidejte do nezávazné poptávky.';
     } else {
@@ -436,7 +478,22 @@ add_action('wp_head', static function (): void {
                     $emit = true;
                     $url = (string) get_permalink();
                     $desc = 'Kování Süd-Metall pro montáž skleněných stříšek – MOTIVO, SEASONS, SWORD, CANO a další. Přidejte do nezávazné poptávky.';
-                    $title = 'Kování pro skleněné stříšky | Sklospeciál';
+                    $title = 'Kování pro skleněné stříšky | ' . sklo_brand_name();
+                } elseif (is_page(['realizace', 'recenze', 'mapa-stranek', 'cookies', 'ochrana-osobnich-udaju', 'obchodni-podminky', 'zaruka', 'doprava', 'platba', 'doba-realizace', 'o-nas', 'kontakt', 'poptavka', 'navod-na-zamereni'])) {
+                    // Utility / trust pages — canonical + OG even without Rank Math.
+                    $emit = true;
+                    $url = (string) get_permalink();
+                    if (is_page('realizace')) {
+                        $desc = 'Ilustrační fotografie skleněných dveří, zábradlí a skleněných stěn jako inspirace. Fotky z montáží doplníme — startujeme.';
+                        $title = 'Ukázky skleněných řešení — inspirace | ' . sklo_brand_name();
+                    } elseif (is_page('recenze')) {
+                        $desc = 'Sbíráme první hodnocení zákazníků. Ukázky tónu komunikace — neověřené nákupy.';
+                        $title = 'Recenze — sbíráme první hodnocení | ' . sklo_brand_name();
+                    } elseif (is_page('cookies')) {
+                        $desc = 'Jak Sklospeciál používá cookies — nezbytné vždy, analytické jen se souhlasem.';
+                    } elseif (is_page('mapa-stranek')) {
+                        $desc = 'Mapa stránek webu Sklospeciál — katalog, průvodci a užitečné odkazy.';
+                    }
                 }
             }
         }
@@ -479,7 +536,7 @@ add_action('wp_head', static function (): void {
     echo '<meta property="og:title" content="' . esc_attr($title) . '" />' . "\n";
     echo '<meta property="og:description" content="' . esc_attr($desc) . '" />' . "\n";
     echo '<meta property="og:url" content="' . esc_url($url) . '" />' . "\n";
-    echo '<meta property="og:site_name" content="Sklospeciál" />' . "\n";
+    echo '<meta property="og:site_name" content="' . esc_attr(sklo_brand_name()) . '" />' . "\n";
     if ($image !== '') {
         echo '<meta property="og:image" content="' . esc_url($image) . '" />' . "\n";
     }
@@ -783,7 +840,7 @@ add_filter('document_title_parts', function (array $parts): array {
         return $parts;
     }
     if (is_page('kovani-strisky')) {
-        $parts['title'] = 'Kování pro skleněné stříšky | Sklospeciál';
+        $parts['title'] = 'Kování pro skleněné stříšky | ' . sklo_brand_name();
         unset($parts['tagline'], $parts['site']);
     }
     return $parts;
@@ -1110,7 +1167,7 @@ add_action('rest_api_init', static function (): void {
                     'Ozveme se obratem, nejpozději do 1 pracovního dne — s konkrétní nabídkou.',
                     '',
                     'Sklospeciál',
-                    'https://sklospecial.cz',
+                    home_url('/'),
                 ];
                 wp_mail(
                     $email,
@@ -1151,3 +1208,95 @@ add_action('wp_enqueue_scripts', static function (): void {
         'before'
     );
 }, 20);
+
+/**
+ * GA4 measurement ID — option `sklo_ga4_id` or constant SKLO_GA4_ID.
+ * Empty = no script. Paste e.g. G-XXXXXXXX in WP: Nastavení → Sklospeciál, or:
+ *   update_option('sklo_ga4_id', 'G-XXXXXXXX');
+ * Loads only after cookie consent analytics=true (see main.js).
+ */
+function sklo_ga4_id(): string
+{
+    if (defined('SKLO_GA4_ID') && is_string(SKLO_GA4_ID) && SKLO_GA4_ID !== '') {
+        $id = SKLO_GA4_ID;
+    } else {
+        $id = (string) get_option('sklo_ga4_id', '');
+    }
+    $id = trim($id);
+    if ($id === '' || !preg_match('/^G-[A-Z0-9]+$/i', $id)) {
+        return '';
+    }
+    return strtoupper($id);
+}
+
+add_action('admin_menu', static function (): void {
+    add_options_page(
+        'Sklospeciál',
+        'Sklospeciál',
+        'manage_options',
+        'sklo-settings',
+        static function (): void {
+            if (!current_user_can('manage_options')) {
+                return;
+            }
+            if (
+                isset($_POST['sklo_settings_nonce'])
+                && wp_verify_nonce((string) $_POST['sklo_settings_nonce'], 'sklo_settings')
+            ) {
+                $ga = isset($_POST['sklo_ga4_id']) ? trim((string) wp_unslash($_POST['sklo_ga4_id'])) : '';
+                if ($ga !== '' && !preg_match('/^G-[A-Z0-9]+$/i', $ga)) {
+                    echo '<div class="notice notice-error"><p>GA4 ID musí být ve tvaru G-XXXXXXXX.</p></div>';
+                } else {
+                    update_option('sklo_ga4_id', $ga === '' ? '' : strtoupper($ga), false);
+                    echo '<div class="notice notice-success"><p>Uloženo.</p></div>';
+                }
+            }
+            $ga = (string) get_option('sklo_ga4_id', '');
+            ?>
+            <div class="wrap">
+              <h1>Sklospeciál — nastavení</h1>
+              <form method="post">
+                <?php wp_nonce_field('sklo_settings', 'sklo_settings_nonce'); ?>
+                <table class="form-table" role="presentation">
+                  <tr>
+                    <th scope="row"><label for="sklo_ga4_id">GA4 measurement ID</label></th>
+                    <td>
+                      <input name="sklo_ga4_id" id="sklo_ga4_id" type="text" class="regular-text"
+                             placeholder="G-XXXXXXXX" value="<?php echo esc_attr($ga); ?>"
+                             autocomplete="off" />
+                      <p class="description">
+                        Prázdné = žádný GA skript. Po vyplnění se gtag načte jen po souhlasu
+                        s analytickými cookies (lišta „Přijmout vše“). Aktualizuj stránku Cookies,
+                        až GA zapneš.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+                <?php submit_button('Uložit'); ?>
+              </form>
+            </div>
+            <?php
+        }
+    );
+});
+
+add_action('wp_head', static function (): void {
+    $id = sklo_ga4_id();
+    if ($id === '') {
+        return;
+    }
+    // Placeholder + consent gate — no fake ID, no load without analytics consent.
+    $boot = '(function(){var ID=' . wp_json_encode($id) . ';'
+        . 'function load(){if(window.__skloGa4)return;window.__skloGa4=1;'
+        . 'var s=document.createElement("script");s.async=true;'
+        . 's.src="https://www.googletagmanager.com/gtag/js?id="+encodeURIComponent(ID);'
+        . 'document.head.appendChild(s);window.dataLayer=window.dataLayer||[];'
+        . 'function gtag(){dataLayer.push(arguments);}window.gtag=gtag;'
+        . 'gtag("js",new Date());gtag("config",ID,{anonymize_ip:true});}'
+        . 'function maybe(c){if(c&&c.analytics)load();}'
+        . 'if(window.skloGetCookieConsent){maybe(window.skloGetCookieConsent());}'
+        . 'if(window.skloOnCookieConsentChange){window.skloOnCookieConsentChange(maybe);}'
+        . 'window.addEventListener("sklo_cookie_consent",function(e){maybe(e.detail);});'
+        . '})();';
+    echo '<script id="sklo-ga4-boot">' . $boot . '</script>' . "\n";
+}, 45);
