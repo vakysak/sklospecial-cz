@@ -58,6 +58,7 @@ function sklo_seo_categories(): array
                 'Doprava a montáž domluvíme individuálně',
             ],
             'related'       => [
+                ['/kovani-sprchy/', 'Kování pro sprchové kouty'],
                 ['/sprchove-kouty/walk-in/', 'Walk-in sprchy'],
                 ['/sprchove-kouty/zastena/', 'Sprchové zástěny'],
                 ['/sklenene-dvere/', 'Skleněné dveře'],

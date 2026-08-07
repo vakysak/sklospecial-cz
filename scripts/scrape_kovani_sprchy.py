@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build wp-theme/sklospecial/assets/data/kovani-zabradli.json from luxusnikovani.cz.
+"""Build wp-theme/sklospecial/assets/data/kovani-sprchy.json from luxusnikovani.cz.
 
-Source: /prvky-pro-vyrobu-zabradli (+ subcategories, pagination).
-Applies +35 % margin rounded to tens Kč (same as kování stříšky).
+Source: /kovani-pro-sprchove-kouty (+ subcategories, pagination).
+Applies +35 % margin rounded to tens Kč (same as kování zábradlí / stříšky).
 """
 
 from __future__ import annotations
@@ -17,42 +17,30 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "wp-theme" / "sklospecial" / "assets" / "data" / "kovani-zabradli.json"
+OUT = ROOT / "wp-theme" / "sklospecial" / "assets" / "data" / "kovani-sprchy.json"
 UA = "Mozilla/5.0 (compatible; SklospecialBot/1.0; +https://sklospecial.eu)"
 BASE = "https://www.luxusnikovani.cz"
-SECTION = "kovani-zabradli"
+SECTION = "kovani-sprchy"
 MARKUP = 1.35
-CATEGORY_URL = BASE + "/prvky-pro-vyrobu-zabradli"
+CATEGORY_URL = BASE + "/kovani-pro-sprchove-kouty"
 
 ROOT_SUBS = [
-    "/trubky-a-profily",
-    "/spojky-a-klouby-pro-trubky",
-    "/koncovky-k-trubkam",
-    "/drzaky-zabradli",
-    "/lankovy-system-pro-zabradli",
-    "/vyplne-zabradli-2",
-    "/montazni-material",
-    "/drzaky-skla",
-    "/sloupky-zabradli",
-    "/koncovky-na-trubky",
-    "/rezane-polotovary-pro-zabradli",
-    "/drzay-tyce-pro-zabradli",
+    "/panty-pro-sprchove-dvere",
+    "/uchyty-pro-sprchove-zasteny-2",
+    "/kovani-pro-posuvne-dvere-sprchy",
+    "/stabilizacni-tyce-pro-zasteny-2",
+    "/uchytky-a-madla-pro-sprchove-dvere",
+    "/tesnici-profily-a-doplnky-pro-sprchove-kouty",
 ]
 
-# Czech labels from luxusnikovani.cz /prvky-pro-vyrobu-zabradli (slug → label)
+# Czech labels from luxusnikovani.cz /kovani-pro-sprchove-kouty (slug → label)
 SUBCAT_LABELS: dict[str, str] = {
-    "trubky-a-profily": "Nerezové trubky, profily, tyče",
-    "spojky-a-klouby-pro-trubky": "Spojky a klouby pro trubky",
-    "koncovky-k-trubkam": "Koncovky na trubky s držákem zábradlí",
-    "drzaky-zabradli": "Držáky zábradlí",
-    "lankovy-system-pro-zabradli": "Lankový systém pro zábradlí",
-    "vyplne-zabradli-2": "Výplně zábradlí",
-    "montazni-material": "Upevnění zábradlí na zeď a podlahu",
-    "drzaky-skla": "Držáky skla",
-    "sloupky-zabradli": "Sloupky zábradlí",
-    "koncovky-na-trubky": "Koncovky na trubky a tyče",
-    "rezane-polotovary-pro-zabradli": "Řezané polotovary pro zábradlí",
-    "drzay-tyce-pro-zabradli": "Držáky tyčí pro zábradlí",
+    "panty-pro-sprchove-dvere": "Panty pro sprchové dveře",
+    "uchyty-pro-sprchove-zasteny-2": "Upevnění pro sprchové zástěny",
+    "kovani-pro-posuvne-dvere-sprchy": "Posuvné kování pro sprchové dveře",
+    "stabilizacni-tyce-pro-zasteny-2": "Stabilizační tyče pro zástěny",
+    "uchytky-a-madla-pro-sprchove-dvere": "Úchytky a madla pro sprchové dveře",
+    "tesnici-profily-a-doplnky-pro-sprchove-kouty": "Těsnící profily a doplňky pro sprchové kouty",
 }
 
 
@@ -214,7 +202,7 @@ def make_code(url: str, used: set[str]) -> str:
     raw = re.sub(r"-+", "-", raw).strip("-")
     if len(raw) > 40:
         raw = raw[:40].rstrip("-")
-    code = f"KOV-ZAB-{raw}" if raw else "KOV-ZAB-X"
+    code = f"KOV-SPR-{raw}" if raw else "KOV-SPR-X"
     base = code
     n = 2
     while code in used:
@@ -342,15 +330,20 @@ def scrape_detail(p: dict, code: str) -> dict:
                 for k in [
                     "sklo",
                     "nerez",
-                    "zábrad",
-                    "trub",
-                    "držák",
-                    "sloupek",
-                    "lanko",
-                    "koncov",
+                    "sprch",
+                    "panty",
+                    "pant",
+                    "úchyt",
+                    "uchyt",
+                    "madl",
+                    "těsn",
+                    "tesn",
+                    "zástěn",
+                    "zasten",
+                    "stabiliz",
+                    "posuv",
                     "profil",
-                    "tyč",
-                    "spojk",
+                    "kován",
                 ]
             ):
                 paras.append(t)

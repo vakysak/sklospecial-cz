@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.30.0');
+define('SKLO_THEME_VER', '1.32.0');
 
 /** Default konfigurátor/API host. Override via option sklo_api_base or env SKLO_API_BASE. */
 define(
@@ -357,6 +357,9 @@ add_filter('document_title_parts', function (array $parts): array {
     } elseif (is_page('kovani-zabradli')) {
         $parts['title'] = 'Kování pro zábradlí | ' . sklo_brand_name();
         unset($parts['tagline'], $parts['site']);
+    } elseif (is_page('kovani-sprchy')) {
+        $parts['title'] = 'Kování pro sprchové kouty | ' . sklo_brand_name();
+        unset($parts['tagline'], $parts['site']);
     }
     return $parts;
 });
@@ -400,6 +403,8 @@ add_action('wp_head', function (): void {
         $desc = 'Kování Süd-Metall pro montáž skleněných stříšek – MOTIVO, SEASONS, SWORD, CANO a další. Přidejte do nezávazné poptávky.';
     } elseif (is_page('kovani-zabradli')) {
         $desc = 'Kování a prvky pro výrobu zábradlí – držáky, sloupky, trubky, spojky. Přidejte do nezávazné poptávky u Sklospeciál.';
+    } elseif (is_page('kovani-sprchy')) {
+        $desc = 'Kování pro sprchové kouty – panty, úchyty, posuvné systémy, madla a těsnění. Přidejte do nezávazné poptávky u Sklospeciál.';
     } else {
         return;
     }
@@ -489,6 +494,11 @@ add_action('wp_head', static function (): void {
                     $url = (string) get_permalink();
                     $desc = 'Kování a prvky pro výrobu zábradlí – držáky, sloupky, trubky, spojky. Přidejte do nezávazné poptávky u Sklospeciál.';
                     $title = 'Kování pro zábradlí | ' . sklo_brand_name();
+                } elseif (is_page('kovani-sprchy')) {
+                    $emit = true;
+                    $url = (string) get_permalink();
+                    $desc = 'Kování pro sprchové kouty – panty, úchyty, posuvné systémy, madla a těsnění. Přidejte do nezávazné poptávky u Sklospeciál.';
+                    $title = 'Kování pro sprchové kouty | ' . sklo_brand_name();
                 } elseif (is_page(['realizace', 'recenze', 'mapa-stranek', 'cookies', 'ochrana-osobnich-udaju', 'obchodni-podminky', 'zaruka', 'doprava', 'platba', 'doba-realizace', 'o-nas', 'kontakt', 'poptavka', 'navod-na-zamereni'])) {
                     // Utility / trust pages — canonical + OG even without Rank Math.
                     $emit = true;
@@ -770,6 +780,7 @@ function sklo_nav_fallback(): void
             ],
         ],
         ['/sprchove-kouty/', 'Sprchové kouty'],
+        ['/kovani-sprchy/', 'Kování sprchy'],
         ['/zabradli/', 'Zábradlí'],
         ['/kovani-zabradli/', 'Kování zábradlí'],
         ['/strisky/', 'Stříšky'],
@@ -856,6 +867,9 @@ add_filter('document_title_parts', function (array $parts): array {
     } elseif (is_page('kovani-zabradli')) {
         $parts['title'] = 'Kování pro zábradlí | ' . sklo_brand_name();
         unset($parts['tagline'], $parts['site']);
+    } elseif (is_page('kovani-sprchy')) {
+        $parts['title'] = 'Kování pro sprchové kouty | ' . sklo_brand_name();
+        unset($parts['tagline'], $parts['site']);
     }
     return $parts;
 }, 20);
@@ -902,6 +916,9 @@ add_filter('rank_math/frontend/description', static function ($description) {
     if (is_page('kovani-zabradli')) {
         return 'Kování a prvky pro výrobu zábradlí – držáky, sloupky, trubky, spojky. Přidejte do nezávazné poptávky u Sklospeciál.';
     }
+    if (is_page('kovani-sprchy')) {
+        return 'Kování pro sprchové kouty – panty, úchyty, posuvné systémy, madla a těsnění. Přidejte do nezávazné poptávky u Sklospeciál.';
+    }
     return $description;
 }, 20);
 
@@ -929,6 +946,8 @@ add_action('wp_head', function (): void {
                 $desc = 'Kování Süd-Metall pro montáž skleněných stříšek – MOTIVO, SEASONS, SWORD, CANO a další. Přidejte do nezávazné poptávky.';
             } elseif (is_page('kovani-zabradli')) {
                 $desc = 'Kování a prvky pro výrobu zábradlí – držáky, sloupky, trubky, spojky. Přidejte do nezávazné poptávky u Sklospeciál.';
+            } elseif (is_page('kovani-sprchy')) {
+                $desc = 'Kování pro sprchové kouty – panty, úchyty, posuvné systémy, madla a těsnění. Přidejte do nezávazné poptávky u Sklospeciál.';
             }
         }
     }

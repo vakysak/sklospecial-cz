@@ -126,6 +126,7 @@
   const countEl = gridRoot ? gridRoot.querySelector('[data-sklo-produkty-count]') : null;
   const moreBtn = gridRoot ? gridRoot.querySelector('[data-sklo-produkty-more]') : null;
   const panels = Array.from(page.querySelectorAll('[data-cat-panel]'));
+  const catSections = Array.from(page.querySelectorAll('[data-cat-section]'));
   const initial = gridRoot
     ? Number.parseInt(gridRoot.getAttribute('data-initial') || '24', 10) || 24
     : 12;
@@ -179,6 +180,21 @@
       }
     });
 
+    catSections.forEach((sec) => {
+      const sid = sec.getAttribute('data-cat-section') || '';
+      if (value !== '' && sid !== value) {
+        sec.hidden = true;
+        return;
+      }
+      const hasVisible = Array.from(
+        sec.querySelectorAll('.sklo-produkty__item[data-category]')
+      ).some(
+        (el) =>
+          !el.classList.contains('is-filtered-out') && !el.classList.contains('is-collapsed')
+      );
+      sec.hidden = !hasVisible;
+    });
+
     if (countEl) countEl.textContent = String(visibleCount);
 
     if (moreBtn) {
@@ -222,6 +238,8 @@
   const hash = (window.location.hash || '').replace(/^#/, '');
   if (hash && items.some((el) => el.getAttribute('data-category') === hash)) {
     apply(hash, { scroll: true });
+  } else if (catSections.length) {
+    apply('');
   }
 })();
 

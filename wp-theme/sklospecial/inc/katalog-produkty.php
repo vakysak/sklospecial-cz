@@ -73,7 +73,7 @@ function sklo_produkty_for_slug(string $slug): ?array
 }
 
 /**
- * Kování JSON map keyed by code (stříšky + zábradlí).
+ * Kování JSON map keyed by code (stříšky + zábradlí + sprchy).
  *
  * @return array<string, array<string, mixed>>
  */
@@ -87,6 +87,7 @@ function sklo_kovani_json_map(): array
     $files = [
         get_template_directory() . '/assets/data/kovani-strisky.json',
         get_template_directory() . '/assets/data/kovani-zabradli.json',
+        get_template_directory() . '/assets/data/kovani-sprchy.json',
     ];
     foreach ($files as $path) {
         if (!is_readable($path)) {
@@ -690,9 +691,11 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
             }
         }
     }
-    $is_kovani = in_array($psec, ['kovani-strisky', 'kovani-zabradli'], true) || str_starts_with($code, 'KOV-');
+    $is_kovani = in_array($psec, ['kovani-strisky', 'kovani-zabradli', 'kovani-sprchy'], true) || str_starts_with($code, 'KOV-');
     if ($psec === 'kovani-zabradli' || str_starts_with($code, 'KOV-ZAB-')) {
         $kat = 'Kování pro zábradlí';
+    } elseif ($psec === 'kovani-sprchy' || str_starts_with($code, 'KOV-SPR-')) {
+        $kat = 'Kování pro sprchové kouty';
     } elseif ($is_kovani) {
         $kat = 'Kování pro skleněné stříšky';
     } else {
@@ -811,6 +814,10 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
           <?php elseif ($page_slug === 'zabradli') : ?>
             <p class="sklo-pdetail__related-cat">
               <a class="sklo-link" href="<?php echo esc_url(home_url('/kovani-zabradli/')); ?>">Kování a prvky pro zábradlí →</a>
+            </p>
+          <?php elseif ($page_slug === 'sprchove-kouty') : ?>
+            <p class="sklo-pdetail__related-cat">
+              <a class="sklo-link" href="<?php echo esc_url(home_url('/kovani-sprchy/')); ?>">Kování pro sprchové kouty →</a>
             </p>
           <?php endif; ?>
         </div>

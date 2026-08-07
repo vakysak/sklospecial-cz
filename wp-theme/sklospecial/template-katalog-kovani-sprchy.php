@@ -1,14 +1,14 @@
 <?php
 /**
- * Template Name: Katalog kování zábradlí
- * Description: Listing + detail prvků / kování pro výrobu zábradlí (JSON), v podkategoriích.
+ * Template Name: Katalog kování sprchy
+ * Description: Listing + detail kování pro sprchové kouty (JSON), v podkategoriích.
  */
 
 declare(strict_types=1);
 
 get_header();
 
-$path = get_template_directory() . '/assets/data/kovani-zabradli.json';
+$path = get_template_directory() . '/assets/data/kovani-sprchy.json';
 $kovani = [];
 if (is_readable($path)) {
     $raw = file_get_contents($path);
@@ -20,18 +20,12 @@ if (is_readable($path)) {
 
 /** @var array<string, string> $subcat_order slug → Czech label (supplier order) */
 $subcat_order = [
-    'trubky-a-profily'               => 'Nerezové trubky, profily, tyče',
-    'spojky-a-klouby-pro-trubky'      => 'Spojky a klouby pro trubky',
-    'koncovky-k-trubkam'              => 'Koncovky na trubky s držákem zábradlí',
-    'drzaky-zabradli'                 => 'Držáky zábradlí',
-    'lankovy-system-pro-zabradli'     => 'Lankový systém pro zábradlí',
-    'vyplne-zabradli-2'               => 'Výplně zábradlí',
-    'montazni-material'               => 'Upevnění zábradlí na zeď a podlahu',
-    'drzaky-skla'                     => 'Držáky skla',
-    'sloupky-zabradli'                => 'Sloupky zábradlí',
-    'koncovky-na-trubky'              => 'Koncovky na trubky a tyče',
-    'rezane-polotovary-pro-zabradli'  => 'Řezané polotovary pro zábradlí',
-    'drzay-tyce-pro-zabradli'         => 'Držáky tyčí pro zábradlí',
+    'panty-pro-sprchove-dvere'                    => 'Panty pro sprchové dveře',
+    'uchyty-pro-sprchove-zasteny-2'               => 'Upevnění pro sprchové zástěny',
+    'kovani-pro-posuvne-dvere-sprchy'             => 'Posuvné kování pro sprchové dveře',
+    'stabilizacni-tyce-pro-zasteny-2'             => 'Stabilizační tyče pro zástěny',
+    'uchytky-a-madla-pro-sprchove-dvere'          => 'Úchytky a madla pro sprchové dveře',
+    'tesnici-profily-a-doplnky-pro-sprchove-kouty' => 'Těsnící profily a doplňky pro sprchové kouty',
 ];
 
 /** @var array<string, list<array<string, mixed>>> $by_sub */
@@ -85,7 +79,7 @@ foreach ($by_sub as $slug => $items) {
     ];
 }
 
-$kategorie = 'Kování pro zábradlí';
+$kategorie = 'Kování pro sprchové kouty';
 $total = count($kovani);
 $back_url = (string) get_permalink();
 $initial = 24;
@@ -110,13 +104,13 @@ $kod_missing = $kod !== '' && $detail_product === null;
         </div>
       <?php endif; ?>
       <p class="sklo-eyebrow">Příslušenství</p>
-      <h1>Kování pro zábradlí</h1>
+      <h1>Kování pro sprchové kouty</h1>
       <p class="sklo-katalog__lead">
-        Prvky pro výrobu zábradlí v podkategoriích — trubky, spojky, držáky, sloupky a další.
+        Kování pro sprchové kouty v podkategoriích — panty, úchyty, posuvné systémy, madla a těsnění.
         Otevři detail, zvol variantu a přidej do nezávazné poptávky.
       </p>
       <p class="sklo-katalog__back">
-        <a class="sklo-link" href="<?php echo esc_url(home_url('/zabradli/')); ?>">← Zpět na zábradlí</a>
+        <a class="sklo-link" href="<?php echo esc_url(home_url('/sprchove-kouty/')); ?>">← Zpět na sprchové kouty</a>
       </p>
     </div>
   </header>
@@ -179,14 +173,14 @@ $kod_missing = $kod !== '' && $detail_product === null;
 
   <section
     class="sklo-section sklo-produkty"
-    aria-label="Kování pro zábradlí"
+    aria-label="Kování pro sprchové kouty"
     data-sklo-produkty
     data-initial="<?php echo esc_attr((string) $initial); ?>"
   >
     <div class="sklo-wrap">
       <header class="sklo-section__head sklo-section__head--center">
         <p class="sklo-eyebrow">Produkty</p>
-        <h2>Nabídka kování a prvků</h2>
+        <h2>Nabídka kování pro sprchy</h2>
         <p><span data-sklo-produkty-count><?php echo esc_html((string) $total); ?></span> položek · ceny orientační, finální nabídka podle konkrétní sestavy</p>
       </header>
 

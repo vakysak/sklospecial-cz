@@ -113,9 +113,24 @@ $back_url = (string) get_permalink();
           <div class="sklo-kovani-cross__copy">
             <p class="sklo-eyebrow">Samostatná kategorie</p>
             <h2>Kování pro zábradlí</h2>
-            <p>Držáky, sloupky, trubky, spojky a další prvky pro výrobu zábradlí. Oddělená nabídka od hotových sestav.</p>
+            <p>Držáky, sloupky, trubky, spojky a další prvky pro výrobu zábradlí v podkategoriích. Oddělená nabídka od hotových sestav.</p>
           </div>
           <a class="sklo-btn" href="<?php echo esc_url(home_url('/kovani-zabradli/')); ?>">Prohlédnout kování</a>
+        </div>
+      </div>
+    </section>
+  <?php endif; ?>
+
+  <?php if ($slug === 'sprchove-kouty') : ?>
+    <section class="sklo-section sklo-kovani-cross" aria-label="Kování pro sprchové kouty">
+      <div class="sklo-wrap">
+        <div class="sklo-kovani-cross__inner">
+          <div class="sklo-kovani-cross__copy">
+            <p class="sklo-eyebrow">Samostatná kategorie</p>
+            <h2>Kování pro sprchové kouty</h2>
+            <p>Panty, úchyty, posuvné systémy, madla a těsnící profily pro sprchové zástěny. Oddělená nabídka od hotových koutů.</p>
+          </div>
+          <a class="sklo-btn" href="<?php echo esc_url(home_url('/kovani-sprchy/')); ?>">Prohlédnout kování</a>
         </div>
       </div>
     </section>

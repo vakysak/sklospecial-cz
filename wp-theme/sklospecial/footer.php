@@ -23,6 +23,7 @@
         <ul class="sklo-footer__list">
           <li><a href="<?php echo esc_url(home_url('/sklenene-dvere/')); ?>">Skleněné dveře</a></li>
           <li><a href="<?php echo esc_url(home_url('/sprchove-kouty/')); ?>">Sprchové kouty</a></li>
+          <li><a href="<?php echo esc_url(home_url('/kovani-sprchy/')); ?>">Kování sprchy</a></li>
           <li><a href="<?php echo esc_url(home_url('/zabradli/')); ?>">Zábradlí</a></li>
           <li><a href="<?php echo esc_url(home_url('/kovani-zabradli/')); ?>">Kování zábradlí</a></li>
           <li><a href="<?php echo esc_url(home_url('/strisky/')); ?>">Stříšky</a></li>
