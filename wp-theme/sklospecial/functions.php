@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('SKLO_THEME_VER', '1.28.4');
+define('SKLO_THEME_VER', '1.28.5');
 
 /** Default konfigurátor/API host. Override via option sklo_api_base or env SKLO_API_BASE. */
 define(
@@ -705,6 +705,7 @@ function sklo_nav_fallback(): void
         ['/sprchove-kouty/', 'Sprchové kouty'],
         ['/zabradli/', 'Zábradlí'],
         ['/strisky/', 'Stříšky'],
+        ['/kovani-strisky/', 'Kování stříšky'],
         ['/sklenene-steny/', 'Skleněné stěny'],
         ['/francouzske-balkony/', 'Balkony'],
         ['/realizace/', 'Realizace'],

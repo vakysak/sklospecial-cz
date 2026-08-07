@@ -91,6 +91,21 @@ $back_url = (string) get_permalink();
 
   <?php sklo_render_katalog_seo_intro($cat); ?>
 
+  <?php if ($slug === 'strisky') : ?>
+    <section class="sklo-section sklo-kovani-cross" aria-label="Kování pro skleněné stříšky">
+      <div class="sklo-wrap">
+        <div class="sklo-kovani-cross__inner">
+          <div class="sklo-kovani-cross__copy">
+            <p class="sklo-eyebrow">Samostatná kategorie</p>
+            <h2>Kování pro skleněné stříšky</h2>
+            <p>Profesionální kování Süd-Metall pro montáž — MOTIVO, SEASONS, SWORD, CANO a další. Oddělená nabídka od hotových stříšek.</p>
+          </div>
+          <a class="sklo-btn" href="<?php echo esc_url(home_url('/kovani-strisky/')); ?>">Prohlédnout kování</a>
+        </div>
+      </div>
+    </section>
+  <?php endif; ?>
+
   <?php if ($is_hub) : ?>
     <section class="sklo-section sklo-katalog-hub">
       <div class="sklo-wrap">

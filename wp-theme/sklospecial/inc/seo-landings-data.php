@@ -106,6 +106,7 @@ function sklo_seo_categories(): array
                 'Výroba podle rozměrů a typu fasády',
             ],
             'related'       => [
+                ['/kovani-strisky/', 'Kování pro stříšky'],
                 ['/zabradli/', 'Skleněné zábradlí'],
                 ['/francouzske-balkony/', 'Francouzské balkony'],
                 ['/sklenene-dvere/', 'Skleněné dveře'],

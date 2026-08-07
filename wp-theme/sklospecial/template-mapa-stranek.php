@@ -26,6 +26,9 @@ $types = sklo_seo_type_landings();
       <ul class="sklo-sitemap__list">
         <?php foreach ($categories as $slug => $cat) : ?>
           <li><a href="<?php echo esc_url(home_url((string) $cat['pillar_path'])); ?>"><?php echo esc_html((string) $cat['name']); ?></a></li>
+          <?php if ($slug === 'strisky') : ?>
+            <li><a href="<?php echo esc_url(home_url('/kovani-strisky/')); ?>">Kování stříšky</a></li>
+          <?php endif; ?>
         <?php endforeach; ?>
         <li><a href="<?php echo esc_url(home_url('/realizace/')); ?>">Realizace</a></li>
         <li><a href="<?php echo esc_url(home_url('/navod-na-zamereni/')); ?>">Návod na zaměření</a></li>

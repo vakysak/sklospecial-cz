@@ -1343,6 +1343,52 @@ a:hover { color: var(--accent-hover); }
   margin-bottom: 0;
 }
 
+.sklo-kovani-cross {
+  padding-top: 0.5rem;
+  padding-bottom: 0.25rem;
+}
+
+.sklo-kovani-cross__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 1.6rem 1.75rem;
+  border: 1px solid rgba(201, 169, 110, 0.35);
+  background:
+    linear-gradient(135deg, rgba(201, 169, 110, 0.12), transparent 55%),
+    var(--bg-secondary);
+  box-shadow: var(--shadow);
+}
+
+.sklo-kovani-cross__copy {
+  flex: 1 1 18rem;
+  max-width: 40rem;
+}
+
+.sklo-kovani-cross__copy h2 {
+  margin: 0 0 0.4rem;
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  letter-spacing: 0.04em;
+}
+
+.sklo-kovani-cross__copy p:not(.sklo-eyebrow) {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.sklo-kovani-cross .sklo-btn {
+  flex: 0 0 auto;
+}
+
+.sklo-pdetail__related-cat {
+  margin: 0.85rem 0 0;
+}
+
 .sklo-related-pillars__list {
   list-style: none;
   margin: 0;

@@ -734,6 +734,11 @@ function sklo_render_produkt_detail(array $p, string $back_url = ''): void
           <?php endif; ?>
 
           <p class="sklo-pdetail__note">Finální nabídka podle rozměrů a dostupnosti. Volitelně prodloužená záruka +1&nbsp;rok — 10&nbsp;% ceny výrobku (bez dopravy a montáže); částku v&nbsp;Kč zvolíš ve volbách níže. <a href="<?php echo esc_url(home_url('/zaruka/')); ?>">Více o záruce</a>.</p>
+          <?php if ($page_slug === 'strisky') : ?>
+            <p class="sklo-pdetail__related-cat">
+              <a class="sklo-link" href="<?php echo esc_url(home_url('/kovani-strisky/')); ?>">Kování a příslušenství →</a>
+            </p>
+          <?php endif; ?>
         </div>
       </div>
 
