@@ -21,6 +21,8 @@ const TYP_ALIASES = {
   otočné: 'otocne',
   otevirane: 'otevirane',
   otevírané: 'otevirane',
+  kridlove: 'otevirane',
+  'křídlové': 'otevirane',
   nevim: 'nevim',
 };
 
@@ -126,7 +128,7 @@ function categoryToUrlPath(typ, code) {
   if (t === 'posuvne') base = '/sklenene-dvere/posuvne/';
   else if (t === 'do-pouzdra') base = '/sklenene-dvere/posuvne/do-pouzdra/';
   else if (t === 'otocne') base = '/sklenene-dvere/otocne/';
-  else if (t === 'otevirane') base = '/sklenene-dvere/otevirane/';
+  else if (t === 'otevirane' || t === 'kridlove') base = '/sklenene-dvere/kridlove/';
   else if (t === 'celosklenene') base = '/sklenene-dvere/celosklenene/';
 
   if (code) {
@@ -249,7 +251,8 @@ const SECTION_KEYWORDS = {
   'trubkovy-system': 'trubkový systém',
   'do-pouzdra': 'pouzdro',
   otocne: 'kyvné otočné',
-  otevirane: 'otevírané',
+  otevirane: 'křídlové',
+  kridlove: 'křídlové',
   pevna: 'pevná zárubeň',
   nastavitelna: 'nastavitelná zárubeň',
   hlinikova: 'hliníková',
